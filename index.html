@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PCOS Care Hub — Sri Lanka's Digital Health Platform</title>
+  <link rel="stylesheet" href="src/styles/global.css"/>
+  <link rel="stylesheet" href="src/styles/home.css"/>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo"><span>🌸</span> PCOS Care Hub</a>
+  <div class="navbar-links">
+    <a href="index.html"                        class="nav-link active">Home</a>
+    <a href="#features"                         class="nav-link">Features</a>
+    <a href="#about-pcos"                       class="nav-link">About PCOS</a>
+    <a href="#research"                         class="nav-link">Research</a>
+    <a href="src/pages/patient-dashboard.html"  class="nav-btn-login">Patient Login</a>
+    <a href="src/pages/hospital-dashboard.html" class="nav-btn-login" style="background:rgba(123,31,162,0.3);">Hospital Login</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-deco hero-deco-1"></div>
+  <div class="hero-deco hero-deco-2"></div>
+  <div class="hero-deco hero-deco-3"></div>
+  <div class="hero-inner">
+    <div class="hero-pill">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF80AB"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      Sri Lanka's First Hospital-Integrated PCOS Platform
+    </div>
+    <h1>Your PCOS Journey,<br><span class="highlight">Managed Smarter</span></h1>
+    <p class="hero-sub">A secure, hospital-connected digital health platform empowering Sri Lankan women to track symptoms, manage medical records, and work with their healthcare providers — all in one place.</p>
+    <div class="hero-btns">
+      <a href="src/pages/patient-dashboard.html"  class="btn btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        Patient Portal
+      </a>
+      <a href="src/pages/hospital-dashboard.html" class="btn btn-outline">🏥 Hospital Portal</a>
+      <a href="src/pages/admin-dashboard.html"    class="btn btn-outline">⚙️ Admin Panel</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS BAR ══ -->
+<div class="stats-bar">
+  <div class="stats-bar-inner container">
+    <div class="stat-item reveal">
+      <div class="num" data-target="13">0%</div>
+      <div class="desc">of reproductive-age women affected by PCOS worldwide (WHO)</div>
+    </div>
+    <div class="stat-item reveal delay-1">
+      <div class="num">70%</div>
+      <div class="desc">of PCOS cases remain undiagnosed globally</div>
+    </div>
+    <div class="stat-item reveal delay-2">
+      <div class="num">3</div>
+      <div class="desc">Secure portals — Patient, Hospital &amp; Admin</div>
+    </div>
+    <div class="stat-item reveal delay-3">
+      <div class="num">99%</div>
+      <div class="desc">Target system uptime with encrypted data storage</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FEATURES ══ -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-pill">Platform Features</div>
+      <h2>Everything You Need in One Place</h2>
+      <p>Purpose-built for Sri Lankan PCOS patients and healthcare providers</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal" style="--feature-color:#E91E8C;">
+        <div class="feature-icon" style="background:#FCE4EC;">
+          <svg width="24" height="24" fill="none" stroke="#E91E8C" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Symptom &amp; Cycle Tracking</h3>
+        <p>Log daily symptoms including irregular periods, acne, mood swings, fatigue, and hair loss. Track your menstrual cycle with an interactive calendar showing period days, fertile window, and ovulation prediction.</p>
+      </div>
+      <div class="feature-card reveal delay-1" style="--feature-color:#7B1FA2;">
+        <div class="feature-icon" style="background:#EDE7F6;">
+          <svg width="24" height="24" fill="none" stroke="#7B1FA2" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        </div>
+        <h3>Secure Report Upload</h3>
+        <p>Upload lab results, ultrasound scans, hormone panels and prescriptions. Your reports are encrypted and stored securely — share them with hospitals with a single click. No more lost paperwork.</p>
+      </div>
+      <div class="feature-card reveal delay-2" style="--feature-color:#00897B;">
+        <div class="feature-icon" style="background:#E0F2F1;">
+          <svg width="24" height="24" fill="none" stroke="#00897B" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <h3>Hospital Integration</h3>
+        <p>Hospitals act as secure intermediaries — uploading test results to patient profiles and giving clinicians controlled access. Doctors view records only through verified hospital accounts, ensuring privacy.</p>
+      </div>
+      <div class="feature-card reveal delay-3" style="--feature-color:#C62828;">
+        <div class="feature-icon" style="background:#FFEBEE;">
+          <svg width="24" height="24" fill="none" stroke="#C62828" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        </div>
+        <h3>AI Care Assistant</h3>
+        <p>Your 24/7 PCOS care assistant provides evidence-based information, lifestyle advice, medication reminders, and appointment notifications tailored to your health profile and symptoms.</p>
+      </div>
+      <div class="feature-card reveal delay-4" style="--feature-color:#1565C0;">
+        <div class="feature-icon" style="background:#E3F2FD;">
+          <svg width="24" height="24" fill="none" stroke="#1565C0" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Health Dashboards &amp; Analytics</h3>
+        <p>Visual charts and progress trackers show trends in symptoms, cycle regularity, BMI, and lifestyle habits over time — helping you and your doctor make better-informed treatment decisions.</p>
+      </div>
+      <div class="feature-card reveal delay-5" style="--feature-color:#2E7D32;">
+        <div class="feature-icon" style="background:#E8F5E9;">
+          <svg width="24" height="24" fill="none" stroke="#2E7D32" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Data Privacy &amp; Security</h3>
+        <p>Two-factor authentication, role-based access control, and AES-256 encryption protect all medical data. Patient records are only visible to authorized hospitals and doctors.</p>
+      </div>
+      <div class="feature-card reveal" style="--feature-color:#FF6F00;">
+        <div class="feature-icon" style="background:#FFF3E0;">
+          <svg width="24" height="24" fill="none" stroke="#FF6F00" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Lifestyle &amp; Diet Planner</h3>
+        <p>Log daily meals, exercise, sleep, and water intake. Receive PCOS-specific dietary guidance: low-GI food recommendations, anti-inflammatory meal ideas, and insulin-resistance management tips.</p>
+      </div>
+      <div class="feature-card reveal delay-1" style="--feature-color:#AD1457;">
+        <div class="feature-icon" style="background:#FCE4EC;">
+          <svg width="24" height="24" fill="none" stroke="#AD1457" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Appointment Management</h3>
+        <p>Book and track gynecology appointments, receive automated reminders, and view upcoming consultations. Hospitals can manage patient visits through a centralised consultation calendar.</p>
+      </div>
+      <div class="feature-card reveal delay-2" style="--feature-color:#6A1B9A;">
+        <div class="feature-icon" style="background:#EDE7F6;">
+          <svg width="24" height="24" fill="none" stroke="#6A1B9A" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Doctor–Patient Communication</h3>
+        <p>Patients share health data and reports with hospitals securely. Clinicians access complete patient histories before consultations — improving decision-making and reducing repeated tests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT PCOS ══ -->
+<section class="pcos-info-section" id="about-pcos">
+  <div class="container">
+    <div class="pcos-info-grid">
+      <div class="pcos-info-text reveal">
+        <div class="section-pill">About PCOS</div>
+        <h2>Understanding Polycystic Ovary Syndrome</h2>
+        <p>PCOS is the most common hormonal disorder in women of reproductive age — affecting 6–13% of women worldwide (WHO, 2023). It is a leading cause of infertility and is closely linked to insulin resistance, type 2 diabetes, and cardiovascular disease.</p>
+        <p>In Sri Lanka, limited digital health infrastructure and reliance on paper records makes PCOS management especially challenging for both patients and providers.</p>
+        <div class="info-point"><div class="info-dot"></div><div><strong>Hormonal Imbalance</strong><span>Elevated androgens disrupt the menstrual cycle. About 95% of PCOS patients have elevated insulin levels which drive androgen production.</span></div></div>
+        <div class="info-point"><div class="info-dot"></div><div><strong>Insulin Resistance</strong><span>Up to 70% of PCOS patients have insulin resistance. A low-GI diet with regular exercise is the most effective first-line treatment.</span></div></div>
+        <div class="info-point"><div class="info-dot"></div><div><strong>Mental Health Impact</strong><span>Women with PCOS are 3× more likely to experience anxiety and depression. South Asian women face additional cultural barriers (Kumarapeli et al., 2011).</span></div></div>
+        <div class="info-point"><div class="info-dot"></div><div><strong>Long-term Health Risks</strong><span>Unmanaged PCOS raises the risk of type 2 diabetes by 5–10×, endometrial cancer, and cardiovascular disease. Regular monitoring reduces risk significantly.</span></div></div>
+      </div>
+      <div class="reveal delay-2">
+        <div style="background:#fff;border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow-md);margin-bottom:20px;">
+          <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:16px;">Common PCOS Symptoms</div>
+          <div class="symptom-wheel">
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#E91E8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>Irregular Periods</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#7B1FA2" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>Acne / Oily Skin</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#E91E8C" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Weight Gain</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#7B1FA2" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Fatigue</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#E91E8C" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5 2 4 2 4-2 4-2"/></svg>Mood Swings</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#7B1FA2" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hair Loss</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#E91E8C" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Infertility</div>
+            <div class="symptom-tag"><svg width="16" height="16" fill="none" stroke="#7B1FA2" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 7 13 17 8 12 1 19"/></svg>Excess Hair Growth</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-sm);">
+          <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;">💡 PCOS Management Tips</div>
+          <div style="font-size:13px;color:var(--text-light);line-height:1.9;">
+            ✅ Follow a <strong>low-GI diet</strong> — whole grains, legumes, vegetables<br>
+            ✅ Exercise at least <strong>30 min daily</strong> — improves insulin sensitivity<br>
+            ✅ Track your cycle to <strong>detect irregularities early</strong><br>
+            ✅ Reduce stress — practise yoga, meditation, or deep breathing<br>
+            ✅ Get regular blood glucose and hormone panel checks<br>
+            ✅ Maintain healthy weight — even 5% loss improves symptoms
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESEARCH ══ -->
+<section class="research-section" id="research">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-pill">Evidence-Based</div>
+      <h2>Built on PCOS Research &amp; Best Practices</h2>
+      <p>Informed by the latest international research and designed to address identified gaps in Sri Lankan healthcare</p>
+    </div>
+    <div class="research-grid">
+      <div class="research-card reveal" style="--research-color:#E91E8C;"><div class="rc-icon">📱</div><h3>Digital Health Gap</h3><p>A 2025 JMIR study of PCOS apps found critical gaps in hospital integration and evidence-based content. Most apps focus only on personal self-management without connecting to clinical systems — the exact gap PCOS Care Hub addresses.</p><div class="research-source">Arabkermani et al., J Med Internet Res, 2025</div></div>
+      <div class="research-card reveal delay-1" style="--research-color:#7B1FA2;"><div class="rc-icon">🏥</div><h3>Hospital-Mediated Access</h3><p>Research confirms continuity of care in chronic diseases like PCOS requires multi-stakeholder systems. Existing apps are predominantly consumer-facing tools without the hospital-patient interface needed for institutional healthcare settings.</p><div class="research-source">Fahimeh Solat et al., BMC Women's Health, 2025</div></div>
+      <div class="research-card reveal delay-2" style="--research-color:#00897B;"><div class="rc-icon">🌏</div><h3>South Asian Context</h3><p>Sri Lankan and South Asian women with PCOS face unique challenges: cultural stigma, disintegrated paper-based records, and limited health awareness. This platform is designed specifically for this local context, unlike Western-oriented international apps.</p><div class="research-source">Kumarapeli et al., NIH, 2011</div></div>
+      <div class="research-card reveal delay-3" style="--research-color:#C62828;"><div class="rc-icon">🤖</div><h3>AI in PCOS Management</h3><p>A 2025 Frontiers review found AI tools show significant promise in PCOS pattern detection and management. Intelligent assistants that provide personalised guidance improve patient adherence and self-management outcomes.</p><div class="research-source">Wang et al., PMC, 2025</div></div>
+      <div class="research-card reveal delay-4" style="--research-color:#1565C0;"><div class="rc-icon">📊</div><h3>Lifestyle as Treatment</h3><p>The 2023 International PCOS Guideline strongly recommends lifestyle intervention as first-line treatment. Regular tracking of diet, exercise, and symptoms leads to measurable improvement — validating the lifestyle modules in this platform.</p><div class="research-source">Teede et al., JCEM, 2023</div></div>
+      <div class="research-card reveal delay-5" style="--research-color:#FF6F00;"><div class="rc-icon">💊</div><h3>Insulin Resistance Focus</h3><p>Approximately 95% of PCOS patients have elevated insulin levels. Digital platforms that educate patients on low-GI nutrition and track metabolic markers help address the root cause of PCOS symptoms rather than managing them superficially.</p><div class="research-source">Lilli Health / MedCity News, 2025</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ROLES ══ -->
+<section class="roles-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-pill">Three Portals</div>
+      <h2>One Ecosystem, Three Perspectives</h2>
+      <p>Every stakeholder in PCOS care has their own secure, purpose-built portal</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card reveal" style="--role-color:#C2185B;">
+        <div class="role-icon-wrap" style="background:linear-gradient(135deg,#E91E8C,#C2185B);">
+          <svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        </div>
+        <h3>Patient</h3>
+        <p>Track symptoms, manage your menstrual cycle, log meals and exercise, upload medical reports, and communicate with your hospital — all in one personal health dashboard.</p>
+        <a href="src/pages/patient-dashboard.html" class="btn btn-primary">Enter Patient Portal</a>
+      </div>
+      <div class="role-card reveal delay-2" style="--role-color:#7B1FA2;">
+        <div class="role-icon-wrap" style="background:linear-gradient(135deg,#9C27B0,#4A148C);">
+          <svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <h3>Hospital</h3>
+        <p>Manage patient records, upload laboratory results, coordinate consultations, and provide clinicians with secure, controlled access to patient health histories and uploaded reports.</p>
+        <a href="src/pages/hospital-dashboard.html" class="btn btn-secondary">Enter Hospital Portal</a>
+      </div>
+      <div class="role-card reveal delay-4" style="--role-color:#00897B;">
+        <div class="role-icon-wrap" style="background:linear-gradient(135deg,#26A69A,#004D40);">
+          <svg width="30" height="30" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3>Admin</h3>
+        <p>Register and manage hospitals across Sri Lanka, oversee all system users, monitor platform performance, configure security settings, and ensure operational integrity of the entire platform.</p>
+        <a href="src/pages/admin-dashboard.html" class="btn btn-teal">Enter Admin Panel</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonial-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-pill" style="background:rgba(255,255,255,0.15);color:#fff;">What Our Users Say</div>
+      <h2>Real Stories, Real Impact</h2>
+      <p>Feedback from patients and healthcare providers using PCOS Care Hub</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal"><div class="quote">"</div><p>Before PCOS Care Hub, I was carrying folders of papers to every doctor visit. Now everything is digital and my doctor can see my full history before I even sit down. It's completely changed my care experience.</p><div class="testimonial-author"><div class="author-avatar" style="background:var(--primary);">N</div><div><div class="author-name">Nimasha Perera</div><div class="author-role">Patient · Colombo</div></div></div></div>
+      <div class="testimonial-card reveal delay-2"><div class="quote">"</div><p>The hospital portal saves us hours every week. Lab results are uploaded directly to patient profiles and our doctors have everything they need before consultations. The system is secure and intuitive to use.</p><div class="testimonial-author"><div class="author-avatar" style="background:var(--secondary);">D</div><div><div class="author-name">Dr. Kumari Silva</div><div class="author-role">Gynecologist · Colombo General Hospital</div></div></div></div>
+      <div class="testimonial-card reveal delay-4"><div class="quote">"</div><p>The cycle tracker and virtual assistant have been game-changers. I now understand my body so much better. The PCOS information library helped me finally understand my diagnosis after two years of confusion.</p><div class="testimonial-author"><div class="author-avatar" style="background:var(--teal);">S</div><div><div class="author-name">Sithara Randeniya</div><div class="author-role">Patient · Kandy</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="section-pill">Get Started Today</div>
+      <h2>Take Control of Your PCOS Journey</h2>
+      <p>Join thousands of Sri Lankan women managing PCOS smarter with secure, hospital-connected digital health tools.</p>
+      <div class="cta-btns">
+        <a href="src/pages/patient-dashboard.html"  class="btn btn-primary"   style="font-size:15px;padding:14px 36px;">🌸 Start as Patient</a>
+        <a href="src/pages/hospital-dashboard.html" class="btn btn-secondary" style="font-size:15px;padding:14px 36px;">🏥 Hospital Sign Up</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🌸 PCOS Care Hub</div>
+          <p>Sri Lanka's first hospital-integrated digital health platform for Polycystic Ovary Syndrome management. Connecting patients, hospitals, and healthcare providers in one secure ecosystem.</p>
+          <div class="footer-social">
+            <a href="#" class="social-btn">f</a>
+            <a href="#" class="social-btn">ig</a>
+            <a href="#" class="social-btn">𝕏</a>
+            <a href="#" class="social-btn">in</a>
+          </div>
+          <div class="footer-badge">🔒 HIPAA-Inspired Data Security</div>
+          <div class="footer-badge" style="margin-left:8px;background:rgba(0,137,123,0.2);border-color:rgba(0,137,123,0.4);color:#80CBC4;">✅ WHO Guideline Aligned</div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about-pcos">About PCOS</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="src/pages/patient-dashboard.html">Patient Portal</a></li>
+            <li><a href="src/pages/hospital-dashboard.html">Hospital Portal</a></li>
+            <li><a href="src/pages/admin-dashboard.html">Admin Panel</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>PCOS Resources</h4>
+          <ul>
+            <li><a href="#about-pcos">What is PCOS?</a></li>
+            <li><a href="#about-pcos">Symptoms Guide</a></li>
+            <li><a href="#about-pcos">Diet &amp; Nutrition</a></li>
+            <li><a href="#about-pcos">Exercise Tips</a></li>
+            <li><a href="#about-pcos">Mental Health Support</a></li>
+            <li><a href="#about-pcos">Fertility Information</a></li>
+            <li><a href="#research">Research Library</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Project Info</h4>
+          <div class="footer-contact-item">
+            <svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>PUSL3190 Computing Project<br>University of Plymouth (NSBM)</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Unagollage Wijesinghe · Index: 10952470</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg width="15" height="15" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>BSc (Hons) Software Engineering<br>Supervisor: Ms. Dulanjali Wijesekara</span>
+          </div>
+          <div class="footer-health-badge">
+            <svg width="20" height="20" fill="none" stroke="rgba(194,24,91,0.8)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <p>This platform is for educational and management purposes only. Always consult a qualified healthcare professional for medical advice.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2026 PCOS Care Hub · PUSL3190 · University of Plymouth · All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Data Security</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scrollTop" title="Back to top">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="src/scripts/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Dashboard — PCOS Care Hub</title>
+  <link rel="stylesheet" href="../../src/styles/global.css"/>
+  <link rel="stylesheet" href="../../src/styles/dashboard.css"/>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="navbar-logo"><span>🌸</span> PCOS Care Hub</div>
+  <div class="navbar-links">
+    <a href="../../index.html" class="nav-link">Home</a>
+    <a href="patient-dashboard.html" class="nav-link active">Patient Portal</a>
+    <a href="hospital-dashboard.html" class="nav-link">Hospital</a>
+    <a href="admin-dashboard.html" class="nav-link">Admin</a>
+    <button class="nav-btn-login" onclick="showToast('Logged out successfully','success')">Logout</button>
+  </div>
+</nav>
+
+<!-- ══ DASHBOARD LAYOUT ══ -->
+<div class="dash-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar sidebar-patient">
+    <div class="sidebar-header">
+      <div class="title">🌸 Patient Portal</div>
+      <div class="sub">Nimasha Perera · PCH-001</div>
+    </div>
+
+    <nav>
+      <div class="sidebar-item active" data-page="overview">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Overview
+      </div>
+      <div class="sidebar-item" data-page="symptoms">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Symptoms
+      </div>
+      <div class="sidebar-item" data-page="cycle">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        Cycle Tracker
+      </div>
+      <div class="sidebar-item" data-page="reports">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Reports
+      </div>
+      <div class="sidebar-item" data-page="diet">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Meal Planner
+      </div>
+      <div class="sidebar-item" data-page="exercise">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Exercise Log
+      </div>
+      <div class="sidebar-item" data-page="assistant">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Care Assistant
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-item" data-page="profile">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        My Profile
+      </div>
+      <div class="sidebar-item" onclick="window.location="../../index.html"">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Back to Home
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="main-content">
+
+    <!-- ════ OVERVIEW PAGE ════ -->
+    <div id="page-overview" class="dash-page">
+      <div class="greeting-card">
+        <h2>Good morning, Nimasha 🌸</h2>
+        <p>Here's your health summary for today</p>
+        <div class="greeting-meta">
+          <div class="meta-item">📅 Sunday, 22 February 2026</div>
+          <div class="meta-item">🌙 Cycle Day 22 of 28</div>
+          <div class="meta-item">🔥 14-day streak</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card" style="background:linear-gradient(135deg,#C2185B,#880E4F);">
+          <div class="stat-num">22<span class="stat-unit">/28</span></div>
+          <div class="stat-label">Cycle Day</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#7B1FA2,#4A148C);">
+          <div class="stat-num">7</div>
+          <div class="stat-label">Reports Uploaded</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#00897B,#004D40);">
+          <div class="stat-num">14</div>
+          <div class="stat-label">Day Streak 🔥</div>
+        </div>
+        <div class="stat-card" style="background:linear-gradient(135deg,#1565C0,#0D47A1);">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Upcoming Appts</div>
+        </div>
+      </div>
+
+      <div class="dash-grid-2">
+        <!-- Symptom Quick Log -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <strong style="font-size:15px;">Today's Symptom Log</strong>
+            <span class="badge badge-pink">Feb 22</span>
+          </div>
+          <div class="symptom-tags" id="quickSymptoms">
+            <button class="symptom-tag-btn selected" data-sym="Fatigue">Fatigue</button>
+            <button class="symptom-tag-btn selected" data-sym="Mood Swings">Mood Swings</button>
+            <button class="symptom-tag-btn" data-sym="Irregular Periods">Irregular Periods</button>
+            <button class="symptom-tag-btn" data-sym="Bloating">Bloating</button>
+            <button class="symptom-tag-btn" data-sym="Acne">Acne</button>
+            <button class="symptom-tag-btn" data-sym="Hair Loss">Hair Loss</button>
+            <button class="symptom-tag-btn" data-sym="Headaches">Headaches</button>
+            <button class="symptom-tag-btn" data-sym="Weight Gain">Weight Gain</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Severity Level: <span id="severityVal">3</span>/5</label>
+            <input type="range" min="1" max="5" value="3" id="severitySlider"/>
+            <div class="slider-labels"><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="saveLog()">Save Today's Log</button>
+        </div>
+
+        <!-- Reminders -->
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">📅 Upcoming Reminders</strong>
+          <div class="reminder-item">
+            <div class="reminder-dot" style="background:var(--primary);"></div>
+            <div>
+              <div class="r-title">Blood Glucose Test</div>
+              <div class="r-time">Tomorrow · 9:00 AM · Colombo General</div>
+            </div>
+          </div>
+          <div class="reminder-item">
+            <div class="reminder-dot" style="background:var(--secondary);"></div>
+            <div>
+              <div class="r-title">Gynecologist Appointment</div>
+              <div class="r-time">Wednesday · 2:30 PM · Dr. K. Silva</div>
+            </div>
+          </div>
+          <div class="reminder-item">
+            <div class="reminder-dot" style="background:var(--teal);"></div>
+            <div>
+              <div class="r-title">Upload Ultrasound Report</div>
+              <div class="r-time">Friday · Before 5:00 PM</div>
+            </div>
+          </div>
+          <div class="reminder-item">
+            <div class="reminder-dot" style="background:var(--orange);"></div>
+            <div>
+              <div class="r-title">Metformin Refill Reminder</div>
+              <div class="r-time">In 3 days · Check prescription</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-grid-eq">
+        <!-- Cycle mini calendar -->
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:4px;">Cycle Calendar — February 2026</strong>
+          <div id="miniCalendar"></div>
+        </div>
+        <!-- Activity chart -->
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Weekly Activity (mins)</strong>
+          <div class="mini-bar-wrap" id="activityChart"></div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:10px;text-align:center;">Exercise minutes logged this week</div>
+          <div style="margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+              <span>Weekly Goal: 210 min</span>
+              <span style="color:var(--primary);font-weight:700;">175/210 min</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:83%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PCOS Info Card -->
+      <div class="card" style="background:linear-gradient(135deg,#FCE4EC,#EDE7F6);border:none;">
+        <div style="display:flex;align-items:flex-start;gap:16px;">
+          <div style="font-size:32px;">💡</div>
+          <div>
+            <strong style="font-size:15px;color:var(--primary-dark);">PCOS Health Tip of the Day</strong>
+            <p style="font-size:13px;color:var(--text-light);margin-top:6px;line-height:1.7;">
+              <strong>Low-GI Eating for PCOS:</strong> About 70–80% of women with PCOS have insulin resistance. Switching to a low glycaemic index (GI) diet — whole grains, legumes, vegetables, and lean proteins — can significantly reduce insulin levels and improve hormonal balance. Even a 5–10% reduction in body weight can restore menstrual regularity and reduce androgen levels.
+            </p>
+            <div style="margin-top:8px;font-size:12px;color:var(--text-light);">
+              Source: 2023 International PCOS Guideline (Teede et al.)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ SYMPTOMS PAGE ════ -->
+    <div id="page-symptoms" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>Symptom Tracker</h2>
+        <p>Log and monitor your PCOS symptoms over time</p>
+      </div>
+      <div class="dash-grid-eq" style="margin-bottom:22px;">
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Log Today's Symptoms</strong>
+          <div class="symptom-tags">
+            <button class="symptom-tag-btn selected">Fatigue</button>
+            <button class="symptom-tag-btn selected">Mood Swings</button>
+            <button class="symptom-tag-btn">Irregular Periods</button>
+            <button class="symptom-tag-btn">Bloating</button>
+            <button class="symptom-tag-btn">Acne / Oily Skin</button>
+            <button class="symptom-tag-btn">Hair Loss (Head)</button>
+            <button class="symptom-tag-btn">Excess Hair Growth</button>
+            <button class="symptom-tag-btn">Headaches</button>
+            <button class="symptom-tag-btn">Weight Gain</button>
+            <button class="symptom-tag-btn">Insomnia</button>
+            <button class="symptom-tag-btn">Anxiety</button>
+            <button class="symptom-tag-btn">Pelvic Pain</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Severity: <span id="sevVal2">3</span>/5</label>
+            <input type="range" min="1" max="5" value="3" id="sev2" oninput="document.getElementById('sevVal2').textContent=this.value"/>
+            <div class="slider-labels"><span>Mild</span><span>Moderate</span><span>Severe</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Additional Notes</label>
+            <textarea class="form-textarea" placeholder="Any additional observations or notes..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Symptom log saved successfully! ✓','success')">Save Symptom Log</button>
+        </div>
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Recent Logs</strong>
+          <div class="report-card">
+            <div class="report-icon"><svg width="18" height="18" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div>
+              <div class="r-name">Feb 21</div>
+              <div class="r-meta">Fatigue, Mood Swings · Severity 3/5</div>
+            </div>
+            <span class="badge badge-pink" style="margin-left:auto;">Logged</span>
+          </div>
+          <div class="report-card">
+            <div class="report-icon"><svg width="18" height="18" fill="none" stroke="var(--secondary)" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div>
+              <div class="r-name">Feb 20</div>
+              <div class="r-meta">Bloating, Headaches · Severity 2/5</div>
+            </div>
+            <span class="badge badge-pink" style="margin-left:auto;">Logged</span>
+          </div>
+          <div class="report-card">
+            <div class="report-icon"><svg width="18" height="18" fill="none" stroke="var(--teal)" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div>
+              <div class="r-name">Feb 19</div>
+              <div class="r-meta">Acne, Hair Loss · Severity 4/5</div>
+            </div>
+            <span class="badge badge-warning" style="margin-left:auto;">High</span>
+          </div>
+        </div>
+      </div>
+      <!-- PCOS Symptom Info -->
+      <div class="card">
+        <strong style="font-size:15px;display:block;margin-bottom:14px;">Understanding Your PCOS Symptoms</strong>
+        <div class="dash-grid-3">
+          <div style="padding:14px;background:var(--primary-pale);border-radius:var(--radius-sm);">
+            <strong style="font-size:13px;color:var(--primary);">Fatigue & Low Energy</strong>
+            <p style="font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.6;">Often caused by insulin resistance and disrupted sleep. Regular light exercise and balanced blood sugar through low-GI eating can significantly improve energy levels.</p>
+          </div>
+          <div style="padding:14px;background:#EDE7F6;border-radius:var(--radius-sm);">
+            <strong style="font-size:13px;color:var(--secondary);">Mood Swings & Anxiety</strong>
+            <p style="font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.6;">Women with PCOS are 3x more likely to experience anxiety and depression. Hormonal fluctuations directly affect neurotransmitters. Mindfulness, yoga, and consistent sleep can help.</p>
+          </div>
+          <div style="padding:14px;background:#E0F2F1;border-radius:var(--radius-sm);">
+            <strong style="font-size:13px;color:var(--teal);">Acne & Skin Issues</strong>
+            <p style="font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.6;">Elevated androgens stimulate sebaceous glands, causing persistent acne especially on the jawline and back. Anti-androgen medications and a low-GI diet can reduce breakouts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CYCLE PAGE ════ -->
+    <div id="page-cycle" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>Cycle Tracker</h2>
+        <p>Monitor your menstrual cycle, fertile window, and ovulation predictions</p>
+      </div>
+      <div class="dash-grid-eq">
+        <div class="card">
+          <div id="fullCalendar"></div>
+        </div>
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Cycle Insights</strong>
+          <div style="margin-bottom:16px;padding:14px;background:var(--primary-pale);border-radius:var(--radius-sm);">
+            <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:4px;">CURRENT CYCLE</div>
+            <div style="font-size:28px;font-weight:900;color:var(--text);font-family:'Playfair Display',serif;">Day 22 <span style="font-size:16px;color:var(--text-light);">of 28</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+            <div style="padding:12px;background:#F3E5F5;border-radius:var(--radius-sm);text-align:center;">
+              <div style="font-size:11px;color:var(--secondary);font-weight:700;">NEXT PERIOD</div>
+              <div style="font-size:16px;font-weight:800;color:var(--text);margin-top:2px;">Mar 1</div>
+              <div style="font-size:11px;color:var(--text-light);">~6 days away</div>
+            </div>
+            <div style="padding:12px;background:#E8F5E9;border-radius:var(--radius-sm);text-align:center;">
+              <div style="font-size:11px;color:var(--teal);font-weight:700;">OVULATION</div>
+              <div style="font-size:16px;font-weight:800;color:var(--text);margin-top:2px;">Feb 14</div>
+              <div style="font-size:11px;color:var(--text-light);">Passed</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:var(--text-light);line-height:1.7;padding:12px;background:#FFF3E0;border-radius:var(--radius-sm);border-left:3px solid #FFB74D;">
+            ⚠️ <strong style="color:#E65100;">PCOS Note:</strong> Women with PCOS often have irregular cycles (longer than 35 days or fewer than 8 cycles per year). Regular tracking helps identify patterns and alerts your doctor to changes in cycle regularity.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ REPORTS PAGE ════ -->
+    <div id="page-reports" class="dash-page" style="display:none;">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h2>My Medical Reports</h2>
+          <p>Upload, store, and share your health reports securely</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('uploadModal').style.display='flex'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          Upload Report
+        </button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Report Name</th><th>Date</th><th>Type</th><th>Hospital</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Blood Glucose Test</strong></td><td>Feb 18, 2026</td><td>Lab Result</td><td>Colombo General</td><td><span class="badge badge-success">Reviewed</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><strong>Ultrasound Scan</strong></td><td>Feb 10, 2026</td><td>Imaging</td><td>Lanka Hospital</td><td><span class="badge badge-warning">Pending Review</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><strong>Hormone Panel</strong></td><td>Jan 30, 2026</td><td>Lab Result</td><td>Colombo General</td><td><span class="badge badge-success">Reviewed</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><strong>BMI & Blood Pressure</strong></td><td>Jan 15, 2026</td><td>Vitals</td><td>Nawaloka</td><td><span class="badge badge-success">Reviewed</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><strong>Thyroid Function Test</strong></td><td>Jan 5, 2026</td><td>Lab Result</td><td>Colombo General</td><td><span class="badge badge-success">Reviewed</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><strong>PCOS Diagnosis Report</strong></td><td>Mar 10, 2022</td><td>Diagnosis</td><td>Nawaloka</td><td><span class="badge badge-success">Reviewed</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ DIET PAGE ════ -->
+    <div id="page-diet" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>Meal Planner</h2>
+        <p>Track your daily nutrition with PCOS-specific dietary guidance</p>
+      </div>
+      <div class="info-alert">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span><strong>PCOS Diet Tip:</strong> Aim for low-GI foods to manage insulin resistance — the root cause of most PCOS symptoms. Choose whole grains over refined carbs, include lean protein in every meal, and eat plenty of anti-inflammatory foods like berries, fatty fish, and leafy greens.</span>
+      </div>
+      <div class="dash-grid-eq">
+        <div>
+          <div class="card meal-card" style="--meal-color:#E91E8C;margin-bottom:16px;">
+            <div class="meal-header">
+              <span style="font-size:20px;">🥣</span><h3>Breakfast</h3>
+            </div>
+            <div class="meal-items">🌾 Steel-cut oats with cinnamon<br>🫐 Mixed berries (antioxidants)<br>🥚 1 boiled egg (protein)<br>🍵 Green tea (no sugar)</div>
+            <input class="form-input" style="margin-top:12px;" placeholder="Add a breakfast item..."/>
+          </div>
+          <div class="card meal-card" style="--meal-color:#7B1FA2;">
+            <div class="meal-header">
+              <span style="font-size:20px;">🍚</span><h3>Lunch</h3>
+            </div>
+            <div class="meal-items">🍚 Brown rice (low-GI)<br>🥗 Mixed salad with olive oil<br>🐔 Grilled chicken breast<br>🥦 Steamed broccoli</div>
+            <input class="form-input" style="margin-top:12px;" placeholder="Add a lunch item..."/>
+          </div>
+        </div>
+        <div>
+          <div class="card meal-card" style="--meal-color:#00897B;margin-bottom:16px;">
+            <div class="meal-header">
+              <span style="font-size:20px;">🍝</span><h3>Dinner</h3>
+            </div>
+            <div class="meal-items">🐟 Baked salmon (omega-3)<br>🥬 Stir-fried spinach & garlic<br>🍠 Sweet potato (low-GI carb)<br>💧 2 glasses of water</div>
+            <input class="form-input" style="margin-top:12px;" placeholder="Add a dinner item..."/>
+          </div>
+          <div class="card meal-card" style="--meal-color:#FF6F00;">
+            <div class="meal-header">
+              <span style="font-size:20px;">🍎</span><h3>Snacks</h3>
+            </div>
+            <div class="meal-items">🍎 Apple with almond butter<br>🥜 Handful of walnuts<br>🧀 Low-fat cheese & cucumber</div>
+            <input class="form-input" style="margin-top:12px;" placeholder="Add a snack..."/>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;">
+        <button class="btn btn-primary" onclick="showToast('Meal plan saved! ✓','success')">Save Today's Meal Plan</button>
+      </div>
+    </div>
+
+    <!-- ════ EXERCISE PAGE ════ -->
+    <div id="page-exercise" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>Exercise Log</h2>
+        <p>Track your physical activity — regular exercise improves insulin sensitivity in PCOS</p>
+      </div>
+      <div class="dash-grid-eq">
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Log Today's Exercise</strong>
+          <div class="form-group">
+            <label class="form-label">Exercise Type</label>
+            <select class="form-select">
+              <option>Walking / Brisk Walk</option>
+              <option>Yoga / Pilates</option>
+              <option>Swimming</option>
+              <option>Cycling</option>
+              <option>Strength Training</option>
+              <option>Dancing / Zumba</option>
+              <option>Running / Jogging</option>
+              <option>HIIT Workout</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Duration (minutes)</label>
+            <input class="form-input" type="number" placeholder="e.g. 30" value="30"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Intensity</label>
+            <select class="form-select">
+              <option>Low (gentle, relaxed)</option>
+              <option selected>Moderate (slightly breathless)</option>
+              <option>High (very breathless)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">How did you feel after?</label>
+            <div style="display:flex;gap:8px;">
+              <button class="symptom-tag-btn selected" style="font-size:18px;">😊</button>
+              <button class="symptom-tag-btn" style="font-size:18px;">😐</button>
+              <button class="symptom-tag-btn" style="font-size:18px;">😓</button>
+              <button class="symptom-tag-btn" style="font-size:18px;">😴</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Exercise logged! Great work! 💪','success')">Log Exercise</button>
+        </div>
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:14px;">Exercise Tips for PCOS</strong>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="padding:12px;background:var(--primary-pale);border-radius:var(--radius-sm);">
+              <strong style="font-size:13px;color:var(--primary);">🏃 Aerobic Exercise</strong>
+              <p style="font-size:12px;color:var(--text-light);margin-top:4px;">Aim for 150 min/week of moderate aerobic activity. Walking, swimming, and cycling are excellent for improving insulin sensitivity without stressing joints.</p>
+            </div>
+            <div style="padding:12px;background:#EDE7F6;border-radius:var(--radius-sm);">
+              <strong style="font-size:13px;color:var(--secondary);">💪 Strength Training</strong>
+              <p style="font-size:12px;color:var(--text-light);margin-top:4px;">2–3 sessions/week builds lean muscle mass, which improves glucose metabolism. Start with bodyweight exercises, then progress to weights.</p>
+            </div>
+            <div style="padding:12px;background:#E0F2F1;border-radius:var(--radius-sm);">
+              <strong style="font-size:13px;color:var(--teal);">🧘 Yoga & Mindfulness</strong>
+              <p style="font-size:12px;color:var(--text-light);margin-top:4px;">Regular yoga reduces cortisol and insulin levels. Research shows yoga specifically benefits PCOS patients by reducing anxiety and hormonal imbalance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CARE ASSISTANT PAGE ════ -->
+    <div id="page-assistant" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>PCOS Care Assistant</h2>
+        <p>Your AI-powered assistant for PCOS information, reminders, and lifestyle guidance</p>
+      </div>
+      <div class="dash-grid-wide">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:40px;height:40px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🌸</div>
+            <div>
+              <strong style="font-size:14px;">PCOS Care Bot</strong>
+              <div style="font-size:11px;"><span class="badge badge-online">● Online</span></div>
+            </div>
+          </div>
+          <div class="chat-box">
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-msg bot"><div class="chat-bubble">Hello Nimasha! 🌸 I'm your PCOS Care Assistant. I can help you understand your condition, suggest lifestyle changes, and provide evidence-based information. How can I help you today?</div></div>
+              <div class="chat-msg user"><div class="chat-bubble">What foods should I avoid with PCOS?</div></div>
+              <div class="chat-msg bot"><div class="chat-bubble">Great question! For PCOS management, limit: 🚫 Refined carbs (white bread, white rice, pastries), 🚫 Sugary drinks & fruit juices, 🚫 Processed snacks, 🚫 High-GI foods like potatoes. Instead focus on: ✅ Whole grains, ✅ Leafy greens, ✅ Lean proteins, ✅ Berries & anti-inflammatory foods like turmeric and fatty fish.</div></div>
+              <div class="chat-msg user"><div class="chat-bubble">Is metformin helpful for PCOS?</div></div>
+              <div class="chat-msg bot"><div class="chat-bubble">Metformin is commonly prescribed for PCOS, especially when insulin resistance is present. It works by reducing insulin levels, which in turn reduces androgen production. Always take it as prescribed by your doctor. Note: lifestyle changes (diet + exercise) are considered first-line treatment before medication. Please discuss with Dr. K. Silva at your next appointment on Wednesday! 📅</div></div>
+            </div>
+            <div class="chat-input-row">
+              <input class="form-input" id="chatInput" placeholder="Ask about PCOS symptoms, diet, medication..." onkeydown="if(event.key==='Enter')sendChat()"/>
+              <button class="chat-send" onclick="sendChat()">
+                <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <strong style="font-size:14px;display:block;margin-bottom:12px;">Quick Questions</strong>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start;" onclick="askQuick('What are the best exercises for PCOS?')">💪 Best exercises for PCOS</button>
+              <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start;" onclick="askQuick('How do I manage PCOS naturally?')">🌿 Natural PCOS management</button>
+              <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start;" onclick="askQuick('What causes irregular periods in PCOS?')">🌙 Irregular periods explained</button>
+              <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start;" onclick="askQuick('Can PCOS be cured?')">❓ Can PCOS be cured?</button>
+              <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start;" onclick="askQuick('What supplements help PCOS?')">💊 Helpful supplements for PCOS</button>
+            </div>
+          </div>
+          <div class="card">
+            <strong style="font-size:14px;display:block;margin-bottom:10px;">PCOS Fast Facts</strong>
+            <div style="font-size:12px;color:var(--text-light);line-height:2;">
+              📌 Affects <strong>6–13%</strong> of reproductive-age women<br>
+              📌 Leading cause of <strong>female infertility</strong><br>
+              📌 <strong>70%</strong> of cases are undiagnosed<br>
+              📌 Strongly linked to <strong>insulin resistance</strong><br>
+              📌 <strong>Lifestyle changes</strong> are first-line treatment<br>
+              📌 Risk of type 2 diabetes is <strong>5–10x higher</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PROFILE PAGE ════ -->
+    <div id="page-profile" class="dash-page" style="display:none;">
+      <div class="page-header">
+        <h2>My Profile</h2>
+        <p>Manage your personal and medical information</p>
+      </div>
+      <div class="dash-grid-eq">
+        <div class="card">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div class="profile-avatar" style="margin:0 auto;" title="Click to change photo">👩</div>
+            <strong style="font-size:16px;">Nimasha Perera</strong>
+            <div style="font-size:13px;color:var(--text-light);">Patient ID: PCH-001</div>
+            <span class="badge badge-success" style="margin-top:6px;">Active Patient</span>
+          </div>
+          <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" value="Nimasha Kumari Perera"/></div>
+          <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input" type="date" value="1998-05-14"/></div>
+          <div class="form-group"><label class="form-label">NIC Number</label><input class="form-input" value="199812345678"/></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" value="nimasha@email.com"/></div>
+          <div class="form-group"><label class="form-label">Phone</label><input class="form-input" value="+94 77 123 4567"/></div>
+          <div class="form-group"><label class="form-label">Address</label><input class="form-input" value="No. 45, Flower Road, Colombo 07"/></div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Profile updated successfully! ✓','success')">Save Changes</button>
+        </div>
+        <div class="card">
+          <strong style="font-size:15px;display:block;margin-bottom:16px;">Medical Information</strong>
+          <div class="form-group"><label class="form-label">PCOS Diagnosis Date</label><input class="form-input" value="March 2022"/></div>
+          <div class="form-group"><label class="form-label">Primary Doctor</label><input class="form-input" value="Dr. Kumari Silva"/></div>
+          <div class="form-group"><label class="form-label">Primary Hospital</label><input class="form-input" value="Colombo General Hospital"/></div>
+          <div class="form-group"><label class="form-label">Blood Type</label><select class="form-select"><option selected>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+          <div class="form-group"><label class="form-label">Known Allergies</label><input class="form-input" value="None"/></div>
+          <div class="form-group"><label class="form-label">Current Medications</label><input class="form-input" value="Metformin 500mg, Folic Acid 5mg"/></div>
+          <div class="form-group"><label class="form-label">Average Cycle Length (days)</label><input class="form-input" type="number" value="28"/></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+  <div class="card" style="width:420px;max-width:90vw;">
+    <strong style="font-size:16px;display:block;margin-bottom:16px;">Upload Medical Report</strong>
+    <div class="form-group"><label class="form-label">Report Name</label><input class="form-input" placeholder="e.g. Blood Glucose Test"/></div>
+    <div class="form-group"><label class="form-label">Test Date</label><input class="form-input" type="date"/></div>
+    <div class="form-group"><label class="form-label">Report Type</label><select class="form-select"><option>Lab Result</option><option>Imaging / Scan</option><option>Prescription</option><option>Diagnosis Report</option><option>Vitals</option></select></div>
+    <div class="form-group"><label class="form-label">File (PDF / Image)</label>
+      <div class="upload-zone" onclick="showToast('File selected ✓','success')">
+        <svg width="28" height="28" fill="none" stroke="var(--text-light)" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        <p>Click to browse or drag & drop</p>
+        <span>PDF, JPG, PNG up to 10MB</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('uploadModal').style.display='none';showToast('Report uploaded successfully! ✓','success')">Upload Report</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('uploadModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast" style="display:none;"></div>
+
+<script src="../../src/scripts/patient-dashboard.js"></script>
+</body>
+</html>
