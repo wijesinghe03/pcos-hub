@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Hospitals — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Layout Fixes */
+        body {
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+            grid-template-columns: 260px 1fr !important;
+        }
+
+        .dash-main {
+            margin-left: 0 !important;
+            width: 100% !important;
+            min-width: 0;
+        }
+
+        /* Approval Card styles */
+        .approval-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .approval-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            padding: 0;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .approval-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-footer {
+            padding: 15px 20px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .hospital-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-mid);
+        }
+
+        .meta-item i {
+            width: 20px;
+            color: var(--purple-primary);
+        }
+
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: #f0fdf4;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+        }
+
+        .btn-approve {
+            background: var(--green-accent);
+            color: white;
+            border: none;
+            flex: 1;
+        }
+
+        .btn-approve:hover {
+            background: #1a7a42;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            flex: 1;
+        }
+
+        .btn-reject:hover {
+            background: #fecaca;
+        }
+
+        @media (max-width: 600px) {
+            .approval-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+                <div>
+                    <div class="sidebar-name">Admin User</div>
+                    <div class="sidebar-role">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
+                    Dashboard</a>
+                <a class="sidebar-item" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
+                    Analytics</a>
+                <a class="sidebar-item" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
+                    Users<span class="sidebar-badge">5</span></a>
+                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
+                    Hospitals<span class="sidebar-badge">2</span></a>
+                <a class="sidebar-item active" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i>
+                    Approve Hospital</a>
+                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
+                    Configuration</a>
+                <a class="sidebar-item" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Hospital Approvals</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <span class="badge badge-orange" style="padding: 10px 15px;">2 Pending Applications</span>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="dash-panel reveal"
+                style="background: var(--purple-ghost); border-color: var(--purple-mid); margin-bottom: 24px;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <div style="font-size:1.5rem">💡</div>
+                    <div>
+                        <h4 style="color:var(--purple-deep); margin-bottom:5px;">Application Review Process</h4>
+                        <p style="font-size:0.9rem; margin:0;">Please verify the medical license and registration
+                            documents before approving a hospital. Approved hospitals will be immediately added to the
+                            public directory.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approval Grid -->
+            <div class="approval-grid" id="approvalGrid">
+                <!-- Card 1 -->
+                <div class="approval-card reveal">
+                    <div class="card-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div
+                                style="width:40px; height:40px; border-radius:8px; background:var(--purple-ghost); display:flex; align-items:center; justify-content:center; color:var(--purple-primary); font-size:1.2rem;">
+                                🏥</div>
+                            <div>
+                                <h4 style="margin:0;">Premier Hospital</h4>
+                                <span style="font-size:0.75rem; color:var(--text-light)">Applied 2 days ago</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-orange">Pending</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.9rem; margin-bottom:15px;">A leading private healthcare provider
+                            specializing in women's health and diagnostic services.</p>
+                        <div class="hospital-meta">
+                            <div class="meta-item"><i>📍</i> Colombo 07, Ward Place</div>
+                            <div class="meta-item"><i>📞</i> +94 11 234 5678</div>
+                            <div class="meta-item"><i>📧</i> contact@premierhosp.lk</div>
+                        </div>
+                        <div style="margin-top:20px; display:flex; gap:10px;">
+                            <div class="doc-badge">✓ License_2024.pdf</div>
+                            <div class="doc-badge">✓ Registration_Doc.pdf</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-reject"
+                            onclick="processApplication('Premier Hospital', 'rejected')">Reject</button>
+                        <button class="btn btn-approve"
+                            onclick="processApplication('Premier Hospital', 'approved')">Approve Hospital</button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="approval-card reveal reveal-delay-1">
+                    <div class="card-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div
+                                style="width:40px; height:40px; border-radius:8px; background:var(--purple-ghost); display:flex; align-items:center; justify-content:center; color:var(--purple-primary); font-size:1.2rem;">
+                                🏥</div>
+                            <div>
+                                <h4 style="margin:0;">Wellness Care Center</h4>
+                                <span style="font-size:0.75rem; color:var(--text-light)">Applied 5 hours ago</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-orange">Pending</span>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size:0.9rem; margin-bottom:15px;">Focusing on holistic PCOS treatments and
+                            nutritional guidance for long-term health management.</p>
+                        <div class="hospital-meta">
+                            <div class="meta-item"><i>📍</i> Kandy, Peradeniya Road</div>
+                            <div class="meta-item"><i>📞</i> +94 81 987 6543</div>
+                            <div class="meta-item"><i>📧</i> info@wellnesscenter.lk</div>
+                        </div>
+                        <div style="margin-top:20px; display:flex; gap:10px;">
+                            <div class="doc-badge">✓ Medical_Cert.pdf</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-reject"
+                            onclick="processApplication('Wellness Care Center', 'rejected')">Reject</button>
+                        <button class="btn btn-approve"
+                            onclick="processApplication('Wellness Care Center', 'approved')">Approve Hospital</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        function processApplication(name, status) {
+            if (status === 'approved') {
+                if (confirm(`Are you sure you want to approve ${name}?`)) {
+                    Toast.success(`${name} has been successfully added to the system.`);
+                    // In a real app, logic to remove from DOM or refresh
+                }
+            } else {
+                if (confirm(`Reject application for ${name}? This will notify the hospital.`)) {
+                    Toast.error(`${name}'s application has been rejected.`);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

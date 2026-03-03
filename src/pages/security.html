@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Center — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Layout Fixes */
+        body {
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+            grid-template-columns: 260px 1fr !important;
+        }
+
+        .dash-main {
+            margin-left: 0 !important;
+            width: 100% !important;
+            min-width: 0;
+        }
+
+        /* Security Specifics */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .security-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            padding: 24px;
+        }
+
+        .security-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .security-header h4 {
+            margin: 0;
+            color: var(--purple-deep);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge-lg {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+
+        .health-score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #166534;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info h5 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .session-info p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-mid);
+        }
+
+        .ip-tag {
+            font-family: monospace;
+            background: var(--bg-light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .security-alert {
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .alert-high {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-med {
+            background: #fff7ed;
+            color: #9a3412;
+            border-left: 4px solid #f97316;
+        }
+
+        @media (max-width: 600px) {
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+                <div>
+                    <div class="sidebar-name">Admin User</div>
+                    <div class="sidebar-role">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
+                    Dashboard</a>
+                <a class="sidebar-item" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
+                    Analytics</a>
+                <a class="sidebar-item" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
+                    Users<span class="sidebar-badge">5</span></a>
+                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
+                    Hospitals<span class="sidebar-badge">2</span></a>
+                <a class="sidebar-item" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i> Approve
+                    Hospital</a>
+                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
+                    Configuration</a>
+                <a class="sidebar-item active" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
+                <a class="sidebar-item" href="#" onclick="Auth.logout()"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Security Center</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-outline"
+                        onclick="Toast.show('Scanning system for vulnerabilities...', 'info')"><i>🔍</i> Run
+                        Scan</button>
+                    <button class="btn btn-primary" onclick="Toast.success('Security settings applied!')">Update
+                        Firewall</button>
+                </div>
+            </div>
+
+            <!-- Security Health -->
+            <div class="status-badge-lg reveal">
+                <div class="health-score">98%</div>
+                <div>
+                    <h4 style="margin:0; color:#14532d;">System Security Health</h4>
+                    <p style="margin:4px 0 0; font-size:0.9rem; color:#166534;">Your system is highly secure. Only 2
+                        minor recommendations remaining.</p>
+                </div>
+                <div style="margin-left:auto">
+                    <span class="badge badge-green">Excellent</span>
+                </div>
+            </div>
+
+            <!-- Security Cards Grid -->
+            <div class="security-grid">
+                <!-- Active Sessions -->
+                <div class="security-card reveal">
+                    <div class="security-header">
+                        <h4><i>🔑</i> Active Admin Sessions</h4>
+                        <span class="badge">3 Online</span>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-info">
+                            <h5>Admin User (You)</h5>
+                            <p>Colombo, LK • <span class="ip-tag">192.168.1.1</span></p>
+                        </div>
+                        <span class="badge badge-green">Current</span>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-info">
+                            <h5>Hospital Manager</h5>
+                            <p>Kandy, LK • <span class="ip-tag">103.21.45.18</span></p>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" onclick="Toast.error('Session terminated')">Revoke</button>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-info">
+                            <h5>System Auditor</h5>
+                            <p>Galle, LK • <span class="ip-tag">172.16.0.45</span></p>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" onclick="Toast.error('Session terminated')">Revoke</button>
+                    </div>
+                </div>
+
+                <!-- IP Access Control -->
+                <div class="security-card reveal reveal-delay-1">
+                    <div class="security-header">
+                        <h4><i>🚫</i> IP Access Control</h4>
+                        <button class="btn btn-outline btn-sm">Add IP</button>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="font-size:0.85rem; color:var(--text-light); margin-bottom:10px;">Blocked Addresses
+                            (Last 24h)</h5>
+                        <div class="security-alert alert-high">
+                            <i>⚠️</i>
+                            <span><strong>185.220.101.45</strong> - Repeated failed login attempts</span>
+                        </div>
+                        <div class="security-alert alert-med">
+                            <i>⚠️</i>
+                            <span><strong>45.122.10.8</strong> - Suspicious API polling</span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <div class="config-info">
+                            <h5>Geofencing</h5>
+                            <p>Restrict Admin access to local IPs.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <!-- Authentication Security -->
+                <div class="security-card reveal reveal-delay-2">
+                    <div class="security-header">
+                        <h4><i>🛡️</i> Authentication Security</h4>
+                    </div>
+                    <div class="config-row">
+                        <div class="config-info">
+                            <h5>Multi-Factor Authentication</h5>
+                            <p>Enforce MFA for all staff accounts.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="config-row">
+                        <div class="config-info">
+                            <h5>Brute Force Protection</h5>
+                            <p>Lock account after 5 failed attempts.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="config-row">
+                        <div class="config-info">
+                            <h5>Password Rotation</h5>
+                            <p>Force password change every 90 days.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <!-- Security Log Summary -->
+                <div class="security-card reveal reveal-delay-3">
+                    <div class="security-header">
+                        <h4><i>📝</i> Recent Security Events</h4>
+                        <a href="system-logs.html" style="font-size:0.8rem; color:var(--purple-primary)">View All →</a>
+                    </div>
+                    <table class="dash-table" style="font-size:0.8rem">
+                        <tbody>
+                            <tr>
+                                <td><strong>2 mins ago</strong></td>
+                                <td>MFA Verified: Admin</td>
+                                <td><span class="badge badge-green">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>1 hour ago</strong></td>
+                                <td>Pass Reset: Hospital_10</td>
+                                <td><span class="badge badge-blue">Manual</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>4 hours ago</strong></td>
+                                <td>IP Blocked: 185.220...</td>
+                                <td><span class="badge badge-red">Security</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+</body>
+
+</html>

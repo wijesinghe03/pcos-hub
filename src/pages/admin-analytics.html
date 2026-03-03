@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Fix layout issues where content might be cut off */
+        body {
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+            grid-template-columns: 260px 1fr !important;
+        }
+
+        .dash-main {
+            margin-left: 0 !important;
+            /* Fix redundant margin causing right-side cutoff */
+            width: 100% !important;
+            min-width: 0;
+        }
+
+        .dash-panel {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Analytics specific tweaks */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .metrics-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 1100px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .metrics-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .insight-card {
+            background: var(--purple-ghost);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 4px solid var(--purple-primary);
+        }
+
+        .insight-card h4 {
+            color: var(--purple-deep);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .insight-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+                <div>
+                    <div class="sidebar-name">Admin User</div>
+                    <div class="sidebar-role">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
+                    Dashboard</a>
+                <a class="sidebar-item active" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
+                    Analytics</a>
+                <a class="sidebar-item" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
+                    Users<span class="sidebar-badge">5</span></a>
+                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
+                    Hospitals<span class="sidebar-badge">2</span></a>
+                <a class="sidebar-item" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i> Approve
+                    Hospital</a>
+                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
+                    Configuration</a>
+                <a class="sidebar-item" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Analytics & Reports</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" placeholder="Search analytics…">
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="window.print()"><i>📥</i> Export Report</button>
+                </div>
+            </div>
+
+            <!-- Analytics Summary -->
+            <div class="metrics-summary">
+                <div class="dash-stat-card reveal">
+                    <div class="stat-card-icon purple">📈</div>
+                    <div>
+                        <div class="stat-card-value">1,240</div>
+                        <div class="stat-card-label">Total Visits</div>
+                        <div class="stat-card-change up">↑ 15% vs last month</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card reveal reveal-delay-1">
+                    <div class="stat-card-icon blue">👥</div>
+                    <div>
+                        <div class="stat-card-value">85%</div>
+                        <div class="stat-card-label">Retention Rate</div>
+                        <div class="stat-card-change up">↑ 2.4% improving</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card reveal reveal-delay-2">
+                    <div class="stat-card-icon green">⏱️</div>
+                    <div>
+                        <div class="stat-card-value">4.2m</div>
+                        <div class="stat-card-label">Avg. Session</div>
+                        <div class="stat-card-change up">↑ 12s longer</div>
+                    </div>
+                </div>
+                <div class="dash-stat-card reveal reveal-delay-3">
+                    <div class="stat-card-icon orange">📉</div>
+                    <div>
+                        <div class="stat-card-value">12.4%</div>
+                        <div class="stat-card-label">Bounce Rate</div>
+                        <div class="stat-card-change down">↓ 1.5% better</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="analytics-grid">
+                <div class="dash-panel reveal">
+                    <div class="panel-header">
+                        <div class="panel-title"><i>📊</i> User Growth (6 Months)</div>
+                        <div class="panel-action">Last 6 Months ▾</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+                <div class="dash-panel reveal reveal-delay-1">
+                    <div class="panel-header">
+                        <div class="panel-title"><i>🍩</i> User Distribution</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="analytics-grid">
+                <div class="dash-panel reveal">
+                    <div class="panel-header">
+                        <div class="panel-title"><i>🏥</i> Hospital Activity Comparison</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="hospitalChart"></canvas>
+                    </div>
+                </div>
+                <div class="dash-panel reveal reveal-delay-1">
+                    <div class="panel-header">
+                        <div class="panel-title"><i>💡</i> Insights & Trends</div>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Rising Interest</h4>
+                        <p>Registration from rural areas increased by <strong>22%</strong> this month. Consider
+                            expanding hospital partnerships in those regions.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Peak Activity</h4>
+                        <p>Users are most active between <strong>7:00 PM and 10:00 PM</strong>. Scheduled maintenance
+                            should be avoided during these hours.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Symptom Tracking</h4>
+                        <p>Over <strong>65%</strong> of active patients are using the symptom tracker daily, a 10%
+                            increase from last quarter.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Performance Table -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>🏆</i> Top Performing Hospitals</div>
+                    <a class="panel-action" href="#">View Details →</a>
+                </div>
+                <table class="dash-table">
+                    <thead>
+                        <tr>
+                            <th>Hospital Name</th>
+                            <th>Location</th>
+                            <th>Active Patients</th>
+                            <th>Growth</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>City Hospital</strong></td>
+                            <td>Colombo 03</td>
+                            <td>450</td>
+                            <td><span style="color:var(--green-accent)">+12.5%</span></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nawaloka Hospital</strong></td>
+                            <td>Colombo 02</td>
+                            <td>380</td>
+                            <td><span style="color:var(--green-accent)">+8.2%</span></td>
+                            <td>⭐⭐⭐⭐☆</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lanka Hospital</strong></td>
+                            <td>Colombo 05</td>
+                            <td>310</td>
+                            <td><span style="color:var(--green-accent)">+15.0%</span></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asiri Medical</strong></td>
+                            <td>Kandy</td>
+                            <td>290</td>
+                            <td><span style="color:var(--orange-accent)">+2.1%</span></td>
+                            <td>⭐⭐⭐⭐☆</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', () => {
+            // Growth Chart
+            const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+                    datasets: [{
+                        label: 'New Users',
+                        data: [120, 190, 300, 250, 420, 580],
+                        borderColor: '#7B3FBE',
+                        backgroundColor: 'rgba(123, 63, 190, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#7B3FBE',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Distribution Chart
+            const ctxDist = document.getElementById('distributionChart').getContext('2d');
+            new Chart(ctxDist, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Patients', 'Hospitals', 'Admins'],
+                    datasets: [{
+                        data: [85, 12, 3],
+                        backgroundColor: ['#7B3FBE', '#E57FAF', '#4ECDC4'],
+                        hoverOffset: 10,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Hospital Activity Chart
+            const ctxHosp = document.getElementById('hospitalChart').getContext('2d');
+            new Chart(ctxHosp, {
+                type: 'bar',
+                data: {
+                    labels: ['Colombo', 'Kandy', 'Galle', 'Jaffna', 'Gampaha'],
+                    datasets: [{
+                        label: 'Appointments',
+                        data: [450, 280, 150, 120, 320],
+                        backgroundColor: 'linear-gradient(180deg, #7B3FBE 0%, #C39BD3 100%)',
+                        backgroundColor: '#7B3FBE',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

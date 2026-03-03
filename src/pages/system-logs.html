@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Fix layout issues where content might be cut off */
+        body {
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+            grid-template-columns: 260px 1fr !important;
+        }
+
+        .dash-main {
+            margin-left: 0 !important;
+            /* Fix redundant margin causing right-side cutoff */
+            width: 100% !important;
+            min-width: 0;
+            /* Allow grid items to shrink */
+        }
+
+        .dash-panel {
+            width: 100%;
+            overflow-x: hidden;
+            /* Prevent panel itself from stretching */
+        }
+
+        .log-table-container {
+            overflow-x: auto;
+            width: 100%;
+            border-radius: var(--radius-md);
+            background: var(--bg-light);
+        }
+
+        /* System Logs specific tweaks */
+        .logs-filter-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+        }
+
+        .log-severity {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .severity-info {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .severity-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .severity-error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .severity-critical {
+            background: #450a0a;
+            color: #ffffff;
+        }
+
+        .log-category {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            font-weight: 600;
+            background: var(--bg-light);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .log-table td {
+            vertical-align: middle;
+        }
+
+        .log-message {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .dot-info {
+            background: #0369a1;
+        }
+
+        .dot-warning {
+            background: #f59e0b;
+        }
+
+        .dot-error {
+            background: #ef4444;
+        }
+
+        .dot-critical {
+            background: #000000;
+        }
+
+        @media (max-width: 768px) {
+            .logs-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+                <div>
+                    <div class="sidebar-name">Admin User</div>
+                    <div class="sidebar-role">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
+                    Dashboard</a>
+                <a class="sidebar-item" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
+                    Analytics</a>
+                <a class="sidebar-item active" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System
+                    Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
+                    Users<span class="sidebar-badge">5</span></a>
+                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
+                    Hospitals<span class="sidebar-badge">2</span></a>
+                <a class="sidebar-item" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i> Approve
+                    Hospital</a>
+                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
+                    Configuration</a>
+                <a class="sidebar-item" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>System Activity Logs</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-outline btn-sm" onclick="clearLogs()"><i>🗑️</i> Clear Logs</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportLogs()"><i>📥</i> Export CSV</button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="logs-filter-bar reveal">
+                <div class="filter-group">
+                    <span class="filter-label">Search Log</span>
+                    <div class="topbar-search" style="border-radius: var(--radius-md); padding: 7px 14px; width: 100%;">
+                        <i>🔍</i>
+                        <input type="text" id="logSearch" placeholder="Search message or ID..." onkeyup="filterLogs()">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Severity</span>
+                    <select class="form-control" id="severityFilter" onchange="filterLogs()">
+                        <option value="all">All Severities</option>
+                        <option value="info">Info</option>
+                        <option value="warning">Warning</option>
+                        <option value="error">Error</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Category</span>
+                    <select class="form-control" id="categoryFilter" onchange="filterLogs()">
+                        <option value="all">All Categories</option>
+                        <option value="auth">Authentication</option>
+                        <option value="database">Database</option>
+                        <option value="hospital">Hospital Management</option>
+                        <option value="patient">Patient Care</option>
+                        <option value="system">System Core</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="flex: 0 0 auto;">
+                    <button class="btn btn-ghost btn-sm"
+                        style="background: var(--bg-light); color: var(--text-mid); border: 1.5px solid var(--border);"
+                        onclick="resetFilters()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Logs Table -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📋</i> Real-time System Logs</div>
+                    <div class="panel-action">Live Feed: <span style="color:var(--green-accent)">● Active</span></div>
+                </div>
+                <div class="log-table-container" style="overflow-x:auto">
+                    <table class="dash-table log-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Log ID</th>
+                                <th>Category</th>
+                                <th>Severity</th>
+                                <th>Message</th>
+                                <th>User</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div style="margin-top:20px; display:flex; justify-content:between; align-items:center;">
+                    <div style="font-size:0.875rem; color:var(--text-light)">Showing <span id="logCount">10</span> of
+                        150 entries</div>
+                    <div style="display:flex; gap:8px">
+                        <button class="btn btn-outline btn-sm" disabled>Previous</button>
+                        <button class="btn btn-outline btn-sm">Next</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        // Mock Log Data
+        const logsData = [
+            { id: 'LOG-4502', time: '2026-03-03 23:15:22', category: 'auth', severity: 'info', message: 'Admin user logged in successfully', user: 'Admin' },
+            { id: 'LOG-4501', time: '2026-03-03 22:45:10', category: 'hospital', severity: 'warning', message: 'Hospital "Nawaloka" updated profile details', user: 'HospitalStaff' },
+            { id: 'LOG-4500', time: '2026-03-03 21:30:05', category: 'system', severity: 'error', message: 'Failed to sync background backup to cloud storage', user: 'System' },
+            { id: 'LOG-4499', time: '2026-03-03 20:12:44', category: 'patient', severity: 'info', message: 'New patient registration completed: P-0092', user: 'System' },
+            { id: 'LOG-4498', time: '2026-03-03 19:55:30', category: 'database', severity: 'critical', message: 'SQL Injection attempt detected and blocked', user: 'IP: 192.168.1.45' },
+            { id: 'LOG-4497', time: '2026-03-03 18:20:15', category: 'auth', severity: 'warning', message: 'Multiple failed login attempts for user: amanda@email.com', user: 'AuthGuard' },
+            { id: 'LOG-4496', time: '2026-03-03 17:40:00', category: 'hospital', severity: 'info', message: 'Premier Hospital application approved', user: 'Admin' },
+            { id: 'LOG-4495', time: '2026-03-03 16:15:22', category: 'system', severity: 'info', message: 'System maintenance window scheduled for Mar 05', user: 'Admin' },
+            { id: 'LOG-4494', time: '2026-03-03 15:30:10', category: 'patient', severity: 'info', message: 'Laboratory results uploaded for Patient ID: P-0035', user: 'LabStaff' },
+            { id: 'LOG-4493', time: '2026-03-03 14:45:05', category: 'auth', severity: 'error', message: 'Expired session token used by IP: 10.0.0.5', user: 'AuthGuard' }
+        ];
+
+        function renderLogs(data) {
+            const tableBody = document.getElementById('logsTableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td class="td-light">${log.time}</td>
+        <td><strong>${log.id}</strong></td>
+        <td><span class="log-category">${log.category}</span></td>
+        <td><span class="log-severity severity-${log.severity}">${log.severity}</span></td>
+        <td><div class="log-message" title="${log.message}">${log.message}</div></td>
+        <td class="td-light">${log.user}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="viewLogDetail('${log.id}')">Details</button></td>
+      `;
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('logCount').textContent = data.length;
+        }
+
+        function filterLogs() {
+            const searchTerm = document.getElementById('logSearch').value.toLowerCase();
+            const severity = document.getElementById('severityFilter').value;
+            const category = document.getElementById('categoryFilter').value;
+
+            const filtered = logsData.filter(log => {
+                const matchesSearch = log.message.toLowerCase().includes(searchTerm) || log.id.toLowerCase().includes(searchTerm);
+                const matchesSeverity = severity === 'all' || log.severity === severity;
+                const matchesCategory = category === 'all' || log.category === category;
+                return matchesSearch && matchesSeverity && matchesCategory;
+            });
+
+            renderLogs(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('logSearch').value = '';
+            document.getElementById('severityFilter').value = 'all';
+            document.getElementById('categoryFilter').value = 'all';
+            renderLogs(logsData);
+        }
+
+        function viewLogDetail(id) {
+            const log = logsData.find(l => l.id === id);
+            Toast.show(`Viewing details for ${id}: ${log.message}`, 'info');
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all system logs? This action cannot be undone.')) {
+                Toast.error('System logs cleared (Simulated)');
+            }
+        }
+
+        function exportLogs() {
+            Toast.success('Generating CSV export... Download will start automatically.');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLogs(logsData);
+        });
+    </script>
+</body>
+
+</html>
