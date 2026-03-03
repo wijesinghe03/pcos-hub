@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Profile — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Force layout */
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+
+        /* ── Hospital Account Card (Sidebar) ── */
+        .sidebar-hospital-account {
+            margin: 12px 12px 4px 12px;
+            background: linear-gradient(135deg, rgba(123, 63, 190, 0.13), rgba(91, 45, 142, 0.07));
+            border: 1px solid rgba(123, 63, 190, 0.25);
+            border-radius: 12px;
+            padding: 14px 14px 10px 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-hospital-account::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            width: 60px;
+            height: 60px;
+            background: rgba(123, 63, 190, 0.12);
+            border-radius: 50%;
+        }
+
+        .sha-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(39, 174, 96, 0.15);
+            color: #1a7a40;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .sha-badge.dot::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #27ae60;
+            animation: sha-pulse 2s infinite;
+        }
+
+        @keyframes sha-pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .sha-hname {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #1f2937;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sha-htype {
+            font-size: 0.75rem;
+            color: #7B3FBE;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .sha-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.78rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .sha-row i {
+            font-style: normal;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            width: 16px;
+            text-align: center;
+        }
+
+        .sha-hr {
+            border: none;
+            border-top: 1px solid rgba(123, 63, 190, 0.18);
+            margin: 10px 0 8px;
+        }
+
+        .sha-acts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .sha-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 4px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            text-decoration: none;
+            border: 1px solid rgba(123, 63, 190, 0.3);
+            background: white;
+            color: #7B3FBE;
+        }
+
+        .sha-btn:hover {
+            background: rgba(123, 63, 190, 0.08);
+            border-color: #7B3FBE;
+        }
+
+        .sha-logout {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 8px;
+            padding: 7px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #e74c3c;
+            cursor: pointer;
+            background: rgba(231, 76, 60, 0.06);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+            transition: all 0.18s;
+            text-decoration: none;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .sha-logout:hover {
+            background: rgba(231, 76, 60, 0.12);
+        }
+
+        /* ── Hero Card ── */
+        .profile-hero {
+            background: linear-gradient(135deg, #2C1654 0%, #7B3FBE 60%, #9B59D0 100%);
+            border-radius: 18px;
+            padding: 32px 36px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .profile-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: 30%;
+            width: 160px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .hero-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-name {
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin: 0 0 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-type {
+            font-size: 0.92rem;
+            opacity: 0.85;
+            margin: 0 0 14px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .hero-badge.green {
+            background: rgba(39, 174, 96, 0.3);
+            border-color: rgba(39, 174, 96, 0.5);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-btn {
+            padding: 9px 18px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.87rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .hero-btn.primary {
+            background: white;
+            color: #2C1654;
+        }
+
+        .hero-btn.primary:hover {
+            background: #F5EDFB;
+            transform: translateY(-1px);
+        }
+
+        .hero-btn.outline {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .hero-btn.outline:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── Stats row ── */
+        .pstat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .pstat-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .pstat-box:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .pstat-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .pstat-lbl {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .pstat-ico {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        /* ── Section cards ── */
+        .section-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-body {
+            padding: 24px;
+        }
+
+        /* ── Info grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-item label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            font-size: 0.93rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .info-item p span.tag {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* ── Edit form ── */
+        .edit-form {
+            display: none;
+        }
+
+        .edit-form.open {
+            display: block;
+        }
+
+        .edit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .edit-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .ef label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .ef input,
+        .ef select,
+        .ef textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.18s;
+        }
+
+        .ef input:focus,
+        .ef select:focus,
+        .ef textarea:focus {
+            outline: none;
+            border-color: #7B3FBE;
+            box-shadow: 0 0 0 3px rgba(123, 63, 190, 0.14);
+        }
+
+        .ef textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 4px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #7B3FBE, #5B2D8E);
+            box-shadow: 0 4px 12px rgba(123, 63, 190, 0.35);
+            color: white;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg, #9B59D0, #7B3FBE);
+        }
+
+        .btn-cancel-edit {
+            background: white;
+            color: #374151;
+            border: 1.5px solid #e5e7eb;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-cancel-edit:hover {
+            border-color: #9ca3af;
+        }
+
+        .btn-edit {
+            background: #F5EDFB;
+            color: #7B3FBE;
+            border: 1.5px solid rgba(123, 63, 190, 0.3);
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.83rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-edit:hover {
+            background: rgba(123, 63, 190, 0.1);
+        }
+
+        /* ── Services chips ── */
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.83rem;
+            font-weight: 600;
+            background: #F5EDFB;
+            color: #2C1654;
+            border: 1px solid rgba(123, 63, 190, 0.2);
+        }
+
+        /* ── Verify strip ── */
+        .verify-strip {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.08), rgba(39, 174, 96, 0.04));
+            border: 1px solid rgba(39, 174, 96, 0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .verify-ico {
+            font-size: 1.8rem;
+        }
+
+        .verify-text strong {
+            font-weight: 700;
+            color: #065f46;
+            font-size: 0.93rem;
+            display: block;
+        }
+
+        .verify-text span {
+            font-size: 0.82rem;
+            color: #6b7280;
+        }
+
+        /* ── Password section ── */
+        .pwd-row {
+            display: grid;
+            gap: 14px;
+        }
+
+        .pwd-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .pwd-item:last-child {
+            border-bottom: none;
+        }
+
+        .pwd-label {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #1f2937;
+        }
+
+        .pwd-sub {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .pwd-val {
+            font-size: 0.9rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .btn-change {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-change:hover {
+            background: #e5e7eb;
+        }
+
+        @media(max-width:680px) {
+
+            .info-grid,
+            .edit-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-actions {
+                width: 100%;
+            }
+
+            .pstat-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#7B3FBE,#5B2D8E)">CH</div>
+                <div>
+                    <div class="sidebar-name">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations <span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="hospital-reports.html"><i>📊</i> Reports</a>
+            </div>
+
+            <div class="sidebar-section" style="padding-top:4px">
+                <span class="sidebar-section-label">Hospital Account</span>
+            </div>
+            <div class="sidebar-hospital-account">
+                <div class="sha-badge dot">Verified</div>
+                <div class="sha-hname">City Hospital</div>
+                <div class="sha-htype">🏥 General Hospital</div>
+                <div class="sha-row"><i>📍</i><span>Colombo, Sri Lanka</span></div>
+                <div class="sha-row"><i>📞</i><span>+94 11 234 5678</span></div>
+                <div class="sha-row"><i>✉️</i><span>info@cityhospital.lk</span></div>
+                <div class="sha-row"><i>🪪</i><span>Reg: MOH-LK-2019-0042</span></div>
+                <hr class="sha-hr">
+                <div class="sha-acts">
+                    <a href="hospital-profile.html" class="sha-btn"
+                        style="background:#7B3FBE;color:white;border-color:#7B3FBE">🏥 Profile</a>
+                    <a href="hospital-settings.html" class="sha-btn">⚙️ Settings</a>
+                </div>
+                <a href="hospital-signout.html" class="sha-logout">🚪 Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Hospital Profile</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <!-- Verified strip -->
+            <div class="verify-strip">
+                <div class="verify-ico">✅</div>
+                <div class="verify-text">
+                    <strong>Verified & Active Hospital Account</strong>
+                    <span>Your hospital is registered and verified with the Ministry of Health Sri Lanka. Registration
+                        No: MOH-LK-2019-0042</span>
+                </div>
+            </div>
+
+            <!-- Hero Card -->
+            <div class="profile-hero">
+                <div class="hero-logo">🏥</div>
+                <div class="hero-info">
+                    <div class="hero-name" id="heroName">City Hospital</div>
+                    <div class="hero-type" id="heroType">General Hospital · Colombo, Sri Lanka</div>
+                    <div class="hero-badges">
+                        <span class="hero-badge green">✅ Verified</span>
+                        <span class="hero-badge">🩺 PCOS Specialist Centre</span>
+                        <span class="hero-badge">🔬 Diagnostic Lab</span>
+                        <span class="hero-badge">🖼️ Imaging Unit</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <button class="hero-btn primary" onclick="toggleEdit('basicEdit')">✏️ Edit Profile</button>
+                    <button class="hero-btn outline" onclick="window.print()">🖨️ Print</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="pstat-row">
+                <div class="pstat-box">
+                    <div class="pstat-ico">👥</div>
+                    <div class="pstat-num">1,240</div>
+                    <div class="pstat-lbl">Total Patients</div>
+                </div>
+                <div class="pstat-box">
+                    <div class="pstat-ico">📅</div>
+                    <div class="pstat-num">86</div>
+                    <div class="pstat-lbl">This Month Appts</div>
+                </div>
+                <div class="pstat-box">
+                    <div class="pstat-ico">🩺</div>
+                    <div class="pstat-num">12</div>
+                    <div class="pstat-lbl">Doctors</div>
+                </div>
+                <div class="pstat-box">
+                    <div class="pstat-ico">⭐</div>
+                    <div class="pstat-num">4.8</div>
+                    <div class="pstat-lbl">Rating</div>
+                </div>
+                <div class="pstat-box">
+                    <div class="pstat-ico">📊</div>
+                    <div class="pstat-num">342</div>
+                    <div class="pstat-lbl">Reports Issued</div>
+                </div>
+            </div>
+
+            <!-- ── Basic Information ── -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">🏥 Basic Information</div>
+                    <button class="btn-edit" onclick="toggleEdit('basicEdit')">✏️ Edit</button>
+                </div>
+                <div class="section-body">
+                    <!-- View mode -->
+                    <div id="basicView">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Hospital Name</label>
+                                <p id="vName">City Hospital</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Hospital Type</label>
+                                <p id="vType">General Hospital</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Registration No.</label>
+                                <p id="vReg">MOH-LK-2019-0042</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Status</label>
+                                <p><span class="tag">✅ Active & Verified</span></p>
+                            </div>
+                            <div class="info-item">
+                                <label>Year Established</label>
+                                <p id="vYear">2019</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Bed Capacity</label>
+                                <p id="vBeds">250 Beds</p>
+                            </div>
+                        </div>
+                        <div style="margin-top:18px">
+                            <div class="info-item">
+                                <label>About / Description</label>
+                                <p id="vDesc" style="font-weight:400;color:#374151;line-height:1.6;max-width:700px">
+                                    City Hospital is a premier healthcare facility in Colombo, Sri Lanka, specialising
+                                    in women's health, PCOS management, and reproductive endocrinology. Our dedicated
+                                    team of specialists provides comprehensive diagnostic and treatment services.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Edit mode -->
+                    <div class="edit-form" id="basicEdit">
+                        <div class="edit-grid">
+                            <div class="ef"><label>Hospital Name *</label><input type="text" id="eHName"
+                                    value="City Hospital"></div>
+                            <div class="ef">
+                                <label>Hospital Type *</label>
+                                <select id="eHType">
+                                    <option selected>General Hospital</option>
+                                    <option>Teaching Hospital</option>
+                                    <option>District Hospital</option>
+                                    <option>Specialised Hospital</option>
+                                    <option>Private Hospital</option>
+                                    <option>Clinic</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="edit-grid">
+                            <div class="ef"><label>Registration No.</label><input type="text" id="eReg"
+                                    value="MOH-LK-2019-0042"></div>
+                            <div class="ef"><label>Year Established</label><input type="number" id="eYear" value="2019"
+                                    min="1800" max="2026"></div>
+                        </div>
+                        <div class="edit-grid">
+                            <div class="ef"><label>Bed Capacity</label><input type="number" id="eBeds" value="250"
+                                    min="1"></div>
+                            <div class="ef">
+                                <label>Status</label>
+                                <select id="eStatus">
+                                    <option>Active & Verified</option>
+                                    <option>Active</option>
+                                    <option>Temporarily Closed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="edit-grid full">
+                            <div class="ef"><label>About / Description</label><textarea
+                                    id="eDesc">City Hospital is a premier healthcare facility in Colombo, Sri Lanka, specialising in women's health, PCOS management, and reproductive endocrinology. Our dedicated team of specialists provides comprehensive diagnostic and treatment services.</textarea>
+                            </div>
+                        </div>
+                        <div class="edit-actions">
+                            <button class="btn-save" onclick="saveBasic()">💾 Save Changes</button>
+                            <button class="btn-cancel-edit" onclick="toggleEdit('basicEdit')">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Contact Information ── -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">📞 Contact Information</div>
+                    <button class="btn-edit" onclick="toggleEdit('contactEdit')">✏️ Edit</button>
+                </div>
+                <div class="section-body">
+                    <div id="contactView">
+                        <div class="info-grid">
+                            <div class="info-item"><label>Phone</label>
+                                <p id="vPhone">📞 +94 11 234 5678</p>
+                            </div>
+                            <div class="info-item"><label>Emergency Line</label>
+                                <p id="vEmerg">🚨 +94 11 234 9999</p>
+                            </div>
+                            <div class="info-item"><label>Email</label>
+                                <p id="vEmail">✉️ info@cityhospital.lk</p>
+                            </div>
+                            <div class="info-item"><label>Website</label>
+                                <p id="vWeb">🌐 www.cityhospital.lk</p>
+                            </div>
+                            <div class="info-item"><label>Address</label>
+                                <p id="vAddr">📍 45 Hospital Road, Colombo 07</p>
+                            </div>
+                            <div class="info-item"><label>District / Province</label>
+                                <p id="vDist">Western Province, Sri Lanka</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit-form" id="contactEdit">
+                        <div class="edit-grid">
+                            <div class="ef"><label>Phone *</label><input type="tel" id="ePhone" value="+94 11 234 5678">
+                            </div>
+                            <div class="ef"><label>Emergency Line</label><input type="tel" id="eEmerg"
+                                    value="+94 11 234 9999"></div>
+                        </div>
+                        <div class="edit-grid">
+                            <div class="ef"><label>Email *</label><input type="email" id="eEmail"
+                                    value="info@cityhospital.lk"></div>
+                            <div class="ef"><label>Website</label><input type="url" id="eWeb"
+                                    value="www.cityhospital.lk"></div>
+                        </div>
+                        <div class="edit-grid">
+                            <div class="ef"><label>Street Address *</label><input type="text" id="eAddr"
+                                    value="45 Hospital Road, Colombo 07"></div>
+                            <div class="ef"><label>District / Province</label><input type="text" id="eDist"
+                                    value="Western Province, Sri Lanka"></div>
+                        </div>
+                        <div class="edit-actions">
+                            <button class="btn-save" onclick="saveContact()">💾 Save Changes</button>
+                            <button class="btn-cancel-edit" onclick="toggleEdit('contactEdit')">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Services Offered ── -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">🩺 Services Offered</div>
+                </div>
+                <div class="section-body">
+                    <div class="chip-list">
+                        <span class="chip">🔬 PCOS Diagnosis</span>
+                        <span class="chip">⚗️ Hormone Testing</span>
+                        <span class="chip">🖼️ Ultrasound & Imaging</span>
+                        <span class="chip">🧬 Full Blood Panel</span>
+                        <span class="chip">🩺 Endocrinology</span>
+                        <span class="chip">💊 Fertility Treatment</span>
+                        <span class="chip">🏃 Lifestyle & Dietary Counselling</span>
+                        <span class="chip">👶 Obstetrics & Gynaecology</span>
+                        <span class="chip">🔬 Laparoscopy</span>
+                        <span class="chip">💉 Insulin Management</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Working Hours ── -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">🕐 Working Hours</div>
+                    <button class="btn-edit" onclick="toggleEdit('hoursEdit')">✏️ Edit</button>
+                </div>
+                <div class="section-body">
+                    <div id="hoursView">
+                        <div class="info-grid">
+                            <div class="info-item"><label>Monday – Friday</label>
+                                <p id="vWkday">7:00 AM – 9:00 PM</p>
+                            </div>
+                            <div class="info-item"><label>Saturday</label>
+                                <p id="vSat">8:00 AM – 5:00 PM</p>
+                            </div>
+                            <div class="info-item"><label>Sunday</label>
+                                <p id="vSun">9:00 AM – 2:00 PM</p>
+                            </div>
+                            <div class="info-item"><label>Emergency / OPD</label>
+                                <p id="vOPD">24 / 7</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit-form" id="hoursEdit">
+                        <div class="edit-grid">
+                            <div class="ef"><label>Monday – Friday</label><input type="text" id="eWkday"
+                                    value="7:00 AM – 9:00 PM"></div>
+                            <div class="ef"><label>Saturday</label><input type="text" id="eSat"
+                                    value="8:00 AM – 5:00 PM"></div>
+                        </div>
+                        <div class="edit-grid">
+                            <div class="ef"><label>Sunday</label><input type="text" id="eSun" value="9:00 AM – 2:00 PM">
+                            </div>
+                            <div class="ef"><label>Emergency / OPD</label><input type="text" id="eOPD" value="24 / 7">
+                            </div>
+                        </div>
+                        <div class="edit-actions">
+                            <button class="btn-save" onclick="saveHours()">💾 Save Changes</button>
+                            <button class="btn-cancel-edit" onclick="toggleEdit('hoursEdit')">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Account Security ── -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">🔒 Account & Security</div>
+                </div>
+                <div class="section-body">
+                    <div class="pwd-row">
+                        <div class="pwd-item">
+                            <div>
+                                <div class="pwd-label">Login Email</div>
+                                <div class="pwd-sub">Used to log in to the hospital portal</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:12px">
+                                <div class="pwd-val">admin@cityhospital.lk</div>
+                                <button class="btn-change"
+                                    onclick="toast('⚠️ Contact admin to change login email.','warning')">Change</button>
+                            </div>
+                        </div>
+                        <div class="pwd-item">
+                            <div>
+                                <div class="pwd-label">Password</div>
+                                <div class="pwd-sub">Last changed 30 days ago</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:12px">
+                                <div class="pwd-val">••••••••••</div>
+                                <button class="btn-change"
+                                    onclick="toast('🔐 Password reset link sent to admin@cityhospital.lk','success')">Reset</button>
+                            </div>
+                        </div>
+                        <div class="pwd-item">
+                            <div>
+                                <div class="pwd-label">Two-Factor Authentication</div>
+                                <div class="pwd-sub">Extra security for your account</div>
+                            </div>
+                            <button class="btn-change" onclick="toast('🔒 2FA setup coming soon.','info')">Enable
+                                2FA</button>
+                        </div>
+                        <div class="pwd-item">
+                            <div>
+                                <div class="pwd-label">Account Created</div>
+                                <div class="pwd-sub">Registration date</div>
+                            </div>
+                            <div class="pwd-val">15 March 2019</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        /* ── Edit toggle ── */
+        function toggleEdit(id) {
+            var form = document.getElementById(id);
+            var view = document.getElementById(id.replace('Edit', 'View'));
+            var isOpen = form.classList.contains('open');
+            form.classList.toggle('open', !isOpen);
+            if (view) view.style.display = isOpen ? '' : 'none';
+        }
+
+        /* ── Save Basic Info ── */
+        function saveBasic() {
+            var name = document.getElementById('eHName').value.trim();
+            var type = document.getElementById('eHType').value;
+            var reg = document.getElementById('eReg').value.trim();
+            var year = document.getElementById('eYear').value;
+            var beds = document.getElementById('eBeds').value;
+            var desc = document.getElementById('eDesc').value.trim();
+            if (!name) { toast('Hospital name is required.', 'warning'); return; }
+            document.getElementById('vName').textContent = name;
+            document.getElementById('vType').textContent = type;
+            document.getElementById('vReg').textContent = reg;
+            document.getElementById('vYear').textContent = year;
+            document.getElementById('vBeds').textContent = beds + ' Beds';
+            document.getElementById('vDesc').textContent = desc;
+            document.getElementById('heroName').textContent = name;
+            document.getElementById('heroType').textContent = type + ' · Colombo, Sri Lanka';
+            toggleEdit('basicEdit');
+            toast('✅ Hospital profile updated successfully!', 'success');
+        }
+
+        /* ── Save Contact ── */
+        function saveContact() {
+            var phone = document.getElementById('ePhone').value.trim();
+            var emerg = document.getElementById('eEmerg').value.trim();
+            var email = document.getElementById('eEmail').value.trim();
+            var web = document.getElementById('eWeb').value.trim();
+            var addr = document.getElementById('eAddr').value.trim();
+            var dist = document.getElementById('eDist').value.trim();
+            if (!phone || !email) { toast('Phone and email are required.', 'warning'); return; }
+            document.getElementById('vPhone').textContent = '📞 ' + phone;
+            document.getElementById('vEmerg').textContent = '🚨 ' + emerg;
+            document.getElementById('vEmail').textContent = '✉️ ' + email;
+            document.getElementById('vWeb').textContent = '🌐 ' + web;
+            document.getElementById('vAddr').textContent = '📍 ' + addr;
+            document.getElementById('vDist').textContent = dist;
+            toggleEdit('contactEdit');
+            toast('✅ Contact information updated!', 'success');
+        }
+
+        /* ── Save Hours ── */
+        function saveHours() {
+            document.getElementById('vWkday').textContent = document.getElementById('eWkday').value;
+            document.getElementById('vSat').textContent = document.getElementById('eSat').value;
+            document.getElementById('vSun').textContent = document.getElementById('eSun').value;
+            document.getElementById('vOPD').textContent = document.getElementById('eOPD').value;
+            toggleEdit('hoursEdit');
+            toast('✅ Working hours updated!', 'success');
+        }
+
+        /* ── Toast ── */
+        function toast(msg, type) {
+            var c = document.getElementById('toast-container');
+            if (!c) { c = document.createElement('div'); c.id = 'toast-container'; c.className = 'toast-container'; document.body.appendChild(c); }
+            var t = document.createElement('div');
+            t.className = 'toast ' + (type || 'info');
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(function () { t.style.opacity = '0'; t.style.transition = 'all 0.3s'; setTimeout(function () { t.remove(); }, 300); }, 3000);
+        }
+
+        /* ── Init ── */
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateEl = document.getElementById('dateDisplay');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            var toggle = document.getElementById('sidebarToggle');
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebar-overlay');
+            if (toggle && sidebar && overlay) {
+                toggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+                overlay.addEventListener('click', function () {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

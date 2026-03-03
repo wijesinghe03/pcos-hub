@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Reports — City Hospital | PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Force layout */
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+
+        /* ── Hospital Account Card ── */
+        .sidebar-hospital-account {
+            margin: 12px 12px 4px 12px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.13), rgba(41, 128, 185, 0.07));
+            border: 1px solid rgba(52, 152, 219, 0.25);
+            border-radius: 12px;
+            padding: 14px 14px 10px 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-hospital-account::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            width: 60px;
+            height: 60px;
+            background: rgba(52, 152, 219, 0.12);
+            border-radius: 50%;
+        }
+
+        .sha-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(39, 174, 96, 0.15);
+            color: #1a7a40;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .sha-badge.dot::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #27ae60;
+            animation: sha-pulse 2s infinite;
+        }
+
+        @keyframes sha-pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .sha-hname {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #1f2937;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sha-htype {
+            font-size: 0.75rem;
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .sha-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.78rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .sha-row i {
+            font-style: normal;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            width: 16px;
+            text-align: center;
+        }
+
+        .sha-hr {
+            border: none;
+            border-top: 1px solid rgba(52, 152, 219, 0.18);
+            margin: 10px 0 8px;
+        }
+
+        .sha-acts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .sha-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 4px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            text-decoration: none;
+            border: 1px solid rgba(52, 152, 219, 0.35);
+            background: white;
+            color: #3498db;
+        }
+
+        .sha-btn:hover {
+            background: rgba(52, 152, 219, 0.08);
+            border-color: #3498db;
+        }
+
+        .sha-logout {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 8px;
+            padding: 7px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #e74c3c;
+            cursor: pointer;
+            background: rgba(231, 76, 60, 0.06);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+            transition: all 0.18s;
+            text-decoration: none;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .sha-logout:hover {
+            background: rgba(231, 76, 60, 0.12);
+        }
+
+        /* ── Stats ── */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .stat-box:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+            transform: translateY(-2px);
+        }
+
+        .stat-ico {
+            font-size: 1.6rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .ico-blue {
+            background: rgba(52, 152, 219, 0.12);
+        }
+
+        .ico-green {
+            background: rgba(39, 174, 96, 0.12);
+        }
+
+        .ico-orange {
+            background: rgba(243, 156, 18, 0.12);
+        }
+
+        .ico-purple {
+            background: rgba(147, 112, 219, 0.12);
+        }
+
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        /* ── Filter bar ── */
+        .fbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .ftab {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1.5px solid #e5e7eb;
+            background: white;
+            font-size: 0.83rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            color: #374151;
+        }
+
+        .ftab:hover,
+        .ftab.on {
+            background: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+
+        .ftab.g.on {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .ftab.o.on {
+            background: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .ftab.p.on {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .srch {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 6px 13px;
+        }
+
+        .srch input {
+            border: none;
+            outline: none;
+            font-size: 0.86rem;
+            color: #374151;
+            width: 100%;
+            background: transparent;
+        }
+
+        /* ── Table ── */
+        .tbl-wrap {
+            overflow-x: auto;
+        }
+
+        table.rtbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        table.rtbl thead th {
+            background: #f8fafc;
+            padding: 11px 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.77rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        table.rtbl tbody td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+        table.rtbl tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .av {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .ptn {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .pts {
+            font-size: 0.76rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .rpill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+        .rp-lab {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .rp-scan {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .rp-con {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rp-hor {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .rp-img {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .rp-oth {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .spill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .s-draft {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .s-ready {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .s-sent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .s-reviewed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .abts {
+            display: flex;
+            gap: 5px;
+        }
+
+        .abts button {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.76rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .b-view {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .b-view:hover {
+            background: #c7d2fe;
+        }
+
+        .b-send {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .b-send:hover {
+            background: #a7f3d0;
+        }
+
+        .b-del {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .b-del:hover {
+            background: #fecaca;
+        }
+
+        .empty-rpt {
+            text-align: center;
+            padding: 50px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-rpt-ico {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        /* ── Issue form ── */
+        .issue-panel {
+            display: none;
+            background: linear-gradient(135deg, rgba(147, 112, 219, 0.06), rgba(147, 112, 219, 0.02));
+            border: 1.5px dashed rgba(147, 112, 219, 0.35);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .issue-panel.open {
+            display: block;
+        }
+
+        .ip-title {
+            font-weight: 700;
+            font-size: 0.97rem;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .fg2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .fg2.full {
+            grid-template-columns: 1fr;
+        }
+
+        .fg2 .fg label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .fg2 .fg input,
+        .fg2 .fg select,
+        .fg2 .fg textarea {
+            width: 100%;
+            padding: 8px 11px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.18s;
+        }
+
+        .fg2 .fg input:focus,
+        .fg2 .fg select:focus,
+        .fg2 .fg textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .fg2 .fg textarea {
+            resize: vertical;
+            min-height: 65px;
+        }
+
+        .ip-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .ip-actions .btn {
+            flex: 1;
+        }
+
+        .btn-pri {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-pri:hover {
+            background: #7c3aed;
+        }
+
+        .btn-gho {
+            background: white;
+            color: #374151;
+            border: 1.5px solid #e5e7eb;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-gho:hover {
+            border-color: #9ca3af;
+        }
+
+        /* ── Modal ── */
+        .moverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .moverlay.open {
+            display: flex;
+        }
+
+        .mbox {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: mup 0.2s ease;
+        }
+
+        @keyframes mup {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .mhdr {
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mtitle {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .mclose {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .mclose:hover {
+            background: #f3f4f6;
+        }
+
+        .mbody {
+            padding: 18px 22px;
+        }
+
+        .mfg {
+            margin-bottom: 13px;
+        }
+
+        .mfg label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .mfg p {
+            font-size: 0.92rem;
+            color: #1f2937;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .mgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mftr {
+            padding: 13px 22px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1f2937;
+            padding: 16px 0 12px;
+        }
+
+        @media(max-width:640px) {
+            .fg2 {
+                grid-template-columns: 1fr;
+            }
+
+            .mgrid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .fbar {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+                <div>
+                    <div class="sidebar-name">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations <span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item active" href="hospital-reports.html"><i>📊</i> Reports</a>
+            </div>
+
+            <div class="sidebar-section" style="padding-top:4px">
+                <span class="sidebar-section-label">Hospital Account</span>
+            </div>
+            <div class="sidebar-hospital-account">
+                <div class="sha-badge dot">Verified</div>
+                <div class="sha-hname">City Hospital</div>
+                <div class="sha-htype">🏥 General Hospital</div>
+                <div class="sha-row"><i>📍</i><span>Colombo, Sri Lanka</span></div>
+                <div class="sha-row"><i>📞</i><span>+94 11 234 5678</span></div>
+                <div class="sha-row"><i>✉️</i><span>info@cityhospital.lk</span></div>
+                <div class="sha-row"><i>🪪</i><span>Reg: MOH-LK-2019-0042</span></div>
+                <hr class="sha-hr">
+                <div class="sha-acts">
+                    <a href="hospital-profile.html" class="sha-btn">🏥 Profile</a>
+                    <a href="hospital-settings.html" class="sha-btn">⚙️ Settings</a>
+                </div>
+                <a href="hospital-signout.html" class="sha-logout">🚪 Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Patient Reports</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn-pri" onclick="openIssueForm()"
+                        style="padding:8px 16px;border-radius:8px;font-size:0.88rem">➕ Issue New Report</button>
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stat-row">
+                <div class="stat-box">
+                    <div class="stat-ico ico-blue">📊</div>
+                    <div>
+                        <div class="stat-num" id="sTotal">0</div>
+                        <div class="stat-lbl">Total Reports</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-ico ico-orange">⏳</div>
+                    <div>
+                        <div class="stat-num" id="sReady">0</div>
+                        <div class="stat-lbl">Ready to Send</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-ico ico-green">✅</div>
+                    <div>
+                        <div class="stat-num" id="sSent">0</div>
+                        <div class="stat-lbl">Sent to Patient</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-ico ico-purple">📝</div>
+                    <div>
+                        <div class="stat-num" id="sDraft">0</div>
+                        <div class="stat-lbl">Draft</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issue Form Panel -->
+            <div class="issue-panel" id="issuePanel">
+                <div class="ip-title">📋 Issue New Report to Patient</div>
+                <div class="fg2">
+                    <div class="fg"><label>Patient ID *</label><input type="text" id="fPid" placeholder="e.g. P-0021">
+                    </div>
+                    <div class="fg"><label>Patient Name *</label><input type="text" id="fPname"
+                            placeholder="e.g. Nimesha Rathnayake"></div>
+                </div>
+                <div class="fg2">
+                    <div class="fg">
+                        <label>Report Type *</label>
+                        <select id="fType">
+                            <option value="">Select type...</option>
+                            <option>Lab Report</option>
+                            <option>Hormone Panel</option>
+                            <option>Ultrasound / Scan</option>
+                            <option>Imaging Report</option>
+                            <option>Consultation Summary</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label>Doctor *</label>
+                        <select id="fDoc">
+                            <option value="">Select doctor...</option>
+                            <option>Dr. Silva</option>
+                            <option>Dr. Perera</option>
+                            <option>Dr. Mendis</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fg2">
+                    <div class="fg"><label>Date *</label><input type="date" id="fDate"></div>
+                    <div class="fg">
+                        <label>Status</label>
+                        <select id="fStatus">
+                            <option value="draft">📝 Save as Draft</option>
+                            <option value="ready">⏳ Mark as Ready to Send</option>
+                            <option value="sent">✅ Send Immediately</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fg2 full">
+                    <div class="fg"><label>Notes / Summary</label><textarea id="fNotes"
+                            placeholder="Key findings, diagnosis notes, recommendations..."></textarea></div>
+                </div>
+                <div class="ip-actions">
+                    <button class="btn-pri" onclick="submitReport()">📤 Issue Report</button>
+                    <button class="btn-gho" onclick="closeIssueForm()">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Reports Table Panel -->
+            <div class="dash-panel">
+                <div class="panel-title">📊 Reports Issued by City Hospital</div>
+
+                <div class="fbar">
+                    <button class="ftab on" onclick="setFilter(this,'all')">All</button>
+                    <button class="ftab o" onclick="setFilter(this,'ready')">⏳ Ready to Send</button>
+                    <button class="ftab g" onclick="setFilter(this,'sent')">✅ Sent</button>
+                    <button class="ftab p" onclick="setFilter(this,'reviewed')">📋 Reviewed</button>
+                    <button class="ftab" onclick="setFilter(this,'draft')">📝 Draft</button>
+                    <div class="srch">
+                        <span>🔍</span>
+                        <input type="text" id="srchInput" placeholder="Search patient, type, doctor..."
+                            oninput="render()">
+                    </div>
+                </div>
+
+                <div class="tbl-wrap">
+                    <table class="rtbl">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Report Type</th>
+                                <th>Doctor</th>
+                                <th>Date Issued</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rtblBody"></tbody>
+                    </table>
+                    <div class="empty-rpt" id="emptyRpt" style="display:none">
+                        <div class="empty-rpt-ico">📋</div>
+                        <p style="font-weight:600;margin:0">No reports found</p>
+                        <p style="font-size:0.88rem;margin:4px 0 0;color:#9ca3af">Try a different filter or issue a new
+                            report</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="moverlay" id="modal">
+        <div class="mbox">
+            <div class="mhdr">
+                <div class="mtitle" id="modalTitle">Report Details</div>
+                <button class="mclose" onclick="closeModal()">×</button>
+            </div>
+            <div class="mbody" id="modalBody"></div>
+            <div class="mftr" id="modalFtr"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        /* ─── Data ──────────────────────────────────────────── */
+        var DB = [
+            { id: 'RPT-001', pname: 'Amanda Perera', pid: 'P-0001', nic: '960341256V', type: 'Lab Report', doc: 'Dr. Silva', date: '2026-03-03', status: 'sent', notes: 'CBC shows normal. Hormone levels balanced. Continue current regimen.' },
+            { id: 'RPT-002', pname: 'Nimesha Rathnayake', pid: 'P-0021', nic: '010234567V', type: 'Hormone Panel', doc: 'Dr. Perera', date: '2026-03-02', status: 'ready', notes: 'Elevated LH levels. Follow-up consultation recommended in 2 weeks.' },
+            { id: 'RPT-003', pname: 'Lakshmi Silva', pid: 'P-0042', nic: '950456789V', type: 'Ultrasound / Scan', doc: 'Dr. Silva', date: '2026-03-01', status: 'sent', notes: 'Polycystic ovaries confirmed. Cyst size 12mm right ovary.' },
+            { id: 'RPT-004', pname: 'Sachini Jayawardena', pid: 'P-0035', nic: '980123456V', type: 'Consultation Summary', doc: 'Dr. Mendis', date: '2026-02-28', status: 'reviewed', notes: 'Dietary changes and Metformin prescribed. Diet plan enclosed.' },
+            { id: 'RPT-005', pname: 'Rajini Kumari', pid: 'P-0056', nic: '975634211V', type: 'Lab Report', doc: 'Dr. Perera', date: '2026-02-27', status: 'draft', notes: 'Thyroid function test — awaiting radiologist sign-off.' },
+            { id: 'RPT-006', pname: 'Priya Mendis', pid: 'P-0057', nic: '985123789V', type: 'Imaging Report', doc: 'Dr. Silva', date: '2026-02-25', status: 'sent', notes: 'Pelvic MRI: no abnormal masses. Reviewed and cleared.' },
+            { id: 'RPT-007', pname: 'Amanda Perera', pid: 'P-0001', nic: '960341256V', type: 'Hormone Panel', doc: 'Dr. Mendis', date: '2026-02-20', status: 'sent', notes: 'FSH, LH, Estradiol within normal range. Continue therapy.' },
+            { id: 'RPT-008', pname: 'Nimesha Rathnayake', pid: 'P-0021', nic: '010234567V', type: 'Ultrasound / Scan', doc: 'Dr. Silva', date: '2026-02-15', status: 'ready', notes: 'Transvaginal ultrasound complete. Pending doctor signature.' }
+        ];
+
+        var COLORS = ['#8b5cf6', '#3498db', '#e74c3c', '#f39c12', '#27ae60', '#e91e63', '#00bcd4', '#ff5722'];
+        var curFilter = 'all';
+        var viewingId = null;
+
+        function col(i) { return COLORS[i % COLORS.length]; }
+        function ini(n) { return n.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase(); }
+        function typeClass(t) {
+            if (t.includes('Lab')) return 'rp-lab';
+            if (t.includes('Scan') || t.includes('Ultra')) return 'rp-scan';
+            if (t.includes('Consult')) return 'rp-con';
+            if (t.includes('Hormone')) return 'rp-hor';
+            if (t.includes('Imaging')) return 'rp-img';
+            return 'rp-oth';
+        }
+        function typeIcon(t) {
+            if (t.includes('Lab')) return '🧬';
+            if (t.includes('Scan') || t.includes('Ultra')) return '🖼️';
+            if (t.includes('Consult')) return '🩺';
+            if (t.includes('Hormone')) return '⚗️';
+            if (t.includes('Imaging')) return '📷';
+            return '📋';
+        }
+        function fmtDate(d) {
+            return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        function stLabel(s) { return s === 'ready' ? 'Ready to Send' : s === 'sent' ? 'Sent' : s === 'reviewed' ? 'Reviewed' : 'Draft'; }
+        function stClass(s) { return 's-' + s; }
+
+        function setFilter(btn, f) {
+            document.querySelectorAll('.ftab').forEach(function (b) { b.classList.remove('on'); });
+            btn.classList.add('on');
+            curFilter = f;
+            render();
+        }
+
+        function render() {
+            var q = document.getElementById('srchInput').value.toLowerCase().trim();
+            var data = DB.filter(function (r) {
+                var mf = curFilter === 'all' || r.status === curFilter;
+                var ms = !q || r.pname.toLowerCase().includes(q) || r.pid.toLowerCase().includes(q) ||
+                    r.type.toLowerCase().includes(q) || r.doc.toLowerCase().includes(q) || r.nic.toLowerCase().includes(q);
+                return mf && ms;
+            });
+            data.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+
+            var tbody = document.getElementById('rtblBody');
+            var empty = document.getElementById('emptyRpt');
+            if (data.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+
+            tbody.innerHTML = data.map(function (r, i) {
+                var canSend = r.status === 'ready' || r.status === 'draft';
+                var canDel = r.status === 'draft';
+                return '<tr>' +
+                    '<td><div style="display:flex;align-items:center;gap:9px">' +
+                    '<div class="av" style="background:' + col(i) + '">' + ini(r.pname) + '</div>' +
+                    '<div><div class="ptn">' + r.pname + '</div><div class="pts">' + r.pid + ' · ' + r.nic + '</div></div>' +
+                    '</div></td>' +
+                    '<td><span class="rpill ' + typeClass(r.type) + '">' + typeIcon(r.type) + ' ' + r.type + '</span></td>' +
+                    '<td style="font-size:0.87rem;color:#374151;font-weight:500">' + r.doc + '</td>' +
+                    '<td style="font-size:0.86rem;color:#374151;font-weight:500">' + fmtDate(r.date) + '</td>' +
+                    '<td><span class="spill ' + stClass(r.status) + '">' + stLabel(r.status) + '</span></td>' +
+                    '<td><div class="abts">' +
+                    '<button class="b-view" onclick="viewRpt(\'' + r.id + '\')">View</button>' +
+                    (canSend ? '<button class="b-send" onclick="sendRpt(\'' + r.id + '\')">Send</button>' : '') +
+                    (canDel ? '<button class="b-del"  onclick="delRpt(\'' + r.id + '\')">Delete</button>' : '') +
+                    '</div></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('sTotal').textContent = DB.length;
+            document.getElementById('sReady').textContent = DB.filter(function (r) { return r.status === 'ready'; }).length;
+            document.getElementById('sSent').textContent = DB.filter(function (r) { return r.status === 'sent'; }).length;
+            document.getElementById('sDraft').textContent = DB.filter(function (r) { return r.status === 'draft'; }).length;
+        }
+
+        function sendRpt(id) {
+            var r = DB.find(function (x) { return x.id === id; });
+            if (!r) return;
+            r.status = 'sent'; render(); updateStats();
+            toast('✅ Report sent to ' + r.pname + '!', 'success');
+        }
+        function delRpt(id) {
+            var r = DB.find(function (x) { return x.id === id; });
+            if (!r) return;
+            DB = DB.filter(function (x) { return x.id !== id; });
+            render(); updateStats();
+            toast('🗑️ Draft deleted.', 'warning');
+        }
+
+        function viewRpt(id) {
+            var r = DB.find(function (x) { return x.id === id; });
+            if (!r) return;
+            viewingId = id;
+            document.getElementById('modalTitle').textContent = r.type + ' — ' + r.pname;
+            document.getElementById('modalBody').innerHTML =
+                '<div class="mgrid">' +
+                '<div class="mfg"><label>Patient</label><p>' + r.pname + '</p></div>' +
+                '<div class="mfg"><label>Patient ID</label><p>' + r.pid + '</p></div>' +
+                '<div class="mfg"><label>NIC</label><p>' + r.nic + '</p></div>' +
+                '<div class="mfg"><label>Type</label><p>' + typeIcon(r.type) + ' ' + r.type + '</p></div>' +
+                '<div class="mfg"><label>Doctor</label><p>' + r.doc + '</p></div>' +
+                '<div class="mfg"><label>Date</label><p>' + fmtDate(r.date) + '</p></div>' +
+                '<div class="mfg"><label>Status</label><p><span class="spill ' + stClass(r.status) + '">' + stLabel(r.status) + '</span></p></div>' +
+                '<div class="mfg"><label>Report ID</label><p>' + r.id + '</p></div>' +
+                '</div>' +
+                '<div class="mfg" style="margin-top:4px"><label>Notes</label><p style="white-space:pre-line">' + (r.notes || '—') + '</p></div>';
+
+            var ftr = document.getElementById('modalFtr');
+            ftr.innerHTML = '';
+            if (r.status === 'ready' || r.status === 'draft') {
+                ftr.innerHTML += '<button class="b-send" style="padding:8px 16px;font-size:0.87rem" onclick="sendRpt(\'' + id + '\');closeModal()">📤 Send to Patient</button>';
+            }
+            ftr.innerHTML += '<button class="btn-gho" style="padding:8px 16px" onclick="closeModal()">Close</button>';
+            document.getElementById('modal').classList.add('open');
+        }
+        function closeModal() { document.getElementById('modal').classList.remove('open'); viewingId = null; }
+        document.addEventListener('click', function (e) { if (e.target === document.getElementById('modal')) closeModal(); });
+
+        /* ── Issue form ── */
+        function openIssueForm() {
+            document.getElementById('fDate').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('issuePanel').classList.add('open');
+            document.getElementById('issuePanel').scrollIntoView({ behavior: 'smooth' });
+        }
+        function closeIssueForm() { document.getElementById('issuePanel').classList.remove('open'); }
+
+        function submitReport() {
+            var pid = document.getElementById('fPid').value.trim();
+            var pname = document.getElementById('fPname').value.trim();
+            var type = document.getElementById('fType').value;
+            var doc = document.getElementById('fDoc').value;
+            var date = document.getElementById('fDate').value;
+            var stat = document.getElementById('fStatus').value;
+            var notes = document.getElementById('fNotes').value.trim();
+            if (!pid || !pname || !type || !doc || !date) { toast('Please fill all required fields.', 'warning'); return; }
+            var newId = 'RPT-' + (DB.length + 1).toString().padStart(3, '0');
+            DB.unshift({ id: newId, pname: pname, pid: pid, nic: '—', type: type, doc: doc, date: date, status: stat, notes: notes });
+            render(); updateStats(); closeIssueForm();
+            ['fPid', 'fPname', 'fNotes'].forEach(function (id) { document.getElementById(id).value = ''; });
+            document.getElementById('fType').value = '';
+            document.getElementById('fDoc').value = '';
+            document.getElementById('fStatus').value = 'draft';
+            var msg = stat === 'sent' ? '📤 Report issued & sent to ' + pname + '!' : '📋 Report saved as ' + stat + '.';
+            toast(msg, 'success');
+        }
+
+        /* ── Toast ── */
+        function toast(msg, type) {
+            var c = document.getElementById('toast-container');
+            if (!c) { c = document.createElement('div'); c.id = 'toast-container'; c.className = 'toast-container'; document.body.appendChild(c); }
+            var t = document.createElement('div');
+            t.className = 'toast ' + (type || 'info');
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(function () { t.style.opacity = '0'; t.style.transition = 'all 0.3s'; setTimeout(function () { t.remove(); }, 300); }, 3000);
+        }
+
+        /* ── Sidebar mobile toggle ── */
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateEl = document.getElementById('dateDisplay');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            var toggle = document.getElementById('sidebarToggle');
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebar-overlay');
+            if (toggle && sidebar && overlay) {
+                toggle.addEventListener('click', function () { sidebar.classList.toggle('active'); overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none'; });
+                overlay.addEventListener('click', function () { sidebar.classList.remove('active'); overlay.style.display = 'none'; });
+            }
+            updateStats();
+            render();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signing Out — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a0a2e 0%, #3b1f6b 50%, #5B2D8E 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.25;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: #9B59D0;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: #C39BD3;
+            bottom: -80px;
+            left: -80px;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #7B3FBE;
+            top: 50%;
+            left: 60%;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-30px) scale(1.05);
+            }
+        }
+
+        /* Card */
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 52px 48px 44px;
+            text-align: center;
+            max-width: 440px;
+            width: 92%;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+            animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Logo */
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 32px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #e91e8c, #d81b60);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 16px rgba(233, 30, 140, 0.4);
+        }
+
+        .logo-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text span {
+            color: #f472b6;
+        }
+
+        /* Icon */
+        .signout-icon-wrap {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.25), rgba(192, 57, 43, 0.15));
+            border: 2px solid rgba(231, 76, 60, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            animation: iconPop 0.6s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes iconPop {
+            from {
+                opacity: 0;
+                transform: scale(0.4);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .title {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        /* Hospital info */
+        .hosp-info {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .hosp-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #7B3FBE, #5B2D8E);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .hosp-name {
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .hosp-role {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+
+        /* Countdown */
+        .countdown-wrap {
+            margin-bottom: 28px;
+        }
+
+        .countdown-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .countdown-text strong {
+            color: white;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7B3FBE, #C39BD3);
+            border-radius: 4px;
+            width: 100%;
+            animation: drain 4s linear forwards;
+        }
+
+        @keyframes drain {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Buttons */
+        .btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #7B3FBE, #5B2D8E);
+            color: white;
+            box-shadow: 0 4px 16px rgba(123, 63, 190, 0.45);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(123, 63, 190, 0.55);
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: white;
+        }
+
+        .footer-links {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Done state */
+        .done-badge {
+            display: none;
+            margin: 0 auto 18px;
+            background: rgba(39, 174, 96, 0.2);
+            border: 1px solid rgba(39, 174, 96, 0.4);
+            color: #4ade80;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .done-badge.show {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="card">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+            <div class="logo-icon">♥</div>
+            <div class="logo-text"><span>PCOS</span> Care Hub</div>
+        </a>
+
+        <!-- Icon -->
+        <div class="signout-icon-wrap">🚪</div>
+
+        <!-- Done badge (shows after signed out) -->
+        <div class="done-badge" id="doneBadge">✅ Signed Out Successfully</div>
+
+        <h1 class="title" id="mainTitle">Signing you out…</h1>
+        <p class="subtitle" id="mainSub">
+            You are being securely signed out of the hospital portal. Your session has been cleared.
+        </p>
+
+        <!-- Hospital info -->
+        <div class="hosp-info">
+            <div class="hosp-avatar">🏥</div>
+            <div>
+                <div class="hosp-name" id="hospName">City Hospital</div>
+                <div class="hosp-role">Hospital Staff Account</div>
+            </div>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-wrap" id="countdownWrap">
+            <div class="countdown-text">Redirecting to login in <strong id="countNum">4</strong> seconds…</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btns">
+            <a href="index.html" class="btn btn-login" id="loginBtn">🔑 Login Again</a>
+            <a href="#" class="btn btn-back" onclick="goBack(); return false;">← Go Back</a>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Help & Support</a>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        (function () {
+            /* Clear session */
+            try {
+                if (typeof Auth !== 'undefined') {
+                    localStorage.removeItem('pcos_user');
+                    sessionStorage.clear();
+                }
+            } catch (e) { }
+
+            /* Countdown & redirect */
+            var count = 4;
+            var countEl = document.getElementById('countNum');
+            var titleEl = document.getElementById('mainTitle');
+            var subEl = document.getElementById('mainSub');
+            var badgeEl = document.getElementById('doneBadge');
+            var wrapEl = document.getElementById('countdownWrap');
+
+            /* After 0.6s show "signed out" state */
+            setTimeout(function () {
+                titleEl.textContent = 'You\'ve been signed out';
+                subEl.textContent = 'Thank you for using PCOS Care Hub. Your session was securely ended.';
+                badgeEl.classList.add('show');
+            }, 650);
+
+            /* Tick countdown */
+            var timer = setInterval(function () {
+                count--;
+                if (countEl) countEl.textContent = count;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    window.location.href = 'index.html';
+                }
+            }, 1000);
+
+            /* Back button */
+            window.goBack = function () {
+                clearInterval(timer);
+                if (wrapEl) wrapEl.style.display = 'none';
+                history.back();
+            };
+        })();
+    </script>
+</body>
+
+</html>

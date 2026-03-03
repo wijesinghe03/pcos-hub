@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — City Hospital | PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        /* Force layout */
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+
+        /* ── Hospital Account Card ── */
+        .sidebar-hospital-account {
+            margin: 12px 12px 4px 12px;
+            background: linear-gradient(135deg, rgba(123, 63, 190, 0.13), rgba(91, 45, 142, 0.07));
+            border: 1px solid rgba(123, 63, 190, 0.25);
+            border-radius: 12px;
+            padding: 14px 14px 10px 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-hospital-account::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            width: 60px;
+            height: 60px;
+            background: rgba(123, 63, 190, 0.12);
+            border-radius: 50%;
+        }
+
+        .sha-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(39, 174, 96, 0.15);
+            color: #1a7a40;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .sha-badge.dot::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #27ae60;
+            animation: sha-pulse 2s infinite;
+        }
+
+        @keyframes sha-pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .sha-hname {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #1f2937;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sha-htype {
+            font-size: 0.75rem;
+            color: #7B3FBE;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .sha-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.78rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .sha-row i {
+            font-style: normal;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            width: 16px;
+            text-align: center;
+        }
+
+        .sha-hr {
+            border: none;
+            border-top: 1px solid rgba(123, 63, 190, 0.18);
+            margin: 10px 0 8px;
+        }
+
+        .sha-acts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .sha-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 4px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            text-decoration: none;
+            border: 1px solid rgba(123, 63, 190, 0.3);
+            background: white;
+            color: #7B3FBE;
+        }
+
+        .sha-btn:hover {
+            background: rgba(123, 63, 190, 0.08);
+            border-color: #7B3FBE;
+        }
+
+        .sha-logout {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 8px;
+            padding: 7px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #e74c3c;
+            cursor: pointer;
+            background: rgba(231, 76, 60, 0.06);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+            transition: all 0.18s;
+            text-decoration: none;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .sha-logout:hover {
+            background: rgba(231, 76, 60, 0.12);
+        }
+
+        /* ── Settings layout ── */
+        .settings-wrapper {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        /* Settings nav */
+        .settings-nav {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+        }
+
+        .snav-header {
+            padding: 16px 18px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .snav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+            text-decoration: none;
+        }
+
+        .snav-item:hover {
+            background: #f9fafb;
+            color: #1f2937;
+        }
+
+        .snav-item.active {
+            background: #F5EDFB;
+            color: #7B3FBE;
+            border-left-color: #7B3FBE;
+        }
+
+        .snav-item i {
+            font-style: normal;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Settings panels */
+        .settings-panel {
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .scard {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .scard-header {
+            padding: 16px 22px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scard-title {
+            font-weight: 700;
+            font-size: 0.97rem;
+            color: #1f2937;
+        }
+
+        .scard-desc {
+            font-size: 0.79rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .scard-body {
+            padding: 0;
+        }
+
+        /* Setting rows */
+        .srow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 22px;
+            border-bottom: 1px solid #f9fafb;
+            transition: background 0.15s;
+        }
+
+        .srow:last-child {
+            border-bottom: none;
+        }
+
+        .srow:hover {
+            background: #fafafa;
+        }
+
+        .srow-info {
+            flex: 1;
+        }
+
+        .srow-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
+
+        .srow-sub {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .srow-ctrl {
+            flex-shrink: 0;
+        }
+
+        /* Toggle switch */
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: #d1d5db;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.25s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: #7B3FBE;
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        .toggle-label {
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 28px;
+        }
+
+        /* Select & input */
+        .s-select,
+        .s-input {
+            padding: 7px 12px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.87rem;
+            font-family: inherit;
+            color: #374151;
+            background: white;
+            transition: border-color 0.18s;
+            min-width: 160px;
+        }
+
+        .s-select:focus,
+        .s-input:focus {
+            outline: none;
+            border-color: #7B3FBE;
+            box-shadow: 0 0 0 3px rgba(123, 63, 190, 0.14);
+        }
+
+        .s-input {
+            min-width: 220px;
+        }
+
+        /* Color picker row */
+        .color-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.18s;
+        }
+
+        .color-dot.selected,
+        .color-dot:hover {
+            border-color: #1f2937;
+            transform: scale(1.15);
+        }
+
+        /* Danger zone */
+        .scard.danger {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .scard.danger .scard-header {
+            background: rgba(231, 76, 60, 0.04);
+        }
+
+        .scard.danger .scard-title {
+            color: #c0392b;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.83rem;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+            border-color: #e74c3c;
+        }
+
+        /* Notification badge */
+        .notif-level {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nlvl {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid #e5e7eb;
+            background: white;
+            color: #374151;
+            transition: all 0.18s;
+        }
+
+        .nlvl.on {
+            background: #7B3FBE;
+            border-color: #7B3FBE;
+            color: white;
+        }
+
+        /* Staff access table */
+        .staff-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        .staff-table thead th {
+            background: #f8fafc;
+            padding: 10px 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #9ca3af;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .staff-table tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+        .staff-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .role-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .rp-admin {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .rp-doc {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .rp-nurse {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rp-staff {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .rp-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        .rp-active::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #27ae60;
+            display: inline-block;
+        }
+
+        /* Save bar */
+        .save-bar {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .save-bar p {
+            font-size: 0.87rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .btn-save-set {
+            background: linear-gradient(135deg, #7B3FBE, #5B2D8E);
+            box-shadow: 0 4px 14px rgba(123, 63, 190, 0.35);
+            color: white;
+            border: none;
+            padding: 9px 24px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-save-set:hover {
+            background: linear-gradient(135deg, #9B59D0, #7B3FBE);
+            transform: translateY(-1px);
+        }
+
+        /* Tabs on mobile */
+        @media(max-width: 720px) {
+            .settings-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-nav {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0;
+            }
+
+            .snav-item {
+                padding: 9px 12px;
+                font-size: 0.82rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .snav-item.active {
+                border-bottom-color: #7B3FBE;
+                border-left-color: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+                <div>
+                    <div class="sidebar-name">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations <span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="hospital-reports.html"><i>📊</i> Reports</a>
+            </div>
+            <div class="sidebar-section" style="padding-top:4px">
+                <span class="sidebar-section-label">Hospital Account</span>
+            </div>
+            <div class="sidebar-hospital-account">
+                <div class="sha-badge dot">Verified</div>
+                <div class="sha-hname">City Hospital</div>
+                <div class="sha-htype">🏥 General Hospital</div>
+                <div class="sha-row"><i>📍</i><span>Colombo, Sri Lanka</span></div>
+                <div class="sha-row"><i>📞</i><span>+94 11 234 5678</span></div>
+                <div class="sha-row"><i>✉️</i><span>info@cityhospital.lk</span></div>
+                <div class="sha-row"><i>🪪</i><span>Reg: MOH-LK-2019-0042</span></div>
+                <hr class="sha-hr">
+                <div class="sha-acts">
+                    <a href="hospital-profile.html" class="sha-btn">🏥 Profile</a>
+                    <a href="hospital-settings.html" class="sha-btn"
+                        style="background:#7B3FBE;color:white;border-color:#7B3FBE">⚙️ Settings</a>
+                </div>
+                <a href="hospital-signout.html" class="sha-logout">🚪 Sign Out</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Settings</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <div class="settings-wrapper">
+                <!-- ── Left Nav ── -->
+                <nav class="settings-nav">
+                    <div class="snav-header">Settings</div>
+                    <a class="snav-item active" onclick="showTab('notifications',this)"><i>🔔</i> Notifications</a>
+                    <a class="snav-item" onclick="showTab('appointments',this)"><i>📅</i> Appointments</a>
+                    <a class="snav-item" onclick="showTab('display',this)"><i>🎨</i> Display</a>
+                    <a class="snav-item" onclick="showTab('staff',this)"><i>👥</i> Staff Access</a>
+                    <a class="snav-item" onclick="showTab('privacy',this)"><i>🔒</i> Privacy & Data</a>
+                    <a class="snav-item" onclick="showTab('integrations',this)"><i>🔗</i> Integrations</a>
+                    <a class="snav-item" onclick="showTab('danger',this)" style="color:#e74c3c"><i>⚠️</i> Danger
+                        Zone</a>
+                </nav>
+
+                <!-- ── Right Panels ── -->
+                <div>
+                    <!-- Save bar -->
+                    <div class="save-bar">
+                        <p>⚙️ Changes are saved per section below.</p>
+                        <button class="btn-save-set" onclick="saveAll()">💾 Save All Settings</button>
+                    </div>
+
+                    <!-- ━━━ Notifications ━━━ -->
+                    <div class="settings-panel active" id="tab-notifications">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🔔 Appointment Notifications</div>
+                                    <div class="scard-desc">Alerts when patients book, cancel or reschedule appointments
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">New Appointment Booked</div>
+                                        <div class="srow-sub">Notify when a patient books a new appointment</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Appointment Cancelled</div>
+                                        <div class="srow-sub">Notify when a patient cancels an appointment</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Appointment Rescheduled</div>
+                                        <div class="srow-sub">Notify when a patient reschedules</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Daily Agenda Summary</div>
+                                        <div class="srow-sub">Receive today's appointments every morning at 7:00 AM
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">📊 Reports & Lab Notifications</div>
+                                    <div class="scard-desc">Alerts for lab results and issued reports</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">New Lab Result Uploaded</div>
+                                        <div class="srow-sub">Notify when lab results are available for review</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Report Viewed by Patient</div>
+                                        <div class="srow-sub">Notify when a patient opens a report you sent</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Pending Reports Reminder</div>
+                                        <div class="srow-sub">Daily reminder for reports still in Draft or Ready</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">📬 Notification Delivery</div>
+                                    <div class="scard-desc">Choose how and where you receive alerts</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Email Notifications</div>
+                                        <div class="srow-sub">Send alerts to admin@cityhospital.lk</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">SMS Notifications</div>
+                                        <div class="srow-sub">Send alerts to +94 11 234 5678</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">In-App Notifications</div>
+                                        <div class="srow-sub">Show notification bell alerts in the portal</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Notification Sound</div>
+                                        <div class="srow-sub">Play a sound for new in-app alerts</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Alert Level</div>
+                                        <div class="srow-sub">Which notifications are important enough to alert you
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <div class="notif-level">
+                                            <button class="nlvl" onclick="setLevel(this)">All</button>
+                                            <button class="nlvl on" onclick="setLevel(this)">Important</button>
+                                            <button class="nlvl" onclick="setLevel(this)">Critical</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Appointments ━━━ -->
+                    <div class="settings-panel" id="tab-appointments">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">📅 Appointment Settings</div>
+                                    <div class="scard-desc">Configure how appointments work for your hospital</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Default Appointment Duration</div>
+                                        <div class="srow-sub">How long each appointment slot is</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>15 minutes</option>
+                                            <option selected>30 minutes</option>
+                                            <option>45 minutes</option>
+                                            <option>60 minutes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Advance Booking Limit</div>
+                                        <div class="srow-sub">How far ahead patients can book</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>1 week</option>
+                                            <option>2 weeks</option>
+                                            <option selected>1 month</option>
+                                            <option>3 months</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Auto-Confirm Appointments</div>
+                                        <div class="srow-sub">Automatically confirm new appointments without manual
+                                            review</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Allow Weekend Appointments</div>
+                                        <div class="srow-sub">Patients can book appointments on weekends</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Cancellation Grace Period</div>
+                                        <div class="srow-sub">Minimum notice required to cancel without penalty</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>No restriction</option>
+                                            <option>2 hours</option>
+                                            <option selected>24 hours</option>
+                                            <option>48 hours</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Patient Reminder (before appointment)</div>
+                                        <div class="srow-sub">Send patients a reminder before their appointment</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>No reminder</option>
+                                            <option>1 hour before</option>
+                                            <option selected>1 day before</option>
+                                            <option>2 days before</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Display ━━━ -->
+                    <div class="settings-panel" id="tab-display">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🎨 Appearance</div>
+                                    <div class="scard-desc">Customise how the hospital portal looks</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Theme</div>
+                                        <div class="srow-sub">Choose your portal colour theme</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select" onchange="applyTheme(this.value)">
+                                            <option value="blue" selected>🔵 Ocean Blue (Default)</option>
+                                            <option value="purple">🟣 Purple Health</option>
+                                            <option value="green">🟢 Fresh Green</option>
+                                            <option value="dark">⚫ Dark Mode</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Language</div>
+                                        <div class="srow-sub">Interface language</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option selected>English</option>
+                                            <option>Sinhala</option>
+                                            <option>Tamil</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Date Format</div>
+                                        <div class="srow-sub">How dates are displayed throughout the portal</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option selected>DD / MM / YYYY</option>
+                                            <option>MM / DD / YYYY</option>
+                                            <option>YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Time Format</div>
+                                        <div class="srow-sub">12-hour or 24-hour clock</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option selected>12-hour (AM/PM)</option>
+                                            <option>24-hour</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Compact Sidebar</div>
+                                        <div class="srow-sub">Show sidebar with icons only (collapsed)</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Animations</div>
+                                        <div class="srow-sub">Enable smooth page and button transitions</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Staff Access ━━━ -->
+                    <div class="settings-panel" id="tab-staff">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">👥 Staff Members & Access</div>
+                                    <div class="scard-desc">Manage who has access to the hospital portal</div>
+                                </div>
+                                <button class="sha-btn" style="padding:7px 14px;font-size:0.82rem"
+                                    onclick="toast('➕ Invite staff feature coming soon.','info')">➕ Invite
+                                    Staff</button>
+                            </div>
+                            <div class="scard-body" style="padding:0">
+                                <table class="staff-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Dr. Nimal Silva</strong><br><span
+                                                    style="font-size:0.76rem;color:#9ca3af">nimal.silva@cityhospital.lk</span>
+                                            </td>
+                                            <td><span class="role-pill rp-admin">Admin</span></td>
+                                            <td>Management</td>
+                                            <td><span class="rp-active">Active</span></td>
+                                            <td><button class="btn-danger" style="font-size:0.75rem;padding:4px 10px"
+                                                    onclick="toast('⚠️ Cannot remove the primary admin.','warning')">Remove</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dr. Kavitha Perera</strong><br><span
+                                                    style="font-size:0.76rem;color:#9ca3af">kavitha.p@cityhospital.lk</span>
+                                            </td>
+                                            <td><span class="role-pill rp-doc">Doctor</span></td>
+                                            <td>Gynaecology</td>
+                                            <td><span class="rp-active">Active</span></td>
+                                            <td><button class="btn-danger" style="font-size:0.75rem;padding:4px 10px"
+                                                    onclick="removeStaff(this,'Dr. Kavitha Perera')">Remove</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dr. Anura Mendis</strong><br><span
+                                                    style="font-size:0.76rem;color:#9ca3af">anura.m@cityhospital.lk</span>
+                                            </td>
+                                            <td><span class="role-pill rp-doc">Doctor</span></td>
+                                            <td>Endocrinology</td>
+                                            <td><span class="rp-active">Active</span></td>
+                                            <td><button class="btn-danger" style="font-size:0.75rem;padding:4px 10px"
+                                                    onclick="removeStaff(this,'Dr. Anura Mendis')">Remove</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Nurse Roshani</strong><br><span
+                                                    style="font-size:0.76rem;color:#9ca3af">roshani@cityhospital.lk</span>
+                                            </td>
+                                            <td><span class="role-pill rp-nurse">Nurse</span></td>
+                                            <td>OPD</td>
+                                            <td><span class="rp-active">Active</span></td>
+                                            <td><button class="btn-danger" style="font-size:0.75rem;padding:4px 10px"
+                                                    onclick="removeStaff(this,'Roshani')">Remove</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Lasith Fernando</strong><br><span
+                                                    style="font-size:0.76rem;color:#9ca3af">lasith.f@cityhospital.lk</span>
+                                            </td>
+                                            <td><span class="role-pill rp-staff">Receptionist</span></td>
+                                            <td>Front Desk</td>
+                                            <td><span class="rp-active">Active</span></td>
+                                            <td><button class="btn-danger" style="font-size:0.75rem;padding:4px 10px"
+                                                    onclick="removeStaff(this,'Lasith Fernando')">Remove</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🔑 Access Permissions</div>
+                                    <div class="scard-desc">Control what each role can see and do</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Doctors can issue Reports</div>
+                                        <div class="srow-sub">Allow doctors to create and send patient reports</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Nurses can view Patient Records</div>
+                                        <div class="srow-sub">Allow nursing staff access to patient information</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Receptionists can manage Appointments</div>
+                                        <div class="srow-sub">Allow front desk to confirm and cancel appointments</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Two-Factor Authentication Required</div>
+                                        <div class="srow-sub">Require 2FA for all staff logins</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Privacy & Data ━━━ -->
+                    <div class="settings-panel" id="tab-privacy">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🔒 Privacy Settings</div>
+                                    <div class="scard-desc">Control patient data visibility and retention</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Patient Profile Visible to All Staff</div>
+                                        <div class="srow-sub">All hospital staff can see full patient profiles</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Share Data with Ministry of Health</div>
+                                        <div class="srow-sub">Anonymised statistics shared for national health reporting
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Data Retention Period</div>
+                                        <div class="srow-sub">How long patient records are kept after discharge</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>1 year</option>
+                                            <option>3 years</option>
+                                            <option selected>7 years (recommended)</option>
+                                            <option>Indefinitely</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Audit Log</div>
+                                        <div class="srow-sub">Keep a log of all staff actions on patient data</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Export Patient Data (GDPR)</div>
+                                        <div class="srow-sub">Allow patients to request their own data export</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🔐 Login & Session Security</div>
+                                    <div class="scard-desc">Protect your hospital account</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Auto Logout After Inactivity</div>
+                                        <div class="srow-sub">Automatically log out idle sessions</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option>Never</option>
+                                            <option>15 minutes</option>
+                                            <option selected>30 minutes</option>
+                                            <option>1 hour</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Allow Multiple Logins</div>
+                                        <div class="srow-sub">Same account logged in on multiple devices simultaneously
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Login Alert Emails</div>
+                                        <div class="srow-sub">Email you when someone logs into the hospital account
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Integrations ━━━ -->
+                    <div class="settings-panel" id="tab-integrations">
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🔗 External Integrations</div>
+                                    <div class="scard-desc">Connect with external services & APIs</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">🏥 HMIS Integration</div>
+                                        <div class="srow-sub">Sync with the Hospital Management Information System</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">🧬 Lab System (LIS)</div>
+                                        <div class="srow-sub">Auto-import results from the Laboratory Information System
+                                        </div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox" checked><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">📧 Email Gateway (SMTP)</div>
+                                        <div class="srow-sub">Custom SMTP server for outgoing hospital emails</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <input type="text" class="s-input" value="smtp.cityhospital.lk"
+                                            placeholder="smtp.yourserver.com">
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">📱 SMS Gateway</div>
+                                        <div class="srow-sub">Twilio / Dialog / Mobitel SMS for patient reminders</div>
+                                    </div>
+                                    <div class="srow-ctrl">
+                                        <select class="s-select">
+                                            <option selected>Not configured</option>
+                                            <option>Twilio</option>
+                                            <option>Dialog (SL)</option>
+                                            <option>Mobitel (SL)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">📊 Analytics (Google)</div>
+                                        <div class="srow-sub">Enable Google Analytics on the hospital portal</div>
+                                    </div>
+                                    <div class="srow-ctrl"><label class="toggle"><input type="checkbox"><span
+                                                class="toggle-slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scard">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">🗝️ API Key</div>
+                                    <div class="scard-desc">Use this key to connect external apps to your hospital
+                                        account</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Hospital API Key</div>
+                                        <div class="srow-sub">Keep this secret — do not share publicly</div>
+                                    </div>
+                                    <div class="srow-ctrl" style="display:flex;gap:8px;align-items:center">
+                                        <input type="password" class="s-input" id="apiKey"
+                                            value="sk-hosp-lk-2019-0042-xxxxxxxx"
+                                            style="min-width:180px;font-family:monospace">
+                                        <button class="sha-btn" style="padding:7px 12px"
+                                            onclick="toggleKey()">👁️</button>
+                                        <button class="sha-btn" style="padding:7px 12px"
+                                            onclick="toast('🔄 New API key generated!','success')">⟳ Regenerate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ━━━ Danger Zone ━━━ -->
+                    <div class="settings-panel" id="tab-danger">
+                        <div class="scard danger">
+                            <div class="scard-header">
+                                <div>
+                                    <div class="scard-title">⚠️ Danger Zone</div>
+                                    <div class="scard-desc">Irreversible actions — proceed with caution</div>
+                                </div>
+                            </div>
+                            <div class="scard-body">
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Export All Hospital Data</div>
+                                        <div class="srow-sub">Download a full backup of all patients, appointments,
+                                            reports and records</div>
+                                    </div>
+                                    <div class="srow-ctrl"><button class="sha-btn" style="padding:8px 16px"
+                                            onclick="toast('📦 Data export started. You will receive an email when ready.','info')">⬇️
+                                            Export</button></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Suspend Hospital Account</div>
+                                        <div class="srow-sub">Temporarily disable the hospital account. Staff cannot log
+                                            in until reactivated.</div>
+                                    </div>
+                                    <div class="srow-ctrl"><button class="btn-danger"
+                                            onclick="toast('⚠️ Please contact support to suspend the account.','warning')">⏸
+                                            Suspend</button></div>
+                                </div>
+                                <div class="srow">
+                                    <div class="srow-info">
+                                        <div class="srow-label">Delete Hospital Account</div>
+                                        <div class="srow-sub">Permanently delete the hospital account and all associated
+                                            data. This cannot be undone.</div>
+                                    </div>
+                                    <div class="srow-ctrl"><button class="btn-danger"
+                                            onclick="if(confirm('Are you absolutely sure? This will permanently delete all data.')) toast('⛔ Deletion request sent to system administrator.','error')">🗑️
+                                            Delete Account</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end right panels -->
+            </div><!-- end settings-wrapper -->
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function showTab(id, el) {
+            document.querySelectorAll('.settings-panel').forEach(function (p) { p.classList.remove('active'); });
+            document.querySelectorAll('.snav-item').forEach(function (n) { n.classList.remove('active'); });
+            document.getElementById('tab-' + id).classList.add('active');
+            if (el) el.classList.add('active');
+        }
+
+        function setLevel(btn) {
+            btn.closest('.notif-level').querySelectorAll('.nlvl').forEach(function (b) { b.classList.remove('on'); });
+            btn.classList.add('on');
+        }
+
+        function removeStaff(btn, name) {
+            if (confirm('Remove ' + name + ' from hospital staff access?')) {
+                btn.closest('tr').style.opacity = '0.4';
+                btn.textContent = 'Removed';
+                btn.disabled = true;
+                toast('🗑️ ' + name + ' removed from staff access.', 'warning');
+            }
+        }
+
+        function toggleKey() {
+            var k = document.getElementById('apiKey');
+            k.type = k.type === 'password' ? 'text' : 'password';
+        }
+
+        function applyTheme(val) {
+            toast('🎨 Theme "' + val + '" will be applied after save.', 'info');
+        }
+
+        function saveAll() {
+            toast('✅ All settings saved successfully!', 'success');
+        }
+
+        function toast(msg, type) {
+            var c = document.getElementById('toast-container');
+            if (!c) { c = document.createElement('div'); c.id = 'toast-container'; c.className = 'toast-container'; document.body.appendChild(c); }
+            var t = document.createElement('div');
+            t.className = 'toast ' + (type || 'info');
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(function () { t.style.opacity = '0'; t.style.transition = 'all 0.3s'; setTimeout(function () { t.remove(); }, 300); }, 3200);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateEl = document.getElementById('dateDisplay');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            var toggle = document.getElementById('sidebarToggle');
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebar-overlay');
+            if (toggle && sidebar && overlay) {
+                toggle.addEventListener('click', function () { sidebar.classList.toggle('active'); overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none'; });
+                overlay.addEventListener('click', function () { sidebar.classList.remove('active'); overlay.style.display = 'none'; });
+            }
+        });
+    </script>
+</body>
+
+</html>
