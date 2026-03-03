@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Sign Up — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <div class="auth-page">
+        <!-- LEFT PANEL -->
+        <div class="auth-panel-left">
+            <div class="auth-left-content">
+                <a href="index.html" class="auth-left-logo">
+                    <div class="logo-icon">♥</div>
+                    <div class="logo-text"><span>PCOS</span> Care Hub</div>
+                </a>
+                <h2>Partner with PCOS Care Hub</h2>
+                <p>Join leading healthcare institutions across Sri Lanka connecting with thousands of PCOS patients for
+                    better care coordination.</p>
+                <div class="auth-features">
+                    <div class="auth-feature">
+                        <div class="auth-feature-icon">🔗</div>
+                        <div>
+                            <div class="auth-feature-text">Connect with Patients</div>
+                            <div class="auth-feature-sub">Access verified patient records securely</div>
+                        </div>
+                    </div>
+                    <div class="auth-feature">
+                        <div class="auth-feature-icon">📊</div>
+                        <div>
+                            <div class="auth-feature-text">Better Care Coordination</div>
+                            <div class="auth-feature-sub">Track and manage patient health data</div>
+                        </div>
+                    </div>
+                    <div class="auth-feature">
+                        <div class="auth-feature-icon">🔐</div>
+                        <div>
+                            <div class="auth-feature-text">HIPAA Compliant</div>
+                            <div class="auth-feature-sub">Healthcare data protection standards</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="auth-panel-right">
+            <div class="auth-form-wrap">
+                <div class="auth-header">
+                    <h3>Create Hospital Account</h3>
+                    <p>Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+
+                <form class="auth-form" id="hospitalSignupForm" onsubmit="handleHospitalSignup(event)">
+
+                    <!-- Hospital Name -->
+                    <div class="form-group">
+                        <label class="form-label">Hospital/Clinic Name</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🏥</span>
+                            <input class="form-control" type="text" placeholder="Name of your hospital/clinic" required>
+                        </div>
+                    </div>
+
+                    <!-- Registration/License Number -->
+                    <div class="form-group">
+                        <label class="form-label">Registration/License Number</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">📋</span>
+                            <input class="form-control" type="text" placeholder="Medical registration number" required>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Email -->
+                    <div class="form-group">
+                        <label class="form-label">Hospital Email Address</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">✉</span>
+                            <input class="form-control" type="email" placeholder="official@hospital.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Phone -->
+                    <div class="form-group">
+                        <label class="form-label">Hospital Phone Number</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">📞</span>
+                            <input class="form-control" type="tel" placeholder="+94 XX XXX XXXX" required>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Address -->
+                    <div class="form-group">
+                        <label class="form-label">Hospital Address</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">📍</span>
+                            <textarea class="form-control" placeholder="Street address, building details" rows="2"
+                                required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- City/District -->
+                    <div class="form-group">
+                        <label class="form-label">City/District</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🗺️</span>
+                            <input class="form-control" type="text" placeholder="City or district name" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Person Name -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Contact Person - First Name</label>
+                            <div class="input-icon-wrap">
+                                <span class="input-icon">👤</span>
+                                <input class="form-control" type="text" placeholder="First name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Person - Last Name</label>
+                            <input class="form-control" type="text" placeholder="Last name" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Person Phone -->
+                    <div class="form-group">
+                        <label class="form-label">Contact Person Phone Number</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">📞</span>
+                            <input class="form-control" type="tel" placeholder="+94 7X XXX XXXX" required>
+                        </div>
+                    </div>
+
+                    <!-- Hospital Type -->
+                    <div class="form-group">
+                        <label class="form-label">Type of Healthcare Institution</label>
+                        <select class="form-control" required>
+                            <option value="">Select type</option>
+                            <option value="government">Government Hospital</option>
+                            <option value="private">Private Hospital</option>
+                            <option value="clinic">Clinic</option>
+                            <option value="diagnostic">Diagnostic Center</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Specialties -->
+                    <div class="form-group">
+                        <label class="form-label">Areas of Specialty (Optional)</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">⚕️</span>
+                            <textarea class="form-control"
+                                placeholder="e.g., Gynecology, Endocrinology, General Medicine..." rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" type="password" id="pw1" placeholder="Min. 8 characters"
+                                required minlength="8">
+                            <button type="button" class="toggle-pw" onclick="togglePw('pw1',this)">👁</button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" type="password" id="pw2" placeholder="Re-enter password"
+                                required>
+                            <button type="button" class="toggle-pw" onclick="togglePw('pw2',this)">👁</button>
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="terms-check">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy
+                                Policy</a>. I consent to the standard healthcare data protection protocols.</label>
+                    </div>
+
+                    <button type="submit" class="auth-submit">Create Hospital Account</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p><a href="signup-choice.html">← Back to signup options</a> | <a href="index.html">Back to Home</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function handleHospitalSignup(e) {
+            e.preventDefault();
+            const pw1 = document.getElementById('pw1').value;
+            const pw2 = document.getElementById('pw2').value;
+            if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
+            Auth.login('hospital', 'New Hospital');
+            Toast.success('Account created! Redirecting to dashboard...');
+            setTimeout(() => {
+                window.location.href = 'hospital-dashboard.html';
+            }, 1500);
+        }
+        function togglePw(id, btn) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+            btn.textContent = input.type === 'password' ? '👁' : '🙈';
+        }
+    </script>
+</body>
+
+</html>

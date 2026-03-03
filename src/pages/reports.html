@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reports — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .reports-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .report-card {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .report-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: 0 4px 16px rgba(147, 112, 219, 0.1);
+        }
+
+        .report-info {
+            display: grid;
+            gap: 8px;
+        }
+
+        .report-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .report-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .report-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .report-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-view {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+        }
+
+        .upload-section {
+            background: rgba(147, 112, 219, 0.05);
+            border: 2px dashed var(--purple-primary);
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 32px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-section:hover {
+            background: rgba(147, 112, 219, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .upload-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .reports-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .report-card {
+                grid-template-columns: 1fr;
+            }
+
+            .report-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .filter-btn {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html" data-page="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" href="track-symptoms.html" data-page="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html" data-page="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item active" href="reports.html" data-page="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>My Reports</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" id="searchInput" placeholder="Search reports…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="reports-container">
+                <!-- Upload Section -->
+                <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📤</div>
+                    <p class="upload-text"><span>Click to upload</span> or drag and drop</p>
+                    <p class="upload-hint">PDF, JPG, PNG up to 10MB</p>
+                    <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.png,.jpeg">
+                </div>
+
+                <!-- Filter buttons -->
+                <div class="date-filter">
+                    <button class="filter-btn active" data-filter="all">All Reports</button>
+                    <button class="filter-btn" data-filter="this-month">This Month</button>
+                    <button class="filter-btn" data-filter="this-year">This Year</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                </div>
+
+                <!-- Reports list -->
+                <div class="reports-grid" id="reportsList">
+                    <!-- Reports will be loaded here -->
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState" style="display:none">
+                    <div class="empty-state-icon">📋</div>
+                    <p>No reports found</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script>
+        // Hide page loader immediately
+        (function () {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+            }
+        })();
+
+        const mockReports = [
+            {
+                id: 1,
+                name: 'Blood Test Results',
+                date: '15 Feb 2026',
+                hospital: 'City Hospital',
+                status: 'view',
+                category: 'lab'
+            },
+            {
+                id: 2,
+                name: 'Ultrasound Scan',
+                date: '02 Feb 2026',
+                hospital: 'Nawaloka',
+                status: 'view',
+                category: 'scan'
+            },
+            {
+                id: 3,
+                name: 'Hormone Panel',
+                date: '20 Jan 2026',
+                hospital: 'Lanka Hospital',
+                status: 'pending',
+                category: 'lab'
+            },
+            {
+                id: 4,
+                name: 'TSH Test Report',
+                date: '15 Jan 2026',
+                hospital: 'City Hospital',
+                status: 'view',
+                category: 'lab'
+            },
+            {
+                id: 5,
+                name: 'Pelvic Ultrasound',
+                date: '08 Jan 2026',
+                hospital: 'Nawaloka',
+                status: 'view',
+                category: 'scan'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function loadReports() {
+            displayReports(mockReports);
+        }
+
+        function displayReports(reports) {
+            const reportsList = document.getElementById('reportsList');
+            const emptyState = document.getElementById('emptyState');
+
+            if (reports.length === 0) {
+                reportsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            reportsList.innerHTML = reports.map(report => `
+                <div class="report-card">
+                    <div class="report-info">
+                        <div class="report-title">${report.name}</div>
+                        <div class="report-meta">
+                            <div class="report-meta-item">📅 ${report.date}</div>
+                            <div class="report-meta-item">🏥 ${report.hospital}</div>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <span class="report-badge ${report.status === 'view' ? 'badge-view' : 'badge-pending'}">
+                            ${report.status === 'view' ? '✓ View' : '⟳ Pending'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    filterReports();
+                });
+            });
+        }
+
+        function filterReports() {
+            let filtered = mockReports;
+
+            if (currentFilter === 'pending') {
+                filtered = mockReports.filter(r => r.status === 'pending');
+            } else if (currentFilter === 'this-month') {
+                const now = new Date();
+                const feb2026 = new Date(2026, 1, 1);
+                filtered = mockReports.filter(r => {
+                    const reportDate = new Date(r.date);
+                    return reportDate.getMonth() === now.getMonth() && reportDate.getFullYear() === now.getFullYear();
+                });
+            } else if (currentFilter === 'this-year') {
+                const now = new Date();
+                filtered = mockReports.filter(r => {
+                    const reportDate = new Date(r.date);
+                    return reportDate.getFullYear() === now.getFullYear();
+                });
+            }
+
+            displayReports(filtered);
+        }
+
+        function setupFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadSection = document.querySelector('.upload-section');
+
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFileUpload(file);
+                }
+            });
+
+            // Drag and drop
+            uploadSection.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadSection.style.background = 'rgba(147, 112, 219, 0.15)';
+            });
+
+            uploadSection.addEventListener('dragleave', () => {
+                uploadSection.style.background = 'rgba(147, 112, 219, 0.05)';
+            });
+
+            uploadSection.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadSection.style.background = 'rgba(147, 112, 219, 0.05)';
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    handleFileUpload(file);
+                }
+            });
+        }
+
+        function handleFileUpload(file) {
+            // Validate file
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+            const maxSize = 10 * 1024 * 1024; // 10MB
+
+            if (!validTypes.includes(file.type)) {
+                Toast.error('Invalid file type. Please upload PDF, JPG, or PNG');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                Toast.error('File too large. Maximum size is 10MB');
+                return;
+            }
+
+            // In a real app, this would upload to a server
+            Toast.success(`✓ Report "${file.name}" uploaded successfully!`);
+
+            // Add to list
+            const newReport = {
+                id: mockReports.length + 1,
+                name: file.name.replace(/\.[^/.]+$/, ""),
+                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                hospital: 'Not specified',
+                status: 'view',
+                category: 'uploaded'
+            };
+            mockReports.unshift(newReport);
+            filterReports();
+        }
+
+        // Initialize reports page after utils.js loads
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // Set user name (utils should have loaded Auth)
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user && document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.name || 'User';
+            }
+
+            // Load reports
+            loadReports();
+
+            // Setup filter buttons
+            setupFilters();
+
+            // Setup file upload
+            setupFileUpload();
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = mockReports.filter(r =>
+                        r.name.toLowerCase().includes(query) ||
+                        r.hospital.toLowerCase().includes(query)
+                    );
+                    displayReports(filtered);
+                });
+            }
+
+            // Setup sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            // DOM already loaded (script loaded after DOMContentLoaded fired)
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

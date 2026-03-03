@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner Hospitals — PCOS Care Hub</title>
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/navbar.css">
+  <link rel="stylesheet" href="../../assets/css/footer.css">
+  <style>
+    .hospitals-hero {
+      background: linear-gradient(135deg, #e8f0ff, #f0e6ff);
+      padding: calc(var(--nav-h) + 60px) 0 70px;
+      text-align: center;
+    }
+
+    .hospitals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .hospital-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .hospital-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      border-color: var(--purple-light);
+    }
+
+    .hospital-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+
+    .hospital-card h4 {
+      margin-bottom: 6px;
+    }
+
+    .hospital-card .location {
+      font-size: .875rem;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+
+    .hospital-specialties {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .specialty-tag {
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--purple-pale);
+      color: var(--purple-primary);
+    }
+
+    @media(max-width:900px) {
+      .hospitals-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:600px) {
+      .hospitals-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-placeholder" data-page="hospitals"></div>
+  <section class="hospitals-hero">
+    <div class="container">
+      <h1>Partner Hospitals</h1>
+      <p style="color:var(--text-mid);max-width:520px;margin:14px auto 0">PCOS Care Hub partners with leading hospitals
+        across Sri Lanka to provide seamless, integrated healthcare for women with PCOS.</p>
+    </div>
+  </section>
+  <section class="section-pad">
+    <div class="container">
+      <div class="hospitals-grid">
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>City Hospital Colombo</h4>
+          <div class="location">📍 Colombo 03</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
+              class="specialty-tag">Endocrinology</span><span class="specialty-tag">Fertility</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Leading private hospital with dedicated PCOS clinic and
+            specialist endocrinologists.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting with City Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Nawaloka Hospital</h4>
+          <div class="location">📍 Colombo 02</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
+              class="specialty-tag">Nutrition</span><span class="specialty-tag">Mental Health</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Comprehensive women's health services with integrated
+            nutritional counselling for PCOS.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting with Nawaloka...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Lanka Hospital</h4>
+          <div class="location">📍 Colombo 05</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Hormones</span><span
+              class="specialty-tag">Ultrasound</span><span class="specialty-tag">Lab Services</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Specialised endocrinology department with advanced hormonal
+            testing and monitoring.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting with Lanka Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Kandy Teaching Hospital</h4>
+          <div class="location">📍 Kandy</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
+              class="specialty-tag">Research</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Leading academic medical centre with cutting-edge research in
+            women's hormonal health.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Durdans Hospital</h4>
+          <div class="location">📍 Colombo 03</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Fertility</span><span
+              class="specialty-tag">Gynaecology</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Renowned fertility centre with comprehensive PCOS management
+            and IVF services.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Asiri Medical Hospital</h4>
+          <div class="location">📍 Colombo 05</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Endocrinology</span><span
+              class="specialty-tag">Nutrition</span></div>
+          <p style="font-size:.875rem;margin-bottom:16px">Award-winning medical centre with dedicated PCOS nutrition and
+            lifestyle clinic.</p><button class="btn btn-primary btn-sm" style="width:100%"
+            onclick="Toast.success('Connecting...')">Connect</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="footer-placeholder"></div>
+  <div class="toast-container" id="toast-container"></div>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      PageLoader.hide();
+      document.getElementById('navbar-placeholder').innerHTML = renderNavbar('hospitals');
+      initNavbar();
+      setActiveNav();
+      document.getElementById('footer-placeholder').innerHTML = renderFooter();
+      initReveal();
+      initSmoothScroll();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Symptoms — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .symptom-category {
+            margin-bottom: 24px;
+        }
+
+        .symptom-category-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .symptom-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .symptom-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .symptom-option:hover {
+            border-color: var(--purple-primary);
+            background: rgba(147, 112, 219, 0.05);
+        }
+
+        .symptom-option input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--purple-primary);
+        }
+
+        .symptom-option input[type="checkbox"]:checked~span {
+            font-weight: 700;
+            color: var(--purple-primary);
+        }
+
+        .symptom-option.selected {
+            border-color: var(--purple-primary);
+            background: rgba(147, 112, 219, 0.1);
+        }
+
+        .severity-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .severity-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .severity-btn.mild {
+            color: var(--green-accent);
+        }
+
+        .severity-btn.moderate {
+            color: var(--orange-accent);
+        }
+
+        .severity-btn.severe {
+            color: var(--pink-accent);
+        }
+
+        .severity-btn.selected {
+            border-color: currentColor;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .symptom-history {
+            margin-top: 40px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--bg-light);
+        }
+
+        .history-symptoms {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .history-badge {
+            background: rgba(147, 112, 219, 0.1);
+            color: var(--purple-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .symptom-options {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" data-page="patient-dashboard.html" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item active" href="#" onclick="window.location.href='track-symptoms.html'">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Track Symptoms</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" placeholder="Search symptoms…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main symptom logging form -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📝</i> Log Your Symptoms</div>
+                </div>
+
+                <form id="symptomForm">
+                    <!-- Date and Time -->
+                    <div class="two-col">
+                        <div class="form-group">
+                            <label for="symptomDate">Date</label>
+                            <input type="date" id="symptomDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="symptomTime">Time</label>
+                            <input type="time" id="symptomTime" required>
+                        </div>
+                    </div>
+
+                    <!-- Physical Symptoms -->
+                    <div class="symptom-category">
+                        <div class="symptom-category-title">
+                            <i>💪</i> Physical Symptoms
+                        </div>
+                        <div class="symptom-options">
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="cramps">
+                                <span>😣 Cramps</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="fatigue">
+                                <span>😴 Fatigue</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="headache">
+                                <span>🤯 Headache</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="bloating">
+                                <span>😓 Bloating</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="weight-change">
+                                <span>⚖️ Weight Change</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="joint-pain">
+                                <span>🦵 Joint Pain</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Skin & Hair -->
+                    <div class="symptom-category">
+                        <div class="symptom-category-title">
+                            <i>✨</i> Skin & Hair
+                        </div>
+                        <div class="symptom-options">
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="acne">
+                                <span>🌿 Acne</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="hair-loss">
+                                <span>💇 Hair Loss</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="hair-growth">
+                                <span>🌱 Excess Hair Growth</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="skin-darkening">
+                                <span>🌚 Dark Patches</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Emotional & Mental -->
+                    <div class="symptom-category">
+                        <div class="symptom-category-title">
+                            <i>🧠</i> Emotional & Mental
+                        </div>
+                        <div class="symptom-options">
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="mood-swings">
+                                <span>😰 Mood Swings</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="anxiety">
+                                <span>😟 Anxiety</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="depression">
+                                <span>😔 Depression</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="stress">
+                                <span>😤 Stress</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Reproductive -->
+                    <div class="symptom-category">
+                        <div class="symptom-category-title">
+                            <i>🩸</i> Reproductive
+                        </div>
+                        <div class="symptom-options">
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="irregular-period">
+                                <span>📅 Irregular Period</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="heavy-bleeding">
+                                <span>🔴 Heavy Bleeding</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="light-bleeding">
+                                <span>🟡 Light Bleeding</span>
+                            </label>
+                            <label class="symptom-option">
+                                <input type="checkbox" name="symptom" value="pelvic-pain">
+                                <span>🩹 Pelvic Pain</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Severity -->
+                    <div class="form-group">
+                        <label>Overall Severity</label>
+                        <div class="severity-selector">
+                            <button type="button" class="severity-btn mild" data-severity="mild">
+                                🟢 Mild
+                            </button>
+                            <button type="button" class="severity-btn moderate" data-severity="moderate">
+                                🟠 Moderate
+                            </button>
+                            <button type="button" class="severity-btn severe" data-severity="severe">
+                                🔴 Severe
+                            </button>
+                        </div>
+                        <input type="hidden" id="selectedSeverity" name="severity" value="">
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label for="symptomNotes">Additional Notes</label>
+                        <textarea id="symptomNotes" name="notes"
+                            placeholder="Any additional details about your symptoms, triggers, or how they affect your day..."></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            ✓ Save Symptoms
+                        </button>
+                        <button type="reset" class="btn btn-ghost" style="flex: 1;">
+                            ↻ Clear
+                        </button>
+                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;">
+                            ← Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Recent Symptom History -->
+            <div class="dash-panel reveal symptom-history">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📋</i> Your Symptom History</div>
+                    <a class="panel-action" href="#">View All →</a>
+                </div>
+
+                <div id="symptomHistoryContainer">
+                    <div class="history-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 6px;">26 Feb 2026 — 08:30 PM</div>
+                            <div class="history-symptoms">
+                                <span class="history-badge">Fatigue</span>
+                                <span class="history-badge">Cramps</span>
+                                <span class="history-badge">Mood Swings</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span
+                                style="background: rgba(250, 128, 114, 0.2); color: var(--pink-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Moderate</span>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 6px;">25 Feb 2026 — 10:15 AM</div>
+                            <div class="history-symptoms">
+                                <span class="history-badge">Headache</span>
+                                <span class="history-badge">Bloating</span>
+                                <span class="history-badge">Weight Change</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span
+                                style="background: rgba(255, 193, 7, 0.2); color: var(--orange-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Moderate</span>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 6px;">24 Feb 2026 — 06:45 PM</div>
+                            <div class="history-symptoms">
+                                <span class="history-badge">Cramps</span>
+                                <span class="history-badge">Anxiety</span>
+                                <span class="history-badge">Acne</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span
+                                style="background: rgba(76, 175, 80, 0.2); color: var(--green-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Mild</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Set current date and time
+        const dateInput = document.getElementById('symptomDate');
+        const timeInput = document.getElementById('symptomTime');
+        const today = new Date().toISOString().split('T')[0];
+        const now = new Date().toTimeString().slice(0, 5);
+        dateInput.value = today;
+        timeInput.value = now;
+
+        // Date display
+        const dateEl = document.getElementById('dateDisplay');
+        if (dateEl) {
+            const now = new Date();
+            dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        // User name from auth
+        const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+        if (user) {
+            const sn = document.getElementById('sidebarName');
+            if (sn) sn.textContent = user.name || 'User';
+        }
+
+        // Symptom option click handler
+        document.querySelectorAll('.symptom-option').forEach(option => {
+            const checkbox = option.querySelector('input[type="checkbox"]');
+            option.addEventListener('click', function (e) {
+                if (e.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                }
+                option.classList.toggle('selected', checkbox.checked);
+            });
+            checkbox.addEventListener('change', function () {
+                option.classList.toggle('selected', this.checked);
+            });
+        });
+
+        // Severity button click handler
+        document.querySelectorAll('.severity-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                document.getElementById('selectedSeverity').value = btn.dataset.severity;
+            });
+        });
+
+        // Form submission
+        document.getElementById('symptomForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const date = dateInput.value;
+            const time = timeInput.value;
+            const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(cb => cb.value);
+            const severity = document.getElementById('selectedSeverity').value;
+            const notes = document.getElementById('symptomNotes').value;
+
+            if (!date || !time) {
+                Toast.error('Please select date and time');
+                return;
+            }
+
+            if (selectedSymptoms.length === 0) {
+                Toast.error('Please select at least one symptom');
+                return;
+            }
+
+            if (!severity) {
+                Toast.error('Please select severity level');
+                return;
+            }
+
+            // Save to localStorage
+            const symptomEntry = {
+                date, time, symptoms: selectedSymptoms, severity, notes,
+                timestamp: new Date().toISOString()
+            };
+
+            let history = JSON.parse(localStorage.getItem('symptomHistory') || '[]');
+            history.unshift(symptomEntry);
+            localStorage.setItem('symptomHistory', JSON.stringify(history));
+
+            Toast.success('✓ Symptoms saved successfully!');
+            this.reset();
+            dateInput.value = today;
+            timeInput.value = now;
+            document.querySelectorAll('.symptom-option').forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('selectedSeverity').value = '';
+        });
+
+        // Sidebar toggle for mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

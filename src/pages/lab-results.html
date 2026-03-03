@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Results — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .lab-results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .lab-result-card {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .lab-result-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: 0 4px 16px rgba(147, 112, 219, 0.1);
+        }
+
+        .lab-result-card.pending {
+            opacity: 0.8;
+            background: rgba(255, 193, 7, 0.02);
+        }
+
+        .lab-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            text-align: center;
+        }
+
+        .lab-info {
+            display: grid;
+            gap: 8px;
+        }
+
+        .lab-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .lab-details {
+            display: grid;
+            gap: 6px;
+        }
+
+        .lab-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .lab-status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lab-badge {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-received {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .badge-processing {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196f3;
+        }
+
+        .lab-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text-dark);
+        }
+
+        .lab-btn:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+        }
+
+        .lab-btn.download {
+            color: var(--purple-primary);
+            border-color: var(--purple-primary);
+        }
+
+        .lab-values {
+            background: rgba(147, 112, 219, 0.05);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        .lab-value-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(147, 112, 219, 0.1);
+        }
+
+        .lab-value-item:last-child {
+            border-bottom: none;
+        }
+
+        .lab-value-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .lab-value-result {
+            color: var(--text-light);
+        }
+
+        .filter-section {
+            background: rgba(147, 112, 219, 0.05);
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .filter-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+        }
+
+        .lab-results-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .expandable-row {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .expandable-row:hover {
+            background: rgba(147, 112, 219, 0.02);
+        }
+
+        .expand-icon {
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .expand-icon.open {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 640px) {
+            .lab-result-card {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .lab-icon {
+                text-align: left;
+            }
+
+            .lab-status {
+                justify-content: space-between;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" href="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item active" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Lab Results</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" id="searchInput" placeholder="Search lab results…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="lab-results-container">
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <div class="filter-title">Filter Results</div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Results</button>
+                        <button class="filter-btn" data-filter="received">Received</button>
+                        <button class="filter-btn" data-filter="pending">Pending</button>
+                        <button class="filter-btn" data-filter="this-month">This Month</button>
+                        <button class="filter-btn" data-filter="this-year">This Year</button>
+                    </div>
+                </div>
+
+                <!-- Lab Results list -->
+                <div class="lab-results-list" id="labResultsList">
+                    <!-- Lab results will be loaded here -->
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState" style="display:none">
+                    <div class="empty-state-icon">🧪</div>
+                    <p>No lab results found</p>
+                    <p style="font-size:0.9rem;margin-top:8px">Your lab results will appear here when available</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Mock data for lab results
+        let mockLabResults = [
+            {
+                id: 1,
+                name: 'Blood Test Results',
+                testType: 'Complete Blood Count (CBC)',
+                hospital: 'City Hospital',
+                date: '15 Feb 2026',
+                dateObj: new Date(2026, 1, 15),
+                status: 'received',
+                values: [
+                    { name: 'Hemoglobin', result: '12.5 g/dL', normal: '12.0-16.0' },
+                    { name: 'Hematocrit', result: '38%', normal: '36-46%' },
+                    { name: 'WBC', result: '7.2 K/uL', normal: '4.5-11.0' }
+                ]
+            },
+            {
+                id: 2,
+                name: 'Hormone Panel',
+                testType: 'PCOS Hormone Testing',
+                hospital: 'Lanka Hospital',
+                date: '01 Feb 2026',
+                dateObj: new Date(2026, 1, 1),
+                status: 'received',
+                values: [
+                    { name: 'Testosterone', result: '65 ng/dL', normal: '<70' },
+                    { name: 'DHEA-S', result: '2.8 µg/mL', normal: '0.9-7.6' },
+                    { name: 'FSH', result: '6.2 mIU/mL', normal: '3.5-12.5' },
+                    { name: 'LH', result: '9.8 mIU/mL', normal: '1.7-8.6' }
+                ]
+            },
+            {
+                id: 3,
+                name: 'Glucose & Insulin Test',
+                testType: 'Fasting Glucose & Insulin',
+                hospital: 'Colombo Clinic',
+                date: '10 Mar 2026',
+                dateObj: new Date(2026, 2, 10),
+                status: 'processing',
+                values: []
+            },
+            {
+                id: 4,
+                name: 'TSH Test',
+                testType: 'Thyroid Function',
+                hospital: 'City Hospital',
+                date: '18 Mar 2026',
+                dateObj: new Date(2026, 2, 18),
+                status: 'pending',
+                values: []
+            },
+            {
+                id: 5,
+                name: 'Lipid Panel',
+                testType: 'Cholesterol Profile',
+                hospital: 'Nawaloka',
+                date: '22 Jan 2026',
+                dateObj: new Date(2026, 0, 22),
+                status: 'received',
+                values: [
+                    { name: 'Total Cholesterol', result: '185 mg/dL', normal: '<200' },
+                    { name: 'LDL', result: '110 mg/dL', normal: '<100' },
+                    { name: 'HDL', result: '45 mg/dL', normal: '>50' },
+                    { name: 'Triglycerides', result: '125 mg/dL', normal: '<150' }
+                ]
+            }
+        ];
+
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'received':
+                    return '<span class="lab-badge badge-received">✓ Received</span>';
+                case 'pending':
+                    return '<span class="lab-badge badge-pending">⏳ Pending</span>';
+                case 'processing':
+                    return '<span class="lab-badge badge-processing">⟳ Processing</span>';
+                default:
+                    return '';
+            }
+        }
+
+        function getStatusIcon(status) {
+            switch (status) {
+                case 'received': return '✓';
+                case 'pending': return '⏳';
+                case 'processing': return '⟳';
+                default: return '🧪';
+            }
+        }
+
+        function displayLabResults(results) {
+            const list = document.getElementById('labResultsList');
+            const empty = document.getElementById('emptyState');
+
+            if (!results || results.length === 0) {
+                list.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            list.innerHTML = results.map(lab => {
+                const hasValues = lab.values && lab.values.length > 0;
+                const valuesHtml = hasValues ? `
+                    <div class="lab-values">
+                        ${lab.values.map(v => `
+                            <div class="lab-value-item">
+                                <div class="lab-value-name">${v.name}</div>
+                                <div class="lab-value-result">${v.result} <span style="color: var(--text-light); font-size: 0.8rem;">(${v.normal})</span></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="lab-result-card ${lab.status === 'pending' ? 'pending' : ''}">
+                        <div class="lab-icon">${lab.status === 'received' ? '✓' : lab.status === 'processing' ? '⟳' : '⏳'}</div>
+                        <div class="lab-info">
+                            <div class="lab-title">${lab.name}</div>
+                            <div class="lab-details">
+                                <div class="lab-detail-item"><strong>Test:</strong> ${lab.testType}</div>
+                                <div class="lab-detail-item"><strong>Hospital:</strong> ${lab.hospital}</div>
+                                <div class="lab-detail-item"><i>📅</i> ${lab.date}</div>
+                            </div>
+                            ${valuesHtml}
+                        </div>
+                        <div class="lab-status">
+                            ${getStatusBadge(lab.status)}
+                            ${lab.status === 'received' ? `<button class="lab-btn download" onclick="downloadLabResult(${lab.id})">Download</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function downloadLabResult(id) {
+            const lab = mockLabResults.find(l => l.id === id);
+            if (lab) {
+                Toast.success(`✓ Downloading ${lab.name}...`);
+            }
+        }
+
+        function loadLabResults(filter = 'all') {
+            let filtered = mockLabResults;
+
+            if (filter === 'received') {
+                filtered = mockLabResults.filter(lab => lab.status === 'received');
+            } else if (filter === 'pending') {
+                filtered = mockLabResults.filter(lab => lab.status === 'pending' || lab.status === 'processing');
+            } else if (filter === 'this-month') {
+                const now = new Date();
+                const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                filtered = mockLabResults.filter(lab => lab.dateObj >= monthStart && lab.dateObj <= now);
+            } else if (filter === 'this-year') {
+                const now = new Date();
+                const yearStart = new Date(now.getFullYear(), 0, 1);
+                filtered = mockLabResults.filter(lab => lab.dateObj >= yearStart && lab.dateObj <= now);
+            }
+
+            // Sort by date (newest first)
+            filtered.sort((a, b) => b.dateObj - a.dateObj);
+            displayLabResults(filtered);
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadLabResults(btn.dataset.filter);
+                });
+            });
+        }
+
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // Set user name
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user && document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.name || 'User';
+            }
+
+            // Load lab results
+            loadLabResults();
+
+            // Setup filters
+            setupFilters();
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = mockLabResults.filter(lab =>
+                        lab.name.toLowerCase().includes(query) ||
+                        lab.testType.toLowerCase().includes(query) ||
+                        lab.hospital.toLowerCase().includes(query)
+                    );
+                    displayLabResults(filtered);
+                });
+            }
+
+            // Setup sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

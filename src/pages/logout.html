@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(147, 112, 219, 0.1) 0%, rgba(229, 127, 175, 0.1) 100%);
+        }
+
+        .logout-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            max-width: 500px;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .logout-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logout-title {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .logout-message {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .logout-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .logout-btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 140px;
+        }
+
+        .logout-btn.confirm {
+            background: var(--purple-primary);
+            color: white;
+        }
+
+        .logout-btn.confirm:hover {
+            background: #7a5bbd;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(147, 112, 219, 0.3);
+        }
+
+        .logout-btn.cancel {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--bg-light);
+        }
+
+        .logout-btn.cancel:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg-light);
+            border-top-color: var(--purple-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logout-status {
+            display: none;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .logout-status.success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #2e7d32;
+        }
+
+        .logout-status.error {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #d32f2f;
+        }
+
+        .login-link {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--bg-light);
+        }
+
+        .login-link a {
+            color: var(--purple-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196f3;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #1976d2;
+        }
+
+        @media (max-width: 640px) {
+            .logout-container {
+                padding: 40px 24px;
+            }
+
+            .logout-title {
+                font-size: 1.5rem;
+            }
+
+            .logout-actions {
+                flex-direction: column;
+            }
+
+            .logout-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logout-container">
+        <div class="logout-icon">👋</div>
+        <div class="logout-title">Leaving Already?</div>
+        <div class="logout-message">
+            Are you sure you want to logout from your PCOS Care Hub account? You can always log back in anytime.
+        </div>
+
+        <div class="info-box">
+            💡 Your data is saved securely. All your health information, appointments, and reports will be safely
+            stored.
+        </div>
+
+        <div id="logoutContent">
+            <div class="logout-actions">
+                <button class="logout-btn confirm" onclick="confirmLogout()">Yes, Logout</button>
+                <button class="logout-btn cancel" onclick="cancelLogout()">Cancel & Go Back</button>
+            </div>
+        </div>
+
+        <div class="loading-spinner" id="loadingSpinner"></div>
+
+        <div class="logout-status" id="logoutStatus"></div>
+
+        <div class="login-link">
+            See you soon! 👋<br>
+            <a href="login.html">Back to Login Page</a>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function confirmLogout() {
+            const content = document.getElementById('logoutContent');
+            const spinner = document.getElementById('loadingSpinner');
+            const status = document.getElementById('logoutStatus');
+
+            // Hide buttons and show loading
+            content.style.display = 'none';
+            spinner.style.display = 'block';
+
+            // Simulate logout process
+            setTimeout(() => {
+                // Clear auth data
+                if (typeof Auth !== 'undefined') {
+                    Auth.logout();
+                } else {
+                    // Clear localStorage as fallback
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('user_data');
+                    sessionStorage.clear();
+                }
+
+                // Show success message
+                spinner.style.display = 'none';
+                status.style.display = 'block';
+                status.className = 'logout-status success';
+                status.innerHTML = '<strong>✓ You have been logged out successfully!</strong><br><br>Redirecting to login page...';
+
+                // Redirect to login page
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }, 1500);
+        }
+
+        function cancelLogout() {
+            // Go back to patient dashboard
+            window.history.back();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cancelLogout();
+            }
+        });
+
+        // Initialize page
+        function initPage() {
+            // Check if already logged in
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (!user) {
+                // Not logged in, redirect to login
+                window.location.href = 'login.html';
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

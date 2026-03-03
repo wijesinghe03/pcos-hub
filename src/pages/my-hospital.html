@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Hospital — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .hospital-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hospital-card {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .hospital-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: 0 4px 16px rgba(147, 112, 219, 0.1);
+        }
+
+        .hospital-card.active {
+            border-color: var(--purple-primary);
+            background: rgba(147, 112, 219, 0.02);
+        }
+
+        .hospital-info {
+            display: grid;
+            gap: 16px;
+        }
+
+        .hospital-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .hospital-icon {
+            font-size: 3rem;
+            width: 80px;
+            text-align: center;
+        }
+
+        .hospital-details {
+            display: grid;
+            gap: 12px;
+        }
+
+        .hospital-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .hospital-detail-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .hospital-detail-icon {
+            font-size: 1.1rem;
+            width: 24px;
+            flex-shrink: 0;
+        }
+
+        .hospital-detail-text {
+            display: grid;
+            gap: 2px;
+        }
+
+        .hospital-detail-label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .hospital-detail-value {
+            color: var(--text-light);
+        }
+
+        .hospital-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hospital-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text-dark);
+        }
+
+        .hospital-btn:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+        }
+
+        .hospital-btn.primary {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+        }
+
+        .hospital-btn.primary:hover {
+            opacity: 0.9;
+        }
+
+        .hospital-list {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .form-section {
+            background: rgba(147, 112, 219, 0.05);
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .doctor-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .doctor-item {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 6px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .doctor-item:hover {
+            border-color: var(--purple-primary);
+            background: rgba(147, 112, 219, 0.02);
+        }
+
+        .doctor-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        .doctor-info {
+            display: grid;
+            gap: 4px;
+        }
+
+        .doctor-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .doctor-specialty {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .contact-section {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 6px;
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .contact-text {
+            display: grid;
+            gap: 2px;
+        }
+
+        .contact-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .contact-value {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(147, 112, 219, 0.1);
+            color: var(--purple-primary);
+        }
+
+        @media (max-width: 640px) {
+            .hospital-header {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .hospital-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hospital-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" href="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item active" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>My Hospital</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" id="searchInput" placeholder="Search hospitals…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="hospital-container">
+                <!-- Current Hospital Section -->
+                <div id="hospitalListSection">
+                    <div class="hospital-list" id="hospitalList">
+                        <!-- Hospitals will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Add/Register Hospital Section -->
+                <div class="form-section">
+                    <div class="form-title"><i>➕</i> Register New Hospital</div>
+                    <form id="hospitalForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hospitalName">Hospital Name *</label>
+                                <input type="text" id="hospitalName" placeholder="e.g., City Hospital" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location/City *</label>
+                                <input type="text" id="location" placeholder="e.g., Colombo" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" placeholder="e.g., +94 11 234 5678" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="e.g., info@hospital.lk">
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="address">Full Address *</label>
+                                <textarea id="address" placeholder="Enter complete hospital address..."
+                                    required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctorName">Your Doctor Name</label>
+                                <input type="text" id="doctorName" placeholder="e.g., Dr. Silva">
+                            </div>
+                            <div class="form-group">
+                                <label for="specialty">Doctor Specialty</label>
+                                <select id="specialty">
+                                    <option value="">Select specialty...</option>
+                                    <option value="Gynecologist">Gynecologist</option>
+                                    <option value="Endocrinologist">Endocrinologist</option>
+                                    <option value="General Practitioner">General Practitioner</option>
+                                    <option value="Reproductive Specialist">Reproductive Specialist</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="notes">Additional Notes</label>
+                                <textarea id="notes"
+                                    placeholder="Add any additional information about this hospital..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Register Hospital</button>
+                            <button type="reset" class="btn btn-ghost">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState" style="display:none">
+                    <div class="empty-state-icon">🏥</div>
+                    <p>No hospitals registered yet</p>
+                    <p style="font-size:0.9rem;margin-top:8px">Register your hospital using the form below</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Mock data for hospitals
+        let mockHospitals = [
+            {
+                id: 1,
+                name: 'City Hospital',
+                location: 'Colombo',
+                phone: '+94 11 234 5678',
+                email: 'info@cityhospital.lk',
+                address: '456 Main Street, Colombo 03, Sri Lanka',
+                doctor: 'Dr. Silva',
+                specialty: 'Gynecologist',
+                notes: 'Primary hospital for regular checkups',
+                isActive: true
+            },
+            {
+                id: 2,
+                name: 'Nawaloka Hospital',
+                location: 'Colombo',
+                phone: '+94 11 765 4321',
+                email: 'appointments@nawaloka.lk',
+                address: '123 Hospital Lane, Colombo 02, Sri Lanka',
+                doctor: 'Dr. Mendis',
+                specialty: 'Endocrinologist',
+                notes: 'Specialist consultations for hormone management',
+                isActive: false
+            }
+        ];
+
+        function displayHospitals(hospitals) {
+            const list = document.getElementById('hospitalList');
+            const empty = document.getElementById('emptyState');
+            const section = document.getElementById('hospitalListSection');
+
+            if (!hospitals || hospitals.length === 0) {
+                list.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            list.innerHTML = hospitals.map(hospital => `
+                <div class="hospital-card ${hospital.isActive ? 'active' : ''}">
+                    <div class="hospital-header">
+                        <div class="hospital-icon">🏥</div>
+                        <div class="hospital-details">
+                            <div class="hospital-name">${hospital.name}</div>
+                            <div class="hospital-detail-item">
+                                <div class="hospital-detail-icon">📍</div>
+                                <div class="hospital-detail-text">
+                                    <div class="hospital-detail-label">Location</div>
+                                    <div class="hospital-detail-value">${hospital.location}</div>
+                                </div>
+                            </div>
+                            <div class="hospital-detail-item">
+                                <div class="hospital-detail-icon">🏠</div>
+                                <div class="hospital-detail-text">
+                                    <div class="hospital-detail-label">Address</div>
+                                    <div class="hospital-detail-value">${hospital.address}</div>
+                                </div>
+                            </div>
+                            ${hospital.doctor ? `
+                                <div class="hospital-detail-item">
+                                    <div class="hospital-detail-icon">👨‍⚕️</div>
+                                    <div class="hospital-detail-text">
+                                        <div class="hospital-detail-label">Doctor</div>
+                                        <div class="hospital-detail-value">${hospital.doctor} - ${hospital.specialty}</div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div>
+                            ${hospital.isActive ? '<span class="badge badge-primary">✓ Primary</span>' : ''}
+                        </div>
+                    </div>
+
+                    <div class="contact-section">
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-text">
+                                <div class="contact-label">Phone</div>
+                                <div class="contact-value">${hospital.phone}</div>
+                            </div>
+                        </div>
+                        ${hospital.email ? `
+                            <div class="contact-item">
+                                <div class="contact-icon">✉️</div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Email</div>
+                                    <div class="contact-value">${hospital.email}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${hospital.notes ? `
+                            <div class="contact-item">
+                                <div class="contact-icon">📝</div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Notes</div>
+                                    <div class="contact-value">${hospital.notes}</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="hospital-actions">
+                        ${!hospital.isActive ? `<button class="hospital-btn primary" onclick="setAsActive(${hospital.id})">Set as Primary</button>` : ''}
+                        <button class="hospital-btn" onclick="editHospital(${hospital.id})">Edit</button>
+                        <button class="hospital-btn" onclick="deleteHospital(${hospital.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setAsActive(id) {
+            mockHospitals.forEach(h => h.isActive = h.id === id);
+            loadHospitals();
+            Toast.success('✓ Hospital set as primary!');
+        }
+
+        function editHospital(id) {
+            Toast.info('Edit feature coming soon!');
+        }
+
+        function deleteHospital(id) {
+            if (confirm('Are you sure you want to remove this hospital?')) {
+                mockHospitals = mockHospitals.filter(h => h.id !== id);
+                loadHospitals();
+                Toast.success('✓ Hospital removed!');
+            }
+        }
+
+        function loadHospitals() {
+            displayHospitals(mockHospitals);
+        }
+
+        function setupHospitalForm() {
+            const form = document.getElementById('hospitalForm');
+            if (!form) return;
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const hospitalName = document.getElementById('hospitalName').value;
+                const location = document.getElementById('location').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const address = document.getElementById('address').value;
+                const doctorName = document.getElementById('doctorName').value;
+                const specialty = document.getElementById('specialty').value;
+                const notes = document.getElementById('notes').value;
+
+                const newHospital = {
+                    id: mockHospitals.length + 1,
+                    name: hospitalName,
+                    location,
+                    phone,
+                    email,
+                    address,
+                    doctor: doctorName,
+                    specialty,
+                    notes,
+                    isActive: false
+                };
+
+                mockHospitals.push(newHospital);
+                loadHospitals();
+                form.reset();
+                Toast.success('✓ Hospital registered successfully!');
+            });
+        }
+
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // Set user name
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user && document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.name || 'User';
+            }
+
+            // Load hospitals
+            loadHospitals();
+
+            // Setup form
+            setupHospitalForm();
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = mockHospitals.filter(h =>
+                        h.name.toLowerCase().includes(query) ||
+                        h.location.toLowerCase().includes(query) ||
+                        h.phone.toLowerCase().includes(query)
+                    );
+                    displayHospitals(filtered);
+                });
+            }
+
+            // Setup sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

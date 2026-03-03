@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Account Type — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+    <style>
+        .signup-choice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f0ff 0%, #f0f9ff 100%);
+        }
+
+        .choice-wrapper {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .choice-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .choice-header h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .choice-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .choice-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .choice-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+        }
+
+        .choice-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+            border-color: #e91e63;
+        }
+
+        .choice-card.patient:hover {
+            border-color: #e91e63;
+        }
+
+        .choice-card.hospital:hover {
+            border-color: #2196f3;
+        }
+
+        .choice-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .choice-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .choice-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .choice-features {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .choice-feature {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .choice-feature:last-child {
+            margin-bottom: 0;
+        }
+
+        .choice-feature::before {
+            content: "✓";
+            display: inline-block;
+            width: 20px;
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .choice-btn {
+            display: inline-block;
+            padding: 12px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .choice-btn.patient {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+        }
+
+        .choice-btn.patient:hover {
+            background: linear-gradient(135deg, #c2185b, #a01550);
+        }
+
+        .choice-btn.hospital {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+        }
+
+        .choice-btn.hospital:hover {
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+        }
+
+        .choice-signin {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        .choice-signin a {
+            color: #2196f3;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .choice-signin a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .choice-cards {
+                gap: 20px;
+            }
+
+            .choice-card {
+                padding: 30px 20px;
+            }
+
+            .choice-header {
+                margin-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <div class="signup-choice-container">
+        <div class="choice-wrapper">
+            <div class="choice-header">
+                <a href="index.html" style="display: inline-block; margin-bottom: 30px; text-decoration: none;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 24px; color: #1a1a2e;">
+                        <span style="font-size: 30px;">♥</span>
+                        <span style="font-weight: 700;">PCOS Care Hub</span>
+                    </div>
+                </a>
+                <h1>Choose Your Account Type</h1>
+                <p>Sign up as a patient or healthcare provider to get started</p>
+            </div>
+
+            <div class="choice-cards">
+                <!-- Patient Card -->
+                <div class="choice-card patient">
+                    <span class="choice-icon">👩‍⚕️</span>
+                    <div class="choice-title">Patient</div>
+                    <div class="choice-desc">Manage your PCOS journey with comprehensive tools and resources</div>
+
+                    <div class="choice-features">
+                        <div class="choice-feature">Track symptoms & cycles</div>
+                        <div class="choice-feature">Secure health records</div>
+                        <div class="choice-feature">Connect with hospitals</div>
+                        <div class="choice-feature">Always free to use</div>
+                    </div>
+
+                    <a href="signup-patient.html" class="choice-btn patient">Sign Up as Patient</a>
+                </div>
+
+                <!-- Hospital Card -->
+                <div class="choice-card hospital">
+                    <span class="choice-icon">🏥</span>
+                    <div class="choice-title">Hospital/Clinic</div>
+                    <div class="choice-desc">Connect with patients and improve PCOS care coordination</div>
+
+                    <div class="choice-features">
+                        <div class="choice-feature">Access patient records</div>
+                        <div class="choice-feature">Better coordination</div>
+                        <div class="choice-feature">HIPAA compliant</div>
+                        <div class="choice-feature">Manage appointments</div>
+                    </div>
+
+                    <a href="signup-hospital.html" class="choice-btn hospital">Sign Up as Hospital</a>
+                </div>
+            </div>
+
+            <div class="choice-signin">
+                Already have an account? <a href="login.html">Sign in here</a> | <a href="index.html">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/utils.js"></script>
+</body>
+
+</html>

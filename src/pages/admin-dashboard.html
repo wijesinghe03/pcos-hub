@@ -1,281 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard — PCOS Care Hub</title>
-  <link rel="stylesheet" href="../../src/styles/global.css"/>
-  <link rel="stylesheet" href="../../src/styles/dashboard.css"/>
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
+<div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
+<button class="sidebar-toggle" id="sidebarToggle">☰</button>
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
 
-<nav class="navbar">
-  <div class="navbar-logo"><span>⚙️</span> PCOS Care Hub</div>
-  <div class="navbar-links">
-    <a href="../../index.html" class="nav-link">Home</a>
-    <a href="patient-dashboard.html" class="nav-link">Patient</a>
-    <a href="hospital-dashboard.html" class="nav-link">Hospital</a>
-    <a href="admin-dashboard.html" class="nav-link active">Admin</a>
-    <button class="nav-btn-login" style="background:rgba(0,137,123,0.3);" onclick="showToast('Logged out','success')">Logout</button>
-  </div>
-</nav>
-
-<div class="dash-layout">
-  <aside class="sidebar sidebar-admin">
-    <div class="sidebar-header">
-      <div class="title">⚙️ Admin Panel</div>
-      <div class="sub">System Administrator</div>
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-logo">
+      <div class="sidebar-logo-icon">♥</div>
+      <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+    </a>
+    <div class="sidebar-profile">
+      <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+      <div>
+        <div class="sidebar-name">Admin User</div>
+        <div class="sidebar-role">System Administrator</div>
+      </div>
     </div>
-    <nav>
-      <div class="sidebar-item active" data-page="overview">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        Dashboard
-      </div>
-      <div class="sidebar-item" data-page="hospitals">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
-        Hospitals
-      </div>
-      <div class="sidebar-item" data-page="users">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        User Management
-      </div>
-      <div class="sidebar-item" data-page="register">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Register Hospital
-      </div>
-      <div class="sidebar-item" data-page="system">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        System Settings
-      </div>
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-item" onclick="window.location="../../index.html"">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Back to Home
-      </div>
-    </nav>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <a class="sidebar-item active" href="admin-dashboard.html"><i>🏠</i> Dashboard</a>
+      <a class="sidebar-item" href="#"><i>📊</i> Analytics</a>
+      <a class="sidebar-item" href="#"><i>📋</i> System Logs</a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Management</span>
+      <a class="sidebar-item" href="#"><i>👥</i> Manage Users<span class="sidebar-badge">5</span></a>
+      <a class="sidebar-item" href="#"><i>🏥</i> Manage Hospitals<span class="sidebar-badge">2</span></a>
+      <a class="sidebar-item" href="#"><i>✅</i> Approve Hospital</a>
+      <a class="sidebar-item" href="#"><i>🔐</i> Roles & Permissions</a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">System</span>
+      <a class="sidebar-item" href="#"><i>⚙️</i> Configuration</a>
+      <a class="sidebar-item" href="#"><i>🛡️</i> Security</a>
+      <a class="sidebar-item" href="#" onclick="Auth.logout()"><i>🚪</i> Logout</a>
+    </div>
   </aside>
 
-  <main class="main-content">
+  <!-- MAIN -->
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div class="dash-page-title">
+        <h2>Admin Dashboard</h2>
+        <p id="dateDisplay">Loading...</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-search">
+          <i>🔍</i>
+          <input type="text" placeholder="Search users, hospitals…">
+        </div>
+        <button class="topbar-icon-btn">🔔<span class="notif-dot"></span></button>
+      </div>
+    </div>
 
-    <!-- ════ OVERVIEW ════ -->
-    <div id="page-overview" class="dash-page">
-      <div class="greeting-card" style="background:linear-gradient(135deg,#1B5E20 0%,#004D40 100%);">
-        <h2>System Overview ⚙️</h2>
-        <p>PCOS Care Hub — Platform Administration</p>
-        <div class="greeting-meta">
-          <div class="meta-item">📅 Feb 22, 2026</div>
-          <div class="meta-item">🟢 System Healthy</div>
-          <div class="meta-item">🏥 14 Hospitals Active</div>
+    <!-- Stats -->
+    <div class="dash-stats">
+      <div class="dash-stat-card reveal">
+        <div class="stat-card-icon purple">👤</div>
+        <div>
+          <div class="stat-card-value">250</div>
+          <div class="stat-card-label">Total Patients</div>
+          <div class="stat-card-change up">↑ 12 this week</div>
+        </div>
+      </div>
+      <div class="dash-stat-card reveal reveal-delay-1">
+        <div class="stat-card-icon blue">🏥</div>
+        <div>
+          <div class="stat-card-value">15</div>
+          <div class="stat-card-label">Hospitals</div>
+          <div class="stat-card-change orange">↑ 2 pending approval</div>
+        </div>
+      </div>
+      <div class="dash-stat-card reveal reveal-delay-2">
+        <div class="stat-card-icon green">⚙️</div>
+        <div>
+          <div class="stat-card-value">3</div>
+          <div class="stat-card-label">Admins</div>
+          <div class="stat-card-change up">→ Active</div>
+        </div>
+      </div>
+      <div class="dash-stat-card reveal reveal-delay-3">
+        <div class="stat-card-icon orange">⚠️</div>
+        <div>
+          <div class="stat-card-value">2</div>
+          <div class="stat-card-label">Pending Approvals</div>
+          <div class="stat-card-change down">↓ Action required</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Approvals + User Management -->
+    <div class="dash-grid-2">
+      <!-- Pending Hospital Approvals -->
+      <div class="dash-panel reveal">
+        <div class="panel-header">
+          <div class="panel-title"><i>✅</i> Pending Hospital Approvals</div>
+          <a class="panel-action" href="#">View All →</a>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>Hospital Name</th><th>Location</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Premier Hospital Group</strong></td>
+              <td class="td-light">Colombo 07</td>
+              <td><span class="badge badge-orange">Pending</span></td>
+              <td style="display:flex;gap:6px">
+                <button class="btn btn-primary btn-sm" onclick="approveHospital(this, 'Premier Hospital')">Approve</button>
+                <button class="btn btn-outline btn-sm" style="color:var(--red-accent);border-color:var(--red-accent)" onclick="rejectHospital(this)">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Patient Group Hospital</strong></td>
+              <td class="td-light">Kandy</td>
+              <td><span class="badge badge-orange">Pending</span></td>
+              <td style="display:flex;gap:6px">
+                <button class="btn btn-primary btn-sm" onclick="approveHospital(this, 'Patient Group')">Approve</button>
+                <button class="btn btn-outline btn-sm" style="color:var(--red-accent);border-color:var(--red-accent)" onclick="rejectHospital(this)">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- System Statistics -->
+      <div class="dash-panel reveal reveal-delay-1">
+        <div class="panel-header">
+          <div class="panel-title"><i>📊</i> System Statistics</div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Server Uptime</span><span style="color:var(--green-accent)">99.8%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" data-width="99.8%" style="width:0"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Storage Used</span><span style="color:var(--orange-accent)">62%</span></div>
+          <div class="progress-bar"><div class="progress-fill orange" data-width="62%" style="width:0"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Active Users (Today)</span><span style="color:var(--purple-primary)">78%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="78%" style="width:0"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-header"><span>Reports Processed</span><span style="color:var(--green-accent)">91%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" data-width="91%" style="width:0"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Management + Activity Logs -->
+    <div class="dash-grid-2">
+      <!-- Recent Users -->
+      <div class="dash-panel reveal">
+        <div class="panel-header">
+          <div class="panel-title"><i>👥</i> Recent Users</div>
+          <a class="panel-action" href="#">Manage All →</a>
+        </div>
+        <table class="dash-table">
+          <thead><tr><th>User</th><th>Role</th><th>Joined</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Amanda Perera</strong><div class="td-light">amanda@email.com</div></td>
+              <td><span class="badge badge-purple">Patient</span></td>
+              <td class="td-light">20 Feb 2026</td>
+              <td><span class="badge badge-green">Active</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="Toast.success('Opening user profile...')">View</button></td>
+            </tr>
+            <tr>
+              <td><strong>City Hospital</strong><div class="td-light">admin@cityhospital.lk</div></td>
+              <td><span class="badge" style="background:#dbeafe;color:#1e40af">Hospital</span></td>
+              <td class="td-light">15 Jan 2026</td>
+              <td><span class="badge badge-green">Active</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="Toast.success('Opening hospital profile...')">View</button></td>
+            </tr>
+            <tr>
+              <td><strong>Nimesha Rathnayake</strong><div class="td-light">nimesha@email.com</div></td>
+              <td><span class="badge badge-purple">Patient</span></td>
+              <td class="td-light">24 Feb 2026</td>
+              <td><span class="badge badge-orange">Pending</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="activateUser(this)">Activate</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="Toast.success('Opening add user form...')">+ Add User</button>
+          <button class="btn btn-outline btn-sm" onclick="Toast.success('Exporting user data...')">Export CSV</button>
         </div>
       </div>
 
-      <div class="stats-row">
-        <div class="stat-card" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);">
-          <div class="stat-num">14</div><div class="stat-label">Registered Hospitals</div>
+      <!-- Activity Logs -->
+      <div class="dash-panel reveal reveal-delay-1">
+        <div class="panel-header">
+          <div class="panel-title"><i>🕐</i> Recent Activities</div>
+          <a class="panel-action" href="#">Full Logs →</a>
         </div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#004D40,#00897B);">
-          <div class="stat-num">1,247</div><div class="stat-label">Total Patients</div>
-        </div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#1A237E,#1565C0);">
-          <div class="stat-num">38</div><div class="stat-label">Reports Today</div>
-        </div>
-        <div class="stat-card" style="background:linear-gradient(135deg,#880E4F,#C2185B);">
-          <div class="stat-num">99.8%</div><div class="stat-label">System Uptime</div>
-        </div>
-      </div>
-
-      <div class="dash-grid-eq">
-        <div class="card">
-          <strong style="font-size:15px;display:block;margin-bottom:14px;">Recent System Activity</strong>
+        <div class="activity-feed">
           <div class="activity-item">
-            <div class="activity-icon-wrap" style="background:#E8F5E9;"><svg width="16" height="16" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
-            <div style="flex:1;"><div class="a-title">New hospital registered</div><div class="a-detail">Nawaloka Hospital, Colombo</div></div>
-            <div class="a-time">2h ago</div>
+            <div class="activity-dot-wrap"><div class="activity-dot" style="background:var(--green-accent)"></div><div class="activity-line"></div></div>
+            <div><div class="activity-text">Hospital <strong>Nawaloka</strong> approved by admin</div><div class="activity-time">Today, 09:15 AM</div></div>
           </div>
           <div class="activity-item">
-            <div class="activity-icon-wrap" style="background:#E3F2FD;"><svg width="16" height="16" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
-            <div style="flex:1;"><div class="a-title">New patient account</div><div class="a-detail">Sanduni P. · PCH-143</div></div>
-            <div class="a-time">3h ago</div>
+            <div class="activity-dot-wrap"><div class="activity-dot" style="background:var(--purple-primary)"></div><div class="activity-line"></div></div>
+            <div><div class="activity-text">New patient registered: <strong>Nimesha R.</strong></div><div class="activity-time">Today, 08:42 AM</div></div>
           </div>
           <div class="activity-item">
-            <div class="activity-icon-wrap" style="background:#FCE4EC;"><svg width="16" height="16" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
-            <div style="flex:1;"><div class="a-title">Report uploaded</div><div class="a-detail">PCH-142 · Lab Result · Lanka Hospital</div></div>
-            <div class="a-time">4h ago</div>
+            <div class="activity-dot-wrap"><div class="activity-dot" style="background:var(--orange-accent)"></div><div class="activity-line"></div></div>
+            <div><div class="activity-text">System backup completed successfully</div><div class="activity-time">25 Feb, 11:59 PM</div></div>
           </div>
           <div class="activity-item">
-            <div class="activity-icon-wrap" style="background:#E0F2F1;"><svg width="16" height="16" fill="none" stroke="var(--teal)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <div style="flex:1;"><div class="a-title">Daily system backup</div><div class="a-detail">Completed successfully · 02:00 AM</div></div>
-            <div class="a-time">6h ago</div>
+            <div class="activity-dot-wrap"><div class="activity-dot" style="background:var(--red-accent)"></div><div class="activity-line"></div></div>
+            <div><div class="activity-text">Failed login attempt — IP blocked</div><div class="activity-time">25 Feb, 3:22 PM</div></div>
           </div>
-        </div>
-
-        <div class="card">
-          <strong style="font-size:15px;display:block;margin-bottom:14px;">Platform Growth (Hospitals)</strong>
-          <div class="mini-bar-wrap" id="growthChart"></div>
-          <div style="font-size:12px;color:var(--text-light);margin-top:8px;text-align:center;">Registered hospitals by month</div>
-          <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px;">
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;"><span>Patient Records Encrypted</span><span style="color:var(--green);font-weight:700;">100%</span></div>
-              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%;background:var(--teal);"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;"><span>2FA Adoption Rate</span><span style="color:var(--secondary);font-weight:700;">98%</span></div>
-              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:98%;background:var(--secondary);"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;"><span>System Uptime This Month</span><span style="color:var(--green);font-weight:700;">99.8%</span></div>
-              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:99.8%;background:var(--green);"></div></div>
-            </div>
+          <div class="activity-item">
+            <div class="activity-dot-wrap"><div class="activity-dot" style="background:var(--teal-accent)"></div></div>
+            <div><div class="activity-text"><strong>Premier Hospital</strong> submitted for approval</div><div class="activity-time">25 Feb, 10:00 AM</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ════ HOSPITALS ════ -->
-    <div id="page-hospitals" class="dash-page" style="display:none;">
-      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
-        <div><h2>Registered Hospitals</h2><p>All hospitals on the PCOS Care Hub platform</p></div>
-        <button class="btn btn-teal btn-sm" onclick="showPage('register')">+ Register Hospital</button>
+    <!-- Hospitals Table -->
+    <div class="dash-panel reveal">
+      <div class="panel-header">
+        <div class="panel-title"><i>🏥</i> Registered Hospitals</div>
+        <a class="panel-action" href="#">View All →</a>
       </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Hospital ID</th><th>Name</th><th>Province</th><th>Contact</th><th>PCOS Patients</th><th>Status</th><th>Action</th></tr></thead>
-            <tbody>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-001</span></td><td><strong>Colombo General Hospital</strong></td><td>Western</td><td>011-123-4567</td><td>142</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-002</span></td><td><strong>Lanka Hospital</strong></td><td>Western</td><td>011-234-5678</td><td>98</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-003</span></td><td><strong>Nawaloka Hospital</strong></td><td>Western</td><td>011-345-6789</td><td>87</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-004</span></td><td><strong>Teaching Hospital Kandy</strong></td><td>Central</td><td>081-456-7890</td><td>64</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-005</span></td><td><strong>Karapitiya Teaching Hospital</strong></td><td>Southern</td><td>091-567-8901</td><td>43</td><td><span class="badge badge-warning">Pending</span></td><td><button class="btn btn-primary btn-sm" onclick="showToast('Hospital activated ✓','success')">Activate</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-006</span></td><td><strong>Jaffna Teaching Hospital</strong></td><td>Northern</td><td>021-678-9012</td><td>28</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">H-007</span></td><td><strong>Base Hospital Badulla</strong></td><td>Uva</td><td>055-789-0123</td><td>19</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <table class="dash-table">
+        <thead><tr><th>Hospital</th><th>Location</th><th>Patients</th><th>Joined</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>City Hospital</strong></td>
+            <td class="td-light">Colombo 03</td>
+            <td>85</td>
+            <td class="td-light">Jan 2025</td>
+            <td><span class="badge badge-green">Active</span></td>
+            <td><button class="btn btn-outline btn-sm">Manage</button></td>
+          </tr>
+          <tr>
+            <td><strong>Nawaloka Hospital</strong></td>
+            <td class="td-light">Colombo 02</td>
+            <td>62</td>
+            <td class="td-light">Mar 2025</td>
+            <td><span class="badge badge-green">Active</span></td>
+            <td><button class="btn btn-outline btn-sm">Manage</button></td>
+          </tr>
+          <tr>
+            <td><strong>Lanka Hospital</strong></td>
+            <td class="td-light">Colombo 05</td>
+            <td>48</td>
+            <td class="td-light">Jun 2025</td>
+            <td><span class="badge badge-green">Active</span></td>
+            <td><button class="btn btn-outline btn-sm">Manage</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <!-- ════ USERS ════ -->
-    <div id="page-users" class="dash-page" style="display:none;">
-      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
-        <div><h2>User Management</h2><p>All registered users on the platform</p></div>
-        <input class="form-input" style="width:220px;" placeholder="Search users..." oninput="filterTable(this,'userTable')"/>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table id="userTable">
-            <thead><tr><th>User ID</th><th>Name</th><th>Role</th><th>Email</th><th>Hospital</th><th>Joined</th><th>Status</th><th>Action</th></tr></thead>
-            <tbody>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-001</span></td><td><strong>Nimasha Perera</strong></td><td><span class="badge badge-pink">Patient</span></td><td>nimasha@email.com</td><td>Colombo General</td><td>Jan 2026</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-002</span></td><td><strong>Dr. Kumari Silva</strong></td><td><span class="badge badge-purple">Hospital Staff</span></td><td>k.silva@cgh.lk</td><td>Colombo General</td><td>Dec 2025</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-003</span></td><td><strong>Sithara Randeniya</strong></td><td><span class="badge badge-pink">Patient</span></td><td>sithara@email.com</td><td>Lanka Hospital</td><td>Feb 2026</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-004</span></td><td><strong>System Admin</strong></td><td><span class="badge badge-teal">Admin</span></td><td>admin@pcoscHub.lk</td><td>—</td><td>Oct 2025</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-005</span></td><td><strong>Dr. Asha Fernando</strong></td><td><span class="badge badge-purple">Hospital Staff</span></td><td>a.fernando@cgh.lk</td><td>Colombo General</td><td>Nov 2025</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
-              <tr><td><span style="color:var(--teal);font-weight:700;">U-006</span></td><td><strong>Kavindi Madushan</strong></td><td><span class="badge badge-pink">Patient</span></td><td>kavindi@email.com</td><td>Colombo General</td><td>Sep 2025</td><td><span class="badge badge-warning">Inactive</span></td><td><button class="btn btn-primary btn-sm" onclick="showToast('User reactivated ✓','success')">Reactivate</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════ REGISTER HOSPITAL ════ -->
-    <div id="page-register" class="dash-page" style="display:none;">
-      <div class="page-header"><h2>Register New Hospital</h2><p>Add a new hospital to the PCOS Care Hub platform</p></div>
-      <div class="card" style="max-width:600px;">
-        <div class="dash-grid-eq" style="margin-bottom:0;">
-          <div class="form-group"><label class="form-label">Hospital Name</label><input class="form-input" placeholder="e.g. Colombo General Hospital"/></div>
-          <div class="form-group"><label class="form-label">Registration Number</label><input class="form-input" placeholder="e.g. REG-2026-015"/></div>
-        </div>
-        <div class="dash-grid-eq" style="margin-bottom:0;">
-          <div class="form-group"><label class="form-label">Province</label>
-            <select class="form-select">
-              <option>Western Province</option><option>Central Province</option><option>Southern Province</option>
-              <option>Northern Province</option><option>Eastern Province</option><option>North Western Province</option>
-              <option>North Central Province</option><option>Uva Province</option><option>Sabaragamuwa Province</option>
-            </select>
-          </div>
-          <div class="form-group"><label class="form-label">District</label><input class="form-input" placeholder="e.g. Colombo"/></div>
-        </div>
-        <div class="form-group"><label class="form-label">Full Address</label><input class="form-input" placeholder="Street address of the hospital"/></div>
-        <div class="dash-grid-eq" style="margin-bottom:0;">
-          <div class="form-group"><label class="form-label">Contact Number</label><input class="form-input" type="tel" placeholder="+94 xx xxx xxxx"/></div>
-          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="hospital@example.com"/></div>
-        </div>
-        <div class="form-group"><label class="form-label">Admin Contact Person</label><input class="form-input" placeholder="Name of the hospital admin contact"/></div>
-        <div class="form-group"><label class="form-label">Hospital Type</label>
-          <select class="form-select">
-            <option>Government Teaching Hospital</option><option>Government Base Hospital</option>
-            <option>Private Hospital</option><option>Private Specialist Clinic</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Available PCOS Services</label>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" checked/> Gynecology</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" checked/> Endocrinology</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox"/> Fertility Clinic</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" checked/> Laboratory</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" checked/> Ultrasound/Radiology</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox"/> Nutrition & Dietitian</label>
-          </div>
-        </div>
-        <button class="btn btn-teal" onclick="showToast('Hospital registered successfully! ✓','success')">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          Register Hospital
-        </button>
-      </div>
-    </div>
-
-    <!-- ════ SYSTEM ════ -->
-    <div id="page-system" class="dash-page" style="display:none;">
-      <div class="page-header"><h2>System Settings & Health</h2><p>Monitor platform performance, security, and storage</p></div>
-      <div class="dash-grid-eq">
-        <div class="card" style="border-left:4px solid var(--teal);">
-          <strong style="font-size:14px;color:var(--teal);display:block;margin-bottom:14px;">🗄️ Database Backup</strong>
-          <div style="font-size:13px;color:var(--text-light);line-height:2.2;">
-            ✅ Last backup: <strong style="color:var(--text);">Feb 22, 2026 · 02:00 AM</strong><br>
-            ✅ Status: <strong style="color:var(--green);">Healthy</strong><br>
-            ✅ Backup frequency: <strong style="color:var(--text);">Daily automatic</strong><br>
-            ✅ Retention: <strong style="color:var(--text);">30 days</strong>
-          </div>
-          <button class="btn btn-teal btn-sm" style="margin-top:12px;" onclick="showToast('Manual backup triggered ✓','success')">Run Manual Backup</button>
-        </div>
-        <div class="card" style="border-left:4px solid var(--blue);">
-          <strong style="font-size:14px;color:var(--blue);display:block;margin-bottom:14px;">⚡ System Performance</strong>
-          <div style="font-size:13px;color:var(--text-light);line-height:2.2;">
-            ✅ Avg response time: <strong style="color:var(--text);">1.2 seconds</strong><br>
-            ✅ Monthly uptime: <strong style="color:var(--green);">99.8%</strong><br>
-            ✅ Active sessions now: <strong style="color:var(--text);">47 users</strong><br>
-            ✅ API calls today: <strong style="color:var(--text);">3,842</strong>
-          </div>
-        </div>
-        <div class="card" style="border-left:4px solid var(--primary);">
-          <strong style="font-size:14px;color:var(--primary);display:block;margin-bottom:14px;">🔒 Security Logs</strong>
-          <div style="font-size:13px;color:var(--text-light);line-height:2.2;">
-            ✅ Failed logins today: <strong style="color:var(--text);">2</strong> (flagged)<br>
-            ✅ 2FA enabled: <strong style="color:var(--green);">98% of accounts</strong><br>
-            ✅ Last security scan: <strong style="color:var(--text);">6 hours ago</strong><br>
-            ✅ SSL certificate: <strong style="color:var(--green);">Valid (expires Dec 2026)</strong>
-          </div>
-          <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="showToast('Security scan initiated ✓','success')">Run Security Scan</button>
-        </div>
-        <div class="card" style="border-left:4px solid var(--secondary);">
-          <strong style="font-size:14px;color:var(--secondary);display:block;margin-bottom:14px;">💾 Storage Usage</strong>
-          <div style="font-size:13px;margin-bottom:12px;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--text-light);">Reports & PDFs</span><span style="font-weight:700;">6.2 GB</span></div>
-            <div class="progress-bar-wrap" style="margin-bottom:10px;"><div class="progress-bar-fill" style="width:62%;background:var(--primary);"></div></div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--text-light);">Images & Scans</span><span style="font-weight:700;">5.8 GB</span></div>
-            <div class="progress-bar-wrap" style="margin-bottom:10px;"><div class="progress-bar-fill" style="width:58%;background:var(--secondary);"></div></div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--text-light);">Total Used</span><span style="font-weight:700;">12.4 / 50 GB</span></div>
-            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:24.8%;background:var(--teal);"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </main>
 </div>
 
-<div id="toast" class="toast" style="display:none;"></div>
-<script src="../../src/scripts/admin-dashboard.js"></script>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../assets/js/utils.js"></script>
+<script src="../../assets/js/dashboard.js"></script>
+<script>
+function approveHospital(btn, name) {
+  const row = btn.closest('tr');
+  row.querySelector('.badge').className = 'badge badge-green';
+  row.querySelector('.badge').textContent = 'Approved';
+  btn.parentElement.innerHTML = '<span style="color:var(--green-accent);font-weight:700">✓ Approved</span>';
+  Toast.success(`${name} has been approved!`);
+}
+function rejectHospital(btn) {
+  const row = btn.closest('tr');
+  btn.parentElement.innerHTML = '<span style="color:var(--red-accent);font-weight:700">✕ Rejected</span>';
+  Toast.warning('Hospital application rejected.');
+}
+function activateUser(btn) {
+  const row = btn.closest('tr');
+  row.querySelector('.badge').className = 'badge badge-green';
+  row.querySelector('.badge').textContent = 'Active';
+  btn.textContent = 'View';
+  Toast.success('User activated successfully!');
+}
+</script>
 </body>
 </html>

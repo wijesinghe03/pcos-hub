@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Results — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item active" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations<span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="#"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="#"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="#"><i>📊</i> Reports</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="#" onclick="openSearchPatientModal()"><i>🔎</i> Search Patient</a>
+                <a class="sidebar-item" href="#"><i>🏥</i> Hospital Profile</a>
+                <a class="sidebar-item" href="#"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="#" onclick="Auth.logout()"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Lab Results</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <!-- Filter Panel -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>🔍</i> Filter Results</div>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                            ID or Name</label>
+                        <input type="text" id="labFilterPatient" class="form-control" placeholder="Search patient..."
+                            onkeyup="filterLabResults()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test
+                            Type</label>
+                        <select id="labFilterTest" class="form-control" onchange="filterLabResults()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option value="">All Tests</option>
+                            <option value="blood">Blood Test</option>
+                            <option value="hormone">Hormone Panel</option>
+                            <option value="ultrasound">Ultrasound</option>
+                            <option value="thyroid">Thyroid Panel</option>
+                            <option value="imaging">Imaging</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Status</label>
+                        <select id="labFilterStatus" class="form-control" onchange="filterLabResults()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="sent">Sent to Patient</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="filterLabResults()" style="width:100%">Filter Results</button>
+            </div>
+
+            <!-- Lab Results Table -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>🔬</i> Lab Results</div>
+                    <a class="panel-action" href="#" onclick="openUploadModal()">Upload New →</a>
+                </div>
+                <div style="overflow-x:auto">
+                    <table class="dash-table">
+                        <thead>
+                            <tr style="background:#f9fafb">
+                                <th style="padding:12px;text-align:left">Patient</th>
+                                <th style="padding:12px;text-align:left">Test Type</th>
+                                <th style="padding:12px;text-align:left">Date</th>
+                                <th style="padding:12px;text-align:left">Result</th>
+                                <th style="padding:12px;text-align:left">Status</th>
+                                <th style="padding:12px;text-align:center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="labResultsTableBody">
+                            <!-- Results will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Upload Lab Result Section -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📤</i> Upload Lab Result</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                            ID</label>
+                        <input type="text" id="uploadPatientId" class="form-control" placeholder="e.g., P-0021"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test
+                            Type</label>
+                        <select id="uploadTestType" class="form-control"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option>Blood Test</option>
+                            <option>Hormone Panel</option>
+                            <option>Ultrasound</option>
+                            <option>Thyroid Panel</option>
+                            <option>Imaging</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test
+                        Result Summary</label>
+                    <textarea id="uploadResultSummary" class="form-control" rows="3"
+                        placeholder="e.g., Blood test results show normal hormone levels..."
+                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;resize:vertical"></textarea>
+                </div>
+                <div class="upload-area"
+                    style="margin-bottom:16px;border:2px dashed #d1d5db;border-radius:8px;padding:30px;text-align:center;cursor:pointer"
+                    onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon" style="font-size:2.5rem;margin-bottom:10px">📄</div>
+                    <p class="upload-text" style="margin:0;font-weight:500;color:#374151"><span>Click to upload</span>
+                        lab report file</p>
+                    <p class="upload-hint" style="margin:5px 0 0 0;color:#6b7280;font-size:0.9rem">PDF, JPG, PNG up to
+                        10MB</p>
+                    <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.png,.jpeg">
+                </div>
+                <div style="display:flex;gap:12px">
+                    <button class="btn btn-primary" style="flex:1" onclick="uploadLabResult()">Upload & Notify
+                        Patient</button>
+                    <button class="btn btn-outline" style="flex:1" onclick="clearUploadForm()">Clear</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Modal for Search Patient (Account section) -->
+    <div id="searchPatientModal" class="modal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center">
+        <div class="modal-content"
+            style="background:white;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:600px;max-height:80vh;overflow-y:auto">
+            <div class="modal-header"
+                style="padding:20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center">
+                <h3 style="margin:0;font-size:1.3rem;color:#1f2937">🔎 Search Patient</h3>
+                <button onclick="closeSearchPatientModal()"
+                    style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding:20px">
+                <div style="margin-bottom:20px">
+                    <input type="text" id="modalPatientSearch" class="form-control"
+                        placeholder="Search by Patient ID or NIC…"
+                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem"
+                        onkeyup="filterPatients()">
+                </div>
+
+                <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+                    <select id="patientStatusFilter" class="form-control"
+                        style="flex:1;min-width:150px;padding:8px;border:1px solid #d1d5db;border-radius:8px"
+                        onchange="filterPatients()">
+                        <option value="">All Patients</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending Reports</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+
+                <div id="patientResultsContainer" style="max-height:400px;overflow-y:auto">
+                    <div id="noResultsMessage" style="text-align:center;padding:30px;color:#6b7280">
+                        <p style="margin:0">Start typing to search for patients...</p>
+                    </div>
+                    <div id="patientResultsList" style="display:none"></div>
+                </div>
+
+                <div id="searchLoadingState" style="display:none;text-align:center;padding:20px">
+                    <div class="loader-ring" style="transform:scale(0.5);margin:0 auto"></div>
+                    <p style="color:#6b7280;margin-top:10px">Searching patients...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        // Lab Results database
+        const labResultsDatabase = [
+            {
+                id: 'LR-001',
+                patientId: 'P-0021',
+                patientName: 'Nimesha R.',
+                testType: 'blood',
+                testName: 'Blood Panel',
+                date: '28 Feb 2026',
+                result: 'Normal',
+                status: 'sent',
+                details: 'All values within normal range'
+            },
+            {
+                id: 'LR-002',
+                patientId: 'P-0035',
+                patientName: 'Sachini J.',
+                testType: 'hormone',
+                testName: 'Hormone Panel',
+                date: '27 Feb 2026',
+                result: 'High LH',
+                status: 'reviewed',
+                details: 'LH levels elevated, follow-up needed'
+            },
+            {
+                id: 'LR-003',
+                patientId: 'P-0009',
+                patientName: 'Amanda P.',
+                testType: 'ultrasound',
+                testName: 'Ultrasound',
+                date: '26 Feb 2026',
+                result: 'Pending',
+                status: 'pending',
+                details: 'Awaiting radiologist review'
+            },
+            {
+                id: 'LR-004',
+                patientId: 'P-0001',
+                patientName: 'Amanda Perera',
+                testType: 'thyroid',
+                testName: 'Thyroid Panel',
+                date: '25 Feb 2026',
+                result: 'Normal',
+                status: 'completed',
+                details: 'TSH and free T4 within normal range'
+            },
+            {
+                id: 'LR-005',
+                patientId: 'P-0042',
+                patientName: 'Lakshmi Silva',
+                testType: 'blood',
+                testName: 'Blood Test',
+                date: '24 Feb 2026',
+                result: 'Abnormal',
+                status: 'reviewed',
+                details: 'Glucose level slightly elevated'
+            },
+            {
+                id: 'LR-006',
+                patientId: 'P-0055',
+                patientName: 'Deepa Kumari',
+                testType: 'imaging',
+                testName: 'Imaging',
+                date: '23 Feb 2026',
+                result: 'Normal',
+                status: 'sent',
+                details: 'CT scan shows no abnormalities'
+            },
+            {
+                id: 'LR-007',
+                patientId: 'P-0068',
+                patientName: 'Priya Sharma',
+                testType: 'hormone',
+                testName: 'Hormone Panel',
+                date: '22 Feb 2026',
+                result: 'Normal',
+                status: 'completed',
+                details: 'Hormone levels balanced'
+            },
+            {
+                id: 'LR-008',
+                patientId: 'P-0001',
+                patientName: 'Amanda Perera',
+                testType: 'blood',
+                testName: 'Blood Panel',
+                date: '20 Feb 2026',
+                result: 'Normal',
+                status: 'sent',
+                details: 'Complete blood count normal'
+            }
+        ];
+
+        // Patient database
+        const patientsDatabase = [
+            {
+                id: 'P-0001',
+                name: 'Amanda Perera',
+                nic: '960341256V',
+                status: 'active',
+                lastVisit: '20 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 3
+            },
+            {
+                id: 'P-0009',
+                name: 'Amanda P.',
+                nic: '960341256V',
+                status: 'active',
+                lastVisit: '20 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 3
+            },
+            {
+                id: 'P-0021',
+                name: 'Nimesha Rathnayake',
+                nic: '010234567V',
+                status: 'pending',
+                lastVisit: '15 Feb 2026',
+                diagnosis: 'Under Review',
+                reports: 2
+            },
+            {
+                id: 'P-0035',
+                name: 'Sachini Jayawardena',
+                nic: '980123456V',
+                status: 'active',
+                lastVisit: '18 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 1
+            },
+            {
+                id: 'P-0042',
+                name: 'Lakshmi Silva',
+                nic: '950456789V',
+                status: 'active',
+                lastVisit: '22 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 4
+            },
+            {
+                id: 'P-0055',
+                name: 'Deepa Kumari',
+                nic: '970789123V',
+                status: 'archived',
+                lastVisit: '10 Jan 2026',
+                diagnosis: 'PCOS',
+                reports: 5
+            },
+            {
+                id: 'P-0068',
+                name: 'Priya Sharma',
+                nic: '920567890V',
+                status: 'active',
+                lastVisit: '25 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 2
+            }
+        ];
+
+        // Initialize table on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            displayLabResults(labResultsDatabase);
+        });
+
+        function displayLabResults(results) {
+            const tableBody = document.getElementById('labResultsTableBody');
+
+            if (results.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#6b7280">No lab results found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = results.map(result => `
+        <tr style="border-bottom:1px solid #e5e7eb;transition:all 0.2s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
+          <td style="padding:12px;cursor:pointer" onclick="viewPatientLabResults('${result.patientId}')">
+            <div style="font-weight:600;color:#1f2937">${result.patientName}</div>
+            <div style="font-size:0.85rem;color:#6b7280">${result.patientId}</div>
+          </td>
+          <td style="padding:12px">
+            <div style="font-weight:500;color:#374151">${result.testName}</div>
+          </td>
+          <td style="padding:12px;color:#6b7280">${result.date}</td>
+          <td style="padding:12px">
+            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${result.result === 'Normal' ? '#d1fae5;color:#065f46' :
+                    result.result === 'Pending' ? '#fef3c7;color:#92400e' :
+                        result.result === 'High LH' || result.result === 'Abnormal' ? '#fee2e2;color:#991b1b' :
+                            '#e0e7ff;color:#3730a3'
+                }">
+              ${result.result}
+            </span>
+          </td>
+          <td style="padding:12px">
+            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${result.status === 'sent' ? '#dbeafe;color:#0c4a6e' :
+                    result.status === 'reviewed' ? '#c7d2fe;color:#312e81' :
+                        result.status === 'completed' ? '#d1fae5;color:#065f46' :
+                            '#fef3c7;color:#92400e'
+                }">
+              ${result.status.charAt(0).toUpperCase() + result.status.slice(1)}
+            </span>
+          </td>
+          <td style="padding:12px;text-align:center">
+            <button class="btn btn-primary btn-sm" onclick="viewLabResult('${result.id}')">View</button>
+            <button class="btn btn-outline btn-sm" style="margin-left:4px" onclick="sendLabResult('${result.patientId}')">Send</button>
+          </td>
+        </tr>
+      `).join('');
+        }
+
+        function filterLabResults() {
+            const patientFilter = document.getElementById('labFilterPatient').value.toLowerCase().trim();
+            const testFilter = document.getElementById('labFilterTest').value;
+            const statusFilter = document.getElementById('labFilterStatus').value;
+
+            const filtered = labResultsDatabase.filter(result => {
+                const matchesPatient = patientFilter === '' ||
+                    result.patientName.toLowerCase().includes(patientFilter) ||
+                    result.patientId.toLowerCase().includes(patientFilter);
+                const matchesTest = testFilter === '' || result.testType === testFilter;
+                const matchesStatus = statusFilter === '' || result.status === statusFilter;
+                return matchesPatient && matchesTest && matchesStatus;
+            });
+
+            displayLabResults(filtered);
+        }
+
+        function viewLabResult(resultId) {
+            const result = labResultsDatabase.find(r => r.id === resultId);
+            if (result) {
+                Toast.success(`Opening result: ${result.testName} for ${result.patientName}`);
+            }
+        }
+
+        function sendLabResult(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Lab result sent to ${patient.name}!`);
+            }
+        }
+
+        function viewPatientLabResults(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening all results for ${patient.name}...`);
+            }
+        }
+
+        function uploadLabResult() {
+            const patientId = document.getElementById('uploadPatientId').value;
+            const testType = document.getElementById('uploadTestType').value;
+            const summary = document.getElementById('uploadResultSummary').value;
+
+            if (!patientId || !testType || !summary) {
+                Toast.warning('Please fill in all fields');
+                return;
+            }
+
+            Toast.success('Lab result uploaded and patient notified!');
+            clearUploadForm();
+        }
+
+        function clearUploadForm() {
+            document.getElementById('uploadPatientId').value = '';
+            document.getElementById('uploadTestType').value = 'Blood Test';
+            document.getElementById('uploadResultSummary').value = '';
+            document.getElementById('fileInput').value = '';
+        }
+
+        function openUploadModal() {
+            document.querySelector('html').scrollTop = document.querySelector('.dash-panel:last-of-type').offsetTop;
+        }
+
+        // Modal functions for Account search
+        function openSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'flex';
+            document.getElementById('modalPatientSearch').focus();
+        }
+
+        function closeSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'none';
+            document.getElementById('modalPatientSearch').value = '';
+            document.getElementById('patientResultsList').innerHTML = '';
+            document.getElementById('patientResultsList').style.display = 'none';
+            document.getElementById('noResultsMessage').style.display = 'block';
+        }
+
+        function filterPatients() {
+            const searchValue = document.getElementById('modalPatientSearch').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+
+            if (!searchValue && !statusFilter) {
+                document.getElementById('patientResultsList').style.display = 'none';
+                document.getElementById('noResultsMessage').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('searchLoadingState').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('searchLoadingState').style.display = 'none';
+
+                const filtered = patientsDatabase.filter(patient => {
+                    const matchesSearch = searchValue === '' ||
+                        patient.id.toLowerCase().includes(searchValue) ||
+                        patient.nic.toLowerCase().includes(searchValue) ||
+                        patient.name.toLowerCase().includes(searchValue);
+                    const matchesStatus = statusFilter === '' || patient.status === statusFilter;
+                    return matchesSearch && matchesStatus;
+                });
+
+                const resultsList = document.getElementById('patientResultsList');
+                if (filtered.length === 0) {
+                    document.getElementById('noResultsMessage').style.display = 'block';
+                    resultsList.style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('noResultsMessage').style.display = 'none';
+                resultsList.style.display = 'block';
+                resultsList.innerHTML = filtered.map(patient => `
+          <div 
+            onclick="openPatientProfile('${patient.id}')" 
+            style="
+              padding:15px;
+              border:1px solid #e5e7eb;
+              border-radius:8px;
+              margin-bottom:10px;
+              cursor:pointer;
+              transition:all 0.2s;
+              background:#f9fafb;
+            "
+            onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+            onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
+          >
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+              <div>
+                <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+                <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
+              </div>
+              <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                        patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                            '#e5e7eb;color:#374151'
+                    }">
+                ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+              </span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
+              <div>
+                <div style="color:#4b5563;font-weight:500">NIC</div>
+                <div>${patient.nic}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Diagnosis</div>
+                <div>${patient.diagnosis}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Last Visit</div>
+                <div>${patient.lastVisit}</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;text-align:right">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.id}')">View Profile →</button>
+            </div>
+          </div>
+        `).join('');
+            }, 300);
+        }
+
+        function openPatientProfile(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening profile for ${patient.name}...`);
+                closeSearchPatientModal();
+            }
+        }
+
+        // Close modal when clicking overlay
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('searchPatientModal');
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    closeSearchPatientModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

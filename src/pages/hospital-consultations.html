@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultations — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item active" href="hospital-consultations.html"><i>💬</i> Consultations<span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="#"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="#"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="#"><i>📊</i> Reports</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="#" onclick="openSearchPatientModal()"><i>🔎</i> Search Patient</a>
+                <a class="sidebar-item" href="#"><i>🏥</i> Hospital Profile</a>
+                <a class="sidebar-item" href="#"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="#" onclick="Auth.logout()"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Consultations</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <!-- Filter Panel -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>🔍</i> Filter Consultations</div>
+                </div>
+                <div
+                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                            Name or ID</label>
+                        <input type="text" id="consultationFilterPatient" class="form-control"
+                            placeholder="Search patient..." onkeyup="filterConsultations()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Status</label>
+                        <select id="consultationFilterStatus" class="form-control" onchange="filterConsultations()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Type</label>
+                        <select id="consultationFilterType" class="form-control" onchange="filterConsultations()"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option value="">All Types</option>
+                            <option value="followup">Follow-up</option>
+                            <option value="review">Review</option>
+                            <option value="initial">Initial</option>
+                            <option value="emergency">Emergency</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="filterConsultations()" style="width:100%">Filter</button>
+            </div>
+
+            <!-- Consultations Table -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>💬</i> Consultations List</div>
+                    <a class="panel-action" href="#" onclick="openAddConsultationForm()">Add New →</a>
+                </div>
+                <div style="overflow-x:auto">
+                    <table class="dash-table">
+                        <thead>
+                            <tr style="background:#f9fafb">
+                                <th style="padding:12px;text-align:left">Patient</th>
+                                <th style="padding:12px;text-align:left">Type</th>
+                                <th style="padding:12px;text-align:left">Date & Time</th>
+                                <th style="padding:12px;text-align:left">Status</th>
+                                <th style="padding:12px;text-align:left">Notes</th>
+                                <th style="padding:12px;text-align:center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consultationsTableBody">
+                            <!-- Consultations will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Consultation Section -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>➕</i> Add Consultation</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                            ID</label>
+                        <input type="text" id="addConsultationPatientId" class="form-control" placeholder="e.g., P-0021"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Consultation
+                            Type</label>
+                        <select id="addConsultationType" class="form-control"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option>Follow-up Consultation</option>
+                            <option>Review Consultation</option>
+                            <option>Initial Consultation</option>
+                            <option>Emergency Consultation</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Date</label>
+                        <input type="date" id="addConsultationDate" class="form-control"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label
+                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Time</label>
+                        <input type="time" id="addConsultationTime" class="form-control"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label
+                        style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Consultation
+                        Notes</label>
+                    <textarea id="addConsultationNotes" class="form-control" rows="4"
+                        placeholder="Enter consultation details, observations, and recommendations..."
+                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;resize:vertical"></textarea>
+                </div>
+                <div style="display:flex;gap:12px">
+                    <button class="btn btn-primary" style="flex:1" onclick="saveConsultation()">Schedule
+                        Consultation</button>
+                    <button class="btn btn-outline" style="flex:1" onclick="clearConsultationForm()">Clear</button>
+                </div>
+            </div>
+
+            <!-- Consultation Activity Feed -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📋</i> Recent Consultation Activity</div>
+                </div>
+                <div class="activity-feed" id="activityFeed">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Modal for Search Patient (Account section) -->
+    <div id="searchPatientModal" class="modal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center">
+        <div class="modal-content"
+            style="background:white;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:600px;max-height:80vh;overflow-y:auto">
+            <div class="modal-header"
+                style="padding:20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center">
+                <h3 style="margin:0;font-size:1.3rem;color:#1f2937">🔎 Search Patient</h3>
+                <button onclick="closeSearchPatientModal()"
+                    style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding:20px">
+                <div style="margin-bottom:20px">
+                    <input type="text" id="modalPatientSearch" class="form-control"
+                        placeholder="Search by Patient ID or NIC…"
+                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem"
+                        onkeyup="filterPatients()">
+                </div>
+
+                <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+                    <select id="patientStatusFilter" class="form-control"
+                        style="flex:1;min-width:150px;padding:8px;border:1px solid #d1d5db;border-radius:8px"
+                        onchange="filterPatients()">
+                        <option value="">All Patients</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending Reports</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+
+                <div id="patientResultsContainer" style="max-height:400px;overflow-y:auto">
+                    <div id="noResultsMessage" style="text-align:center;padding:30px;color:#6b7280">
+                        <p style="margin:0">Start typing to search for patients...</p>
+                    </div>
+                    <div id="patientResultsList" style="display:none"></div>
+                </div>
+
+                <div id="searchLoadingState" style="display:none;text-align:center;padding:20px">
+                    <div class="loader-ring" style="transform:scale(0.5);margin:0 auto"></div>
+                    <p style="color:#6b7280;margin-top:10px">Searching patients...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        // Consultations database
+        const consultationsDatabase = [
+            {
+                id: 'C-001',
+                patientId: 'P-0001',
+                patientName: 'Amanda Perera',
+                type: 'followup',
+                typeName: 'Follow-up Consultation',
+                date: '2 Mar 2026',
+                time: '2:00 PM',
+                status: 'confirmed',
+                notes: 'Follow-up consultation to review test results'
+            },
+            {
+                id: 'C-002',
+                patientId: 'P-0035',
+                patientName: 'Sachini Jayawardena',
+                type: 'review',
+                typeName: 'Review Consultation',
+                date: '3 Mar 2026',
+                time: '10:30 AM',
+                status: 'pending',
+                notes: 'Hormone results review and treatment plan adjustment'
+            },
+            {
+                id: 'C-003',
+                patientId: 'P-0021',
+                patientName: 'Nimesha Rathnayake',
+                type: 'initial',
+                typeName: 'Initial Consultation',
+                date: '27 Feb 2026',
+                time: '3:00 PM',
+                status: 'completed',
+                notes: 'New patient intake and initial assessment'
+            },
+            {
+                id: 'C-004',
+                patientId: 'P-0042',
+                patientName: 'Lakshmi Silva',
+                type: 'followup',
+                typeName: 'Follow-up Consultation',
+                date: '25 Feb 2026',
+                time: '11:00 AM',
+                status: 'completed',
+                notes: 'Discuss lifestyle changes and medication adjustment'
+            },
+            {
+                id: 'C-005',
+                patientId: 'P-0068',
+                patientName: 'Priya Sharma',
+                type: 'emergency',
+                typeName: 'Emergency Consultation',
+                date: '1 Mar 2026',
+                time: '5:30 PM',
+                status: 'completed',
+                notes: 'Urgent consultation regarding sudden symptoms'
+            }
+        ];
+
+        // Patient database
+        const patientsDatabase = [
+            {
+                id: 'P-0001',
+                name: 'Amanda Perera',
+                nic: '960341256V',
+                status: 'active',
+                lastVisit: '20 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 3
+            },
+            {
+                id: 'P-0021',
+                name: 'Nimesha Rathnayake',
+                nic: '010234567V',
+                status: 'pending',
+                lastVisit: '15 Feb 2026',
+                diagnosis: 'Under Review',
+                reports: 2
+            },
+            {
+                id: 'P-0035',
+                name: 'Sachini Jayawardena',
+                nic: '980123456V',
+                status: 'active',
+                lastVisit: '18 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 1
+            },
+            {
+                id: 'P-0042',
+                name: 'Lakshmi Silva',
+                nic: '950456789V',
+                status: 'active',
+                lastVisit: '22 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 4
+            },
+            {
+                id: 'P-0068',
+                name: 'Priya Sharma',
+                nic: '920567890V',
+                status: 'active',
+                lastVisit: '25 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 2
+            }
+        ];
+
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', function () {
+            displayConsultations(consultationsDatabase);
+            displayActivityFeed(consultationsDatabase);
+        });
+
+        function displayConsultations(consultations) {
+            const tableBody = document.getElementById('consultationsTableBody');
+
+            if (consultations.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#6b7280">No consultations found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = consultations.map(consultation => `
+        <tr style="border-bottom:1px solid #e5e7eb;transition:all 0.2s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
+          <td style="padding:12px;cursor:pointer" onclick="viewPatientConsultations('${consultation.patientId}')">
+            <div style="font-weight:600;color:#1f2937">${consultation.patientName}</div>
+            <div style="font-size:0.85rem;color:#6b7280">${consultation.patientId}</div>
+          </td>
+          <td style="padding:12px">
+            <div style="font-weight:500;color:#374151">${consultation.typeName}</div>
+          </td>
+          <td style="padding:12px;color:#6b7280">
+            <div>${consultation.date}</div>
+            <div style="font-size:0.85rem">${consultation.time}</div>
+          </td>
+          <td style="padding:12px">
+            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${consultation.status === 'confirmed' ? '#d1fae5;color:#065f46' :
+                    consultation.status === 'completed' ? '#c7d2fe;color:#312e81' :
+                        consultation.status === 'pending' ? '#fef3c7;color:#92400e' :
+                            '#fee2e2;color:#991b1b'
+                }">
+              ${consultation.status.charAt(0).toUpperCase() + consultation.status.slice(1)}
+            </span>
+          </td>
+          <td style="padding:12px;color:#6b7280;max-width:200px">
+            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${consultation.notes}</div>
+          </td>
+          <td style="padding:12px;text-align:center">
+            <button class="btn btn-primary btn-sm" onclick="viewConsultation('${consultation.id}')">View</button>
+            <button class="btn btn-outline btn-sm" style="margin-left:4px" onclick="editConsultation('${consultation.id}')">Edit</button>
+          </td>
+        </tr>
+      `).join('');
+        }
+
+        function displayActivityFeed(consultations) {
+            const activityFeed = document.getElementById('activityFeed');
+
+            if (consultations.length === 0) {
+                activityFeed.innerHTML = '<p style="text-align:center;color:#6b7280;padding:20px">No consultation activity</p>';
+                return;
+            }
+
+            const recentActivities = consultations.slice(0, 5);
+            activityFeed.innerHTML = recentActivities.map((consultation, index) => `
+        <div class="activity-item">
+          <div class="activity-dot-wrap">
+            <div class="activity-dot" style="background:${consultation.status === 'confirmed' ? 'var(--green-success)' :
+                    consultation.status === 'completed' ? 'var(--purple-primary)' :
+                        consultation.status === 'pending' ? 'var(--orange-warning)' :
+                            'var(--red-danger)'
+                }"></div>
+            ${index < recentActivities.length - 1 ? '<div class="activity-line"></div>' : ''}
+          </div>
+          <div>
+            <div class="activity-text"><strong>${consultation.patientName}</strong> — ${consultation.typeName}</div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+              <span class="badge" style="background:${consultation.status === 'confirmed' ? '#d1fae5;color:#065f46' :
+                    consultation.status === 'completed' ? '#c7d2fe;color:#312e81' :
+                        consultation.status === 'pending' ? '#fef3c7;color:#92400e' :
+                            '#fee2e2;color:#991b1b'
+                };padding:4px 12px;border-radius:20px;font-size:0.85rem">
+                ${consultation.date} ${consultation.time}
+              </span>
+              <span class="badge" style="background:#e0e7ff;color:#3730a3;padding:4px 12px;border-radius:20px;font-size:0.85rem">${consultation.status.charAt(0).toUpperCase() + consultation.status.slice(1)}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        function filterConsultations() {
+            const patientFilter = document.getElementById('consultationFilterPatient').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('consultationFilterStatus').value;
+            const typeFilter = document.getElementById('consultationFilterType').value;
+
+            const filtered = consultationsDatabase.filter(consultation => {
+                const matchesPatient = patientFilter === '' ||
+                    consultation.patientName.toLowerCase().includes(patientFilter) ||
+                    consultation.patientId.toLowerCase().includes(patientFilter);
+                const matchesStatus = statusFilter === '' || consultation.status === statusFilter;
+                const matchesType = typeFilter === '' || consultation.type === typeFilter;
+                return matchesPatient && matchesStatus && matchesType;
+            });
+
+            displayConsultations(filtered);
+        }
+
+        function viewConsultation(consultationId) {
+            const consultation = consultationsDatabase.find(c => c.id === consultationId);
+            if (consultation) {
+                Toast.success(`Opening consultation: ${consultation.typeName} for ${consultation.patientName}`);
+            }
+        }
+
+        function editConsultation(consultationId) {
+            const consultation = consultationsDatabase.find(c => c.id === consultationId);
+            if (consultation) {
+                Toast.success(`Editing consultation for ${consultation.patientName}...`);
+            }
+        }
+
+        function viewPatientConsultations(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening all consultations for ${patient.name}...`);
+            }
+        }
+
+        function saveConsultation() {
+            const patientId = document.getElementById('addConsultationPatientId').value;
+            const type = document.getElementById('addConsultationType').value;
+            const date = document.getElementById('addConsultationDate').value;
+            const time = document.getElementById('addConsultationTime').value;
+            const notes = document.getElementById('addConsultationNotes').value;
+
+            if (!patientId || !type || !date || !time || !notes) {
+                Toast.warning('Please fill in all fields');
+                return;
+            }
+
+            Toast.success('Consultation scheduled and patient notified!');
+            clearConsultationForm();
+            // Refresh the table
+            displayConsultations(consultationsDatabase);
+        }
+
+        function clearConsultationForm() {
+            document.getElementById('addConsultationPatientId').value = '';
+            document.getElementById('addConsultationType').value = 'Follow-up Consultation';
+            document.getElementById('addConsultationDate').value = '';
+            document.getElementById('addConsultationTime').value = '';
+            document.getElementById('addConsultationNotes').value = '';
+        }
+
+        function openAddConsultationForm() {
+            document.querySelector('html').scrollTop = document.querySelectorAll('.dash-panel')[2].offsetTop;
+        }
+
+        // Modal functions for Account search
+        function openSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'flex';
+            document.getElementById('modalPatientSearch').focus();
+        }
+
+        function closeSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'none';
+            document.getElementById('modalPatientSearch').value = '';
+            document.getElementById('patientResultsList').innerHTML = '';
+            document.getElementById('patientResultsList').style.display = 'none';
+            document.getElementById('noResultsMessage').style.display = 'block';
+        }
+
+        function filterPatients() {
+            const searchValue = document.getElementById('modalPatientSearch').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+
+            if (!searchValue && !statusFilter) {
+                document.getElementById('patientResultsList').style.display = 'none';
+                document.getElementById('noResultsMessage').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('searchLoadingState').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('searchLoadingState').style.display = 'none';
+
+                const filtered = patientsDatabase.filter(patient => {
+                    const matchesSearch = searchValue === '' ||
+                        patient.id.toLowerCase().includes(searchValue) ||
+                        patient.nic.toLowerCase().includes(searchValue) ||
+                        patient.name.toLowerCase().includes(searchValue);
+                    const matchesStatus = statusFilter === '' || patient.status === statusFilter;
+                    return matchesSearch && matchesStatus;
+                });
+
+                const resultsList = document.getElementById('patientResultsList');
+                if (filtered.length === 0) {
+                    document.getElementById('noResultsMessage').style.display = 'block';
+                    resultsList.style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('noResultsMessage').style.display = 'none';
+                resultsList.style.display = 'block';
+                resultsList.innerHTML = filtered.map(patient => `
+          <div 
+            onclick="openPatientProfile('${patient.id}')" 
+            style="
+              padding:15px;
+              border:1px solid #e5e7eb;
+              border-radius:8px;
+              margin-bottom:10px;
+              cursor:pointer;
+              transition:all 0.2s;
+              background:#f9fafb;
+            "
+            onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+            onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
+          >
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+              <div>
+                <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+                <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
+              </div>
+              <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                        patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                            '#e5e7eb;color:#374151'
+                    }">
+                ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+              </span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
+              <div>
+                <div style="color:#4b5563;font-weight:500">NIC</div>
+                <div>${patient.nic}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Diagnosis</div>
+                <div>${patient.diagnosis}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Last Visit</div>
+                <div>${patient.lastVisit}</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;text-align:right">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.id}')">View Profile →</button>
+            </div>
+          </div>
+        `).join('');
+            }, 300);
+        }
+
+        function openPatientProfile(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening profile for ${patient.name}...`);
+                closeSearchPatientModal();
+            }
+        }
+
+        // Close modal when clicking overlay
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('searchPatientModal');
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    closeSearchPatientModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

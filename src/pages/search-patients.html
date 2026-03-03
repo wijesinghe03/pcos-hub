@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Patients — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">City Hospital</div>
+                    <div class="sidebar-role">Hospital Staff</div>
+                </div>
+                <i>›</i>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item active" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
+                        class="sidebar-badge">8</span></a>
+                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations<span
+                        class="sidebar-badge">3</span></a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="#"><i>👥</i> All Patients</a>
+                <a class="sidebar-item" href="#"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="#"><i>📊</i> Reports</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="#" onclick="openSearchPatientModal()"><i>🔎</i> Search Patient</a>
+                <a class="sidebar-item" href="#"><i>🏥</i> Hospital Profile</a>
+                <a class="sidebar-item" href="#"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="#" onclick="Auth.logout()"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Search Patients</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+                </div>
+            </div>
+
+            <!-- Search Panel -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>🔍</i> Find Patient</div>
+                </div>
+                <div style="margin-bottom:24px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
+                        <div>
+                            <label
+                                style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                                ID or NIC</label>
+                            <input type="text" id="searchPatientInput" class="form-control"
+                                placeholder="e.g., P-0021 or 960341256V" onkeyup="performSearch()"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem">
+                        </div>
+                        <div>
+                            <label
+                                style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
+                                Name</label>
+                            <input type="text" id="searchNameInput" class="form-control"
+                                placeholder="e.g., Amanda Perera" onkeyup="performSearch()"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem">
+                        </div>
+                        <div>
+                            <label
+                                style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Status</label>
+                            <select id="searchStatusFilter" class="form-control" onchange="performSearch()"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem">
+                                <option value="">All Patients</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending Reports</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="performSearch()" style="width:100%">Search</button>
+                </div>
+            </div>
+
+            <!-- Results Stats -->
+            <div id="resultsStats" style="display:none;margin-bottom:20px">
+                <div
+                    style="padding:15px;background:#f0f9ff;border-left:4px solid #3b82f6;border-radius:8px;color:#1e40af">
+                    <strong id="resultsCount"></strong> patient(s) found
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>👥</i> Search Results</div>
+                </div>
+                <div id="searchResultsContainer" style="max-height:600px;overflow-y:auto">
+                    <div style="text-align:center;padding:40px 20px;color:#6b7280">
+                        <div style="font-size:3rem;margin-bottom:10px">🔍</div>
+                        <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
+                        <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Searches (Optional) -->
+            <div class="dash-panel reveal" style="margin-top:20px">
+                <div class="panel-header">
+                    <div class="panel-title"><i>⏱️</i> Quick Actions</div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+                    <button class="btn btn-outline" onclick="setFilterAndSearch('active')"
+                        style="padding:12px;border:2px solid #d1d5db;background:white;cursor:pointer;border-radius:8px;transition:all 0.2s"
+                        onmouseover="this.style.borderColor='#3b82f6';this.style.background='#f0f9ff'"
+                        onmouseout="this.style.borderColor='#d1d5db';this.style.background='white'">
+                        👥 View Active Patients
+                    </button>
+                    <button class="btn btn-outline" onclick="setFilterAndSearch('pending')"
+                        style="padding:12px;border:2px solid #d1d5db;background:white;cursor:pointer;border-radius:8px;transition:all 0.2s"
+                        onmouseover="this.style.borderColor='#f59e0b';this.style.background='#fffbeb'"
+                        onmouseout="this.style.borderColor='#d1d5db';this.style.background='white'">
+                        ⏳ Pending Reports
+                    </button>
+                    <button class="btn btn-outline" onclick="clearSearch()"
+                        style="padding:12px;border:2px solid #d1d5db;background:white;cursor:pointer;border-radius:8px;transition:all 0.2s"
+                        onmouseover="this.style.borderColor='#ef4444';this.style.background='#fef2f2'"
+                        onmouseout="this.style.borderColor='#d1d5db';this.style.background='white'">
+                        🔄 Clear Search
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Search Patient Modal (for Account section) -->
+    <div id="searchPatientModal" class="modal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center">
+        <div class="modal-content"
+            style="background:white;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:600px;max-height:80vh;overflow-y:auto">
+            <div class="modal-header"
+                style="padding:20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center">
+                <h3 style="margin:0;font-size:1.3rem;color:#1f2937">🔎 Search Patient</h3>
+                <button onclick="closeSearchPatientModal()"
+                    style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding:20px">
+                <div style="margin-bottom:20px">
+                    <input type="text" id="modalPatientSearch" class="form-control"
+                        placeholder="Search by Patient ID or NIC…"
+                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:1rem"
+                        onkeyup="filterPatients()">
+                </div>
+
+                <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+                    <select id="patientStatusFilter" class="form-control"
+                        style="flex:1;min-width:150px;padding:8px;border:1px solid #d1d5db;border-radius:8px"
+                        onchange="filterPatients()">
+                        <option value="">All Patients</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending Reports</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+
+                <div id="patientResultsContainer" style="max-height:400px;overflow-y:auto">
+                    <div id="noResultsMessage" style="text-align:center;padding:30px;color:#6b7280">
+                        <p style="margin:0">Start typing to search for patients...</p>
+                    </div>
+                    <div id="patientResultsList" style="display:none"></div>
+                </div>
+
+                <div id="searchLoadingState" style="display:none;text-align:center;padding:20px">
+                    <div class="loader-ring" style="transform:scale(0.5);margin:0 auto"></div>
+                    <p style="color:#6b7280;margin-top:10px">Searching patients...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script>
+        // Patient database (mock data)
+        const patientsDatabase = [
+            {
+                id: 'P-0001',
+                name: 'Amanda Perera',
+                nic: '960341256V',
+                status: 'active',
+                lastVisit: '20 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 3,
+                email: 'amanda@example.com',
+                phone: '+94 71 234 5678'
+            },
+            {
+                id: 'P-0009',
+                name: 'Amanda P.',
+                nic: '960341256V',
+                status: 'active',
+                lastVisit: '20 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 3,
+                email: 'amanda.p@example.com',
+                phone: '+94 71 234 5679'
+            },
+            {
+                id: 'P-0021',
+                name: 'Nimesha Rathnayake',
+                nic: '010234567V',
+                status: 'pending',
+                lastVisit: '15 Feb 2026',
+                diagnosis: 'Under Review',
+                reports: 2,
+                email: 'nimesha@example.com',
+                phone: '+94 71 234 5680'
+            },
+            {
+                id: 'P-0035',
+                name: 'Sachini Jayawardena',
+                nic: '980123456V',
+                status: 'active',
+                lastVisit: '18 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 1,
+                email: 'sachini@example.com',
+                phone: '+94 71 234 5681'
+            },
+            {
+                id: 'P-0042',
+                name: 'Lakshmi Silva',
+                nic: '950456789V',
+                status: 'active',
+                lastVisit: '22 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 4,
+                email: 'lakshmi@example.com',
+                phone: '+94 71 234 5682'
+            },
+            {
+                id: 'P-0055',
+                name: 'Deepa Kumari',
+                nic: '970789123V',
+                status: 'archived',
+                lastVisit: '10 Jan 2026',
+                diagnosis: 'PCOS',
+                reports: 5,
+                email: 'deepa@example.com',
+                phone: '+94 71 234 5683'
+            },
+            {
+                id: 'P-0068',
+                name: 'Priya Sharma',
+                nic: '920567890V',
+                status: 'active',
+                lastVisit: '25 Feb 2026',
+                diagnosis: 'PCOS',
+                reports: 2,
+                email: 'priya@example.com',
+                phone: '+94 71 234 5684'
+            }
+        ];
+
+        function performSearch() {
+            const searchId = document.getElementById('searchPatientInput').value.toLowerCase().trim();
+            const searchName = document.getElementById('searchNameInput').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('searchStatusFilter').value;
+
+            if (!searchId && !searchName && !statusFilter) {
+                document.getElementById('searchResultsContainer').innerHTML = `
+          <div style="text-align:center;padding:40px 20px;color:#6b7280">
+            <div style="font-size:3rem;margin-bottom:10px">🔍</div>
+            <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
+            <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
+          </div>
+        `;
+                document.getElementById('resultsStats').style.display = 'none';
+                return;
+            }
+
+            const filtered = patientsDatabase.filter(patient => {
+                const matchesId = searchId === '' || patient.id.toLowerCase().includes(searchId);
+                const matchesName = searchName === '' || patient.name.toLowerCase().includes(searchName);
+                const matchesStatus = statusFilter === '' || patient.status === statusFilter;
+                return matchesId && matchesName && matchesStatus;
+            });
+
+            if (filtered.length === 0) {
+                document.getElementById('searchResultsContainer').innerHTML = `
+          <div style="text-align:center;padding:40px 20px;color:#6b7280">
+            <div style="font-size:3rem;margin-bottom:10px">😔</div>
+            <p style="font-size:1.1rem;margin:0">No patients found</p>
+            <p style="font-size:0.9rem;margin:5px 0 0 0">Try different search criteria</p>
+          </div>
+        `;
+                document.getElementById('resultsStats').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('resultsStats').style.display = 'block';
+            document.getElementById('resultsCount').textContent = filtered.length;
+
+            document.getElementById('searchResultsContainer').innerHTML = filtered.map(patient => `
+        <div 
+          style="
+            padding:16px;
+            border:1px solid #e5e7eb;
+            border-radius:8px;
+            margin-bottom:12px;
+            background:white;
+            transition:all 0.2s;
+            cursor:pointer;
+          "
+          onmouseover="this.style.background='#f9fafb';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+          onmouseout="this.style.background='white';this.style.boxShadow=''"
+          onclick="openPatientDetail('${patient.id}')"
+        >
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+              <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id} | NIC: ${patient.nic}</div>
+            </div>
+            <span style="padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:500;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                    patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                        '#e5e7eb;color:#374151'
+                }">
+              ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+            </span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:0.9rem;margin:10px 0">
+            <div>
+              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Diagnosis</div>
+              <div style="font-weight:500;color:#1f2937">${patient.diagnosis}</div>
+            </div>
+            <div>
+              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Last Visit</div>
+              <div style="font-weight:500;color:#1f2937">${patient.lastVisit}</div>
+            </div>
+            <div>
+              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Reports</div>
+              <div style="font-weight:500;color:#1f2937">${patient.reports}</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;text-align:right">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientDetail('${patient.id}')">View Profile →</button>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        function setFilterAndSearch(status) {
+            document.getElementById('searchStatusFilter').value = status;
+            performSearch();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchPatientInput').value = '';
+            document.getElementById('searchNameInput').value = '';
+            document.getElementById('searchStatusFilter').value = '';
+            document.getElementById('searchResultsContainer').innerHTML = `
+        <div style="text-align:center;padding:40px 20px;color:#6b7280">
+          <div style="font-size:3rem;margin-bottom:10px">🔍</div>
+          <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
+          <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
+        </div>
+      `;
+            document.getElementById('resultsStats').style.display = 'none';
+        }
+
+        function openPatientDetail(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening profile for ${patient.name}...`);
+                // In production, redirect to patient profile page
+                // window.location.href = `patient-profile.html?id=${patientId}`;
+            }
+        }
+
+        // Modal functions for Account search
+        function openSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'flex';
+            document.getElementById('modalPatientSearch').focus();
+        }
+
+        function closeSearchPatientModal() {
+            document.getElementById('searchPatientModal').style.display = 'none';
+            document.getElementById('modalPatientSearch').value = '';
+            document.getElementById('patientResultsList').innerHTML = '';
+            document.getElementById('patientResultsList').style.display = 'none';
+            document.getElementById('noResultsMessage').style.display = 'block';
+        }
+
+        function filterPatients() {
+            const searchValue = document.getElementById('modalPatientSearch').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+
+            if (!searchValue && !statusFilter) {
+                document.getElementById('patientResultsList').style.display = 'none';
+                document.getElementById('noResultsMessage').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('searchLoadingState').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('searchLoadingState').style.display = 'none';
+
+                const filtered = patientsDatabase.filter(patient => {
+                    const matchesSearch = searchValue === '' ||
+                        patient.id.toLowerCase().includes(searchValue) ||
+                        patient.nic.toLowerCase().includes(searchValue) ||
+                        patient.name.toLowerCase().includes(searchValue);
+                    const matchesStatus = statusFilter === '' || patient.status === statusFilter;
+                    return matchesSearch && matchesStatus;
+                });
+
+                const resultsList = document.getElementById('patientResultsList');
+                if (filtered.length === 0) {
+                    document.getElementById('noResultsMessage').style.display = 'block';
+                    resultsList.style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('noResultsMessage').style.display = 'none';
+                resultsList.style.display = 'block';
+                resultsList.innerHTML = filtered.map(patient => `
+          <div 
+            onclick="openPatientProfile('${patient.id}')" 
+            style="
+              padding:15px;
+              border:1px solid #e5e7eb;
+              border-radius:8px;
+              margin-bottom:10px;
+              cursor:pointer;
+              transition:all 0.2s;
+              background:#f9fafb;
+            "
+            onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+            onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
+          >
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+              <div>
+                <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+                <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
+              </div>
+              <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                        patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                            '#e5e7eb;color:#374151'
+                    }">
+                ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+              </span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
+              <div>
+                <div style="color:#4b5563;font-weight:500">NIC</div>
+                <div>${patient.nic}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Diagnosis</div>
+                <div>${patient.diagnosis}</div>
+              </div>
+              <div>
+                <div style="color:#4b5563;font-weight:500">Last Visit</div>
+                <div>${patient.lastVisit}</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;text-align:right">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.id}')">View Profile →</button>
+            </div>
+          </div>
+        `).join('');
+            }, 300);
+        }
+
+        function openPatientProfile(patientId) {
+            const patient = patientsDatabase.find(p => p.id === patientId);
+            if (patient) {
+                Toast.success(`Opening profile for ${patient.name}...`);
+                closeSearchPatientModal();
+            }
+        }
+
+        // Close modal when clicking overlay
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('searchPatientModal');
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    closeSearchPatientModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

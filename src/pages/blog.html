@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCOS Blog & Resources — PCOS Care Hub</title>
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/navbar.css">
+  <link rel="stylesheet" href="../../assets/css/footer.css">
+  <style>
+    .blog-hero {
+      background: linear-gradient(135deg, var(--purple-deep), var(--purple-primary));
+      padding: calc(var(--nav-h) + 60px) 0 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(229, 127, 175, .15) 0%, transparent 60%);
+    }
+
+    .blog-hero h1 {
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .blog-hero p {
+      color: rgba(255, 255, 255, .75);
+      max-width: 520px;
+      margin: 14px auto 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .blog-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .blog-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
+
+    .blog-card-img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .blog-card-body {
+      padding: 22px;
+    }
+
+    .blog-card-tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--purple-primary);
+      background: var(--purple-pale);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .blog-card h4 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .blog-card p {
+      font-size: .875rem;
+      line-height: 1.65;
+    }
+
+    .blog-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      font-size: .78rem;
+      color: var(--text-light);
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .blog-card-meta a {
+      color: var(--purple-primary);
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    .blog-card-meta a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width:900px) {
+      .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:600px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="navbar-placeholder" data-page="blog"></div>
+
+  <section class="blog-hero">
+    <div class="container">
+      <h1>PCOS Knowledge Center</h1>
+      <p>Evidence-based articles, tips, and guides to help you understand and manage PCOS better every day.</p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="container">
+      <div class="blog-grid">
+
+        <div class="blog-card reveal">
+          <img class="blog-card-img"
+            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80"
+            alt="PCOS Diet">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Diet &amp; Nutrition</span>
+            <h4>The Best Anti-Inflammatory Diet for PCOS Management</h4>
+            <p>Discover how a low-glycaemic, anti-inflammatory diet can help manage insulin resistance, reduce androgen
+              levels, and improve hormonal balance in PCOS.</p>
+            <div class="blog-card-meta"><span>📅 Feb 20, 2026</span><span>⏱ 6 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card reveal reveal-delay-1">
+          <img class="blog-card-img"
+            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&auto=format&fit=crop&q=80"
+            alt="Exercise PCOS">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Exercise</span>
+            <h4>Exercise Guide for Women with PCOS: What Works Best</h4>
+            <p>A combination of strength training and cardio can significantly improve insulin sensitivity, support
+              weight management, and reduce PCOS symptoms.</p>
+            <div class="blog-card-meta"><span>📅 Feb 15, 2026</span><span>⏱ 5 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card reveal reveal-delay-2">
+          <img class="blog-card-img" src="../../images/photo13.jpg" alt="Mental health PCOS">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Mental Health</span>
+            <h4>Managing Anxiety and Depression Linked to PCOS</h4>
+            <p>PCOS significantly increases the risk of depression and anxiety. Learn practical strategies for mental
+              wellness including CBT, mindfulness, and community support.</p>
+            <div class="blog-card-meta"><span>📅 Feb 10, 2026</span><span>⏱ 7 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card reveal">
+          <img class="blog-card-img"
+            src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&auto=format&fit=crop&q=80"
+            alt="Hormones PCOS">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Hormones</span>
+            <h4>Understanding Insulin Resistance in PCOS</h4>
+            <p>Up to 70% of women with PCOS have insulin resistance. Learn how it affects your body, why it matters, and
+              what you can do about it through lifestyle and medical approaches.</p>
+            <div class="blog-card-meta"><span>📅 Feb 5, 2026</span><span>⏱ 8 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card reveal reveal-delay-1">
+          <img class="blog-card-img" src="../../images/photo11.jpg" alt="Fertility PCOS">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Fertility</span>
+            <h4>PCOS and Fertility: What You Need to Know</h4>
+            <p>PCOS is one of the leading causes of female infertility, but most women with PCOS can conceive with the
+              right treatment. Understand your options from lifestyle to IVF.</p>
+            <div class="blog-card-meta"><span>📅 Jan 28, 2026</span><span>⏱ 9 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="blog-card reveal reveal-delay-2">
+          <img class="blog-card-img"
+            src="https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=600&auto=format&fit=crop&q=80"
+            alt="Sleep PCOS">
+          <div class="blog-card-body">
+            <span class="blog-card-tag">Wellness</span>
+            <h4>Why Sleep Is Critical for PCOS Management</h4>
+            <p>Poor sleep worsens insulin resistance, disrupts hormone balance, and increases cortisol in PCOS. Discover
+              evidence-backed sleep hygiene strategies tailored for PCOS.</p>
+            <div class="blog-card-meta"><span>📅 Jan 22, 2026</span><span>⏱ 5 min read</span><a href="#">Read More →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+  <div class="toast-container" id="toast-container"></div>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      PageLoader.hide();
+      document.getElementById('navbar-placeholder').innerHTML = renderNavbar('blog');
+      initNavbar();
+      setActiveNav();
+      document.getElementById('footer-placeholder').innerHTML = renderFooter();
+      initReveal();
+      initSmoothScroll();
+    });
+  </script>
+</body>
+
+</html>

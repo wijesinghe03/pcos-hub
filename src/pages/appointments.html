@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .appointments-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .appointment-card {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .appointment-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: 0 4px 16px rgba(147, 112, 219, 0.1);
+        }
+
+        .appointment-card.past {
+            opacity: 0.7;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .appointment-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            text-align: center;
+        }
+
+        .appointment-info {
+            display: grid;
+            gap: 8px;
+        }
+
+        .appointment-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .appointment-details {
+            display: grid;
+            gap: 6px;
+        }
+
+        .appointment-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .appointment-status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .appointment-badge {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-confirmed {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .appointment-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text-dark);
+        }
+
+        .appointment-btn:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+        }
+
+        .schedule-section {
+            background: rgba(147, 112, 219, 0.05);
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .schedule-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .schedule-actions .btn {
+            flex: 1;
+        }
+
+        .appointments-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .date-filter {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--bg-light);
+            background: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+        }
+
+        @media (max-width: 640px) {
+            .appointment-card {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .appointment-icon {
+                text-align: left;
+            }
+
+            .appointment-status {
+                justify-content: space-between;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" href="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item active" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>My Appointments</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" id="searchInput" placeholder="Search appointments…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="appointments-container">
+                <!-- Schedule New Appointment Section -->
+                <div class="schedule-section">
+                    <div class="schedule-title"><i>➕</i> Schedule New Appointment</div>
+                    <form id="appointmentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hospitalName">Hospital / Clinic</label>
+                                <select id="hospitalName" required>
+                                    <option value="">Select hospital...</option>
+                                    <option value="City Hospital">City Hospital</option>
+                                    <option value="Nawaloka">Nawaloka Hospital</option>
+                                    <option value="Lanka Hospital">Lanka Hospital</option>
+                                    <option value="Colombo Clinic">Colombo Clinic</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctorName">Doctor Name</label>
+                                <input type="text" id="doctorName" placeholder="e.g., Dr. Silva" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentDate">Date</label>
+                                <input type="date" id="appointmentDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime">Time</label>
+                                <input type="time" id="appointmentTime" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="appointmentType">Appointment Type</label>
+                                <select id="appointmentType" required>
+                                    <option value="">Select type...</option>
+                                    <option value="Consultation">General Consultation</option>
+                                    <option value="Follow-up">Follow-up</option>
+                                    <option value="Test">Lab Test</option>
+                                    <option value="Ultrasound">Ultrasound</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="appointmentNotes">Notes (Optional)</label>
+                                <textarea id="appointmentNotes"
+                                    placeholder="Add any notes about your appointment..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="schedule-actions">
+                            <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+                            <button type="reset" class="btn btn-ghost">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Filter buttons -->
+                <div class="date-filter">
+                    <button class="filter-btn active" data-filter="all">All Appointments</button>
+                    <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-btn" data-filter="past">Past</button>
+                </div>
+
+                <!-- Appointments list -->
+                <div class="appointments-list" id="appointmentsList">
+                    <!-- Appointments will be loaded here -->
+                </div>
+
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState" style="display:none">
+                    <div class="empty-state-icon">📅</div>
+                    <p>No appointments scheduled</p>
+                    <p style="font-size:0.9rem;margin-top:8px">Schedule your first appointment using the form above</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Mock data for appointments
+        let mockAppointments = [
+            {
+                id: 1,
+                hospital: 'City Hospital',
+                doctor: 'Dr. Silva',
+                type: 'Consultation',
+                date: '20 Feb 2026',
+                time: '02:30 PM',
+                dateObj: new Date(2026, 1, 20),
+                status: 'confirmed',
+                notes: 'Regular PCOS checkup'
+            },
+            {
+                id: 2,
+                hospital: 'Nawaloka',
+                doctor: 'Dr. Mendis',
+                type: 'Ultrasound',
+                date: '15 Mar 2026',
+                time: '10:00 AM',
+                dateObj: new Date(2026, 2, 15),
+                status: 'confirmed',
+                notes: 'Ovarian ultrasound'
+            },
+            {
+                id: 3,
+                hospital: 'Lanka Hospital',
+                doctor: 'Dr. Jayasuriya',
+                type: 'Follow-up',
+                date: '28 Mar 2026',
+                time: '03:00 PM',
+                dateObj: new Date(2026, 2, 28),
+                status: 'pending',
+                notes: 'Results review'
+            }
+        ];
+
+        function displayAppointments(appointments) {
+            const list = document.getElementById('appointmentsList');
+            const empty = document.getElementById('emptyState');
+
+            if (!appointments || appointments.length === 0) {
+                list.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            list.innerHTML = appointments.map(apt => {
+                const isPast = apt.dateObj < new Date();
+                return `
+                    <div class="appointment-card ${isPast ? 'past' : ''}">
+                        <div class="appointment-icon">${apt.type === 'Consultation' ? '🩺' : apt.type === 'Follow-up' ? '📋' : apt.type === 'Test' ? '🧬' : apt.type === 'Ultrasound' ? '🖼️' : '📅'}</div>
+                        <div class="appointment-info">
+                            <div class="appointment-title">${apt.type} at ${apt.hospital}</div>
+                            <div class="appointment-details">
+                                <div class="appointment-detail-item"><strong>Doctor:</strong> ${apt.doctor}</div>
+                                <div class="appointment-detail-item"><i>📅</i> ${apt.date}</div>
+                                <div class="appointment-detail-item"><i>🕐</i> ${apt.time}</div>
+                                ${apt.notes ? `<div class="appointment-detail-item"><i>📝</i> ${apt.notes}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="appointment-status">
+                            <span class="appointment-badge ${apt.status === 'confirmed' ? 'badge-confirmed' : 'badge-pending'}">
+                                ${apt.status === 'confirmed' ? '✓ Confirmed' : '⏳ Pending'}
+                            </span>
+                            <button class="appointment-btn" onclick="rescheduleAppointment(${apt.id})">Reschedule</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadAppointments(filter = 'all') {
+            let filtered = mockAppointments;
+
+            if (filter === 'upcoming') {
+                const today = new Date();
+                filtered = mockAppointments.filter(apt => apt.dateObj >= today);
+            } else if (filter === 'past') {
+                const today = new Date();
+                filtered = mockAppointments.filter(apt => apt.dateObj < today);
+            }
+
+            // Sort by date
+            filtered.sort((a, b) => a.dateObj - b.dateObj);
+            displayAppointments(filtered);
+        }
+
+        function rescheduleAppointment(id) {
+            Toast.info('Reschedule feature coming soon!');
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    loadAppointments(btn.dataset.filter);
+                });
+            });
+        }
+
+        function setupAppointmentForm() {
+            const form = document.getElementById('appointmentForm');
+            if (!form) return;
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const hospital = document.getElementById('hospitalName').value;
+                const doctor = document.getElementById('doctorName').value;
+                const date = document.getElementById('appointmentDate').value;
+                const time = document.getElementById('appointmentTime').value;
+                const type = document.getElementById('appointmentType').value;
+                const notes = document.getElementById('appointmentNotes').value;
+
+                if (!hospital || !doctor || !date || !time || !type) {
+                    Toast.error('Please fill in all required fields');
+                    return;
+                }
+
+                const dateObj = new Date(date);
+                const dateStr = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                const newAppointment = {
+                    id: mockAppointments.length + 1,
+                    hospital,
+                    doctor,
+                    type,
+                    date: dateStr,
+                    time,
+                    dateObj,
+                    status: 'pending',
+                    notes
+                };
+
+                mockAppointments.unshift(newAppointment);
+                loadAppointments('all');
+                form.reset();
+                Toast.success('✓ Appointment scheduled successfully!');
+            });
+        }
+
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // Set user name
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user && document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.name || 'User';
+            }
+
+            // Load appointments
+            loadAppointments();
+
+            // Setup filters
+            setupFilters();
+
+            // Setup form
+            setupAppointmentForm();
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const filtered = mockAppointments.filter(apt =>
+                        apt.doctor.toLowerCase().includes(query) ||
+                        apt.hospital.toLowerCase().includes(query) ||
+                        apt.type.toLowerCase().includes(query)
+                    );
+                    displayAppointments(filtered);
+                });
+            }
+
+            // Setup sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

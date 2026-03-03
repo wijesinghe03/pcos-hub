@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .settings-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
+            background: white;
+            border: 1px solid var(--bg-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .settings-section-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .setting-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--bg-light);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: grid;
+            gap: 4px;
+        }
+
+        .setting-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .setting-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-light);
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: var(--purple-primary);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(22px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .color-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 2px solid var(--bg-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.05);
+        }
+
+        .color-option.selected {
+            border-color: var(--text-dark);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--text-dark);
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--purple-primary);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .privacy-info {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196f3;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #1976d2;
+            margin-bottom: 16px;
+        }
+
+        .danger-zone {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .danger-zone-title {
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 16px;
+        }
+
+        .danger-btn {
+            background: white;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .danger-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .breadcrumb a {
+            color: var(--purple-primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .setting-section-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .setting-item {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .color-picker-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" href="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item active" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Settings</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="settings-container">
+                <!-- Notifications Settings -->
+                <div class="settings-section">
+                    <div class="settings-section-title"><i>🔔</i> Notifications</div>
+                    <div class="setting-description">Manage how you receive notifications and reminders</div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Email Notifications</div>
+                            <div class="setting-description">Receive email updates about appointments and health</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailNotif" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">SMS Alerts</div>
+                            <div class="setting-description">Get text message reminders for appointments</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="smsNotif" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Appointment Reminders</div>
+                            <div class="setting-description">Get reminded before your scheduled appointments</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="appointmentReminder" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Cycle Reminders</div>
+                            <div class="setting-description">Get notified about your menstrual cycle events</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="cycleReminder" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Health Tips & Articles</div>
+                            <div class="setting-description">Receive weekly health tips and educational content</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="healthTips">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Privacy & Data Settings -->
+                <div class="settings-section">
+                    <div class="settings-section-title"><i>🔒</i> Privacy & Data</div>
+
+                    <div class="privacy-info">
+                        Your health data is encrypted and stored securely. We never share your personal information with
+                        third parties without your consent.
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Data Sharing</div>
+                            <div class="setting-description">Allow clinics to access your health records</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dataSharing" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Research Participation</div>
+                            <div class="setting-description">Help us improve PCOS care by participating in research
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="research">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <div class="setting-name">Anonymous Analytics</div>
+                            <div class="setting-description">Help us improve the app by sending usage statistics</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="analytics" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Display Settings -->
+                <div class="settings-section">
+                    <div class="settings-section-title"><i>🎨</i> Display & Appearance</div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="themeSelect">Theme</label>
+                            <select id="themeSelect">
+                                <option value="light" selected>Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                                <option value="auto">Auto (System)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Primary Color</label>
+                            <div class="color-picker-grid">
+                                <div class="color-option selected" style="background: #9370DB;"
+                                    onclick="selectColor(this, '#9370DB')"></div>
+                                <div class="color-option" style="background: #E580AF;"
+                                    onclick="selectColor(this, '#E580AF')"></div>
+                                <div class="color-option" style="background: #4ECDC4;"
+                                    onclick="selectColor(this, '#4ECDC4')"></div>
+                                <div class="color-option" style="background: #FF6B9D;"
+                                    onclick="selectColor(this, '#FF6B9D')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="fontSizeSelect">Text Size</label>
+                            <select id="fontSizeSelect">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Settings -->
+                <div class="settings-section">
+                    <div class="settings-section-title"><i>❤️</i> Health Preferences</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weightUnit">Weight Unit</label>
+                            <select id="weightUnit">
+                                <option value="kg" selected>Kilograms (kg)</option>
+                                <option value="lbs">Pounds (lbs)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="heightUnit">Height Unit</label>
+                            <select id="heightUnit">
+                                <option value="cm" selected>Centimeters (cm)</option>
+                                <option value="feet">Feet & Inches</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cycleLength">Average Cycle Length (days)</label>
+                            <input type="number" id="cycleLength" min="20" max="45" value="28">
+                        </div>
+                        <div class="form-group">
+                            <label for="periodDuration">Average Period Duration (days)</label>
+                            <input type="number" id="periodDuration" min="3" max="10" value="5">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Health Tracking Priorities</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="track-symptoms" checked>
+                                    <label for="track-symptoms">Symptom tracking</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="track-exercise" checked>
+                                    <label for="track-exercise">Exercise & Activity</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="track-nutrition" checked>
+                                    <label for="track-nutrition">Nutrition & Diet</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="track-mood" checked>
+                                    <label for="track-mood">Mood & Stress</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="track-sleep" checked>
+                                    <label for="track-sleep">Sleep Quality</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveHealthSettings()">Save Health Settings</button>
+                    </div>
+                </div>
+
+                <!-- Language & Region -->
+                <div class="settings-section">
+                    <div class="settings-section-title"><i>🌍</i> Language & Region</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="language">Language</label>
+                            <select id="language">
+                                <option value="en" selected>English</option>
+                                <option value="si">Sinhala</option>
+                                <option value="ta">Tamil</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timezone">Timezone</label>
+                            <select id="timezone">
+                                <option value="Asia/Colombo" selected>Asia/Colombo (GMT +5:30)</option>
+                                <option value="UTC">UTC (GMT)</option>
+                                <option value="Asia/Kolkata">Asia/Kolkata (GMT +5:30)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveLanguageSettings()">Save Language Settings</button>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="danger-zone">
+                    <div class="danger-zone-title">⚠️ Danger Zone</div>
+                    <button class="danger-btn" onclick="clearAllData()">Clear All Local Data</button>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">This will clear cached
+                        data but won't affect your account on the server.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function selectColor(element, color) {
+            document.querySelectorAll('.color-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            Toast.success(`✓ Color changed to ${color}!`);
+        }
+
+        function saveHealthSettings() {
+            Toast.success('✓ Health settings saved successfully!');
+        }
+
+        function saveLanguageSettings() {
+            Toast.success('✓ Language and region settings saved!');
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all local data? This action cannot be undone.')) {
+                localStorage.clear();
+                Toast.success('✓ All local data cleared!');
+            }
+        }
+
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // Set user name
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user && document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.name || 'User';
+            }
+
+            // Setup toggle switches
+            const toggles = document.querySelectorAll('.toggle-switch input');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('change', (e) => {
+                    const settingName = e.target.id;
+                    const isChecked = e.target.checked;
+                    localStorage.setItem(`setting_${settingName}`, isChecked);
+                    Toast.success(`✓ Setting updated!`);
+                });
+            });
+
+            // Setup select dropdowns
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const settingName = e.target.id;
+                    const value = e.target.value;
+                    localStorage.setItem(`setting_${settingName}`, value);
+                });
+            });
+
+            // Setup sidebar toggle for mobile
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && overlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>

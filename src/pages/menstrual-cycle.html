@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstrual Cycle Tracker — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--bg-light);
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--purple-primary);
+            background: rgba(147, 112, 219, 0.05);
+        }
+
+        .calendar-day.other-month {
+            color: var(--text-light);
+            cursor: default;
+        }
+
+        .calendar-day.period {
+            background: rgba(229, 127, 175, 0.3);
+            border-color: var(--pink-accent);
+            color: var(--pink-accent);
+        }
+
+        .calendar-day.fertile {
+            background: rgba(78, 205, 196, 0.3);
+            border-color: #4ecdc4;
+            color: #4ecdc4;
+        }
+
+        .calendar-day.ovulation {
+            background: var(--pink-accent);
+            color: white;
+            border-color: var(--pink-accent);
+            font-weight: 700;
+        }
+
+        .calendar-day.today {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+            font-weight: 700;
+        }
+
+        .cycle-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .cycle-info-card {
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px solid var(--bg-light);
+            text-align: center;
+        }
+
+        .cycle-info-card.period {
+            border-color: var(--pink-accent);
+            background: rgba(229, 127, 175, 0.1);
+        }
+
+        .cycle-info-card.fertile {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .cycle-info-card.ovulation {
+            border-color: var(--pink-accent);
+            background: rgba(229, 127, 175, 0.15);
+        }
+
+        .cycle-info-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .cycle-info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .cycle-info-status {
+            font-size: 0.8rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--bg-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .cycle-history {
+            margin-top: 40px;
+        }
+
+        .history-item {
+            padding: 16px;
+            border: 2px solid var(--bg-light);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .history-item-title {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .history-item-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .history-item-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .detail-box {
+            background: var(--bg-light);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .status-badge.active {
+            background: rgba(229, 127, 175, 0.2);
+            color: var(--pink-accent);
+        }
+
+        .status-badge.upcoming {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .cycle-info {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+            }
+
+            .calendar-day {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        #page-loader {
+            display: none !important;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+        }
+    </style>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">A</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-role">Patient</div>
+                </div>
+                <i>›</i>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Main</span>
+                <a class="sidebar-item" data-page="patient-dashboard.html" href="patient-dashboard.html">
+                    <i>🏠</i> Dashboard
+                </a>
+                <a class="sidebar-item" data-page="track-symptoms.html" href="track-symptoms.html">
+                    <i>📊</i> Track Symptoms
+                </a>
+                <a class="sidebar-item active" data-page="menstrual-cycle.html" href="menstrual-cycle.html">
+                    <i>🩸</i> Menstrual Cycle
+                </a>
+                <a class="sidebar-item" data-page="reports.html" href="reports.html">
+                    <i>📁</i> My Reports
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-item" href="lifestyle-log.html">
+                    <i>🥗</i> Lifestyle Log
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Health</span>
+                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Account</span>
+                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ── -->
+        <main class="dash-main" id="mainContent">
+
+            <!-- Top bar -->
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Menstrual Cycle Tracker</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="topbar-search">
+                        <i>🔍</i>
+                        <input type="text" placeholder="Search cycle info…">
+                    </div>
+                    <button class="topbar-icon-btn" title="Notifications">
+                        🔔<span class="notif-dot"></span>
+                    </button>
+                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Cycle Info Cards -->
+            <div class="cycle-info reveal">
+                <div class="cycle-info-card period">
+                    <div class="cycle-info-label">📍 Current Phase</div>
+                    <div class="cycle-info-value" id="currentPhase">Day 15</div>
+                    <div class="cycle-info-status">Fertile Window</div>
+                </div>
+                <div class="cycle-info-card">
+                    <div class="cycle-info-label">📅 Cycle Length</div>
+                    <div class="cycle-info-value" id="cycleLength">28</div>
+                    <div class="cycle-info-status">days</div>
+                </div>
+                <div class="cycle-info-card">
+                    <div class="cycle-info-label">🩸 Period Duration</div>
+                    <div class="cycle-info-value" id="periodDuration">5</div>
+                    <div class="cycle-info-status">days</div>
+                </div>
+                <div class="cycle-info-card fertile">
+                    <div class="cycle-info-label">📌 Next Period</div>
+                    <div class="cycle-info-value" id="nextPeriod">12 Mar</div>
+                    <div class="cycle-info-status">Predicted</div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📆</i> Monthly Cycle Calendar</div>
+                </div>
+
+                <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                    <h3 id="monthYear" style="font-weight: 700; margin: 0;">February 2026</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-ghost btn-sm" onclick="previousMonth()">‹ Previous</button>
+                        <button class="btn btn-ghost btn-sm" onclick="nextMonth()">Next ›</button>
+                    </div>
+                </div>
+
+                <!-- Day headers -->
+                <div class="calendar-grid" style="margin-bottom: 0;">
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Sun</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Mon</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Tue</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Wed</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Thu</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Fri</div>
+                    <div
+                        style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
+                        Sat</div>
+                </div>
+
+                <!-- Calendar dates -->
+                <div class="calendar-grid" id="calendarDays"></div>
+
+                <!-- Legend -->
+                <div
+                    style="display: flex; gap: 16px; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--bg-light); flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div
+                            style="width: 16px; height: 16px; border-radius: 4px; background: rgba(229,127,175,0.3); border: 2px solid var(--pink-accent);">
+                        </div>
+                        <span style="font-size: 0.9rem;">Period</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div
+                            style="width: 16px; height: 16px; border-radius: 4px; background: rgba(78,205,196,0.3); border: 2px solid #4ecdc4;">
+                        </div>
+                        <span style="font-size: 0.9rem;">Fertile</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--pink-accent);">
+                        </div>
+                        <span style="font-size: 0.9rem;">Ovulation</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--purple-primary);">
+                        </div>
+                        <span style="font-size: 0.9rem;">Today</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Cycle Data -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>✏️</i> Log Cycle Information</div>
+                </div>
+
+                <form id="cycleForm">
+                    <div class="two-col">
+                        <div class="form-group">
+                            <label for="periodStartDate">Period Start Date</label>
+                            <input type="date" id="periodStartDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="periodEndDate">Period End Date</label>
+                            <input type="date" id="periodEndDate" required>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="form-group">
+                            <label for="cycleLength">Average Cycle Length (days)</label>
+                            <input type="number" id="cycleLength" name="cycleLength" min="20" max="40" value="28"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="periodFlow">Flow Intensity</label>
+                            <select id="periodFlow" name="periodFlow" required>
+                                <option value="">Select flow intensity...</option>
+                                <option value="light">🟡 Light</option>
+                                <option value="normal">🔴 Normal</option>
+                                <option value="heavy">🔴🔴 Heavy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cycleNotes">Cycle Notes & Observations</label>
+                        <textarea id="cycleNotes" name="notes"
+                            placeholder="Note any irregularities, pain levels, mood changes, or other observations related to your cycle..."></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 10px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            ✓ Save Cycle Data
+                        </button>
+                        <button type="reset" class="btn btn-ghost" style="flex: 1;">
+                            ↻ Clear
+                        </button>
+                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;">
+                            ← Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Cycle History -->
+            <div class="dash-panel reveal cycle-history">
+                <div class="panel-header">
+                    <div class="panel-title"><i>📊</i> Cycle History</div>
+                </div>
+
+                <div id="cycleHistoryContainer">
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div>
+                                <div class="history-item-title">Cycle #25</div>
+                                <div class="history-item-date">Started 26 Jan 2026</div>
+                            </div>
+                            <span class="status-badge active">◉ Completed</span>
+                        </div>
+                        <div class="history-item-details">
+                            <div class="detail-box">
+                                <span class="detail-label">Length</span>
+                                <span class="detail-value">28 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">5 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Flow</span>
+                                <span class="detail-value">Normal</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">Regular</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div>
+                                <div class="history-item-title">Cycle #24</div>
+                                <div class="history-item-date">Started 29 Dec 2025</div>
+                            </div>
+                            <span class="status-badge active">◉ Completed</span>
+                        </div>
+                        <div class="history-item-details">
+                            <div class="detail-box">
+                                <span class="detail-label">Length</span>
+                                <span class="detail-value">29 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">5 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Flow</span>
+                                <span class="detail-value">Heavy</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">Slightly Irregular</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div>
+                                <div class="history-item-title">Cycle #23</div>
+                                <div class="history-item-date">Started 01 Dec 2025</div>
+                            </div>
+                            <span class="status-badge active">◉ Completed</span>
+                        </div>
+                        <div class="history-item-details">
+                            <div class="detail-box">
+                                <span class="detail-label">Length</span>
+                                <span class="detail-value">28 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">5 days</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Flow</span>
+                                <span class="detail-value">Normal</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">Regular</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Hide page loader immediately
+        (function () {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+            }
+        })();
+
+        let currentMonthView = new Date(2026, 1); // February 2026
+
+        // Calendar generation
+        function buildCalendar(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+
+            const monthYearEl = document.getElementById('monthYear');
+            if (monthYearEl) {
+                monthYearEl.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            }
+
+            const firstDay = new Date(year, month, 1);
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            const calendarDays = document.getElementById('calendarDays');
+            if (!calendarDays) return;
+            calendarDays.innerHTML = '';
+
+            // Previous month's days
+            const prevLastDate = new Date(year, month, 0).getDate();
+            for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+                const div = document.createElement('div');
+                div.className = 'calendar-day other-month';
+                div.textContent = prevLastDate - i;
+                calendarDays.appendChild(div);
+            }
+
+            // Current month's days
+            const today = new Date();
+            const periodDays = [1, 2, 3, 4, 5];
+            const fertileDays = [11, 12, 13, 14, 15, 16];
+            const ovulationDay = 14;
+
+            for (let d = 1; d <= lastDate; d++) {
+                const div = document.createElement('div');
+                div.className = 'calendar-day';
+                div.textContent = d;
+
+                if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    div.classList.add('today');
+                } else if (d === ovulationDay) {
+                    div.classList.add('ovulation');
+                } else if (fertileDays.includes(d)) {
+                    div.classList.add('fertile');
+                } else if (periodDays.includes(d)) {
+                    div.classList.add('period');
+                }
+
+                calendarDays.appendChild(div);
+            }
+
+            // Next month's days
+            const totalCells = calendarDays.children.length;
+            const remainingCells = 42 - totalCells;
+            for (let i = 1; i <= remainingCells; i++) {
+                const div = document.createElement('div');
+                div.className = 'calendar-day other-month';
+                div.textContent = i;
+                calendarDays.appendChild(div);
+            }
+        }
+
+        function previousMonth() {
+            currentMonthView.setMonth(currentMonthView.getMonth() - 1);
+            buildCalendar(currentMonthView);
+        }
+
+        function nextMonth() {
+            currentMonthView.setMonth(currentMonthView.getMonth() + 1);
+            buildCalendar(currentMonthView);
+        }
+
+        function setupFormSubmission() {
+            const cycleForm = document.getElementById('cycleForm');
+            if (!cycleForm) return;
+
+            cycleForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const startDate = document.getElementById('periodStartDate').value;
+                const endDate = document.getElementById('periodEndDate').value;
+                const cycleLength = document.getElementById('cycleLength').value;
+                const periodFlow = document.getElementById('periodFlow').value;
+                const notes = document.getElementById('cycleNotes').value;
+
+                if (!startDate || !endDate || !periodFlow) {
+                    Toast.error('Please fill in all required fields');
+                    return;
+                }
+
+                const cycleEntry = {
+                    startDate, endDate, cycleLength, periodFlow, notes,
+                    timestamp: new Date().toISOString()
+                };
+
+                let history = JSON.parse(localStorage.getItem('cycleHistory') || '[]');
+                history.unshift(cycleEntry);
+                localStorage.setItem('cycleHistory', JSON.stringify(history));
+
+                Toast.success('✓ Cycle data saved successfully!');
+                this.reset();
+                document.getElementById('periodStartDate').value = '2026-02-01';
+                document.getElementById('periodEndDate').value = '2026-02-05';
+            });
+        }
+
+        function setupNavigation() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (!sidebarToggle || !sidebar || !overlay) return;
+
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.style.display = 'none';
+            });
+        }
+
+        // Initialize when DOM is loaded
+        function initPage() {
+            // Hide loader
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.remove();
+            }
+
+            // Set current date and time
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            // User name from auth
+            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            if (user) {
+                const sn = document.getElementById('sidebarName');
+                if (sn) sn.textContent = user.name || 'User';
+            }
+
+            // Set default dates
+            const startDate = document.getElementById('periodStartDate');
+            const endDate = document.getElementById('periodEndDate');
+            if (startDate) startDate.value = '2026-02-01';
+            if (endDate) endDate.value = '2026-02-05';
+
+            // Build calendar after DOM is ready
+            buildCalendar(currentMonthView);
+
+            // Setup form submission
+            setupFormSubmission();
+
+            // Setup navigation
+            setupNavigation();
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+
+</html>
