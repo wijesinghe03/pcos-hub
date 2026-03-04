@@ -138,10 +138,10 @@ function renderFooter() {
             <div class="trust-badge"><i style="color:#27ae60">✓</i> HIPAA Compliant</div>
           </div>
           <nav class="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-            <a href="#">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms-of-service.html">Terms of Service</a>
+            <a href="cookie-policy.html">Cookie Policy</a>
+            <a href="contact.html">Contact</a>
           </nav>
         </div>
       </div>

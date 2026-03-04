@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — PCOS Care Hub</title>
+    <meta name="description"
+        content="Get in touch with PCOS Care Hub. Whether you're a patient, healthcare provider, or have questions about PCOS management in Sri Lanka, we're here to help.">
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <link rel="stylesheet" href="../../assets/css/home.css">
+    <link rel="stylesheet" href="../../assets/css/footer.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+    <style>
+        .contact-hero {
+            padding: 140px 0 80px;
+            background: linear-gradient(160deg, #f0e6ff 0%, #fce4f0 40%, #e8f4ff 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 50px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-info-card {
+            background: linear-gradient(135deg, var(--purple-primary), var(--purple-deep));
+            padding: 50px;
+            border-radius: var(--radius-xl);
+            color: white;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-info-card h3 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .info-text h4 {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .info-text p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-link-btn:hover {
+            background: var(--pink-accent);
+            transform: translateY(-3px);
+            border-color: var(--pink-accent);
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                margin-top: 0;
+                padding-top: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .contact-card,
+            .contact-info-card {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Map placeholder */
+        .map-section {
+            height: 400px;
+            background: var(--purple-ghost);
+            border-radius: var(--radius-xl);
+            margin-top: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(245, 237, 251, 0.8), rgba(245, 237, 251, 0.2));
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar-placeholder" data-page="contact"></div>
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="hero-blob hero-blob-1"></div>
+        <div class="hero-blob hero-blob-2"></div>
+        <div class="container">
+            <h1 class="reveal">Contact Our Team</h1>
+            <p class="reveal" style="color:var(--text-mid); max-width:600px; margin:20px auto 0">
+                Have questions about the platform? Interested in partnering with us? Our team in Colombo is ready to
+                assist you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Section -->
+    <section class="section-pad" style="background:var(--purple-ghost); padding-top:0">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Form Side -->
+                <div class="contact-card reveal">
+                    <h3 style="margin-bottom: 10px;">Send Us a Message</h3>
+                    <p style="margin-bottom: 30px;">Fill out the form below and we'll get back to you within 24 hours.
+                    </p>
+
+                    <form class="contact-form" id="contactForm" onsubmit="handleContactSubmit(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" placeholder="Jane Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" placeholder="jane@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <select class="form-control" required>
+                                <option value="">Select a topic</option>
+                                <option value="patient">Patient Support</option>
+                                <option value="hospital">Hospital Partnership</option>
+                                <option value="technical">Technical Issue</option>
+                                <option value="other">General Inquiry</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Your Message</label>
+                            <textarea class="form-control" placeholder="How can we help you today?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="width:100%; justify-content:center;">
+                            Send Message — We're Listening
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Info Side -->
+                <div class="contact-info-card reveal reveal-delay-2">
+                    <div class="info-top">
+                        <h3>Contact Information</h3>
+
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div class="info-text">
+                                <h4>Our Location</h4>
+                                <p>123 Healthcare Plaza, Colombo 07,<br>Sri Lanka</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">📞</div>
+                            <div class="info-text">
+                                <h4>Call Us</h4>
+                                <p>+94 11 234 5678</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">✉</div>
+                            <div class="info-text">
+                                <h4>Email Us</h4>
+                                <p>support@pcoscarehub.lk</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-bottom">
+                        <h4 style="margin-bottom: 15px; font-family: var(--font-body);">Follow Our Journey</h4>
+                        <div class="social-row">
+                            <a href="#" class="social-link-btn">f</a>
+                            <a href="#" class="social-link-btn">𝕏</a>
+                            <a href="#" class="social-link-btn">📷</a>
+                            <a href="#" class="social-link-btn">in</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Representative Area -->
+            <div class="map-section reveal">
+                <div class="map-overlay"></div>
+                <div style="text-align:center; z-index:5;">
+                    <span style="font-size: 3rem; display:block; margin-bottom:15px;">🇱🇰</span>
+                    <h3 style="color:var(--purple-deep);">Proudly Based in Sri Lanka</h3>
+                    <p>Serving women across the island from our central hub in Colombo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/home.js"></script>
+    <script>
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            // Show success toast
+            if (typeof Toast !== 'undefined') {
+                Toast.success('Message sent! Our team will contact you soon.');
+            } else {
+                alert('Message sent! Our team will contact you soon.');
+            }
+            e.target.reset();
+        }
+    </script>
+</body>
+
+</html>

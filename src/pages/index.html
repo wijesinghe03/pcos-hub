@@ -49,7 +49,7 @@
           <a href="signup-choice.html" class="btn btn-primary btn-lg">
             <span>♥</span> Get Started Free
           </a>
-          <a href="#features" class="btn btn-outline btn-lg">
+          <a href="learn-more.html" class="btn btn-outline btn-lg">
             Learn More
           </a>
         </div>
@@ -107,12 +107,16 @@
 ════════════════════════════════════════ -->
   <section class="feature-pills">
     <div class="container">
-      <div class="pill-item reveal"><i>📊</i> Symptom Tracking</div>
-      <div class="pill-item reveal reveal-delay-1"><i>🩸</i> Menstrual Cycle</div>
-      <div class="pill-item reveal reveal-delay-2"><i>🔒</i> Secure Health Records</div>
-      <div class="pill-item reveal reveal-delay-3"><i>🏥</i> Connect with Hospitals</div>
-      <div class="pill-item reveal reveal-delay-4"><i>🥗</i> Lifestyle Tracking</div>
-      <div class="pill-item reveal"><i>📱</i> Access Anywhere</div>
+      <div class="pill-item reveal" onclick="window.location.href='login-redirect.html?for=symptoms'"
+        style="cursor:pointer"><i>📊</i> Symptom Tracking</div>
+      <div class="pill-item reveal reveal-delay-1" onclick="window.location.href='login-redirect.html?for=cycle'"
+        style="cursor:pointer"><i>🩸</i> Menstrual Cycle</div>
+      <div class="pill-item reveal reveal-delay-2" onclick="window.location.href='login-redirect.html?for=records'"
+        style="cursor:pointer"><i>🔒</i> Secure Health Records</div>
+      <div class="pill-item reveal reveal-delay-3" onclick="window.location.href='hospital-loading.html'"
+        style="cursor:pointer"><i>🏥</i> Connect with Hospitals</div>
+      <div class="pill-item reveal reveal-delay-4" onclick="window.location.href='login-redirect.html?for=lifestyle'"
+        style="cursor:pointer"><i>🥗</i> Lifestyle Tracking</div>
     </div>
   </section>
 
@@ -180,31 +184,36 @@
       </div>
 
       <div class="features-grid">
-        <div class="feature-card reveal">
+        <div class="feature-card reveal" onclick="window.location.href='login-redirect.html?for=symptoms'"
+          style="cursor:pointer">
           <div class="feature-card-icon">📊</div>
           <h4>Symptom Tracking</h4>
           <p>Log daily symptoms like irregular periods, acne, hair loss, fatigue and mood changes. Visualize patterns
             over time with intuitive charts and trend analysis.</p>
         </div>
-        <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-card reveal reveal-delay-1" onclick="window.location.href='login-redirect.html?for=cycle'"
+          style="cursor:pointer">
           <div class="feature-card-icon">🩸</div>
           <h4>Menstrual Cycle Tracker</h4>
           <p>Track cycle length, flow intensity, and predict ovulation windows. Log period dates and receive smart
             reminders for upcoming cycles and appointments.</p>
         </div>
-        <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-card reveal reveal-delay-2" onclick="window.location.href='login-redirect.html?for=records'"
+          style="cursor:pointer">
           <div class="feature-card-icon">🔒</div>
           <h4>Secure Medical Records</h4>
           <p>Upload, store and share lab reports, ultrasound scans, and prescriptions securely. No more lost paper
             records — your history is always accessible.</p>
         </div>
-        <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-card reveal reveal-delay-3" onclick="window.location.href='hospital-loading.html'"
+          style="cursor:pointer">
           <div class="feature-card-icon">🏥</div>
           <h4>Hospital Integration</h4>
           <p>Hospitals can post lab results directly to patient profiles, manage consultations, and ensure physicians
             have complete, accurate medical histories.</p>
         </div>
-        <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-card reveal reveal-delay-4"
+          onclick="window.location.href='login-redirect.html?for=lifestyle'" style="cursor:pointer">
           <div class="feature-card-icon">🥗</div>
           <h4>Lifestyle & Nutrition Log</h4>
           <p>Track your daily meals, water intake, exercise routines and sleep quality. Get personalized lifestyle

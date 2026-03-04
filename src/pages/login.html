@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,165 +8,180 @@
   <link rel="stylesheet" href="../../assets/css/global.css">
   <link rel="stylesheet" href="../../assets/css/navbar.css">
   <link rel="stylesheet" href="../../assets/css/auth.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
 </head>
+
 <body>
 
-<div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
+  <div id="page-loader" class="page-loader">
+    <div class="loader-ring"></div>
+  </div>
 
-<div class="auth-page">
-  <!-- LEFT PANEL -->
-  <div class="auth-panel-left">
-    <div class="auth-left-content">
-      <a href="index.html" class="auth-left-logo">
-        <div class="logo-icon">♥</div>
-        <div class="logo-text"><span>PCOS</span> Care Hub</div>
-      </a>
-      <h2>Welcome Back to Your Health Journey</h2>
-      <p>Access your personalized PCOS management dashboard, track your health, and connect with your healthcare providers.</p>
-      <div class="auth-features">
-        <div class="auth-feature">
-          <div class="auth-feature-icon">📊</div>
-          <div>
-            <div class="auth-feature-text">Symptom & Cycle Tracking</div>
-            <div class="auth-feature-sub">Monitor your health patterns daily</div>
+  <div class="auth-page">
+    <!-- LEFT PANEL -->
+    <div class="auth-panel-left">
+      <div class="auth-left-content">
+        <a href="index.html" class="auth-left-logo">
+          <div class="logo-icon">♥</div>
+          <div class="logo-text"><span>PCOS</span> Care Hub</div>
+        </a>
+        <h2>Welcome Back to Your Health Journey</h2>
+        <p>Access your personalized PCOS management dashboard, track your health, and connect with your healthcare
+          providers.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <div class="auth-feature-icon">📊</div>
+            <div>
+              <div class="auth-feature-text">Symptom & Cycle Tracking</div>
+              <div class="auth-feature-sub">Monitor your health patterns daily</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🔒</div>
+            <div>
+              <div class="auth-feature-text">Secure Medical Records</div>
+              <div class="auth-feature-sub">Your data is encrypted and private</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🏥</div>
+            <div>
+              <div class="auth-feature-text">Hospital Integration</div>
+              <div class="auth-feature-sub">Connect seamlessly with your care team</div>
+            </div>
           </div>
         </div>
-        <div class="auth-feature">
-          <div class="auth-feature-icon">🔒</div>
-          <div>
-            <div class="auth-feature-text">Secure Medical Records</div>
-            <div class="auth-feature-sub">Your data is encrypted and private</div>
-          </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-panel-right">
+      <div class="auth-form-wrap">
+        <div class="auth-header">
+          <h3>Sign In</h3>
+          <p>Don't have an account? <a href="signup.html">Create one free</a></p>
         </div>
-        <div class="auth-feature">
-          <div class="auth-feature-icon">🏥</div>
-          <div>
-            <div class="auth-feature-text">Hospital Integration</div>
-            <div class="auth-feature-sub">Connect seamlessly with your care team</div>
+
+        <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+
+          <!-- Role Selector -->
+          <div class="form-group">
+            <label class="form-label">I am a</label>
+            <div class="role-selector">
+              <div class="role-option patient">
+                <input type="radio" name="role" id="rolePatient" value="patient" checked>
+                <label for="rolePatient">
+                  <i style="font-size:1.4rem">👩‍⚕️</i>
+                  <span>Patient</span>
+                </label>
+              </div>
+              <div class="role-option hospital">
+                <input type="radio" name="role" id="roleHospital" value="hospital">
+                <label for="roleHospital">
+                  <i style="font-size:1.4rem">🏥</i>
+                  <span>Hospital</span>
+                </label>
+              </div>
+              <div class="role-option admin">
+                <input type="radio" name="role" id="roleAdmin" value="admin">
+                <label for="roleAdmin">
+                  <i style="font-size:1.4rem">⚙️</i>
+                  <span>Admin</span>
+                </label>
+              </div>
+            </div>
           </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <div class="input-icon-wrap">
+              <span class="input-icon">✉</span>
+              <input class="form-control" type="email" id="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-icon-wrap">
+              <span class="input-icon">🔒</span>
+              <input class="form-control" type="password" id="password" placeholder="Enter your password" required>
+              <button type="button" class="toggle-pw" onclick="togglePassword('password', this)">👁</button>
+            </div>
+          </div>
+
+          <div class="forgot-link">
+            <a href="#">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="auth-submit">Sign In to PCOS Care Hub</button>
+
+          <div class="auth-divider">Or continue with</div>
+
+          <button type="button" onclick="demoLogin('patient')"
+            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
+            onmouseover="this.style.borderColor='var(--purple-primary)'"
+            onmouseout="this.style.borderColor='var(--border)'">
+            👩‍⚕️ Demo as Patient (Amanda)
+          </button>
+          <button type="button" onclick="demoLogin('hospital')"
+            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
+            onmouseover="this.style.borderColor='#3498db'" onmouseout="this.style.borderColor='var(--border)'">
+            🏥 Demo as Hospital
+          </button>
+          <button type="button" onclick="demoLogin('admin')"
+            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
+            onmouseover="this.style.borderColor='#27ae60'" onmouseout="this.style.borderColor='var(--border)'">
+            ⚙️ Demo as Administrator
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <p>By signing in, you agree to our <a href="terms-of-service.html">Terms of Service</a> and <a
+              href="privacy-policy.html">Privacy
+              Policy</a></p>
+          <p style="margin-top:8px"><a href="index.html">← Back to Home</a></p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="auth-panel-right">
-    <div class="auth-form-wrap">
-      <div class="auth-header">
-        <h3>Sign In</h3>
-        <p>Don't have an account? <a href="signup.html">Create one free</a></p>
-      </div>
+  <div class="toast-container" id="toast-container"></div>
 
-      <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
-
-        <!-- Role Selector -->
-        <div class="form-group">
-          <label class="form-label">I am a</label>
-          <div class="role-selector">
-            <div class="role-option patient">
-              <input type="radio" name="role" id="rolePatient" value="patient" checked>
-              <label for="rolePatient">
-                <i style="font-size:1.4rem">👩‍⚕️</i>
-                <span>Patient</span>
-              </label>
-            </div>
-            <div class="role-option hospital">
-              <input type="radio" name="role" id="roleHospital" value="hospital">
-              <label for="roleHospital">
-                <i style="font-size:1.4rem">🏥</i>
-                <span>Hospital</span>
-              </label>
-            </div>
-            <div class="role-option admin">
-              <input type="radio" name="role" id="roleAdmin" value="admin">
-              <label for="roleAdmin">
-                <i style="font-size:1.4rem">⚙️</i>
-                <span>Admin</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Email -->
-        <div class="form-group">
-          <label class="form-label" for="email">Email Address</label>
-          <div class="input-icon-wrap">
-            <span class="input-icon">✉</span>
-            <input class="form-control" type="email" id="email" placeholder="you@example.com" required>
-          </div>
-        </div>
-
-        <!-- Password -->
-        <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <div class="input-icon-wrap">
-            <span class="input-icon">🔒</span>
-            <input class="form-control" type="password" id="password" placeholder="Enter your password" required>
-            <button type="button" class="toggle-pw" onclick="togglePassword('password', this)">👁</button>
-          </div>
-        </div>
-
-        <div class="forgot-link">
-          <a href="#">Forgot Password?</a>
-        </div>
-
-        <button type="submit" class="auth-submit">Sign In to PCOS Care Hub</button>
-
-        <div class="auth-divider">Or continue with</div>
-
-        <button type="button" onclick="demoLogin('patient')" style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)" onmouseover="this.style.borderColor='var(--purple-primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          👩‍⚕️ Demo as Patient (Amanda)
-        </button>
-        <button type="button" onclick="demoLogin('hospital')" style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)" onmouseover="this.style.borderColor='#3498db'" onmouseout="this.style.borderColor='var(--border)'">
-          🏥 Demo as Hospital
-        </button>
-        <button type="button" onclick="demoLogin('admin')" style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)" onmouseover="this.style.borderColor='#27ae60'" onmouseout="this.style.borderColor='var(--border)'">
-          ⚙️ Demo as Administrator
-        </button>
-      </form>
-
-      <div class="auth-footer">
-        <p>By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
-        <p style="margin-top:8px"><a href="index.html">← Back to Home</a></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="toast-container" id="toast-container"></div>
-
-<script src="../../assets/js/utils.js"></script>
-<script>
-function handleLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const role = document.querySelector('input[name="role"]:checked').value;
-  if (!email || !password) { Toast.error('Please fill in all fields.'); return; }
-  // Demo auth
-  const names = { patient: 'Amanda Perera', hospital: 'City Hospital', admin: 'Admin User' };
-  Auth.login(role, names[role]);
-  Toast.success('Logging in...');
-  setTimeout(() => {
-    const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
-    window.location.href = pages[role];
-  }, 1000);
-}
-function demoLogin(role) {
-  const names = { patient: 'Amanda Perera', hospital: 'City Hospital Colombo', admin: 'Admin User' };
-  Auth.login(role, names[role]);
-  Toast.success(`Welcome, ${names[role]}! Loading dashboard...`);
-  setTimeout(() => {
-    const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
-    window.location.href = pages[role];
-  }, 1200);
-}
-function togglePassword(id, btn) {
-  const input = document.getElementById(id);
-  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
-  else { input.type = 'password'; btn.textContent = '👁'; }
-}
-</script>
+  <script src="../../assets/js/utils.js"></script>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+      if (!email || !password) { Toast.error('Please fill in all fields.'); return; }
+      // Demo auth
+      const names = { patient: 'Amanda Perera', hospital: 'City Hospital', admin: 'Admin User' };
+      Auth.login(role, names[role]);
+      Toast.success('Logging in...');
+      setTimeout(() => {
+        const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
+        window.location.href = pages[role];
+      }, 1000);
+    }
+    function demoLogin(role) {
+      const names = { patient: 'Amanda Perera', hospital: 'City Hospital Colombo', admin: 'Admin User' };
+      Auth.login(role, names[role]);
+      Toast.success(`Welcome, ${names[role]}! Loading dashboard...`);
+      setTimeout(() => {
+        const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
+        window.location.href = pages[role];
+      }, 1200);
+    }
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+      else { input.type = 'password'; btn.textContent = '👁'; }
+    }
+  </script>
 </body>
+
 </html>
