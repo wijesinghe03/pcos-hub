@@ -67,7 +67,18 @@
                         <label class="form-label">Hospital/Clinic Name</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">🏥</span>
-                            <input class="form-control" type="text" placeholder="Name of your hospital/clinic" required>
+                            <input class="form-control" type="text" id="hosp_name"
+                                placeholder="Name of your hospital/clinic" required>
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🆔</span>
+                            <input class="form-control" type="text" id="username" placeholder="Pick a unique username"
+                                required>
                         </div>
                     </div>
 
@@ -76,7 +87,8 @@
                         <label class="form-label">Registration/License Number</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">📋</span>
-                            <input class="form-control" type="text" placeholder="Medical registration number" required>
+                            <input class="form-control" type="text" id="reg_num"
+                                placeholder="Medical registration number" required>
                         </div>
                     </div>
 
@@ -85,7 +97,8 @@
                         <label class="form-label">Hospital Email Address</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">✉</span>
-                            <input class="form-control" type="email" placeholder="official@hospital.com" required>
+                            <input class="form-control" type="email" id="email" placeholder="official@hospital.com"
+                                required>
                         </div>
                     </div>
 
@@ -113,22 +126,23 @@
                         <label class="form-label">City/District</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">🗺️</span>
-                            <input class="form-control" type="text" placeholder="City or district name" required>
+                            <input class="form-control" type="text" id="location" placeholder="City or district name"
+                                required>
                         </div>
                     </div>
 
                     <!-- Contact Person Name -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Contact Person - First Name</label>
+                            <label class="form-label">First Name</label>
                             <div class="input-icon-wrap">
                                 <span class="input-icon">👤</span>
-                                <input class="form-control" type="text" placeholder="First name" required>
+                                <input class="form-control" type="text" id="cfname" placeholder="First name" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Contact Person - Last Name</label>
-                            <input class="form-control" type="text" placeholder="Last name" required>
+                            <label class="form-label">Last Name</label>
+                            <input class="form-control" type="text" id="clname" placeholder="Last name" required>
                         </div>
                     </div>
 
@@ -206,18 +220,48 @@
     </div>
 
     <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        function handleHospitalSignup(e) {
+        async function handleHospitalSignup(e) {
             e.preventDefault();
             const pw1 = document.getElementById('pw1').value;
             const pw2 = document.getElementById('pw2').value;
             if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
-            Auth.login('hospital', 'New Hospital');
-            Toast.success('Account created! Redirecting to dashboard...');
-            setTimeout(() => {
-                window.location.href = 'hospital-dashboard.html';
-            }, 1500);
+
+            const submitBtn = e.target.querySelector('.auth-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Registering Hospital...';
+            submitBtn.disabled = true;
+
+            const data = {
+                role: 'hospital',
+                full_name: document.getElementById('hosp_name').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: pw1,
+                reg_number: document.getElementById('reg_num').value,
+                location: document.getElementById('location').value,
+                contact_person: document.getElementById('cfname').value + ' ' + document.getElementById('clname').value
+            };
+
+            try {
+                const response = await API.call('components/signup_handler.php', data);
+                if (response.status === 'success') {
+                    Auth.login(response.user.role, response.user.name);
+                    Toast.success('Hospital registered successfully! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'hospital-dashboard.html';
+                    }, 1500);
+                } else {
+                    Toast.error(response.message);
+                }
+            } catch (err) {
+                Toast.error('Registration failed. Please check your connection.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         }
         function togglePw(id, btn) {
             const input = document.getElementById(id);

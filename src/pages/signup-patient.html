@@ -68,12 +68,12 @@
                             <label class="form-label">First Name</label>
                             <div class="input-icon-wrap">
                                 <span class="input-icon">👤</span>
-                                <input class="form-control" type="text" placeholder="First name" required>
+                                <input class="form-control" type="text" id="fname" placeholder="First name" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Last Name</label>
-                            <input class="form-control" type="text" placeholder="Last name" required>
+                            <input class="form-control" type="text" id="lname" placeholder="Last name" required>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                         <label class="form-label">Date of Birth</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">📅</span>
-                            <input class="form-control" type="date" required>
+                            <input class="form-control" type="date" id="dob" required>
                         </div>
                     </div>
 
@@ -97,12 +97,22 @@
                         </select>
                     </div>
 
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🆔</span>
+                            <input class="form-control" type="text" id="username" placeholder="Pick a unique username"
+                                required>
+                        </div>
+                    </div>
+
                     <!-- Email -->
                     <div class="form-group">
                         <label class="form-label">Email Address</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">✉</span>
-                            <input class="form-control" type="email" placeholder="you@example.com" required>
+                            <input class="form-control" type="email" id="email" placeholder="you@example.com" required>
                         </div>
                     </div>
 
@@ -111,7 +121,7 @@
                         <label class="form-label">Phone Number</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">📞</span>
-                            <input class="form-control" type="tel" placeholder="+94 7X XXX XXXX" required>
+                            <input class="form-control" type="tel" id="phone" placeholder="+94 7X XXX XXXX" required>
                         </div>
                     </div>
 
@@ -167,18 +177,47 @@
     </div>
 
     <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        function handlePatientSignup(e) {
+        async function handlePatientSignup(e) {
             e.preventDefault();
             const pw1 = document.getElementById('pw1').value;
             const pw2 = document.getElementById('pw2').value;
             if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
-            Auth.login('patient', 'New Patient');
-            Toast.success('Account created! Redirecting to dashboard...');
-            setTimeout(() => {
-                window.location.href = 'patient-dashboard.html';
-            }, 1500);
+
+            const submitBtn = e.target.querySelector('.auth-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+
+            const data = {
+                role: 'patient',
+                full_name: document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: pw1,
+                dob: document.getElementById('dob').value,
+                phone: document.getElementById('phone').value
+            };
+
+            try {
+                const response = await API.call('components/signup_handler.php', data);
+                if (response.status === 'success') {
+                    Auth.login(response.user.role, response.user.name);
+                    Toast.success('Account created! Welcome to PCOS Care Hub.');
+                    setTimeout(() => {
+                        window.location.href = 'patient-dashboard.html';
+                    }, 1500);
+                } else {
+                    Toast.error(response.message);
+                }
+            } catch (err) {
+                Toast.error('Signup failed. Please try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         }
         function togglePw(id, btn) {
             const input = document.getElementById(id);

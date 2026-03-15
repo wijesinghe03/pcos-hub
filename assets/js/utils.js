@@ -181,8 +181,17 @@ const Auth = {
     localStorage.setItem('pcos_user', JSON.stringify({ role, name, loggedIn: true }));
   },
   logout() {
+    const userStr = localStorage.getItem('pcos_user');
+    let target = 'index.html';
+    try {
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user.role === 'admin') target = 'admin-login.html';
+      }
+    } catch (e) { }
+
     localStorage.removeItem('pcos_user');
-    window.location.href = 'index.html';
+    window.location.href = target;
   },
   getUser() {
     try { return JSON.parse(localStorage.getItem('pcos_user')); } catch { return null; }

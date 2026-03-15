@@ -83,22 +83,16 @@
                   <span>Hospital</span>
                 </label>
               </div>
-              <div class="role-option admin">
-                <input type="radio" name="role" id="roleAdmin" value="admin">
-                <label for="roleAdmin">
-                  <i style="font-size:1.4rem">⚙️</i>
-                  <span>Admin</span>
-                </label>
-              </div>
+
             </div>
           </div>
 
-          <!-- Email -->
+          <!-- Identity (Email or Username) -->
           <div class="form-group">
-            <label class="form-label" for="email">Email Address</label>
+            <label class="form-label" for="identity">Email or Username</label>
             <div class="input-icon-wrap">
-              <span class="input-icon">✉</span>
-              <input class="form-control" type="email" id="email" placeholder="you@example.com" required>
+              <span class="input-icon">👤</span>
+              <input class="form-control" type="text" id="identity" placeholder="Enter your email or username" required>
             </div>
           </div>
 
@@ -131,11 +125,7 @@
             onmouseover="this.style.borderColor='#3498db'" onmouseout="this.style.borderColor='var(--border)'">
             🏥 Demo as Hospital
           </button>
-          <button type="button" onclick="demoLogin('admin')"
-            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
-            onmouseover="this.style.borderColor='#27ae60'" onmouseout="this.style.borderColor='var(--border)'">
-            ⚙️ Demo as Administrator
-          </button>
+
         </form>
 
         <div class="auth-footer">
@@ -150,31 +140,87 @@
 
   <div class="toast-container" id="toast-container"></div>
 
+  <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/utils.js"></script>
   <script>
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
-      const email = document.getElementById('email').value;
+      const identity = document.getElementById('identity').value;
       const password = document.getElementById('password').value;
       const role = document.querySelector('input[name="role"]:checked').value;
-      if (!email || !password) { Toast.error('Please fill in all fields.'); return; }
-      // Demo auth
-      const names = { patient: 'Amanda Perera', hospital: 'City Hospital', admin: 'Admin User' };
-      Auth.login(role, names[role]);
-      Toast.success('Logging in...');
-      setTimeout(() => {
-        const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
-        window.location.href = pages[role];
-      }, 1000);
+      
+      if (!identity || !password) { 
+        Toast.error('Please fill in all fields.'); 
+        return; 
+      }
+
+      const submitBtn = e.target.querySelector('.auth-submit');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Verifying...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await API.call('components/login_handler.php', {
+          identity: identity,
+          password: password,
+          role: role
+        });
+
+        if (response.status === 'success') {
+          Auth.login(response.user.role, response.user.name);
+          Toast.success('Login successful! Redirecting...');
+          setTimeout(() => {
+            const pages = { 
+              patient: 'patient-dashboard.html', 
+              hospital: 'hospital-dashboard.html', 
+              admin: 'admin-dashboard.html',
+              superadmin: 'admin-dashboard.html'
+            };
+            window.location.href = pages[response.user.role];
+          }, 1000);
+        } else {
+          Toast.error(response.message || 'Invalid credentials');
+        }
+      } catch (error) {
+        Toast.error('Server error. Please try again later.');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
     }
-    function demoLogin(role) {
-      const names = { patient: 'Amanda Perera', hospital: 'City Hospital Colombo', admin: 'Admin User' };
-      Auth.login(role, names[role]);
-      Toast.success(`Welcome, ${names[role]}! Loading dashboard...`);
-      setTimeout(() => {
-        const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html', admin: 'admin-dashboard.html' };
-        window.location.href = pages[role];
-      }, 1200);
+
+    async function demoLogin(role) {
+      // In a real database scenario, we'd use preset credentials
+      const demoAccounts = {
+        patient: { id: 'amanda_p', pass: 'patient123' },
+        hospital: { id: 'city_h', pass: 'hosp123' }
+      };
+
+      const account = demoAccounts[role];
+      if (!account) return;
+
+      Toast.info(`Attempting demo login for ${role}...`);
+      
+      try {
+        const response = await API.call('components/login_handler.php', {
+          identity: account.id,
+          password: account.pass,
+          role: role
+        });
+
+        if (response.status === 'success') {
+          Auth.login(response.user.role, response.user.name);
+          Toast.success(`Welcome back, ${response.user.name}!`);
+          setTimeout(() => {
+            const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html' };
+            window.location.href = pages[role];
+          }, 1000);
+        } else {
+          Toast.error(response.message);
+        }
+      } catch (err) {
+        Toast.error('Demo login failed. Check database connection.');
+      }
     }
     function togglePassword(id, btn) {
       const input = document.getElementById(id);

@@ -151,15 +151,60 @@
     </div>
 
     <script>
-        let seconds = 10;
-        const countdownElement = document.getElementById('countdown');
+        // Check user role before clearing session
+        let targetUrl = 'index.html';
+        let targetLabel = 'Home';
 
+        // 1. Check URL Parameters first (highest priority)
+        const params = new URLSearchParams(window.location.search);
+        const roleFromUrl = params.get('role');
+
+        // 2. Check Referrer (if they came from an admin page)
+        const referrer = document.referrer.toLowerCase();
+        const cameFromAdmin = referrer.includes('admin-') || referrer.includes('/admin');
+
+        try {
+            const userStr = localStorage.getItem('pcos_user');
+            const user = userStr ? JSON.parse(userStr) : null;
+
+            if (roleFromUrl === 'admin' || (user && user.role === 'admin') || cameFromAdmin) {
+                targetUrl = 'admin-login.html';
+                targetLabel = 'Admin Login';
+            }
+        } catch (e) {
+            console.error("Error checking user role:", e);
+            // Fallback to referrer if JSON parse fails
+            if (cameFromAdmin) {
+                targetUrl = 'admin-login.html';
+                targetLabel = 'Admin Login';
+            }
+        }
+
+        // Clear session
+        localStorage.removeItem('pcos_user');
+
+        // Update UI
+        const reLoginBtn = document.querySelector('.btn-relogin');
+        const countdownText = document.querySelector('.timer-text');
+        const countdownVal = document.getElementById('countdown');
+
+        if (reLoginBtn) {
+            reLoginBtn.href = targetUrl;
+            reLoginBtn.textContent = `Back to ${targetLabel}`;
+        }
+
+        if (countdownText) {
+            countdownText.innerHTML = `Redirecting to ${targetLabel.toLowerCase()} in <span id="countdown">5</span> seconds...`;
+        }
+
+        let seconds = 5; // Shortened to 5 for better UX
         const interval = setInterval(() => {
             seconds--;
-            countdownElement.textContent = seconds;
+            const countEl = document.getElementById('countdown');
+            if (countEl) countEl.textContent = seconds;
             if (seconds <= 0) {
                 clearInterval(interval);
-                window.location.href = 'index.html';
+                window.location.href = targetUrl;
             }
         }, 1000);
     </script>
