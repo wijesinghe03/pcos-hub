@@ -15,6 +15,19 @@
   <link rel="stylesheet" href="../../assets/css/dashboard.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+  <style>
+    .btn-blue {
+      background: linear-gradient(135deg, #3498db, #2980b9) !important;
+      color: white !important;
+      box-shadow: 0 4px 16px rgba(52, 152, 219, 0.35) !important;
+    }
+
+    .btn-blue:hover {
+      background: linear-gradient(135deg, #5dade2, #3498db) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(52, 152, 219, 0.45) !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -536,11 +549,12 @@
           Roles</span>
         <h2>Built for Everyone in the PCOS Journey</h2>
       </div>
+      
       <div class="roles-grid">
         <!-- Patient -->
         <div class="role-card patient reveal">
           <div class="role-icon">👩‍⚕️</div>
-          <h3>Patient</h3>
+          <h3>Patient Login</h3>
           <p>Take control of your health journey with powerful self-management tools.</p>
           <div class="role-features">
             <div class="role-feature"><i>✓</i> Symptom &amp; cycle tracking</div>
@@ -549,12 +563,12 @@
             <div class="role-feature"><i>✓</i> View lab results</div>
             <div class="role-feature"><i>✓</i> Appointment reminders</div>
           </div>
-          <a href="signup.html" class="btn btn-primary btn-sm" style="margin-top:20px">Join as Patient</a>
+          <a href="login.html?role=patient" class="btn btn-primary btn-sm" style="margin-top:20px">Sign In as Patient</a>
         </div>
         <!-- Hospital -->
         <div class="role-card hospital reveal reveal-delay-1">
           <div class="role-icon">🏥</div>
-          <h3>Hospital</h3>
+          <h3>Hospital Login</h3>
           <p>Streamline patient management and improve clinical decision-making.</p>
           <div class="role-features">
             <div class="role-feature"><i>✓</i> Manage patient records</div>
@@ -563,10 +577,8 @@
             <div class="role-feature"><i>✓</i> Search patient history</div>
             <div class="role-feature"><i>✓</i> Secure role-based access</div>
           </div>
-          <a href="signup.html" class="btn btn-outline btn-sm"
-            style="margin-top:20px;color:#3498db;border-color:#3498db">Register Hospital</a>
+          <a href="login.html?role=hospital" class="btn btn-blue btn-sm" style="margin-top:20px">Sign In as Hospital</a>
         </div>
-
       </div>
     </div>
   </section>

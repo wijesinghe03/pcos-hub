@@ -247,6 +247,18 @@ p {
   transform: translateY(0);
 }
 
+.btn-blue {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.35);
+}
+
+.btn-blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.45);
+  background: linear-gradient(135deg, #5dade2, #3498db);
+}
+
 .btn-outline {
   background: transparent;
   color: var(--purple-primary);

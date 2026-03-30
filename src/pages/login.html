@@ -222,6 +222,17 @@
         Toast.error('Demo login failed. Check database connection.');
       }
     }
+    // Role selection based on URL parameter
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const role = params.get('role');
+      if (role === 'patient') {
+        document.getElementById('rolePatient').checked = true;
+      } else if (role === 'hospital') {
+        document.getElementById('roleHospital').checked = true;
+      }
+    });
+
     function togglePassword(id, btn) {
       const input = document.getElementById(id);
       if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }

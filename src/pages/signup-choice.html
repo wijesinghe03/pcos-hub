@@ -57,16 +57,19 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .choice-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-            border-color: #e91e63;
+            border-color: #7b3fbe;
         }
 
         .choice-card.patient:hover {
-            border-color: #e91e63;
+            border-color: #7b3fbe;
         }
 
         .choice-card.hospital:hover {
@@ -132,16 +135,18 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
-            margin-top: 15px;
+            margin-top: auto;
+            align-self: center;
         }
 
         .choice-btn.patient {
-            background: linear-gradient(135deg, #e91e63, #c2185b);
+            background: linear-gradient(135deg, #7b3fbe, #5a2a9e);
             color: white;
         }
 
         .choice-btn.patient:hover {
-            background: linear-gradient(135deg, #c2185b, #a01550);
+            background: linear-gradient(135deg, #5a2a9e, #4a2182);
+            box-shadow: 0 4px 12px rgba(123, 63, 190, 0.3);
         }
 
         .choice-btn.hospital {
