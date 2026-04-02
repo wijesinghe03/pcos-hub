@@ -177,8 +177,8 @@ function setSidebarActive() {
 
 // ── Fake auth helper (localStorage demo) ──
 const Auth = {
-  login(role, name) {
-    localStorage.setItem('pcos_user', JSON.stringify({ role, name, loggedIn: true }));
+  login(user) {
+    localStorage.setItem('pcos_user', JSON.stringify({ ...user, loggedIn: true }));
   },
   logout() {
     const userStr = localStorage.getItem('pcos_user');

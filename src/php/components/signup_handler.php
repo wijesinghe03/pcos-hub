@@ -24,14 +24,17 @@ function handleSignup($pdo) {
 
     try {
         if ($role === 'patient') {
-            $stmt = $pdo->prepare("INSERT INTO patients (full_name, username, email, password, dob, phone) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO patients (full_name, username, email, password, dob, phone, address, blood_group, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([
                 $data['full_name'],
                 $username,
                 $email,
                 $password,
                 $data['dob'] ?? null,
-                $data['phone'] ?? null
+                $data['phone'] ?? null,
+                $data['address'] ?? null,
+                $data['blood_group'] ?? null,
+                $data['gender'] ?? null
             ]);
         } else if ($role === 'hospital') {
             $stmt = $pdo->prepare("INSERT INTO hospitals (hosp_name, username, email, password, reg_number, location, contact_person) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -54,7 +57,13 @@ function handleSignup($pdo) {
             'message' => 'Account created successfully!',
             'user' => [
                 'name' => $data['full_name'],
-                'role' => $role
+                'role' => $role,
+                'email' => $data['email'],
+                'username' => $data['username'],
+                'dob' => $data['dob'] ?? null,
+                'phone' => $data['phone'] ?? null,
+                'reg_number' => $data['reg_number'] ?? null,
+                'location' => $data['location'] ?? null
             ]
         ]);
 

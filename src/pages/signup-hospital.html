@@ -248,7 +248,7 @@
             try {
                 const response = await API.call('components/signup_handler.php', data);
                 if (response.status === 'success') {
-                    Auth.login(response.user.role, response.user.name);
+                    Auth.login(response.user);
                     Toast.success('Hospital registered successfully! Redirecting...');
                     setTimeout(() => {
                         window.location.href = 'hospital-dashboard.html';

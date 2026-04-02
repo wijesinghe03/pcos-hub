@@ -260,36 +260,38 @@
             <div class="panel-title"><i>📁</i> Recent Reports</div>
             <div class="panel-action" style="cursor:pointer">View All →</div>
           </div>
-          <table class="dash-table">
-            <thead>
-              <tr>
-                <th>Report Name</th>
-                <th>Date</th>
-                <th>Hospital</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Blood Test Results</td>
-                <td class="td-light">15 Feb 2026</td>
-                <td>City Hospital</td>
-                <td><span class="badge badge-green">✓ View</span></td>
-              </tr>
-              <tr>
-                <td>Ultrasound Scan</td>
-                <td class="td-light">02 Feb 2026</td>
-                <td>Nawaloka</td>
-                <td><span class="badge badge-green">✓ View</span></td>
-              </tr>
-              <tr>
-                <td>Hormone Panel</td>
-                <td class="td-light">20 Jan 2026</td>
-                <td>Lanka Hospital</td>
-                <td><span class="badge badge-orange">⟳ Pending</span></td>
-              </tr>
-            </tbody>
-          </table>
+          <div style="overflow-x:auto">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Report Name</th>
+                  <th>Date</th>
+                  <th>Hospital</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Blood Test Results</td>
+                  <td class="td-light">15 Feb 2026</td>
+                  <td>City Hospital</td>
+                  <td><span class="badge badge-green">✓ View</span></td>
+                </tr>
+                <tr>
+                  <td>Ultrasound Scan</td>
+                  <td class="td-light">02 Feb 2026</td>
+                  <td>Nawaloka</td>
+                  <td><span class="badge badge-green">✓ View</span></td>
+                </tr>
+                <tr>
+                  <td>Hormone Panel</td>
+                  <td class="td-light">20 Jan 2026</td>
+                  <td>Lanka Hospital</td>
+                  <td><span class="badge badge-orange">⟳ Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div class="upload-area" style="margin-top:16px">
             <div class="upload-icon">📤</div>
@@ -342,13 +344,11 @@
           </div>
         </div>
       </div>
-  </div>
-
-  <!-- Activity Feed -->
-  <div class="dash-panel reveal">
-    <div class="panel-header">
-      <div class="panel-title"><i>🕐</i> Recent Activity</div>
-    </div>
+      <!-- Activity Feed -->
+      <div class="dash-panel reveal" style="margin-top: 22px;">
+        <div class="panel-header">
+          <div class="panel-title"><i>🕐</i> Recent Activity</div>
+        </div>
     <div class="activity-feed">
       <div class="activity-item">
         <div class="activity-dot-wrap">

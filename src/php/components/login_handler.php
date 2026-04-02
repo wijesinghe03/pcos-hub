@@ -52,7 +52,15 @@ function handleLogin($pdo) {
                     'id' => $user['id'],
                     'name' => $displayName,
                     'role' => $role,
-                    'email' => $user['email']
+                    'email' => $user['email'],
+                    'username' => $user['username'],
+                    'dob' => $user['dob'] ?? null,
+                    'phone' => $user['phone'] ?? null,
+                    'address' => $user['address'] ?? null,
+                    'blood_group' => $user['blood_group'] ?? null,
+                    'location' => $user['location'] ?? null,
+                    'reg_number' => $user['reg_number'] ?? null,
+                    'is_verified' => $user['is_verified'] ?? null
                 ]
             ]);
         } else {

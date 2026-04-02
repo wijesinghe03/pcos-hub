@@ -582,33 +582,57 @@
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Profile data
+        // Profile data (initialized with empty/defaults)
         let profileData = {
-            firstName: 'Amanda',
-            lastName: 'Perera',
-            email: 'amanda.perera@email.com',
-            phone: '+94 77 123 4567',
-            dob: '1995-06-15',
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            dob: '',
             gender: 'Female',
             bloodType: '',
             pcosDate: '2022-06-15',
             height: 165,
             weight: 68,
             bloodPressure: '118/76',
-            allergies: 'Penicillin, Shellfish',
-            medications: 'Metformin 500mg (2x daily)',
-            avatar: 'A'
+            allergies: 'None',
+            medications: 'None',
+            avatar: 'U'
         };
 
         function toggleEditMode(section) {
             if (section === 'personal') {
                 const viewMode = document.getElementById('personalViewMode');
                 const editMode = document.getElementById('personalEditMode');
+                const isEnteringEdit = viewMode.style.display !== 'none';
+                
+                if (isEnteringEdit) {
+                    // Populate inputs from profileData
+                    document.getElementById('editFirstName').value = profileData.firstName;
+                    document.getElementById('editLastName').value = profileData.lastName;
+                    document.getElementById('editEmail').value = profileData.email;
+                    document.getElementById('editPhone').value = profileData.phone;
+                    document.getElementById('editDOB').value = profileData.dob;
+                    document.getElementById('editGender').value = profileData.gender;
+                    document.getElementById('editBloodType').value = profileData.bloodType;
+                }
+
                 viewMode.style.display = viewMode.style.display === 'none' ? 'block' : 'none';
                 editMode.style.display = editMode.style.display === 'none' ? 'block' : 'none';
             } else if (section === 'medical') {
                 const viewMode = document.querySelector('#medicalEditMode').previousElementSibling;
                 const editMode = document.getElementById('medicalEditMode');
+                const isEnteringEdit = editMode.style.display === 'none';
+
+                if (isEnteringEdit) {
+                    document.getElementById('editPCOSDate').value = profileData.pcosDate;
+                    document.getElementById('editHeight').value = profileData.height;
+                    document.getElementById('editWeight').value = profileData.weight;
+                    document.getElementById('editBloodPressure').value = profileData.bloodPressure;
+                    document.getElementById('editAllergies').value = profileData.allergies;
+                    document.getElementById('editMedications').value = profileData.medications;
+                }
+
                 viewMode.style.display = viewMode.style.display === 'none' ? 'block' : 'none';
                 editMode.style.display = editMode.style.display === 'none' ? 'block' : 'none';
             }
@@ -642,13 +666,25 @@
         }
 
         function updateProfileDisplay() {
-            document.getElementById('profileFullName').textContent = `${profileData.firstName} ${profileData.lastName}`;
-            document.getElementById('profileEmail').textContent = profileData.email;
-            document.getElementById('viewFullName').textContent = `${profileData.firstName} ${profileData.lastName}`;
-            document.getElementById('viewEmail').textContent = profileData.email;
-            document.getElementById('viewPhone').textContent = profileData.phone;
-            document.getElementById('viewGender').textContent = profileData.gender;
-            document.getElementById('viewDOB').textContent = new Date(profileData.dob).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+            const fullName = `${profileData.firstName} ${profileData.lastName}`.trim() || 'User';
+            document.getElementById('profileFullName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = profileData.email || 'No email provided';
+            document.getElementById('viewFullName').textContent = fullName;
+            document.getElementById('viewEmail').textContent = profileData.email || 'N/A';
+            document.getElementById('viewPhone').textContent = profileData.phone || 'N/A';
+            document.getElementById('viewGender').textContent = profileData.gender || 'Female';
+            
+            if (profileData.dob) {
+                document.getElementById('viewDOB').textContent = new Date(profileData.dob).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+            } else {
+                document.getElementById('viewDOB').textContent = 'N/A';
+            }
+
+            // Update avatar
+            const avatarChar = profileData.firstName ? profileData.firstName.charAt(0).toUpperCase() : 'U';
+            if (document.getElementById('profileAvatar')) document.getElementById('profileAvatar').textContent = avatarChar;
+            if (document.querySelector('.sidebar-avatar')) document.querySelector('.sidebar-avatar').textContent = avatarChar;
+            if (document.getElementById('sidebarName')) document.getElementById('sidebarName').textContent = fullName;
         }
 
         function togglePasswordField(fieldId) {
@@ -731,10 +767,19 @@
                 dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             }
 
-            // Set user name
+            // Load user data from Auth
             const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
-            if (user && document.getElementById('sidebarName')) {
-                document.getElementById('sidebarName').textContent = user.name || 'User';
+            if (user) {
+                const nameParts = (user.name || '').split(' ');
+                profileData.firstName = nameParts[0] || '';
+                profileData.lastName = nameParts.slice(1).join(' ') || '';
+                profileData.email = user.email || '';
+                profileData.phone = user.phone || '';
+                profileData.dob = user.dob || '';
+                profileData.gender = user.gender || 'Female';
+                profileData.bloodType = user.blood_group || '';
+                profileData.address = user.address || '';
+                profileData.avatar = (user.name || 'U').charAt(0).toUpperCase();
             }
 
             updateProfileDisplay();
