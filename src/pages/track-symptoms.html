@@ -428,50 +428,7 @@
                 </div>
 
                 <div id="symptomHistoryContainer">
-                    <div class="history-item">
-                        <div>
-                            <div style="font-weight: 600; margin-bottom: 6px;">26 Feb 2026 — 08:30 PM</div>
-                            <div class="history-symptoms">
-                                <span class="history-badge">Fatigue</span>
-                                <span class="history-badge">Cramps</span>
-                                <span class="history-badge">Mood Swings</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <span
-                                style="background: rgba(250, 128, 114, 0.2); color: var(--pink-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Moderate</span>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div>
-                            <div style="font-weight: 600; margin-bottom: 6px;">25 Feb 2026 — 10:15 AM</div>
-                            <div class="history-symptoms">
-                                <span class="history-badge">Headache</span>
-                                <span class="history-badge">Bloating</span>
-                                <span class="history-badge">Weight Change</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <span
-                                style="background: rgba(255, 193, 7, 0.2); color: var(--orange-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Moderate</span>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div>
-                            <div style="font-weight: 600; margin-bottom: 6px;">24 Feb 2026 — 06:45 PM</div>
-                            <div class="history-symptoms">
-                                <span class="history-badge">Cramps</span>
-                                <span class="history-badge">Anxiety</span>
-                                <span class="history-badge">Acne</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <span
-                                style="background: rgba(76, 175, 80, 0.2); color: var(--green-accent); padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.85rem;">Mild</span>
-                        </div>
-                    </div>
+                    <div style="text-align:center;padding:24px;color:var(--text-light);">Loading history...</div>
                 </div>
             </div>
 
@@ -480,47 +437,50 @@
 
     <div class="toast-container" id="toast-container"></div>
 
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Set current date and time
+        // ── Init date/time inputs ──────────────────────────────────
         const dateInput = document.getElementById('symptomDate');
         const timeInput = document.getElementById('symptomTime');
-        const today = new Date().toISOString().split('T')[0];
-        const now = new Date().toTimeString().slice(0, 5);
-        dateInput.value = today;
-        timeInput.value = now;
+        const todayStr  = new Date().toISOString().split('T')[0];
+        const nowStr    = new Date().toTimeString().slice(0, 5);
+        dateInput.value = todayStr;
+        timeInput.value = nowStr;
 
-        // Date display
+        // Date display in topbar
         const dateEl = document.getElementById('dateDisplay');
         if (dateEl) {
-            const now = new Date();
-            dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dateEl.textContent = new Date().toLocaleDateString('en-GB', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
         }
 
-        // User name from auth
+        // Get the logged-in user directly — no auto-redirect on page load
         const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+
         if (user) {
             const sn = document.getElementById('sidebarName');
             if (sn) sn.textContent = user.name || 'User';
+            const sa = document.querySelector('.sidebar-avatar');
+            if (sa) sa.textContent = (user.name || 'U').charAt(0).toUpperCase();
         }
 
-        // Symptom option click handler
+        // ── Symptom checkbox toggle ───────────────────────────────
         document.querySelectorAll('.symptom-option').forEach(option => {
             const checkbox = option.querySelector('input[type="checkbox"]');
-            option.addEventListener('click', function (e) {
-                if (e.target !== checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                }
+            option.addEventListener('click', function(e) {
+                if (e.target !== checkbox) checkbox.checked = !checkbox.checked;
                 option.classList.toggle('selected', checkbox.checked);
             });
-            checkbox.addEventListener('change', function () {
+            checkbox.addEventListener('change', function() {
                 option.classList.toggle('selected', this.checked);
             });
         });
 
-        // Severity button click handler
+        // ── Severity button toggle ────────────────────────────────
         document.querySelectorAll('.severity-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
+            btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
@@ -528,59 +488,140 @@
             });
         });
 
-        // Form submission
-        document.getElementById('symptomForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const date = dateInput.value;
-            const time = timeInput.value;
-            const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(cb => cb.value);
-            const severity = document.getElementById('selectedSeverity').value;
-            const notes = document.getElementById('symptomNotes').value;
-
-            if (!date || !time) {
-                Toast.error('Please select date and time');
-                return;
-            }
-
-            if (selectedSymptoms.length === 0) {
-                Toast.error('Please select at least one symptom');
-                return;
-            }
-
-            if (!severity) {
-                Toast.error('Please select severity level');
-                return;
-            }
-
-            // Save to localStorage
-            const symptomEntry = {
-                date, time, symptoms: selectedSymptoms, severity, notes,
-                timestamp: new Date().toISOString()
+        // ── Severity colour helper ────────────────────────────────
+        function severityStyle(sev) {
+            const map = {
+                mild:     { bg: 'rgba(76,175,80,0.15)',   color: 'var(--green-accent)' },
+                moderate: { bg: 'rgba(255,193,7,0.15)',   color: 'var(--orange-accent)' },
+                severe:   { bg: 'rgba(250,128,114,0.2)',  color: 'var(--pink-accent)' }
             };
+            return map[sev] || map['mild'];
+        }
 
-            let history = JSON.parse(localStorage.getItem('symptomHistory') || '[]');
-            history.unshift(symptomEntry);
-            localStorage.setItem('symptomHistory', JSON.stringify(history));
+        // ── Render symptom history ────────────────────────────────
+        function renderHistory(rows) {
+            const container = document.getElementById('symptomHistoryContainer');
+            if (!rows || rows.length === 0) {
+                container.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light)">No symptoms logged yet. Start tracking above! 💜</div>';
+                return;
+            }
+            container.innerHTML = rows.map(row => {
+                const d   = new Date(row.log_date + 'T' + row.log_time);
+                const dateStr = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                const timeStr = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+                const style   = severityStyle(row.severity);
+                const badges  = row.symptoms.map(s =>
+                    `<span class="history-badge">${s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>`
+                ).join('');
+                return `
+                <div class="history-item">
+                    <div>
+                        <div style="font-weight:600;margin-bottom:6px;">${dateStr} — ${timeStr}</div>
+                        <div class="history-symptoms">${badges}</div>
+                        ${row.notes ? `<div style="margin-top:6px;font-size:0.85rem;color:var(--text-light)">${row.notes}</div>` : ''}
+                    </div>
+                    <div style="text-align:right;flex-shrink:0">
+                        <span style="background:${style.bg};color:${style.color};padding:6px 12px;border-radius:4px;font-weight:600;font-size:0.85rem;text-transform:capitalize">${row.severity}</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
 
-            Toast.success('✓ Symptoms saved successfully!');
-            this.reset();
-            dateInput.value = today;
-            timeInput.value = now;
-            document.querySelectorAll('.symptom-option').forEach(o => o.classList.remove('selected'));
-            document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
-            document.getElementById('selectedSeverity').value = '';
+        // ── Load history from DB ──────────────────────────────────
+        async function loadHistory() {
+            if (!user) { renderHistory([]); return; }
+            // Support both new sessions (id) and old sessions (email only)
+            const params = new URLSearchParams({ limit: 10 });
+            if (user.id)    params.set('patient_id', user.id);
+            if (user.email) params.set('patient_email', user.email);
+            try {
+                const res  = await fetch(API.getPHPPath('components/symptom_handler.php') + '?' + params.toString());
+                const json = await res.json();
+                renderHistory(json.status === 'success' ? json.data : []);
+            } catch(err) {
+                renderHistory([]);
+            }
+        }
+
+        loadHistory();
+
+        // ── Form submit: save to database ─────────────────────────
+        document.getElementById('symptomForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Must be logged in — either name-only sessions are allowed to try
+            if (!user || !user.loggedIn) {
+                Toast.error('You must be logged in to save symptoms.');
+                setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+                return;
+            }
+
+            const selectedSymptoms = Array.from(
+                document.querySelectorAll('input[name="symptom"]:checked')
+            ).map(cb => cb.value);
+
+            const severity = document.getElementById('selectedSeverity').value;
+            const date     = dateInput.value;
+            const time     = timeInput.value;
+            const notes    = document.getElementById('symptomNotes').value;
+
+            if (!date || !time) { Toast.error('Please select date and time.'); return; }
+            if (selectedSymptoms.length === 0) { Toast.error('Please select at least one symptom.'); return; }
+            if (!severity) { Toast.error('Please select a severity level.'); return; }
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Saving...';
+
+            try {
+                const response = await API.call('components/symptom_handler.php', {
+                    patient_id:    user.id    || null,
+                    patient_email: user.email || null,
+                    date, time,
+                    symptoms: selectedSymptoms,
+                    severity,
+                    notes
+                });
+
+                if (response.status === 'success') {
+                    Toast.success('✓ Symptoms saved successfully!');
+
+                    // Reset form
+                    this.reset();
+                    dateInput.value = todayStr;
+                    timeInput.value = nowStr;
+                    document.querySelectorAll('.symptom-option').forEach(o => o.classList.remove('selected'));
+                    document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
+                    document.getElementById('selectedSeverity').value = '';
+
+                    // Reload history panel
+                    loadHistory();
+                } else if (response.message && response.message.toLowerCase().includes('patient not found')) {
+                    // Session is stale — prompt re-login
+                    Toast.warning('Session expired. Please log in again.');
+                    setTimeout(() => {
+                        localStorage.removeItem('pcos_user');
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    Toast.error(response.message || 'Failed to save symptoms.');
+                }
+            } catch(err) {
+                Toast.error('Network error. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✓ Save Symptoms';
+            }
         });
 
-        // Sidebar toggle for mobile
+        // ── Mobile sidebar toggle ─────────────────────────────────
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
-
         sidebarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
             overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
         });
-
         overlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
             overlay.style.display = 'none';

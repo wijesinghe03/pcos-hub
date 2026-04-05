@@ -492,89 +492,7 @@
                 </div>
 
                 <div id="cycleHistoryContainer">
-                    <div class="history-item">
-                        <div class="history-item-header">
-                            <div>
-                                <div class="history-item-title">Cycle #25</div>
-                                <div class="history-item-date">Started 26 Jan 2026</div>
-                            </div>
-                            <span class="status-badge active">◉ Completed</span>
-                        </div>
-                        <div class="history-item-details">
-                            <div class="detail-box">
-                                <span class="detail-label">Length</span>
-                                <span class="detail-value">28 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Duration</span>
-                                <span class="detail-value">5 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Flow</span>
-                                <span class="detail-value">Normal</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Status</span>
-                                <span class="detail-value">Regular</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-item-header">
-                            <div>
-                                <div class="history-item-title">Cycle #24</div>
-                                <div class="history-item-date">Started 29 Dec 2025</div>
-                            </div>
-                            <span class="status-badge active">◉ Completed</span>
-                        </div>
-                        <div class="history-item-details">
-                            <div class="detail-box">
-                                <span class="detail-label">Length</span>
-                                <span class="detail-value">29 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Duration</span>
-                                <span class="detail-value">5 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Flow</span>
-                                <span class="detail-value">Heavy</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Status</span>
-                                <span class="detail-value">Slightly Irregular</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-item-header">
-                            <div>
-                                <div class="history-item-title">Cycle #23</div>
-                                <div class="history-item-date">Started 01 Dec 2025</div>
-                            </div>
-                            <span class="status-badge active">◉ Completed</span>
-                        </div>
-                        <div class="history-item-details">
-                            <div class="detail-box">
-                                <span class="detail-label">Length</span>
-                                <span class="detail-value">28 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Duration</span>
-                                <span class="detail-value">5 days</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Flow</span>
-                                <span class="detail-value">Normal</span>
-                            </div>
-                            <div class="detail-box">
-                                <span class="detail-label">Status</span>
-                                <span class="detail-value">Regular</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="text-align:center;padding:24px;color:var(--text-light);">Loading history...</div>
                 </div>
             </div>
 
@@ -583,73 +501,99 @@
 
     <div class="toast-container" id="toast-container"></div>
 
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Hide page loader immediately
-        (function () {
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.display = 'none';
-            }
-        })();
+        // ── State ──────────────────────────────────────────────────
+        const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+        let currentMonthView = new Date();
+        currentMonthView.setDate(1);
+        let latestCycle = null; // filled after history loads
 
-        let currentMonthView = new Date(2026, 1); // February 2026
+        // ── Sidebar ───────────────────────────────────────────────
+        if (user) {
+            const sn = document.getElementById('sidebarName');
+            if (sn) sn.textContent = user.name || 'User';
+            const sa = document.querySelector('.sidebar-avatar');
+            if (sa) sa.textContent = (user.name || 'U').charAt(0).toUpperCase();
+        }
 
-        // Calendar generation
-        function buildCalendar(date) {
-            const year = date.getFullYear();
+        // Date display
+        const dateEl = document.getElementById('dateDisplay');
+        if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB',
+            { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+        // ── Calendar ───────────────────────────────────────────────
+        function buildCalendar(date, cycle) {
+            const year  = date.getFullYear();
             const month = date.getMonth();
+            document.getElementById('monthYear').textContent =
+                date.toLocaleDateString('en-US', { month:'long', year:'numeric' });
 
-            const monthYearEl = document.getElementById('monthYear');
-            if (monthYearEl) {
-                monthYearEl.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            // Compute period / fertile / ovulation days from latest cycle
+            let periodDates = new Set();
+            let fertileDates = new Set();
+            let ovulationDate = null;
+
+            if (cycle) {
+                const start      = new Date(cycle.period_start);
+                const end        = new Date(cycle.period_end);
+                const cycleLen   = parseInt(cycle.cycle_length) || 28;
+                // Mark period days
+                for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                    periodDates.add(d.toISOString().split('T')[0]);
+                }
+                // Ovulation ~ 14 days before next period
+                const ovulDay = new Date(start);
+                ovulDay.setDate(ovulDay.getDate() + cycleLen - 14);
+                ovulationDate = ovulDay.toISOString().split('T')[0];
+                // Fertile window: 5 days before ovulation + ovulation day
+                for (let i = -5; i <= 0; i++) {
+                    const fd = new Date(ovulDay);
+                    fd.setDate(fd.getDate() + i);
+                    fertileDates.add(fd.toISOString().split('T')[0]);
+                }
             }
-
-            const firstDay = new Date(year, month, 1);
-            const lastDate = new Date(year, month + 1, 0).getDate();
-            const startingDayOfWeek = firstDay.getDay();
 
             const calendarDays = document.getElementById('calendarDays');
-            if (!calendarDays) return;
             calendarDays.innerHTML = '';
+            const today      = new Date();
+            const firstDay   = new Date(year, month, 1);
+            const lastDate   = new Date(year, month + 1, 0).getDate();
+            const startDOW   = firstDay.getDay();
+            const prevLast   = new Date(year, month, 0).getDate();
 
-            // Previous month's days
-            const prevLastDate = new Date(year, month, 0).getDate();
-            for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+            // Prev month padding
+            for (let i = startDOW - 1; i >= 0; i--) {
                 const div = document.createElement('div');
                 div.className = 'calendar-day other-month';
-                div.textContent = prevLastDate - i;
+                div.textContent = prevLast - i;
                 calendarDays.appendChild(div);
             }
 
-            // Current month's days
-            const today = new Date();
-            const periodDays = [1, 2, 3, 4, 5];
-            const fertileDays = [11, 12, 13, 14, 15, 16];
-            const ovulationDay = 14;
-
+            // Current month
             for (let d = 1; d <= lastDate; d++) {
+                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const div = document.createElement('div');
                 div.className = 'calendar-day';
                 div.textContent = d;
 
-                if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                const isToday = (d === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                if (isToday) {
                     div.classList.add('today');
-                } else if (d === ovulationDay) {
+                } else if (dateStr === ovulationDate) {
                     div.classList.add('ovulation');
-                } else if (fertileDays.includes(d)) {
+                } else if (fertileDates.has(dateStr)) {
                     div.classList.add('fertile');
-                } else if (periodDays.includes(d)) {
+                } else if (periodDates.has(dateStr)) {
                     div.classList.add('period');
                 }
-
                 calendarDays.appendChild(div);
             }
 
-            // Next month's days
-            const totalCells = calendarDays.children.length;
-            const remainingCells = 42 - totalCells;
-            for (let i = 1; i <= remainingCells; i++) {
+            // Next month padding
+            const remaining = 42 - calendarDays.children.length;
+            for (let i = 1; i <= remaining; i++) {
                 const div = document.createElement('div');
                 div.className = 'calendar-day other-month';
                 div.textContent = i;
@@ -659,111 +603,160 @@
 
         function previousMonth() {
             currentMonthView.setMonth(currentMonthView.getMonth() - 1);
-            buildCalendar(currentMonthView);
+            buildCalendar(currentMonthView, latestCycle);
         }
-
         function nextMonth() {
             currentMonthView.setMonth(currentMonthView.getMonth() + 1);
-            buildCalendar(currentMonthView);
+            buildCalendar(currentMonthView, latestCycle);
         }
 
-        function setupFormSubmission() {
-            const cycleForm = document.getElementById('cycleForm');
-            if (!cycleForm) return;
+        // ── Update info cards ────────────────────────────────────────
+        function updateInfoCards(cycle) {
+            if (!cycle) return;
+            const start    = new Date(cycle.period_start);
+            const today    = new Date();
+            const dayOfCycle = Math.floor((today - start) / 86400000) + 1;
+            document.getElementById('currentPhase').textContent = 'Day ' + Math.max(1, dayOfCycle);
+            document.getElementById('cycleLength').textContent  = cycle.cycle_length;
+            document.getElementById('periodDuration').textContent = cycle.period_duration;
+            if (cycle.next_predicted) {
+                const np = new Date(cycle.next_predicted);
+                document.getElementById('nextPeriod').textContent =
+                    np.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+            }
+        }
 
-            cycleForm.addEventListener('submit', function (e) {
-                e.preventDefault();
+        // ── Render history ───────────────────────────────────────────
+        function renderHistory(rows) {
+            const container = document.getElementById('cycleHistoryContainer');
+            if (!rows || rows.length === 0) {
+                container.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light)">No cycle data logged yet. Use the form above to start tracking! 🦡</div>';
+                return;
+            }
+            container.innerHTML = rows.map((row, i) => {
+                const start   = new Date(row.period_start);
+                const dateStr = start.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                const num     = rows.length - i;
+                const flowMap = { light:'Light', normal:'Normal', heavy:'Heavy' };
+                const cycleLen = parseInt(row.cycle_length) || 28;
+                const status  = (cycleLen >= 21 && cycleLen <= 35) ? 'Regular' : 'Irregular';
+                return `
+                <div class="history-item">
+                    <div class="history-item-header">
+                        <div>
+                            <div class="history-item-title">Cycle #${num}</div>
+                            <div class="history-item-date">Started ${dateStr}</div>
+                        </div>
+                        <span class="status-badge active">◉ Completed</span>
+                    </div>
+                    <div class="history-item-details">
+                        <div class="detail-box"><span class="detail-label">Length</span><span class="detail-value">${row.cycle_length} days</span></div>
+                        <div class="detail-box"><span class="detail-label">Duration</span><span class="detail-value">${row.period_duration} days</span></div>
+                        <div class="detail-box"><span class="detail-label">Flow</span><span class="detail-value">${flowMap[row.flow_intensity] || row.flow_intensity}</span></div>
+                        <div class="detail-box"><span class="detail-label">Status</span><span class="detail-value">${status}</span></div>
+                        ${row.notes ? `<div class="detail-box" style="grid-column:1/-1"><span class="detail-label">Notes</span><span class="detail-value" style="font-weight:400">${row.notes}</span></div>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
 
-                const startDate = document.getElementById('periodStartDate').value;
-                const endDate = document.getElementById('periodEndDate').value;
-                const cycleLength = document.getElementById('cycleLength').value;
-                const periodFlow = document.getElementById('periodFlow').value;
-                const notes = document.getElementById('cycleNotes').value;
-
-                if (!startDate || !endDate || !periodFlow) {
-                    Toast.error('Please fill in all required fields');
-                    return;
+        // ── Load history from DB ───────────────────────────────────
+        async function loadHistory() {
+            if (!user) { renderHistory([]); buildCalendar(currentMonthView, null); return; }
+            const params = new URLSearchParams({ limit: 12 });
+            if (user.id)    params.set('patient_id', user.id);
+            if (user.email) params.set('patient_email', user.email);
+            try {
+                const res  = await fetch(API.getPHPPath('components/cycle_handler.php') + '?' + params.toString());
+                const json = await res.json();
+                if (json.status === 'success' && json.data.length > 0) {
+                    latestCycle = json.data[0]; // most recent
+                    updateInfoCards(latestCycle);
+                    renderHistory(json.data);
+                    buildCalendar(currentMonthView, latestCycle);
+                } else {
+                    renderHistory([]);
+                    buildCalendar(currentMonthView, null);
                 }
-
-                const cycleEntry = {
-                    startDate, endDate, cycleLength, periodFlow, notes,
-                    timestamp: new Date().toISOString()
-                };
-
-                let history = JSON.parse(localStorage.getItem('cycleHistory') || '[]');
-                history.unshift(cycleEntry);
-                localStorage.setItem('cycleHistory', JSON.stringify(history));
-
-                Toast.success('✓ Cycle data saved successfully!');
-                this.reset();
-                document.getElementById('periodStartDate').value = '2026-02-01';
-                document.getElementById('periodEndDate').value = '2026-02-05';
-            });
+            } catch(e) {
+                renderHistory([]);
+                buildCalendar(currentMonthView, null);
+            }
         }
 
-        function setupNavigation() {
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
+        // ── Form submit ──────────────────────────────────────────────
+        document.getElementById('cycleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-            if (!sidebarToggle || !sidebar || !overlay) return;
-
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-                overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-            });
-
-            overlay.addEventListener('click', () => {
-                sidebar.classList.remove('active');
-                overlay.style.display = 'none';
-            });
-        }
-
-        // Initialize when DOM is loaded
-        function initPage() {
-            // Hide loader
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.display = 'none';
-                loader.remove();
+            if (!user || !user.loggedIn) {
+                Toast.error('You must be logged in to save cycle data.');
+                return;
             }
 
-            // Set current date and time
-            const dateEl = document.getElementById('dateDisplay');
-            if (dateEl) {
-                const now = new Date();
-                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const startDate   = document.getElementById('periodStartDate').value;
+            const endDate     = document.getElementById('periodEndDate').value;
+            const cycleLength = document.getElementById('cycleLength').value;
+            const flow        = document.getElementById('periodFlow').value;
+            const notes       = document.getElementById('cycleNotes').value;
+
+            if (!startDate || !endDate || !flow) {
+                Toast.error('Please fill in start date, end date and flow intensity.');
+                return;
+            }
+            if (new Date(endDate) < new Date(startDate)) {
+                Toast.error('End date cannot be before start date.');
+                return;
             }
 
-            // User name from auth
-            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
-            if (user) {
-                const sn = document.getElementById('sidebarName');
-                if (sn) sn.textContent = user.name || 'User';
+            const btn = this.querySelector('button[type="submit"]');
+            btn.disabled = true; btn.textContent = '⏳ Saving...';
+
+            try {
+                const response = await API.call('components/cycle_handler.php', {
+                    patient_id:    user.id    || null,
+                    patient_email: user.email || null,
+                    start_date:    startDate,
+                    end_date:      endDate,
+                    cycle_length:  parseInt(cycleLength),
+                    flow:          flow,
+                    notes:         notes
+                });
+
+                if (response.status === 'success') {
+                    Toast.success('✓ Cycle data saved successfully!');
+                    this.reset();
+                    // Set today as default start
+                    document.getElementById('periodStartDate').value = new Date().toISOString().split('T')[0];
+                    await loadHistory();
+                } else if (response.message && response.message.toLowerCase().includes('patient not found')) {
+                    Toast.warning('Session expired. Please log in again.');
+                    setTimeout(() => { localStorage.removeItem('pcos_user'); window.location.href = 'login.html'; }, 2000);
+                } else {
+                    Toast.error(response.message || 'Failed to save cycle data.');
+                }
+            } catch(err) {
+                Toast.error('Network error. Please try again.');
+            } finally {
+                btn.disabled = false; btn.textContent = '✓ Save Cycle Data';
             }
+        });
 
-            // Set default dates
-            const startDate = document.getElementById('periodStartDate');
-            const endDate = document.getElementById('periodEndDate');
-            if (startDate) startDate.value = '2026-02-01';
-            if (endDate) endDate.value = '2026-02-05';
+        // ── Sidebar mobile toggle ──────────────────────────────────
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar       = document.getElementById('sidebar');
+        const overlay       = document.getElementById('sidebar-overlay');
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+        });
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+        });
 
-            // Build calendar after DOM is ready
-            buildCalendar(currentMonthView);
-
-            // Setup form submission
-            setupFormSubmission();
-
-            // Setup navigation
-            setupNavigation();
-        }
-
-        // Run initialization
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPage);
-        } else {
-            initPage();
-        }
+        // ── Set default form dates & kick off ──────────────────────
+        document.getElementById('periodStartDate').value = new Date().toISOString().split('T')[0];
+        loadHistory();
     </script>
 </body>
 

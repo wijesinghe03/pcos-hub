@@ -266,6 +266,18 @@ function initNewsletter() {
   });
 }
 
+// ── Session quality guard ──
+// Returns the user object if the session is valid and complete.
+// Returns null if there is no session or it lacks identifying fields.
+// Does NOT redirect — let the callers decide what to do.
+function checkSession() {
+  const user = Auth.getUser();
+  if (!user || !user.loggedIn) return null;
+  // A valid session must have at least one of: id, email
+  if (!user.id && !user.email) return null;
+  return user;
+}
+
 // ── Global init ──
 document.addEventListener('DOMContentLoaded', () => {
   PageLoader.hide();

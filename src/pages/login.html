@@ -222,7 +222,7 @@
         Toast.error('Demo login failed. Check database connection.');
       }
     }
-    // Role selection based on URL parameter
+    // Role selection based on URL parameter + session notice
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const role = params.get('role');
@@ -230,6 +230,13 @@
         document.getElementById('rolePatient').checked = true;
       } else if (role === 'hospital') {
         document.getElementById('roleHospital').checked = true;
+      }
+
+      // Show notice if redirected due to stale session
+      const notice = sessionStorage.getItem('pcos_notice');
+      if (notice) {
+        sessionStorage.removeItem('pcos_notice');
+        setTimeout(() => Toast.warning(notice), 400);
       }
     });
 

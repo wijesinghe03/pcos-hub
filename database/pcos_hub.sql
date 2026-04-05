@@ -29,7 +29,6 @@ INSERT INTO `admin_users` (`full_name`, `username`, `email`, `password`, `role`)
 -- --------------------------------------------------------
 -- 2. Table structure for table `patients` (PUBLIC)
 -- --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `patients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `full_name` varchar(100) NOT NULL,

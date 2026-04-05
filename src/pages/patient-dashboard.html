@@ -163,9 +163,9 @@
         <div class="dash-stat-card reveal reveal-delay-1">
           <div class="stat-card-icon pink">📊</div>
           <div>
-            <div class="stat-card-value">14</div>
+            <div class="stat-card-value" id="statSymptomsLogged">—</div>
             <div class="stat-card-label">Symptoms Logged</div>
-            <div class="stat-card-change down">↓ This week</div>
+            <div class="stat-card-change" id="statSymptomsChange">Loading...</div>
           </div>
         </div>
         <div class="dash-stat-card reveal reveal-delay-2">
@@ -192,21 +192,12 @@
         <div class="dash-panel reveal">
           <div class="panel-header">
             <div class="panel-title"><i>📊</i> Recent Symptoms</div>
-            <a class="panel-action" href="track-symptoms.html">Log Symptoms →</a>
+            <a class="panel-action" href="track-symptoms.html">View All →</a>
           </div>
-          <div class="symptom-grid">
-            <div class="symptom-chip active"><i>😣</i> Cramps + Fatigue</div>
-            <div class="symptom-chip"><i>🤯</i> Headache</div>
-            <div class="symptom-chip active"><i>⚖️</i> Weight Change</div>
-            <div class="symptom-chip"><i>😰</i> Mood Swings</div>
-            <div class="symptom-chip active"><i>😴</i> Fatigue</div>
-            <div class="symptom-chip"><i>🌿</i> Hair Loss</div>
-            <div class="symptom-chip"><i>🌿</i> Acne</div>
-            <div class="symptom-chip"><i>🔥</i> Hot Flashes</div>
-            <div class="symptom-chip"><i>😓</i> Bloating</div>
+          <div id="recentSymptomsContainer">
+            <div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.9rem;">Loading...</div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:16px;width:100%"
-            onclick="Toast.success('Symptoms saved successfully!')">Save Today&apos;s Symptoms</button>
+          <a href="track-symptoms.html" class="btn btn-primary btn-sm" style="margin-top:16px;width:100%;display:block;text-align:center;">+ Log Symptoms</a>
         </div>
 
         <!-- Cycle Tracker -->
@@ -360,14 +351,14 @@
           <div class="activity-time">Today, 10:30 AM</div>
         </div>
       </div>
-      <div class="activity-item">
+      <div class="activity-item" id="activitySymptoms">
         <div class="activity-dot-wrap">
           <div class="activity-dot" style="background:var(--pink-accent)"></div>
           <div class="activity-line"></div>
         </div>
         <div>
-          <div class="activity-text">Symptoms logged: Fatigue, Cramps, Weight Change</div>
-          <div class="activity-time">Yesterday, 8:15 PM</div>
+          <div class="activity-text" id="activitySymptomsText">Loading recent symptoms...</div>
+          <div class="activity-time" id="activitySymptomsTime"></div>
         </div>
       </div>
       <div class="activity-item">
@@ -398,8 +389,110 @@
 
   <div class="toast-container" id="toast-container"></div>
 
+  <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/utils.js"></script>
   <script src="../../assets/js/dashboard.js"></script>
-</body>
+  <script>
+    // ── Symptom emoji map ────────────────────────────────────────────
+    const SYMPTOM_EMOJI = {
+      cramps:'😣', fatigue:'😴', headache:'🤯', bloating:'😓',
+      'weight-change':'⚖️', 'joint-pain':'🦵', acne:'🌿',
+      'hair-loss':'💇', 'hair-growth':'🌱', 'skin-darkening':'🌚',
+      'mood-swings':'😰', anxiety:'😟', depression:'😔', stress:'😤',
+      'irregular-period':'📅', 'heavy-bleeding':'🔴',
+      'light-bleeding':'🟡', 'pelvic-pain':'🩹'
+    };
+    function symptomLabel(s) {
+      return (SYMPTOM_EMOJI[s] || '•') + ' ' +
+        s.replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+    function severityColour(sev) {
+      return { mild:'var(--green-accent)', moderate:'var(--orange-accent)', severe:'var(--pink-accent)' }[sev] || '#888';
+    }
+
+    // ── Render Recent Symptoms panel ─────────────────────────────────
+    function renderRecentSymptoms(rows) {
+      const container = document.getElementById('recentSymptomsContainer');
+      if (!container) return;
+      if (!rows || rows.length === 0) {
+        container.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-light);font-size:0.9rem">No symptoms logged yet 💜</div>';
+        return;
+      }
+      container.innerHTML = rows.map(row => {
+        const d = new Date(row.log_date + 'T' + row.log_time);
+        const dateStr = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' }) +
+          ' · ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        const badges = row.symptoms.map(s =>
+          `<span style="background:rgba(147,112,219,0.1);color:var(--purple-primary);
+            padding:3px 8px;border-radius:4px;font-size:0.78rem;font-weight:600;white-space:nowrap">
+            ${symptomLabel(s)}</span>`
+        ).join('');
+        const sevColor = severityColour(row.severity);
+        return `
+        <div style="padding:10px 0;border-bottom:1px solid var(--bg-light);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.82rem;color:var(--text-light)">${dateStr}</span>
+            <span style="font-size:0.78rem;font-weight:700;color:${sevColor};text-transform:capitalize">${row.severity}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">${badges}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // ── Main dashboard data loader ───────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async function() {
+      const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+      if (!user) return;
+
+      const params3  = new URLSearchParams({ limit: 3 });
+      const paramsAll = new URLSearchParams({ limit: 999 });
+      const params1  = new URLSearchParams({ limit: 1 });
+      if (user.id)    { params3.set('patient_id', user.id); paramsAll.set('patient_id', user.id); params1.set('patient_id', user.id); }
+      if (user.email) { params3.set('patient_email', user.email); paramsAll.set('patient_email', user.email); params1.set('patient_email', user.email); }
+
+      const base = API.getPHPPath('components/symptom_handler.php');
+
+      try {
+        // Fetch last 3 for the panel + all for the count (parallel)
+        const [res3, resAll, res1] = await Promise.all([
+          fetch(base + '?' + params3.toString()),
+          fetch(base + '?' + paramsAll.toString()),
+          fetch(base + '?' + params1.toString())
+        ]);
+        const [json3, jsonAll, json1] = await Promise.all([res3.json(), resAll.json(), res1.json()]);
+
+        // Recent Symptoms panel
+        renderRecentSymptoms(json3.status === 'success' ? json3.data : []);
+
+        // Stat card — total count
+        const total = (jsonAll.status === 'success') ? jsonAll.data.length : 0;
+        const statEl = document.getElementById('statSymptomsLogged');
+        const changeEl = document.getElementById('statSymptomsChange');
+        if (statEl) statEl.textContent = total || '0';
+        if (changeEl) {
+          changeEl.textContent = total > 0 ? '↑ Total logged' : 'Start logging!';
+          changeEl.className = 'stat-card-change ' + (total > 0 ? 'up' : '');
+        }
+
+        // Activity feed entry (last 1)
+        const textEl = document.getElementById('activitySymptomsText');
+        const timeEl = document.getElementById('activitySymptomsTime');
+        if (textEl && json1.status === 'success' && json1.data.length > 0) {
+          const row = json1.data[0];
+          const names = row.symptoms.map(s => s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+          textEl.textContent = 'Symptoms logged: ' + names.join(', ');
+          const d = new Date(row.log_date + 'T' + row.log_time);
+          if (timeEl) timeEl.textContent = d.toLocaleDateString('en-GB',
+            { day:'2-digit', month:'short', year:'numeric' }) + ', ' +
+            d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        } else if (textEl) {
+          textEl.textContent = 'No symptoms logged yet — click Track Symptoms to start.';
+          if (timeEl) timeEl.textContent = '';
+        }
+      } catch(e) {
+        renderRecentSymptoms([]);
+      }
+    });
+  </script>
 
 </html>
