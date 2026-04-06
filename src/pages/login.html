@@ -168,7 +168,7 @@
 
         if (response.status === 'success') {
           Auth.login(response.user);
-          Toast.success('Login successful! Redirecting...');
+          Toast.success(response.message || 'Login successful! Redirecting...');
           setTimeout(() => {
             const pages = { 
               patient: 'patient-dashboard.html', 
@@ -190,10 +190,10 @@
     }
 
     async function demoLogin(role) {
-      // In a real database scenario, we'd use preset credentials
+      // Demo credentials matching actual database records
       const demoAccounts = {
-        patient: { id: 'patient', pass: 'patient123' },
-        hospital: { id: 'hospital', pass: 'hospital123' }
+        patient: { id: 'amanda', pass: 'patient123' },
+        hospital: { id: 'test_hospital', pass: 'hospital123' }
       };
 
       const account = demoAccounts[role];

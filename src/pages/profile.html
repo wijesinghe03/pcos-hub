@@ -15,8 +15,8 @@
 
         .profile-header {
             background: white;
-            border: 1px solid var(--bg-light);
-            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 32px;
             margin-bottom: 24px;
             text-align: center;
@@ -24,39 +24,74 @@
 
         .profile-avatar-section {
             margin-bottom: 24px;
+            position: relative;
+            display: inline-block;
         }
 
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--purple-primary), var(--pink-accent));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
+            color: white;
             margin: 0 auto 16px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s;
+            border: 4px solid white;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            object-fit: cover;
+            transition: var(--transition);
         }
 
-        .profile-avatar:hover::after {
-            content: '📷';
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(123, 63, 190, 0.2);
+            filter: brightness(1.05);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit-btn {
             position: absolute;
-            font-size: 1.5rem;
+            bottom: 25px;
+            right: 0;
+            background: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .avatar-edit-btn:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+            transform: scale(1.1);
         }
 
         .profile-name {
-            font-weight: 700;
-            font-size: 1.5rem;
+            font-weight: 800;
+            font-size: 1.6rem;
             color: var(--text-dark);
             margin-bottom: 4px;
         }
 
         .profile-email {
             color: var(--text-light);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 500;
         }
 
         .profile-sections {
@@ -66,21 +101,44 @@
 
         .profile-section {
             background: white;
-            border: 1px solid var(--bg-light);
-            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 24px;
         }
 
         .profile-section-title {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.1rem;
-            color: var(--text-dark);
+            color: var(--purple-primary);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 8px;
             padding-bottom: 12px;
-            border-bottom: 2px solid var(--bg-light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--bg-light);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .info-value {
+            color: var(--text-mid);
+            font-size: 0.95rem;
         }
 
         .form-row {
@@ -94,97 +152,27 @@
             grid-template-columns: 1fr;
         }
 
-        .form-group {
-            margin-bottom: 0;
-        }
-
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            font-weight: 700;
             color: var(--text-dark);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-control {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid var(--bg-light);
-            border-radius: 6px;
-            font-family: inherit;
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
             font-size: 0.95rem;
+            transition: var(--transition);
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-control:focus {
+            border-color: var(--purple-primary);
             outline: none;
-            border-color: var(--purple-primary);
-            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
-        }
-
-        .info-row {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 16px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--bg-light);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .info-value {
-            color: var(--text-light);
-        }
-
-        .edit-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--bg-light);
-        }
-
-        .edit-btn {
-            padding: 6px 12px;
-            border: 1px solid var(--bg-light);
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            color: var(--text-dark);
-        }
-
-        .edit-btn:hover {
-            border-color: var(--purple-primary);
-            color: var(--purple-primary);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .form-actions .btn {
-            flex: 1;
+            box-shadow: 0 0 0 4px rgba(147, 112, 219, 0.1);
         }
 
         .password-field {
@@ -194,93 +182,92 @@
         .toggle-password {
             position: absolute;
             right: 12px;
-            top: 32px;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            opacity: 0.5;
         }
 
-        .phone-input {
+        .account-actions-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .action-btn {
             display: flex;
-            gap: 8px;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-light);
+            border: 1.5px solid transparent;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
         }
 
-        .phone-country {
-            width: 80px;
+        .action-btn:hover {
+            background: white;
+            border-color: var(--border);
+            transform: translateX(4px);
         }
 
-        .phone-number {
-            flex: 1;
+        .action-btn.danger {
+            color: #ef4444;
+        }
+        
+        .action-btn.danger:hover {
+            border-color: #fca5a5;
+            background: #fef2f2;
         }
 
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            border-left: 4px solid;
-        }
-
-        .alert-info {
-            background: rgba(33, 150, 243, 0.1);
-            border-color: #2196f3;
-            color: #1976d2;
-        }
-
-        .alert-success {
-            background: rgba(76, 175, 80, 0.1);
-            border-color: #4caf50;
-            color: #388e3c;
-        }
-
-        .medical-info-section {
-            background: rgba(147, 112, 219, 0.05);
-            padding: 16px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-        }
+        .hidden { display: none !important; }
 
         @media (max-width: 640px) {
-            .profile-header {
-                padding: 24px 16px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .info-row {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .profile-avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
-            }
-
-            .profile-name {
-                font-size: 1.3rem;
-            }
+            .form-row, .info-row { grid-template-columns: 1fr; }
+            .info-row { gap: 4px; }
         }
     </style>
 </head>
 
 <body>
-    <style>
-        #page-loader {
-            display: none !important;
-        }
-
-        .dashboard-layout {
-            display: grid !important;
-        }
-    </style>
     <div id="page-loader" class="page-loader">
         <div class="loader-ring"></div>
+    </div>
+
+    <!-- Custom Deactivation Modal -->
+    <div id="deactivateModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div class="dash-panel reveal active" style="max-width:450px; width:100%; text-align:center; padding:40px 30px; border:2px solid #ef4444; box-shadow:0 20px 40px rgba(239, 68, 68, 0.15);">
+            <div style="font-size:3.5rem; margin-bottom:20px;">⛔</div>
+            <h3 style="color:#ef4444; font-weight:800; font-size:1.4rem; margin-bottom:15px;">Confirm Deactivation</h3>
+            <p style="color:var(--text-mid); line-height:1.6; margin-bottom:20px; font-size:0.95rem;">
+                If this account is not logged into within <b>30 days</b>, it will be permanently deleted. <br><br>
+                <span style="color:#ef4444; font-weight:700;">Please enter your password to confirm deactivation:</span>
+            </p>
+            
+            <input type="password" id="deactivatePassword" class="topbar-search" style="width:100%; border-radius:10px; padding:14px; margin-bottom:24px; border:1.5px solid var(--border); text-align:center;" placeholder="Enter Current Password">
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <button class="btn btn-primary" style="background:#ef4444; border-color:#ef4444;" onclick="executeDeactivation()">Confirm & Logout</button>
+                <button class="btn btn-ghost" style="color:#27ae60; font-weight:700;" onclick="toggleDeactivateModal(false)">Keep My Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Success Modal -->
+    <div id="successModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1001; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div class="dash-panel reveal active" style="max-width:400px; width:100%; text-align:center; padding:40px 30px; border:2px solid var(--purple-primary); box-shadow:0 20px 40px rgba(123, 63, 190, 0.15);">
+            <div style="font-size:3.5rem; margin-bottom:20px;">🖼️</div>
+            <h3 style="color:var(--purple-primary); font-weight:800; font-size:1.4rem; margin-bottom:15px;">Image Added!</h3>
+            <p id="successMsg" style="color:var(--text-mid); line-height:1.6; margin-bottom:25px; font-size:0.95rem;">
+                Your profile picture has been updated successfully and is now live across your dashboard.
+            </p>
+            <button class="btn btn-primary" style="width:100%;" onclick="closeSuccessModal()">Great!</button>
+        </div>
     </div>
 
     <!-- Mobile sidebar toggle -->
@@ -296,9 +283,9 @@
             </a>
 
             <div class="sidebar-profile">
-                <div class="sidebar-avatar">A</div>
+                <div class="sidebar-avatar" id="sideAvatar" onclick="document.getElementById('avatarInput').click()" style="cursor:pointer;">A</div>
                 <div>
-                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-name" id="sideName">Loading...</div>
                     <div class="sidebar-role">Patient</div>
                 </div>
                 <i>›</i>
@@ -306,22 +293,11 @@
 
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html">
-                    <i>🏠</i> Dashboard
-                </a>
-                <a class="sidebar-item" href="track-symptoms.html">
-                    <i>📊</i> Track Symptoms
-                </a>
-                <a class="sidebar-item" href="menstrual-cycle.html">
-                    <i>🩸</i> Menstrual Cycle
-                </a>
-                <a class="sidebar-item" href="reports.html">
-                    <i>📁</i> My Reports
-                    <span class="sidebar-badge">3</span>
-                </a>
-                <a class="sidebar-item" href="lifestyle-log.html">
-                    <i>🥗</i> Lifestyle Log
-                </a>
+                <a class="sidebar-item" href="patient-dashboard.html"><i>📊</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html"><i>🌡️</i> Track Symptoms</a>
+                <a class="sidebar-item" href="menstrual-cycle.html"><i>🩸</i> Menstrual Cycle</a>
+                <a class="sidebar-item" href="reports.html"><i>📁</i> My Reports</a>
+                <a class="sidebar-item" href="lifestyle-log.html"><i>🥗</i> Lifestyle Log</a>
             </div>
 
             <div class="sidebar-section">
@@ -335,7 +311,7 @@
                 <span class="sidebar-section-label">Account</span>
                 <a class="sidebar-item active" href="profile.html"><i>👤</i> Profile</a>
                 <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <a class="sidebar-item" href="logout.html" onclick="Auth.logout()"><i>🚪</i> Logout</a>
             </div>
         </aside>
 
@@ -345,470 +321,393 @@
             <div class="dash-topbar">
                 <div class="dash-page-title">
                     <h2>My Profile</h2>
-                    <p id="dateDisplay">Loading...</p>
+                    <p id="topbarDate">Manage your personal and medical information</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="topbar-icon-btn" title="Notifications">
-                        🔔<span class="notif-dot"></span>
-                    </button>
-                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                    <button class="topbar-icon-btn">🔔</button>
+                    <button class="topbar-icon-btn">💬</button>
                 </div>
             </div>
 
-            <!-- Main content -->
             <div class="profile-container">
-                <!-- Profile Header -->
-                <div class="profile-header">
+                <!-- Header -->
+                <div class="profile-header reveal">
                     <div class="profile-avatar-section">
-                        <div class="profile-avatar" id="profileAvatar" onclick="changeProfilePicture()">A</div>
-                        <input type="file" id="profilePictureInput" accept="image/*" style="display:none;"
-                            onchange="updateProfilePicture(event)">
+                        <div class="profile-avatar" id="profileAvatar" onclick="let i=document.getElementById('avatarInput'); i.value=''; i.click();" style="cursor:pointer; transition:all 0.3s ease;">A</div>
+                        <div class="avatar-edit-btn" onclick="let i=document.getElementById('avatarInput'); i.value=''; i.click();" style="cursor:pointer;">📷</div>
+                        <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
                     </div>
-                    <div class="profile-name" id="profileFullName">Amanda Perera</div>
-                    <div class="profile-email" id="profileEmail">amanda.perera@email.com</div>
+                    <div class="profile-name" id="profileNameDisplay">Loading...</div>
+                    <div class="profile-email" id="profileEmailDisplay">Loading...</div>
+                    <div id="deactivatedBadge" class="hidden" style="margin-top:10px; color:#ef4444; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Inactive Account</div>
                 </div>
 
                 <div class="profile-sections">
-                    <!-- Personal Information -->
-                    <div class="profile-section">
+                    <!-- Personal Info -->
+                    <section class="profile-section reveal">
                         <div class="profile-section-title"><i>👤</i> Personal Information</div>
-                        <div id="personalViewMode">
-                            <div class="info-row">
-                                <div class="info-label">Full Name</div>
-                                <div class="info-value" id="viewFullName">Amanda Perera</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Email</div>
-                                <div class="info-value" id="viewEmail">amanda.perera@email.com</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Phone</div>
-                                <div class="info-value" id="viewPhone">+94 77 123 4567</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Date of Birth</div>
-                                <div class="info-value" id="viewDOB">15 June 1995</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Gender</div>
-                                <div class="info-value" id="viewGender">Female</div>
-                            </div>
-                            <button class="edit-btn" onclick="toggleEditMode('personal')">Edit</button>
+                        
+                        <div id="personalView">
+                            <div class="info-row"><div class="info-label">Full Name</div><div class="info-value" id="valName">—</div></div>
+                            <div class="info-row"><div class="info-label">Email Address</div><div class="info-value" id="valEmail">—</div></div>
+                            <div class="info-row"><div class="info-label">Phone Number</div><div class="info-value" id="valPhone">—</div></div>
+                            <div class="info-row"><div class="info-label">Date of Birth</div><div class="info-value" id="valDob">—</div></div>
+                            <div class="info-row"><div class="info-label">Gender</div><div class="info-value" id="valGender">—</div></div>
+                            <div class="info-row"><div class="info-label">Blood Group</div><div class="info-value" id="valBlood">—</div></div>
+                            <button class="btn btn-sm btn-ghost" style="margin-top:20px;" onclick="switchMode('personal', 'edit')">✏️ Edit Personal Info</button>
                         </div>
 
-                        <div id="personalEditMode" style="display:none;">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editFirstName">First Name</label>
-                                    <input type="text" id="editFirstName" value="Amanda">
+                        <div id="personalEdit" class="hidden">
+                            <form id="personalForm" onsubmit="saveProfile(event)">
+                                <div class="form-row">
+                                    <div class="form-group"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+                                    <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" class="form-control"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editLastName">Last Name</label>
-                                    <input type="text" id="editLastName" value="Perera">
+                                <div class="form-row">
+                                    <div class="form-group"><label>Date of Birth</label><input type="date" name="dob" class="form-control"></div>
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <select name="gender" class="form-control">
+                                            <option value="Female">Female</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="form-row full">
-                                <div class="form-group">
-                                    <label for="editEmail">Email Address</label>
-                                    <input type="email" id="editEmail" value="amanda.perera@email.com">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Blood Group</label>
+                                        <select name="blood_group" class="form-control">
+                                            <option value="">Unknown</option>
+                                            <option value="A+">A+</option><option value="A-">A-</option>
+                                            <option value="B+">B+</option><option value="B-">B-</option>
+                                            <option value="O+">O+</option><option value="O-">O-</option>
+                                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label>Address</label><input type="text" name="address" class="form-control"></div>
                                 </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editPhone">Phone Number</label>
-                                    <input type="tel" id="editPhone" value="+94 77 123 4567">
+                                <div class="form-actions" style="display:flex; gap:10px; margin-top:10px;">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-ghost" onclick="switchMode('personal', 'view')">Cancel</button>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editDOB">Date of Birth</label>
-                                    <input type="date" id="editDOB" value="1995-06-15">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editGender">Gender</label>
-                                    <select id="editGender">
-                                        <option value="Female" selected>Female</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editBloodType">Blood Type</label>
-                                    <select id="editBloodType">
-                                        <option value="">Select blood type...</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-actions">
-                                <button class="btn btn-primary" onclick="savePersonalInfo()">Save Changes</button>
-                                <button class="btn btn-ghost" onclick="toggleEditMode('personal')">Cancel</button>
-                            </div>
+                            </form>
                         </div>
-                    </div>
+                    </section>
 
-                    <!-- Medical Information -->
-                    <div class="profile-section">
-                        <div class="profile-section-title"><i>🏥</i> Medical Information</div>
-                        <div class="medical-info-section">
-                            <div class="info-row">
-                                <div class="info-label">PCOS Diagnosis</div>
-                                <div class="info-value" id="viewPCOSDate">Diagnosed: June 2022</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Allergies</div>
-                                <div class="info-value" id="viewAllergies">Penicillin, Shellfish</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Current Medications</div>
-                                <div class="info-value" id="viewMedications">Metformin 500mg (2x daily)</div>
-                            </div>
-                            <button class="edit-btn" onclick="toggleEditMode('medical')">Edit</button>
-                        </div>
-
-                        <div id="medicalEditMode" style="display:none; margin-top: 16px;">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editPCOSDate">PCOS Diagnosis Date</label>
-                                    <input type="date" id="editPCOSDate" value="2022-06-15">
-                                </div>
-                                <div class="form-group">
-                                    <label for="editHeight">Height (cm)</label>
-                                    <input type="number" id="editHeight" placeholder="170" value="165">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editWeight">Weight (kg)</label>
-                                    <input type="number" id="editWeight" placeholder="65" value="68">
-                                </div>
-                                <div class="form-group">
-                                    <label for="editBloodPressure">Blood Pressure</label>
-                                    <input type="text" id="editBloodPressure" placeholder="120/80" value="118/76">
-                                </div>
-                            </div>
-
-                            <div class="form-row full">
-                                <div class="form-group">
-                                    <label for="editAllergies">Allergies</label>
-                                    <textarea id="editAllergies"
-                                        placeholder="List any allergies...">Penicillin, Shellfish</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-row full">
-                                <div class="form-group">
-                                    <label for="editMedications">Current Medications</label>
-                                    <textarea id="editMedications"
-                                        placeholder="List current medications...">Metformin 500mg (2x daily)</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-actions">
-                                <button class="btn btn-primary" onclick="saveMedicalInfo()">Save Changes</button>
-                                <button class="btn btn-ghost" onclick="toggleEditMode('medical')">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Security & Password -->
-                    <div class="profile-section">
-                        <div class="profile-section-title"><i>🔒</i> Security</div>
-                        <div class="form-row full">
-                            <div class="form-group">
-                                <label for="currentPassword">Current Password</label>
+                    <!-- Security -->
+                    <section class="profile-section reveal">
+                        <div class="profile-section-title"><i>🔒</i> Security & Password</div>
+                        <form id="passwordForm" onsubmit="updatePassword(event)">
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label>Current Password</label>
                                 <div class="password-field">
-                                    <input type="password" id="currentPassword" placeholder="Enter current password">
-                                    <span class="toggle-password"
-                                        onclick="togglePasswordField('currentPassword')">👁️</span>
+                                    <input type="password" name="current_password" class="form-control" required>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="newPassword">New Password</label>
-                                <div class="password-field">
-                                    <input type="password" id="newPassword" placeholder="Enter new password">
-                                    <span class="toggle-password"
-                                        onclick="togglePasswordField('newPassword')">👁️</span>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" name="new_password" class="form-control" minlength="6" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" name="confirm_password" class="form-control" minlength="6" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">Confirm Password</label>
-                                <div class="password-field">
-                                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
-                                    <span class="toggle-password"
-                                        onclick="togglePasswordField('confirmPassword')">👁️</span>
-                                </div>
-                            </div>
-                        </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top:10px;">Update Password</button>
+                        </form>
+                    </section>
 
-                        <div class="form-actions">
-                            <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
-                            <button class="btn btn-ghost" onclick="resetPasswordFields()">Cancel</button>
-                        </div>
-                    </div>
-
-                    <!-- Account Actions -->
-                    <div class="profile-section">
+                    <!-- Actions -->
+                    <section class="profile-section reveal">
                         <div class="profile-section-title"><i>⚙️</i> Account Actions</div>
-                        <div style="display: grid; gap: 12px;">
-                            <button class="btn btn-ghost" style="justify-content: flex-start;"
-                                onclick="downloadData()">📥 Download My Data</button>
-                            <button class="btn btn-ghost" style="justify-content: flex-start;"
-                                onclick="exportReports()">📤 Export My Reports</button>
-                            <button class="btn btn-ghost" style="justify-content: flex-start; color: #ff6b6b;"
-                                onclick="deactivateAccount()">⛔ Deactivate Account</button>
+                        <div class="account-actions-list">
+                            <button class="action-btn" style="color:var(--purple-primary);" onclick="Toast.info('Preparing data download...')"><i>📥</i> Download My Data (JSON)</button>
+                            <button class="action-btn" style="color:var(--purple-primary);" onclick="location.href='reports.html'"><i>📤</i> Export Medical Reports</button>
+                            <button class="action-btn danger" onclick="confirmDeactivation()"><i>⛔</i> Deactivate Account</button>
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Scripts -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Profile data (initialized with empty/defaults)
-        let profileData = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            dob: '',
-            gender: 'Female',
-            bloodType: '',
-            pcosDate: '2022-06-15',
-            height: 165,
-            weight: 68,
-            bloodPressure: '118/76',
-            allergies: 'None',
-            medications: 'None',
-            avatar: 'U'
-        };
+        const user = checkSession();
+        if (!user) window.location.href = 'login.html';
 
-        function toggleEditMode(section) {
-            if (section === 'personal') {
-                const viewMode = document.getElementById('personalViewMode');
-                const editMode = document.getElementById('personalEditMode');
-                const isEnteringEdit = viewMode.style.display !== 'none';
-                
-                if (isEnteringEdit) {
-                    // Populate inputs from profileData
-                    document.getElementById('editFirstName').value = profileData.firstName;
-                    document.getElementById('editLastName').value = profileData.lastName;
-                    document.getElementById('editEmail').value = profileData.email;
-                    document.getElementById('editPhone').value = profileData.phone;
-                    document.getElementById('editDOB').value = profileData.dob;
-                    document.getElementById('editGender').value = profileData.gender;
-                    document.getElementById('editBloodType').value = profileData.bloodType;
-                }
+        let fullProfile = null;
 
-                viewMode.style.display = viewMode.style.display === 'none' ? 'block' : 'none';
-                editMode.style.display = editMode.style.display === 'none' ? 'block' : 'none';
-            } else if (section === 'medical') {
-                const viewMode = document.querySelector('#medicalEditMode').previousElementSibling;
-                const editMode = document.getElementById('medicalEditMode');
-                const isEnteringEdit = editMode.style.display === 'none';
-
-                if (isEnteringEdit) {
-                    document.getElementById('editPCOSDate').value = profileData.pcosDate;
-                    document.getElementById('editHeight').value = profileData.height;
-                    document.getElementById('editWeight').value = profileData.weight;
-                    document.getElementById('editBloodPressure').value = profileData.bloodPressure;
-                    document.getElementById('editAllergies').value = profileData.allergies;
-                    document.getElementById('editMedications').value = profileData.medications;
-                }
-
-                viewMode.style.display = viewMode.style.display === 'none' ? 'block' : 'none';
-                editMode.style.display = editMode.style.display === 'none' ? 'block' : 'none';
-            }
-        }
-
-        function savePersonalInfo() {
-            profileData.firstName = document.getElementById('editFirstName').value;
-            profileData.lastName = document.getElementById('editLastName').value;
-            profileData.email = document.getElementById('editEmail').value;
-            profileData.phone = document.getElementById('editPhone').value;
-            profileData.dob = document.getElementById('editDOB').value;
-            profileData.gender = document.getElementById('editGender').value;
-            profileData.bloodType = document.getElementById('editBloodType').value;
-
-            updateProfileDisplay();
-            toggleEditMode('personal');
-            Toast.success('✓ Personal information updated!');
-        }
-
-        function saveMedicalInfo() {
-            profileData.pcosDate = document.getElementById('editPCOSDate').value;
-            profileData.height = document.getElementById('editHeight').value;
-            profileData.weight = document.getElementById('editWeight').value;
-            profileData.bloodPressure = document.getElementById('editBloodPressure').value;
-            profileData.allergies = document.getElementById('editAllergies').value;
-            profileData.medications = document.getElementById('editMedications').value;
-
-            updateProfileDisplay();
-            toggleEditMode('medical');
-            Toast.success('✓ Medical information updated!');
-        }
-
-        function updateProfileDisplay() {
-            const fullName = `${profileData.firstName} ${profileData.lastName}`.trim() || 'User';
-            document.getElementById('profileFullName').textContent = fullName;
-            document.getElementById('profileEmail').textContent = profileData.email || 'No email provided';
-            document.getElementById('viewFullName').textContent = fullName;
-            document.getElementById('viewEmail').textContent = profileData.email || 'N/A';
-            document.getElementById('viewPhone').textContent = profileData.phone || 'N/A';
-            document.getElementById('viewGender').textContent = profileData.gender || 'Female';
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long' });
             
-            if (profileData.dob) {
-                document.getElementById('viewDOB').textContent = new Date(profileData.dob).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+            // Pre-populate with session data to avoid empty look
+            document.getElementById('profileNameDisplay').textContent = user.name || 'PCOS Patient';
+            document.getElementById('profileEmailDisplay').textContent = user.email || '';
+            document.getElementById('sideName').textContent = user.name || 'PCOS Patient';
+            document.getElementById('valName').textContent = user.name || 'PCOS Patient';
+            document.getElementById('valEmail').textContent = user.email || '';
+            document.getElementById('valPhone').textContent = user.phone || 'Not provided';
+            document.getElementById('valDob').textContent = user.dob ? new Date(user.dob).toLocaleDateString() : 'Not provided';
+            document.getElementById('valGender').textContent = user.gender || 'Not specified';
+            document.getElementById('valBlood').textContent = user.blood_group || 'Unknown';
+            
+            const initials = (user.name || 'P').charAt(0).toUpperCase();
+            const avatarEl = document.getElementById('profileAvatar');
+            const sideAv = document.getElementById('sideAvatar');
+            
+            if (user.avatar) {
+                avatarEl.innerHTML = `<img src="../../${user.avatar}" alt="Profile">`;
+                sideAv.innerHTML = `<img src="../../${user.avatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
             } else {
-                document.getElementById('viewDOB').textContent = 'N/A';
+                avatarEl.textContent = initials;
+                sideAv.textContent = initials;
             }
 
-            // Update avatar
-            const avatarChar = profileData.firstName ? profileData.firstName.charAt(0).toUpperCase() : 'U';
-            if (document.getElementById('profileAvatar')) document.getElementById('profileAvatar').textContent = avatarChar;
-            if (document.querySelector('.sidebar-avatar')) document.querySelector('.sidebar-avatar').textContent = avatarChar;
-            if (document.getElementById('sidebarName')) document.getElementById('sidebarName').textContent = fullName;
-        }
+            loadProfile();
 
-        function togglePasswordField(fieldId) {
-            const field = document.getElementById(fieldId);
-            field.type = field.type === 'password' ? 'text' : 'password';
-        }
-
-        function changePassword() {
-            const current = document.getElementById('currentPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
-
-            if (!current || !newPass || !confirm) {
-                Toast.error('Please fill in all password fields');
-                return;
-            }
-
-            if (newPass !== confirm) {
-                Toast.error('New passwords do not match');
-                return;
-            }
-
-            if (newPass.length < 6) {
-                Toast.error('Password must be at least 6 characters long');
-                return;
-            }
-
-            Toast.success('✓ Password updated successfully!');
-            resetPasswordFields();
-        }
-
-        function resetPasswordFields() {
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
-        }
-
-        function changeProfilePicture() {
-            document.getElementById('profilePictureInput').click();
-        }
-
-        function updateProfilePicture(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('profileAvatar').textContent = '📷';
-                    Toast.success('✓ Profile picture updated!');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function downloadData() {
-            Toast.success('✓ Downloading your data...');
-        }
-
-        function exportReports() {
-            Toast.success('✓ Exporting reports...');
-        }
-
-        function deactivateAccount() {
-            if (confirm('Are you sure you want to deactivate your account? This action cannot be undone.')) {
-                Toast.success('✓ Account deactivation initiated. You will receive a confirmation email.');
-            }
-        }
-
-        function initPage() {
-            // Hide loader
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.display = 'none';
-                loader.remove();
-            }
-
-            // Set date display
-            const dateEl = document.getElementById('dateDisplay');
-            if (dateEl) {
-                const now = new Date();
-                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            }
-
-            // Load user data from Auth
-            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
-            if (user) {
-                const nameParts = (user.name || '').split(' ');
-                profileData.firstName = nameParts[0] || '';
-                profileData.lastName = nameParts.slice(1).join(' ') || '';
-                profileData.email = user.email || '';
-                profileData.phone = user.phone || '';
-                profileData.dob = user.dob || '';
-                profileData.gender = user.gender || 'Female';
-                profileData.bloodType = user.blood_group || '';
-                profileData.address = user.address || '';
-                profileData.avatar = (user.name || 'U').charAt(0).toUpperCase();
-            }
-
-            updateProfileDisplay();
-
-            // Setup sidebar toggle for mobile
-            const sidebarToggle = document.getElementById('sidebarToggle');
+            // Mobile menu
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-
-            if (sidebarToggle && sidebar && overlay) {
-                sidebarToggle.addEventListener('click', () => {
+            const toggle = document.getElementById('sidebarToggle');
+            
+            if (toggle) {
+                toggle.onclick = () => {
                     sidebar.classList.toggle('active');
                     overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-                });
+                };
+            }
+            overlay.onclick = () => {
+                sidebar.classList.remove('active');
+                overlay.style.display = 'none';
+            };
 
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('active');
-                    overlay.style.display = 'none';
-                });
+            setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')), 100);
+        });
+
+        async function loadProfile() {
+            if (!user || !user.id) {
+                console.error('Session invalid, redirecting...');
+                window.location.href = 'login.html';
+                return;
+            }
+            try {
+                const res = await API.call('components/profile_handler.php?patient_id=' + user.id);
+                console.log('Profile Load Response:', res);
+                if (res.status === 'success') {
+                    fullProfile = res.data;
+                    renderProfile();
+                } else {
+                    console.error('Profile load fail:', res.message);
+                    Toast.error('Profile load failed: ' + (res.message || 'Unknown server error'));
+                }
+            } catch (e) { 
+                console.error('Profile fetch error:', e); 
+                Toast.error('Connection error. Is the server running?');
             }
         }
 
-        // Run initialization
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPage);
-        } else {
-            initPage();
+        function renderProfile() {
+            const p = fullProfile;
+            // Header
+            document.getElementById('profileNameDisplay').textContent = p.full_name;
+            document.getElementById('profileEmailDisplay').textContent = p.email;
+            document.getElementById('sideName').textContent = p.full_name;
+            
+            // Avatar
+            const avatarEl = document.getElementById('profileAvatar');
+            const sideAv   = document.getElementById('sideAvatar');
+            if (p.avatar) {
+                avatarEl.innerHTML = `<img src="../../${p.avatar}" alt="Profile">`;
+                sideAv.innerHTML   = `<img src="../../${p.avatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
+            } else {
+                const initial = p.full_name.charAt(0).toUpperCase();
+                avatarEl.textContent = initial;
+                sideAv.textContent   = initial;
+            }
+
+            // Status
+            if (p.status === 'deactivated') {
+                document.getElementById('deactivatedBadge').classList.remove('hidden');
+            }
+
+            // View Mode
+            document.getElementById('valName').textContent   = p.full_name;
+            document.getElementById('valEmail').textContent  = p.email;
+            document.getElementById('valPhone').textContent  = p.phone || 'Not provided';
+            document.getElementById('valDob').textContent    = p.dob ? new Date(p.dob).toLocaleDateString() : 'Not set';
+            document.getElementById('valGender').textContent = p.gender || 'Not set';
+            document.getElementById('valBlood').textContent  = p.blood_group || 'Unknown';
+
+            // Form Population
+            const f = document.getElementById('personalForm');
+            f.full_name.value   = p.full_name;
+            f.phone.value       = p.phone || '';
+            f.dob.value         = p.dob || '';
+            f.gender.value      = p.gender || 'Female';
+            f.blood_group.value = p.blood_group || '';
+            f.address.value     = p.address || '';
+        }
+
+        function switchMode(section, mode) {
+            document.getElementById(section + 'View').classList.toggle('hidden', mode === 'edit');
+            document.getElementById(section + 'Edit').classList.toggle('hidden', mode === 'view');
+        }
+
+        async function saveProfile(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = { action: 'update_profile', patient_id: user.id };
+            formData.forEach((v, k) => data[k] = v);
+
+            try {
+                const res = await API.call('components/profile_handler.php', data);
+                if (res.status === 'success') {
+                    Toast.success('✓ Profile updated!');
+                    loadProfile();
+                    switchMode('personal', 'view');
+                } else {
+                    Toast.error(res.message);
+                }
+            } catch (e) { loadProfile(); }
+        }
+
+        function toggleSuccessModal(show, msg = '') {
+            if (msg) document.getElementById('successMsg').textContent = msg;
+            document.getElementById('successModal').classList.toggle('hidden', !show);
+            // Hide the button if it's a deactivation message (auto-redirect)
+            const isDeactivation = msg.includes('deactivated');
+            document.querySelector('#successModal .btn').style.display = isDeactivation ? 'none' : 'block';
+        }
+
+        function closeSuccessModal() {
+            toggleSuccessModal(false);
+            location.reload(); 
+        }
+
+        async function uploadAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            alert('File Selected: ' + file.name);
+
+            const formData = new FormData();
+            formData.append('action', 'update_avatar');
+            formData.append('patient_id', user.id);
+            formData.append('avatar', file);
+
+            Toast.info('Uploading image...');
+
+            alert('Starting Fetch...');
+            try {
+                const res = await fetch(API.getPHPPath('components/profile_handler.php'), {
+                    method: 'POST',
+                    body: formData
+                });
+                const text = await res.text();
+                // DEBUG ALERT: EVERYTHING
+                alert('Server Raw: ' + text);
+                
+                try {
+                    const json = JSON.parse(text);
+                    if (json.status === 'success') {
+                        // Update Local Session
+                        const updatedUser = { ...user, avatar: json.avatar };
+                        localStorage.setItem('pcos_user', JSON.stringify(updatedUser));
+                        
+                        // Show the SUCCESS BOX instead of just a toast
+                        toggleSuccessModal(true, 'Your profile picture has been updated perfectly and is now active!');
+                    } else {
+                        Toast.error(json.message);
+                    }
+                } catch(e) {
+                    console.error('JSON Parse Error:', text);
+                    alert('JSON Crash: ' + text);
+                    Toast.error('Server error during image processing.');
+                }
+            } catch (err) { 
+                console.error('Fetch Error:', err);
+                alert('Fetch CRASH: ' + err);
+                Toast.error('Upload failed. Check connection.'); 
+            }
+        }
+
+        async function updatePassword(e) {
+            e.preventDefault();
+            const f = e.target;
+            if (f.new_password.value !== f.confirm_password.value) {
+                Toast.error('Passwords do not match');
+                return;
+            }
+
+            const data = {
+                action: 'update_password',
+                patient_id: user.id,
+                current_password: f.current_password.value,
+                new_password: f.new_password.value
+            };
+
+            try {
+                const res = await API.call('components/profile_handler.php', data);
+                if (res.status === 'success') {
+                    Toast.success('✓ Password changed successfully!');
+                    f.reset();
+                } else {
+                    Toast.error(res.message);
+                }
+            } catch (e) {}
+        }
+
+        function toggleDeactivateModal(show) {
+            document.getElementById('deactivateModal').classList.toggle('hidden', !show);
+        }
+
+        async function confirmDeactivation() {
+            toggleDeactivateModal(true);
+        }
+
+        async function executeDeactivation() {
+            const pwd = document.getElementById('deactivatePassword').value;
+            if (!pwd) { Toast.error('Please enter your password.'); return; }
+
+            // Using FormData for standard POST compatibility
+            const formData = new FormData();
+            formData.append('action', 'deactivate');
+            formData.append('patient_id', user.id);
+            formData.append('password', pwd);
+
+            try {
+                const res = await fetch(API.getPHPPath('components/profile_handler.php'), {
+                    method: 'POST',
+                    body: formData
+                });
+                const text = await res.text();
+                console.log('Deactivation Response:', text);
+                
+                const json = JSON.parse(text);
+                if (json.status === 'success') {
+                    toggleDeactivateModal(false);
+                    // Using the Success Modal for a "Successful Deactivation" box
+                    toggleSuccessModal(true, 'Your account has been deactivated successfully as requested. Logging out in 4 seconds...');
+                    document.querySelector('#successModal h3').textContent = 'Account Deactivated 🔒';
+                    document.querySelector('#successModal div[style*="font-size:3.5rem"]').textContent = '📂';
+                    
+                    setTimeout(() => {
+                        localStorage.removeItem('pcos_user');
+                        window.location.href = 'index.html';
+                    }, 4000);
+                } else {
+                    Toast.error(json.message || 'Deactivation failed.');
+                }
+            } catch (e) {
+                console.error('Deactivation Exception:', e);
+                Toast.error('Connection failed. Please try again.');
+            }
         }
     </script>
 </body>
-
 </html>

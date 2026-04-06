@@ -639,10 +639,19 @@
       // Update name in welcome card
       const welcomeName = document.getElementById('welcomeName');
       if (welcomeName && user.name) welcomeName.textContent = user.name.split(' ')[0];
+      
       const sidebarName = document.getElementById('sidebarName');
       if (sidebarName && user.name) sidebarName.textContent = user.name;
+      
       const sidebarAvatar = document.querySelector('.sidebar-avatar');
-      if (sidebarAvatar && user.name) sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
+      if (sidebarAvatar) {
+        if (user.avatar) {
+          sidebarAvatar.innerHTML = `<img src="../../${user.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
+          sidebarAvatar.textContent = ''; // Clear letter
+        } else if (user.name) {
+          sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
+        }
+      }
 
       const params3   = new URLSearchParams({ limit: 3 });
       const paramsAll = new URLSearchParams({ limit: 999 });

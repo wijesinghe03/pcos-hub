@@ -62,6 +62,9 @@ function handleSignup($pdo) {
                 'username' => $data['username'],
                 'dob' => $data['dob'] ?? null,
                 'phone' => $data['phone'] ?? null,
+                'gender' => $data['gender'] ?? null,
+                'address' => $data['address'] ?? null,
+                'blood_group' => $data['blood_group'] ?? null,
                 'reg_number' => $data['reg_number'] ?? null,
                 'location' => $data['location'] ?? null
             ]

@@ -42,20 +42,43 @@ function handleLogin($pdo) {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
+            // NEW: 30-Day Deactivation / Reactivation Logic for Patients
+            if ($role === 'patient' && $user['status'] === 'deactivated') {
+                $deactivatedAt = new DateTime($user['deactivated_at']);
+                $now = new DateTime();
+                $diff = $now->diff($deactivatedAt)->days;
+
+                if ($diff >= 30) {
+                    // Permanently DELETE after 30 days
+                    $del = $pdo->prepare("DELETE FROM patients WHERE id = ?");
+                    $del->execute([$user['id']]);
+                    echo json_encode(['status' => 'error', 'message' => 'This account was permanently deleted after 30 days of inactivity. Please register as a new patient.']);
+                    return;
+                } else {
+                    // REACTIVATE if within 30 days
+                    $reactivate = $pdo->prepare("UPDATE patients SET status = 'active', deactivated_at = NULL WHERE id = ?");
+                    $reactivate->execute([$user['id']]);
+                    $user['status'] = 'active'; // Update local var for the response
+                }
+            }
+
             // Name field varies by table (hosp_name vs full_name)
             $displayName = $user['full_name'] ?? $user['hosp_name'] ?? 'Authorized User';
 
             echo json_encode([
                 'status' => 'success',
-                'message' => 'Login successful',
+                'message' => ($role === 'patient' && isset($diff) && $diff < 30) ? 'Welcome back! Your account has been reactivated.' : 'Login successful',
                 'user' => [
                     'id' => $user['id'],
                     'name' => $displayName,
                     'role' => $role,
                     'email' => $user['email'],
                     'username' => $user['username'],
+                    'status' => $user['status'] ?? 'active',
+                    'avatar' => $user['avatar'] ?? null,
                     'dob' => $user['dob'] ?? null,
                     'phone' => $user['phone'] ?? null,
+                    'gender' => $user['gender'] ?? null,
                     'address' => $user['address'] ?? null,
                     'blood_group' => $user['blood_group'] ?? null,
                     'location' => $user['location'] ?? null,

@@ -177,10 +177,6 @@
 </head>
 <body>
 
-    <div id="page-loader" class="page-loader">
-        <div class="loader-ring"></div>
-    </div>
-
     <!-- Mobile sidebar toggle -->
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
@@ -277,10 +273,11 @@
                     </div>
 
                     <div id="apptList" style="display:grid; gap:20px;">
-                        <!-- Appts injected here -->
-                        <div style="text-align:center; padding:100px 0; color:var(--text-light);">
-                            <div class="loader-ring" style="width:40px;height:40px;border-width:4px;margin-bottom:20px;"></div>
-                            <p>Fetching your appointments...</p>
+                        <!-- Default empty state before load -->
+                        <div style="text-align:center; padding:100px 20px; color:var(--text-light); background:white; border-radius:var(--radius-lg); border:1.5px dashed var(--border);">
+                            <div style="font-size:3rem; margin-bottom:15px;">📅</div>
+                            <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;">No Appointments Found</p>
+                            <p style="font-size:0.9rem;">You haven't scheduled any clinic visits yet. <br> Use the form on the right to book your first appointment!</p>
                         </div>
                     </div>
                 </div>
@@ -371,7 +368,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Sidebar UI
             document.getElementById('sidebarName').textContent = user.name;
-            document.getElementById('sidebarAvatar').textContent = user.name.charAt(0).toUpperCase();
+            const sidebarAvatar = document.getElementById('sidebarAvatar');
+            if (user.avatar) {
+                sidebarAvatar.innerHTML = `<img src="../../${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                sidebarAvatar.textContent = '';
+            } else {
+                sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
+            }
             
             // Dates
             const today = new Date().toISOString().split('T')[0];
@@ -415,7 +418,12 @@
         function renderAppointments(appts) {
             const container = document.getElementById('apptList');
             if (appts.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:100px 0; color:var(--text-light);"><p>No appointments found.</p></div>`;
+                container.innerHTML = `
+                <div style="text-align:center; padding:100px 20px; color:var(--text-light); background:white; border-radius:var(--radius-lg); border:1.5px dashed var(--border);">
+                    <div style="font-size:3rem; margin-bottom:15px;">📅</div>
+                    <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;">No Appointments Found</p>
+                    <p style="font-size:0.9rem;">You haven't scheduled any clinic visits yet. <br> Use the form on the right to book your first appointment!</p>
+                </div>`;
                 return;
             }
 
