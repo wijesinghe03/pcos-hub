@@ -5,230 +5,390 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reports — PCOS Care Hub</title>
+    <meta name="description" content="Upload and manage your medical reports on PCOS Care Hub.">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <style>
-        .reports-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .report-card {
-            background: white;
-            border: 1px solid var(--bg-light);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 16px;
-            align-items: center;
-            transition: all 0.2s;
-        }
-
-        .report-card:hover {
-            border-color: var(--purple-primary);
-            box-shadow: 0 4px 16px rgba(147, 112, 219, 0.1);
-        }
-
-        .report-info {
-            display: grid;
-            gap: 8px;
-        }
-
-        .report-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-dark);
-        }
-
-        .report-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .report-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .report-actions {
+        /* ── Filter Tabs ─────────────────────────────────────── */
+        .filter-bar {
             display: flex;
             gap: 8px;
-            align-items: center;
-        }
-
-        .report-badge {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .badge-view {
-            background: rgba(76, 175, 80, 0.1);
-            color: #4caf50;
-        }
-
-        .badge-pending {
-            background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
-        }
-
-        .date-filter {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid var(--bg-light);
+        .filter-tab {
+            padding: 9px 20px;
+            border: 2px solid var(--bg-light);
             background: white;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 24px;
+            font-weight: 700;
             cursor: pointer;
+            font-size: 0.86rem;
+            color: var(--text-light);
             transition: all 0.2s;
-            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        .filter-btn:hover,
-        .filter-btn.active {
+        .filter-tab:hover {
+            border-color: var(--purple-primary);
+            color: var(--purple-primary);
+            background: rgba(147,112,219,0.05);
+        }
+        .filter-tab.active {
             background: var(--purple-primary);
             color: white;
             border-color: var(--purple-primary);
+            box-shadow: 0 4px 14px rgba(147,112,219,0.3);
+        }
+        .filter-count {
+            background: rgba(255,255,255,0.25);
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+        .filter-tab:not(.active) .filter-count {
+            background: var(--bg-light);
+            color: var(--text-dark);
         }
 
-        .upload-section {
-            background: rgba(147, 112, 219, 0.05);
-            border: 2px dashed var(--purple-primary);
-            border-radius: 8px;
-            padding: 32px;
-            text-align: center;
-            margin-bottom: 32px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .upload-section:hover {
-            background: rgba(147, 112, 219, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-        }
-
-        .upload-text {
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .upload-hint {
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .reports-grid {
+        /* ── Stats Cards ─────────────────────────────────────── */
+        .report-stats {
             display: grid;
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
         }
-
-        .empty-state {
+        .rstat {
+            background: white;
+            border: 2px solid var(--bg-light);
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
-            padding: 40px 20px;
-            color: var(--text-light);
+            transition: border-color 0.2s;
+        }
+        .rstat:hover { border-color: var(--purple-primary); }
+        .rstat-num   { font-size: 2rem; font-weight: 800; color: var(--text-dark); line-height: 1; }
+        .rstat-label { font-size: 0.78rem; color: var(--text-light); margin-top: 5px; }
+        .rstat.highlight { border-color: var(--purple-primary); background: rgba(147,112,219,0.05); }
+        .rstat.highlight .rstat-num { color: var(--purple-primary); }
+
+        /* ── Upload Zone ─────────────────────────────────────── */
+        .upload-zone {
+            background: rgba(147,112,219,0.04);
+            border: 2px dashed rgba(147,112,219,0.5);
+            border-radius: 14px;
+            padding: 32px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-bottom: 24px;
+        }
+        .upload-zone:hover, .upload-zone.drag-over {
+            background: rgba(147,112,219,0.10);
+            border-color: var(--purple-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(147,112,219,0.15);
+        }
+        .upload-zone-icon { font-size: 2.4rem; margin-bottom: 8px; }
+        .upload-zone-title { font-weight: 700; font-size: 0.97rem; color: var(--text-dark); margin-bottom: 4px; }
+        .upload-zone-hint  { font-size: 0.82rem; color: var(--text-light); margin-bottom: 14px; }
+        .upload-zone-btn {
+            display: inline-block;
+            padding: 10px 26px;
+            background: var(--purple-primary);
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .upload-zone-btn:hover { opacity: 0.88; transform: scale(1.03); }
+
+        /* ── Search ──────────────────────────────────────────── */
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid var(--bg-light);
+            border-radius: 10px;
+            padding: 9px 16px;
+            background: white;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus-within { border-color: var(--purple-primary); }
+        .search-box input {
+            border: none; outline: none; flex: 1;
+            font-size: 0.93rem; font-family: inherit;
+            background: transparent;
         }
 
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
+        /* ── Report Cards ────────────────────────────────────── */
+        .reports-list { display: grid; gap: 12px; }
+        .report-card {
+            background: white;
+            border: 2px solid var(--bg-light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 14px;
+            align-items: center;
+            transition: all 0.2s;
+            animation: slideIn 0.3s ease;
         }
+        @keyframes slideIn {
+            from { opacity:0; transform:translateY(8px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .report-card:hover {
+            border-color: var(--purple-primary);
+            box-shadow: 0 6px 24px rgba(147,112,219,0.12);
+            transform: translateY(-1px);
+        }
+        .report-type-icon {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .rtype-lab          { background: rgba(76,175,80,0.12); }
+        .rtype-scan         { background: rgba(33,150,243,0.12); }
+        .rtype-prescription { background: rgba(255,152,0,0.12); }
+        .rtype-imaging      { background: rgba(156,39,176,0.12); }
+        .rtype-other        { background: rgba(147,112,219,0.12); }
+
+        .report-name  { font-weight: 700; font-size: 0.97rem; color: var(--text-dark); margin-bottom: 6px; }
+        .report-meta  {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            font-size: 0.81rem; color: var(--text-light); align-items: center;
+        }
+        .report-notes { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; font-style: italic; }
+
+        .report-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+        .status-pill {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+        }
+        .pill-uploaded    { background: rgba(76,175,80,0.12);  color: #2e7d32; }
+        .pill-pending     { background: rgba(255,193,7,0.14);  color: #e65100; }
+        .pill-reviewed    { background: rgba(33,150,243,0.12); color: #1565c0; }
+
+        .report-btns { display: flex; gap: 6px; }
+        .btn-view, .btn-del {
+            padding: 6px 14px; border-radius: 7px; font-size: 0.78rem;
+            font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .btn-view { background: rgba(147,112,219,0.1); color: var(--purple-primary); }
+        .btn-view:hover { background: var(--purple-primary); color: white; }
+        .btn-del  { background: rgba(229,127,175,0.1); color: var(--pink-accent); }
+        .btn-del:hover  { background: var(--pink-accent); color: white; }
+
+        /* ── Empty / Loading ─────────────────────────────────── */
+        .empty-state {
+            text-align: center; padding: 52px 24px;
+            color: var(--text-light); display: none;
+        }
+        .empty-icon { font-size: 3.8rem; margin-bottom: 14px; }
+        .empty-state h3 { color: var(--text-dark); margin-bottom: 8px; font-size: 1.1rem; }
+        .empty-state p  { margin-bottom: 18px; font-size: 0.9rem; }
+
+        .loading-state {
+            text-align: center; padding: 40px;
+            color: var(--text-light); font-size: 0.9rem;
+        }
+        .spinner {
+            width: 36px; height: 36px; border: 3px solid var(--bg-light);
+            border-top-color: var(--purple-primary); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Upload Modal ────────────────────────────────────── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55); z-index: 300;
+            align-items: center; justify-content: center; padding: 16px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: white; border-radius: 18px;
+            padding: 32px; width: 100%; max-width: 540px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+            animation: popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+            max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to   { transform: scale(1)   translateY(0);    opacity: 1; }
+        }
+        .modal-hdr {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 24px;
+        }
+        .modal-title { font-size: 1.15rem; font-weight: 800; color: var(--text-dark); }
+        .modal-close {
+            background: var(--bg-light); border: none; border-radius: 50%;
+            width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .modal-close:hover { background: rgba(229,127,175,0.2); color: var(--pink-accent); }
+        .mfg { margin-bottom: 15px; }
+        .mfg label {
+            display: block; margin-bottom: 6px;
+            font-weight: 700; font-size: 0.87rem; color: var(--text-dark);
+        }
+        .mfg input, .mfg select, .mfg textarea {
+            width: 100%; padding: 10px 13px;
+            border: 2px solid var(--bg-light); border-radius: 9px;
+            font-family: inherit; font-size: 0.91rem; transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .mfg input:focus, .mfg select:focus, .mfg textarea:focus {
+            outline: none; border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(147,112,219,0.12);
+        }
+        .mfg textarea { resize: vertical; min-height: 68px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .file-drop-area {
+            border: 2px dashed var(--bg-light); border-radius: 9px;
+            padding: 20px; text-align: center; cursor: pointer;
+            transition: all 0.2s; background: rgba(147,112,219,0.02);
+        }
+        .file-drop-area:hover { border-color: var(--purple-primary); background: rgba(147,112,219,0.05); }
+        .file-drop-area.has-file { border-color: var(--purple-primary); background: rgba(147,112,219,0.06); }
+        .file-info {
+            display: flex; align-items: center; gap: 10px;
+            margin-top: 10px; padding: 10px 14px;
+            background: rgba(147,112,219,0.07); border-radius: 8px;
+            font-size: 0.85rem; display: none;
+        }
+        .file-info.show { display: flex; }
+        .file-info-name { flex: 1; font-weight: 600; word-break: break-all; }
+        .file-info-size { color: var(--text-light); white-space: nowrap; }
+        .modal-footer { display: flex; gap: 10px; margin-top: 22px; }
+        .modal-footer .btn { flex: 1; }
 
         @media (max-width: 640px) {
-            .report-card {
-                grid-template-columns: 1fr;
-            }
-
-            .report-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .filter-btn {
-                flex: 1;
-                min-width: 0;
-            }
+            .report-card { grid-template-columns: 40px 1fr; }
+            .report-actions { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center; }
+            .two-col { grid-template-columns: 1fr; }
+            .filter-tab { padding: 7px 12px; font-size: 0.82rem; }
         }
     </style>
 </head>
 
 <body>
     <style>
-        #page-loader {
-            display: none !important;
-        }
-
-        .dashboard-layout {
-            display: grid !important;
-        }
+        #page-loader { display: none !important; }
+        .dashboard-layout { display: grid !important; }
     </style>
-    <div id="page-loader" class="page-loader">
-        <div class="loader-ring"></div>
-    </div>
+    <div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
 
-    <!-- Mobile sidebar toggle -->
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
 
+    <!-- ════════════ UPLOAD MODAL ════════════ -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-box">
+            <div class="modal-hdr">
+                <div class="modal-title">📤 Upload Medical Report</div>
+                <button class="modal-close" id="modalClose" title="Close">✕</button>
+            </div>
+            <form id="uploadForm">
+                <div class="two-col">
+                    <div class="mfg">
+                        <label for="inp_name">Report Name *</label>
+                        <input type="text" id="inp_name" placeholder="e.g. Blood Test Results" required>
+                    </div>
+                    <div class="mfg">
+                        <label for="inp_type">Report Type *</label>
+                        <select id="inp_type" required>
+                            <option value="">Select type…</option>
+                            <option value="lab">🧪 Lab Result</option>
+                            <option value="scan">🔬 Scan / Ultrasound</option>
+                            <option value="prescription">💊 Prescription</option>
+                            <option value="imaging">🩻 X-Ray / MRI</option>
+                            <option value="other">📄 Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="two-col">
+                    <div class="mfg">
+                        <label for="inp_hospital">Hospital / Clinic</label>
+                        <input type="text" id="inp_hospital" placeholder="e.g. City Hospital">
+                    </div>
+                    <div class="mfg">
+                        <label for="inp_date">Report Date *</label>
+                        <input type="date" id="inp_date" required>
+                    </div>
+                </div>
+                <div class="mfg">
+                    <label>Attach File <span style="color:var(--text-light);font-weight:400">(PDF, JPG, PNG — max 10 MB)</span></label>
+                    <div class="file-drop-area" id="fileDropArea" onclick="document.getElementById('inp_file').click()">
+                        <div style="font-size:1.8rem;margin-bottom:6px">📎</div>
+                        <div style="font-weight:600;font-size:0.88rem;margin-bottom:3px">Click to choose file</div>
+                        <div style="font-size:0.78rem;color:var(--text-light)">or drag & drop here</div>
+                    </div>
+                    <input type="file" id="inp_file" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+                    <div class="file-info" id="fileInfo">
+                        <span id="fi_icon" style="font-size:1.4rem">📄</span>
+                        <span class="file-info-name" id="fi_name"></span>
+                        <span class="file-info-size" id="fi_size"></span>
+                        <button type="button" onclick="clearFile()" style="background:none;border:none;cursor:pointer;color:var(--pink-accent);font-size:1rem">✕</button>
+                    </div>
+                </div>
+                <div class="mfg">
+                    <label for="inp_notes">Notes <span style="color:var(--text-light);font-weight:400">(optional)</span></label>
+                    <textarea id="inp_notes" placeholder="Any observations, doctor comments, or additional context…"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">✓ Save Report</button>
+                    <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="dashboard-layout">
-        <!-- ── SIDEBAR ── -->
+        <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <a href="index.html" class="sidebar-logo">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
-
             <div class="sidebar-profile">
-                <div class="sidebar-avatar">A</div>
+                <div class="sidebar-avatar" id="sidebarAvatar">A</div>
                 <div>
-                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-name" id="sidebarName">Patient</div>
                     <div class="sidebar-role">Patient</div>
                 </div>
                 <i>›</i>
             </div>
-
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html" data-page="patient-dashboard.html">
-                    <i>🏠</i> Dashboard
-                </a>
-                <a class="sidebar-item" href="track-symptoms.html" data-page="track-symptoms.html">
-                    <i>📊</i> Track Symptoms
-                </a>
-                <a class="sidebar-item" href="menstrual-cycle.html" data-page="menstrual-cycle.html">
-                    <i>🩸</i> Menstrual Cycle
-                </a>
-                <a class="sidebar-item active" href="reports.html" data-page="reports.html">
+                <a class="sidebar-item" href="patient-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html"><i>📊</i> Track Symptoms</a>
+                <a class="sidebar-item" href="menstrual-cycle.html"><i>🩸</i> Menstrual Cycle</a>
+                <a class="sidebar-item active" href="reports.html">
                     <i>📁</i> My Reports
-                    <span class="sidebar-badge">3</span>
+                    <span class="sidebar-badge" id="sidebarBadge">0</span>
                 </a>
-                <a class="sidebar-item" href="lifestyle-log.html">
-                    <i>🥗</i> Lifestyle Log
-                </a>
+                <a class="sidebar-item" href="lifestyle-log.html"><i>🥗</i> Lifestyle Log</a>
             </div>
-
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Health</span>
                 <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
                 <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
                 <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
             </div>
-
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Account</span>
                 <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
@@ -237,316 +397,524 @@
             </div>
         </aside>
 
-        <!-- ── MAIN ── -->
+        <!-- MAIN -->
         <main class="dash-main" id="mainContent">
+
             <!-- Top bar -->
             <div class="dash-topbar">
                 <div class="dash-page-title">
                     <h2>My Reports</h2>
-                    <p id="dateDisplay">Loading...</p>
+                    <p id="dateDisplay">Loading…</p>
                 </div>
                 <div class="topbar-actions">
-                    <div class="topbar-search">
-                        <i>🔍</i>
-                        <input type="text" id="searchInput" placeholder="Search reports…">
-                    </div>
-                    <button class="topbar-icon-btn" title="Notifications">
-                        🔔<span class="notif-dot"></span>
+                    <button class="btn btn-primary" id="openUploadBtn" style="white-space:nowrap;gap:6px">
+                        📤 Upload Report
                     </button>
-                    <button class="topbar-icon-btn" title="Messages">💬</button>
+                    <button class="topbar-icon-btn">🔔<span class="notif-dot"></span></button>
+                    <button class="topbar-icon-btn">💬</button>
                 </div>
             </div>
 
-            <!-- Main content -->
-            <div class="reports-container">
-                <!-- Upload Section -->
-                <div class="upload-section" onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon">📤</div>
-                    <p class="upload-text"><span>Click to upload</span> or drag and drop</p>
-                    <p class="upload-hint">PDF, JPG, PNG up to 10MB</p>
-                    <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.png,.jpeg">
+            <!-- Stats Cards -->
+            <div class="report-stats reveal">
+                <div class="rstat highlight">
+                    <div class="rstat-num" id="st_total">—</div>
+                    <div class="rstat-label">📋 Total Reports</div>
+                </div>
+                <div class="rstat">
+                    <div class="rstat-num" id="st_month">—</div>
+                    <div class="rstat-label">📅 This Month</div>
+                </div>
+                <div class="rstat">
+                    <div class="rstat-num" id="st_year">—</div>
+                    <div class="rstat-label">🗓 This Year</div>
+                </div>
+                <div class="rstat">
+                    <div class="rstat-num" id="st_pending">—</div>
+                    <div class="rstat-label">⏳ Pending</div>
+                </div>
+            </div>
+
+            <!-- Drop zone -->
+            <div class="upload-zone reveal" id="dropZone">
+                <div class="upload-zone-icon">📂</div>
+                <div class="upload-zone-title">Drop a file to upload instantly</div>
+                <p class="upload-zone-hint">PDF, JPG, PNG — max 10 MB</p>
+                <button type="button" class="upload-zone-btn" id="dropZoneBtn">📎 Browse Files</button>
+                <input type="file" id="dropFileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
+            </div>
+
+            <!-- Filter bar + Search -->
+            <div class="dash-panel reveal" style="padding:20px 24px">
+
+                <div class="search-box">
+                    <span style="font-size:1.1rem">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search by report name or hospital…">
+                    <button id="clearSearch" onclick="clearSearch()" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:1rem;display:none">✕</button>
                 </div>
 
-                <!-- Filter buttons -->
-                <div class="date-filter">
-                    <button class="filter-btn active" data-filter="all">All Reports</button>
-                    <button class="filter-btn" data-filter="this-month">This Month</button>
-                    <button class="filter-btn" data-filter="this-year">This Year</button>
-                    <button class="filter-btn" data-filter="pending">Pending</button>
+                <!-- Filter tabs — each click hits the DB -->
+                <div class="filter-bar">
+                    <button class="filter-tab active" data-filter="all"        id="tab_all">
+                        📋 All Reports <span class="filter-count" id="cnt_all">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="this-month" id="tab_month">
+                        📅 This Month <span class="filter-count" id="cnt_month">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="this-year"  id="tab_year">
+                        🗓 This Year <span class="filter-count" id="cnt_year">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="pending"    id="tab_pending">
+                        ⏳ Pending <span class="filter-count" id="cnt_pending">0</span>
+                    </button>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner"></div>
+                    Loading your reports…
                 </div>
 
                 <!-- Reports list -->
-                <div class="reports-grid" id="reportsList">
-                    <!-- Reports will be loaded here -->
-                </div>
+                <div class="reports-list" id="reportsList" style="display:none"></div>
 
                 <!-- Empty state -->
-                <div class="empty-state" id="emptyState" style="display:none">
-                    <div class="empty-state-icon">📋</div>
-                    <p>No reports found</p>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📋</div>
+                    <h3>No reports found</h3>
+                    <p id="emptyMsg">Upload your first medical report to get started.</p>
+                    <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Report</button>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <!-- Scripts -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
-    <script src="../../assets/js/components.js"></script>
     <script>
-        // Hide page loader immediately
-        (function () {
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.display = 'none';
+    // ════════════════════════════════════════════════════════
+    //   STATE
+    // ════════════════════════════════════════════════════════
+    const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+    let currentFilter  = 'all';
+    let searchQuery    = '';
+    let filterCounts   = { all:0, 'this-month':0, 'this-year':0, pending:0 };
+
+    const TYPE_ICON = {
+        lab:'🧪', scan:'🔬', prescription:'💊', imaging:'🩻', other:'📄'
+    };
+
+    // ════════════════════════════════════════════════════════
+    //   BOOTSTRAP
+    // ════════════════════════════════════════════════════════
+    const dateEl = document.getElementById('dateDisplay');
+    if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB',
+        { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    if (user) {
+        const sn = document.getElementById('sidebarName');
+        const sa = document.getElementById('sidebarAvatar');
+        if (sn) sn.textContent = user.name || 'Patient';
+        if (sa) sa.textContent = (user.name || 'P').charAt(0).toUpperCase();
+    }
+
+    // ════════════════════════════════════════════════════════
+    //   HELPERS
+    // ════════════════════════════════════════════════════════
+    function formatSize(bytes) {
+        if (!bytes || bytes <= 0) return '';
+        if (bytes < 1024)       return bytes + ' B';
+        if (bytes < 1048576)    return (bytes/1024).toFixed(1) + ' KB';
+        return (bytes/1048576).toFixed(1) + ' MB';
+    }
+    function escHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+    }
+    function showEl(id)  { const e=document.getElementById(id); if(e) e.style.display=''; }
+    function hideEl(id)  { const e=document.getElementById(id); if(e) e.style.display='none'; }
+    function blockEl(id) { const e=document.getElementById(id); if(e) e.style.display='block'; }
+
+    // ════════════════════════════════════════════════════════
+    //   LOAD REPORTS FROM DB (filter hits server)
+    // ════════════════════════════════════════════════════════
+    async function loadReports(filter) {
+        if (!user) { blockEl('emptyState'); hideEl('loadingState'); return; }
+
+        currentFilter = filter || 'all';
+
+        // Show spinner, hide list/empty
+        blockEl('loadingState');
+        hideEl('reportsList');
+        hideEl('emptyState');
+
+        const params = new URLSearchParams({ filter: currentFilter, limit: 200 });
+        if (user.id)    params.set('patient_id', user.id);
+        if (user.email) params.set('patient_email', user.email);
+
+        try {
+            const res  = await fetch(API.getPHPPath('components/report_handler.php') + '?' + params);
+            const json = await res.json();
+
+            hideEl('loadingState');
+
+            if (json.status === 'success') {
+                renderReports(json.data, json.total);
+            } else {
+                blockEl('emptyState');
+                document.getElementById('emptyMsg').textContent = json.message || 'Could not load reports.';
             }
-        })();
+        } catch(e) {
+            hideEl('loadingState');
+            blockEl('emptyState');
+            document.getElementById('emptyMsg').textContent = 'Network error. Please try again.';
+        }
+    }
 
-        const mockReports = [
-            {
-                id: 1,
-                name: 'Blood Test Results',
-                date: '15 Feb 2026',
-                hospital: 'City Hospital',
-                status: 'view',
-                category: 'lab'
-            },
-            {
-                id: 2,
-                name: 'Ultrasound Scan',
-                date: '02 Feb 2026',
-                hospital: 'Nawaloka',
-                status: 'view',
-                category: 'scan'
-            },
-            {
-                id: 3,
-                name: 'Hormone Panel',
-                date: '20 Jan 2026',
-                hospital: 'Lanka Hospital',
-                status: 'pending',
-                category: 'lab'
-            },
-            {
-                id: 4,
-                name: 'TSH Test Report',
-                date: '15 Jan 2026',
-                hospital: 'City Hospital',
-                status: 'view',
-                category: 'lab'
-            },
-            {
-                id: 5,
-                name: 'Pelvic Ultrasound',
-                date: '08 Jan 2026',
-                hospital: 'Nawaloka',
-                status: 'view',
-                category: 'scan'
-            }
-        ];
+    // ════════════════════════════════════════════════════════
+    //   LOAD ALL COUNTS (for filter badges + stat cards)
+    // ════════════════════════════════════════════════════════
+    async function loadCounts() {
+        if (!user) return;
+        const filters = ['all', 'this-month', 'this-year', 'pending'];
+        const base = API.getPHPPath('components/report_handler.php');
 
-        let currentFilter = 'all';
+        const makeParams = (f) => {
+            const p = new URLSearchParams({ filter: f, limit: 0 });
+            if (user.id)    p.set('patient_id', user.id);
+            if (user.email) p.set('patient_email', user.email);
+            return p;
+        };
 
-        function loadReports() {
-            displayReports(mockReports);
+        try {
+            const results = await Promise.all(
+                filters.map(f => fetch(base + '?' + makeParams(f)).then(r => r.json()))
+            );
+            filters.forEach((f, i) => {
+                const count = results[i].status === 'success' ? results[i].data.length : 0;
+                filterCounts[f] = count;
+            });
+            updateCountBadges();
+        } catch(e) { /* silent */ }
+    }
+
+    function updateCountBadges() {
+        const idMap = { 'all':'cnt_all', 'this-month':'cnt_month', 'this-year':'cnt_year', 'pending':'cnt_pending' };
+        Object.entries(idMap).forEach(([f, id]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = filterCounts[f] || 0;
+        });
+        // Stats cards
+        setText('st_total',   filterCounts['all']);
+        setText('st_month',   filterCounts['this-month']);
+        setText('st_year',    filterCounts['this-year']);
+        setText('st_pending', filterCounts['pending']);
+        // Sidebar badge
+        setText('sidebarBadge', filterCounts['all']);
+    }
+
+    function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+    }
+
+    // ════════════════════════════════════════════════════════
+    //   RENDER REPORTS LIST
+    // ════════════════════════════════════════════════════════
+    function renderReports(rows, total) {
+        const list  = document.getElementById('reportsList');
+        const empty = document.getElementById('emptyState');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        // Apply client-side search on top of server-filtered results
+        let filtered = rows;
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            filtered = rows.filter(r =>
+                (r.report_name   || '').toLowerCase().includes(q) ||
+                (r.hospital_name || '').toLowerCase().includes(q)
+            );
         }
 
-        function displayReports(reports) {
-            const reportsList = document.getElementById('reportsList');
-            const emptyState = document.getElementById('emptyState');
+        if (!filtered || filtered.length === 0) {
+            list.style.display = 'none';
+            empty.style.display = 'block';
+            const messages = {
+                'all'       : 'No reports uploaded yet. Click "Upload Report" to add your first one.',
+                'this-month': 'No reports uploaded this month.',
+                'this-year' : 'No reports uploaded this year.',
+                'pending'   : 'No pending reports — all reports have been processed.'
+            };
+            emptyMsg.textContent = searchQuery
+                ? `No reports match "${searchQuery}".`
+                : (messages[currentFilter] || 'No reports found.');
+            return;
+        }
 
-            if (reports.length === 0) {
-                reportsList.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
+        empty.style.display = 'none';
+        list.style.display  = 'grid';
 
-            emptyState.style.display = 'none';
-            reportsList.innerHTML = reports.map(report => `
-                <div class="report-card">
-                    <div class="report-info">
-                        <div class="report-title">${report.name}</div>
-                        <div class="report-meta">
-                            <div class="report-meta-item">📅 ${report.date}</div>
-                            <div class="report-meta-item">🏥 ${report.hospital}</div>
-                        </div>
+        list.innerHTML = filtered.map(r => {
+            const icon = TYPE_ICON[r.report_type] || '📄';
+            const dateStr = r.report_date
+                ? new Date(r.report_date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+                : 'Date not set';
+            const uploadedStr = new Date(r.uploaded_at).toLocaleDateString('en-GB',
+                { day:'2-digit', month:'short', year:'numeric' });
+            const sizeStr = formatSize(parseInt(r.file_size));
+            const pillClass = r.status === 'pending'  ? 'pill-pending' :
+                              r.status === 'reviewed' ? 'pill-reviewed' : 'pill-uploaded';
+            const pillText  = r.status === 'pending'  ? '⏳ Pending'   :
+                              r.status === 'reviewed' ? '✓ Reviewed'  : '✓ Uploaded';
+
+            const viewBtn = r.file_path
+                ? `<button class="btn-view" onclick="viewReport('${escHtml(r.file_path)}')">👁 View</button>`
+                : '';
+
+            return `
+            <div class="report-card" id="rc-${r.id}">
+                <div class="report-type-icon rtype-${escHtml(r.report_type)}">${icon}</div>
+                <div>
+                    <div class="report-name">${escHtml(r.report_name)}</div>
+                    <div class="report-meta">
+                        ${r.hospital_name ? `<span>🏥 ${escHtml(r.hospital_name)}</span>` : ''}
+                        <span>📅 ${dateStr}</span>
+                        <span style="color:var(--text-light)">Uploaded: ${uploadedStr}</span>
+                        ${sizeStr ? `<span>💾 ${sizeStr}</span>` : ''}
                     </div>
-                    <div class="report-actions">
-                        <span class="report-badge ${report.status === 'view' ? 'badge-view' : 'badge-pending'}">
-                            ${report.status === 'view' ? '✓ View' : '⟳ Pending'}
-                        </span>
+                    ${r.notes ? `<div class="report-notes">📝 ${escHtml(r.notes)}</div>` : ''}
+                </div>
+                <div class="report-actions">
+                    <span class="status-pill ${pillClass}">${pillText}</span>
+                    <div class="report-btns">
+                        ${viewBtn}
+                        <button class="btn-del" onclick="deleteReport(${r.id}, '${escHtml(r.report_name)}')">🗑 Remove</button>
                     </div>
                 </div>
-            `).join('');
-        }
+            </div>`;
+        }).join('');
+    }
 
-        function setupFilters() {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.dataset.filter;
-                    filterReports();
-                });
+    // ════════════════════════════════════════════════════════
+    //   VIEW REPORT FILE
+    // ════════════════════════════════════════════════════════
+    function viewReport(filePath) {
+        if (!filePath) return;
+        const path = window.location.pathname;
+        const root = path.substring(0, path.indexOf('/pcos-hub/') + 10);
+        window.open(root + 'src/' + filePath, '_blank');
+    }
+
+    // ════════════════════════════════════════════════════════
+    //   DELETE REPORT
+    // ════════════════════════════════════════════════════════
+    async function deleteReport(id, name) {
+        if (!confirm(`Remove report "${name}"?\n\nThis cannot be undone.`)) return;
+        if (!user) { Toast.error('Not logged in.'); return; }
+
+        // Optimistic remove from UI
+        const card = document.getElementById(`rc-${id}`);
+        if (card) { card.style.opacity='0.4'; card.style.pointerEvents='none'; }
+
+        try {
+            const res  = await fetch(API.getPHPPath('components/report_handler.php'), {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    report_id:     id,
+                    patient_id:    user.id    || null,
+                    patient_email: user.email || null
+                })
             });
-        }
-
-        function filterReports() {
-            let filtered = mockReports;
-
-            if (currentFilter === 'pending') {
-                filtered = mockReports.filter(r => r.status === 'pending');
-            } else if (currentFilter === 'this-month') {
-                const now = new Date();
-                const feb2026 = new Date(2026, 1, 1);
-                filtered = mockReports.filter(r => {
-                    const reportDate = new Date(r.date);
-                    return reportDate.getMonth() === now.getMonth() && reportDate.getFullYear() === now.getFullYear();
-                });
-            } else if (currentFilter === 'this-year') {
-                const now = new Date();
-                filtered = mockReports.filter(r => {
-                    const reportDate = new Date(r.date);
-                    return reportDate.getFullYear() === now.getFullYear();
-                });
+            const json = await res.json();
+            if (json.status === 'success') {
+                Toast.success('Report removed successfully.');
+                // Reload current filter from DB + refresh counts
+                await Promise.all([loadReports(currentFilter), loadCounts()]);
+            } else {
+                Toast.error(json.message || 'Failed to remove report.');
+                if (card) { card.style.opacity=''; card.style.pointerEvents=''; }
             }
+        } catch(e) {
+            Toast.error('Network error. Please try again.');
+            if (card) { card.style.opacity=''; card.style.pointerEvents=''; }
+        }
+    }
 
-            displayReports(filtered);
+    // ════════════════════════════════════════════════════════
+    //   FILTER BUTTONS
+    // ════════════════════════════════════════════════════════
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            hideEl('clearSearch');
+            loadReports(btn.dataset.filter);   // ← hits the database
+        });
+    });
+
+    // ════════════════════════════════════════════════════════
+    //   SEARCH (client-side on current filter results)
+    // ════════════════════════════════════════════════════════
+    document.getElementById('searchInput').addEventListener('input', function() {
+        searchQuery = this.value.trim();
+        const clearBtn = document.getElementById('clearSearch');
+        if (clearBtn) clearBtn.style.display = searchQuery ? '' : 'none';
+        loadReports(currentFilter);
+    });
+    function clearSearch() {
+        searchQuery = '';
+        document.getElementById('searchInput').value = '';
+        hideEl('clearSearch');
+        loadReports(currentFilter);
+    }
+
+    // ════════════════════════════════════════════════════════
+    //   UPLOAD MODAL
+    // ════════════════════════════════════════════════════════
+    function openUploadModal() {
+        document.getElementById('uploadModal').classList.add('open');
+        document.getElementById('inp_date').value = new Date().toISOString().split('T')[0];
+    }
+    function closeUploadModal() {
+        document.getElementById('uploadModal').classList.remove('open');
+        document.getElementById('uploadForm').reset();
+        clearFile();
+    }
+
+    document.getElementById('openUploadBtn').addEventListener('click', openUploadModal);
+    document.getElementById('modalClose').addEventListener('click', closeUploadModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeUploadModal);
+    document.getElementById('uploadModal').addEventListener('click', e => {
+        if (e.target === document.getElementById('uploadModal')) closeUploadModal();
+    });
+
+    // ── File picker ──────────────────────────────────────────
+    const inpFile = document.getElementById('inp_file');
+    inpFile.addEventListener('change', () => {
+        if (inpFile.files[0]) showFilePreview(inpFile.files[0]);
+    });
+
+    // Drag-over on file drop area inside modal
+    const fda = document.getElementById('fileDropArea');
+    fda.addEventListener('dragover',  e => { e.preventDefault(); fda.style.borderColor='var(--purple-primary)'; });
+    fda.addEventListener('dragleave', ()  => { fda.style.borderColor=''; });
+    fda.addEventListener('drop', e => {
+        e.preventDefault(); fda.style.borderColor='';
+        if (e.dataTransfer.files[0]) {
+            const dt = new DataTransfer();
+            dt.items.add(e.dataTransfer.files[0]);
+            inpFile.files = dt.files;
+            showFilePreview(e.dataTransfer.files[0]);
+        }
+    });
+
+    function showFilePreview(file) {
+        document.getElementById('fi_icon').textContent = file.name.endsWith('.pdf') ? '📄' : '🖼';
+        document.getElementById('fi_name').textContent = file.name;
+        document.getElementById('fi_size').textContent = formatSize(file.size);
+        document.getElementById('fileInfo').classList.add('show');
+        document.getElementById('fileDropArea').classList.add('has-file');
+        // Auto-fill report name if blank
+        const nm = document.getElementById('inp_name');
+        if (!nm.value) nm.value = file.name.replace(/\.[^/.]+$/, '').replace(/[_\-]/g, ' ');
+    }
+    function clearFile() {
+        inpFile.value = '';
+        document.getElementById('fileInfo').classList.remove('show');
+        document.getElementById('fileDropArea').classList.remove('has-file');
+    }
+
+    // ── Form submit ──────────────────────────────────────────
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        if (!user) { Toast.error('You must be logged in to upload reports.'); return; }
+
+        const repName = document.getElementById('inp_name').value.trim();
+        const repType = document.getElementById('inp_type').value;
+        const repDate = document.getElementById('inp_date').value;
+        if (!repName || !repType || !repDate) {
+            Toast.error('Please fill in all required fields (name, type, date).'); return;
         }
 
-        function setupFileUpload() {
-            const fileInput = document.getElementById('fileInput');
-            const uploadSection = document.querySelector('.upload-section');
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.textContent = '⏳ Uploading…';
 
-            // File input change
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    handleFileUpload(file);
-                }
+        const fd = new FormData();
+        if (user.id)    fd.append('patient_id',    user.id);
+        if (user.email) fd.append('patient_email', user.email);
+        fd.append('report_name',   repName);
+        fd.append('report_type',   repType);
+        fd.append('hospital_name', document.getElementById('inp_hospital').value.trim());
+        fd.append('report_date',   repDate);
+        fd.append('notes',         document.getElementById('inp_notes').value.trim());
+        if (inpFile.files[0]) fd.append('report_file', inpFile.files[0]);
+
+        try {
+            const res  = await fetch(API.getPHPPath('components/report_handler.php'), {
+                method: 'POST', body: fd
             });
-
-            // Drag and drop
-            uploadSection.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadSection.style.background = 'rgba(147, 112, 219, 0.15)';
-            });
-
-            uploadSection.addEventListener('dragleave', () => {
-                uploadSection.style.background = 'rgba(147, 112, 219, 0.05)';
-            });
-
-            uploadSection.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadSection.style.background = 'rgba(147, 112, 219, 0.05)';
-                const file = e.dataTransfer.files[0];
-                if (file) {
-                    handleFileUpload(file);
-                }
-            });
+            const json = await res.json();
+            if (json.status === 'success') {
+                Toast.success('✓ Report saved to database!');
+                closeUploadModal();
+                // Switch to "All" filter and reload
+                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                document.getElementById('tab_all').classList.add('active');
+                await Promise.all([loadReports('all'), loadCounts()]);
+            } else {
+                Toast.error(json.message || 'Upload failed. Please try again.');
+            }
+        } catch(err) {
+            Toast.error('Network error. Please try again.');
+        } finally {
+            btn.disabled = false; btn.textContent = '✓ Save Report';
         }
+    });
 
-        function handleFileUpload(file) {
-            // Validate file
-            const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
-            const maxSize = 10 * 1024 * 1024; // 10MB
+    // ════════════════════════════════════════════════════════
+    //   DROP ZONE (below topbar)
+    // ════════════════════════════════════════════════════════
+    const dropZone = document.getElementById('dropZone');
+    document.getElementById('dropZoneBtn').addEventListener('click', () =>
+        document.getElementById('dropFileInput').click());
+    document.getElementById('dropFileInput').addEventListener('change', function() {
+        if (this.files[0]) { openUploadModal(); showFilePreview(this.files[0]); }
+    });
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault(); dropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files[0]) { openUploadModal(); showFilePreview(e.dataTransfer.files[0]); }
+    });
 
-            if (!validTypes.includes(file.type)) {
-                Toast.error('Invalid file type. Please upload PDF, JPG, or PNG');
-                return;
-            }
+    // ════════════════════════════════════════════════════════
+    //   SIDEBAR MOBILE TOGGLE
+    // ════════════════════════════════════════════════════════
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar   = document.getElementById('sidebar');
+    const overlay   = document.getElementById('sidebar-overlay');
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+    });
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('active'); overlay.style.display = 'none';
+    });
 
-            if (file.size > maxSize) {
-                Toast.error('File too large. Maximum size is 10MB');
-                return;
-            }
+    // ════════════════════════════════════════════════════════
+    //   INIT — load reports + counts on page load
+    // ════════════════════════════════════════════════════════
+    (async function init() {
+        await Promise.all([loadReports('all'), loadCounts()]);
+    })();
 
-            // In a real app, this would upload to a server
-            Toast.success(`✓ Report "${file.name}" uploaded successfully!`);
-
-            // Add to list
-            const newReport = {
-                id: mockReports.length + 1,
-                name: file.name.replace(/\.[^/.]+$/, ""),
-                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                hospital: 'Not specified',
-                status: 'view',
-                category: 'uploaded'
-            };
-            mockReports.unshift(newReport);
-            filterReports();
-        }
-
-        // Initialize reports page after utils.js loads
-        function initPage() {
-            // Hide loader
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                loader.style.display = 'none';
-                loader.remove();
-            }
-
-            // Set date display
-            const dateEl = document.getElementById('dateDisplay');
-            if (dateEl) {
-                const now = new Date();
-                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            }
-
-            // Set user name (utils should have loaded Auth)
-            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
-            if (user && document.getElementById('sidebarName')) {
-                document.getElementById('sidebarName').textContent = user.name || 'User';
-            }
-
-            // Load reports
-            loadReports();
-
-            // Setup filter buttons
-            setupFilters();
-
-            // Setup file upload
-            setupFileUpload();
-
-            // Search functionality
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase();
-                    const filtered = mockReports.filter(r =>
-                        r.name.toLowerCase().includes(query) ||
-                        r.hospital.toLowerCase().includes(query)
-                    );
-                    displayReports(filtered);
-                });
-            }
-
-            // Setup sidebar toggle for mobile
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-
-            if (sidebarToggle && sidebar && overlay) {
-                sidebarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('active');
-                    overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-                });
-
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('active');
-                    overlay.style.display = 'none';
-                });
-            }
-        }
-
-        // Run initialization
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPage);
-        } else {
-            // DOM already loaded (script loaded after DOMContentLoaded fired)
-            initPage();
-        }
     </script>
 </body>
-
 </html>

@@ -131,7 +131,7 @@
         <p>Here's a summary of your PCOS management this week. Keep up the great work!</p>
         <div class="welcome-stats">
           <div class="welcome-stat">
-            <span class="welcome-stat-num">12 Jun</span>
+            <span class="welcome-stat-num" id="wStatLastCycle">—</span>
             <span class="welcome-stat-lbl">Last Cycle</span>
           </div>
           <div class="welcome-stat">
@@ -139,14 +139,14 @@
             <span class="welcome-stat-lbl">Reports</span>
           </div>
           <div class="welcome-stat">
-            <span class="welcome-stat-num">20 Feb</span>
+            <span class="welcome-stat-num" id="wStatNextAppt">—</span>
             <span class="welcome-stat-lbl">Next Appointment</span>
           </div>
         </div>
         <div class="welcome-actions">
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='track-symptoms.html'">Log
-            Symptoms</button>
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='reports.html'">Upload Report</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='track-symptoms.html'">Log Symptoms</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='menstrual-cycle.html'">Log Cycle</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='lifestyle-log.html'">🥗 Lifestyle Log</button>
         </div>
       </div>
 
@@ -155,9 +155,9 @@
         <div class="dash-stat-card reveal">
           <div class="stat-card-icon purple">📅</div>
           <div>
-            <div class="stat-card-value">28</div>
+            <div class="stat-card-value" id="statCycleLength">—</div>
             <div class="stat-card-label">Cycle Length (days)</div>
-            <div class="stat-card-change up">↑ Regular</div>
+            <div class="stat-card-change up" id="statCycleStatus">Loading...</div>
           </div>
         </div>
         <div class="dash-stat-card reveal reveal-delay-1">
@@ -171,17 +171,17 @@
         <div class="dash-stat-card reveal reveal-delay-2">
           <div class="stat-card-icon green">📁</div>
           <div>
-            <div class="stat-card-value">31</div>
+            <div class="stat-card-value" id="statReportsUploaded">—</div>
             <div class="stat-card-label">Reports Uploaded</div>
-            <div class="stat-card-change up">↑ 3 new</div>
+            <div class="stat-card-change up" id="statReportsChange">Loading...</div>
           </div>
         </div>
-        <div class="dash-stat-card reveal reveal-delay-3">
+        <div class="dash-stat-card reveal reveal-delay-3" style="cursor:pointer;" onclick="window.location.href='appointments.html'">
           <div class="stat-card-icon orange">📅</div>
           <div>
-            <div class="stat-card-value">3</div>
+            <div class="stat-card-value" id="statApptDays">—</div>
             <div class="stat-card-label">Days to Appointment</div>
-            <div class="stat-card-change up">→ 20 Feb</div>
+            <div class="stat-card-change" id="statApptDate">Loading...</div>
           </div>
         </div>
       </div>
@@ -208,7 +208,7 @@
             <div class="panel-action" style="cursor:pointer">View Full Calendar →</div>
           </div>
           <div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-weight:700;font-size:0.95rem">February 2026</span>
+            <span style="font-weight:700;font-size:0.95rem" id="dashCycleMonth">Loading...</span>
             <div style="display:flex;gap:6px">
               <button onclick="event.stopPropagation()"
                 style="background:var(--bg-light);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer">‹</button>
@@ -226,6 +226,29 @@
             <span style="font-size:.68rem;font-weight:700;color:var(--text-light)">S</span>
           </div>
           <div class="cycle-calendar" id="cycleCalendar"></div>
+
+          <!-- Cycle summary strip (populated from DB) -->
+          <div id="dashCycleSummary" style="display:none;margin-top:12px;padding:10px 12px;
+               background:rgba(229,127,175,0.08);border-radius:8px;border:1px solid rgba(229,127,175,0.2);
+               grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+            <div>
+              <div style="font-size:0.72rem;color:var(--text-light);margin-bottom:2px">Cycle</div>
+              <div style="font-weight:700;font-size:0.9rem" id="dashCycleLen">—</div>
+            </div>
+            <div>
+              <div style="font-size:0.72rem;color:var(--text-light);margin-bottom:2px">Flow</div>
+              <div style="font-weight:700;font-size:0.9rem;text-transform:capitalize" id="dashCycleFlow">—</div>
+            </div>
+            <div>
+              <div style="font-size:0.72rem;color:var(--text-light);margin-bottom:2px">Next Period</div>
+              <div style="font-weight:700;font-size:0.9rem" id="dashCycleNext">—</div>
+            </div>
+          </div>
+
+          <div id="dashCycleEmpty" style="text-align:center;padding:10px 0;font-size:0.85rem;color:var(--text-light);display:none">
+            No cycle logged yet — <a href="menstrual-cycle.html" style="color:var(--pink-accent)" onclick="event.stopPropagation()">start tracking →</a>
+          </div>
+
           <div class="cycle-legend">
             <div class="cycle-legend-item">
               <div class="legend-dot" style="background:rgba(229,127,175,.5)"></div>Period
@@ -245,50 +268,85 @@
 
       <!-- Second row -->
       <div class="dash-grid-3">
-        <!-- Recent Reports -->
+        <!-- Recent Reports (Live DB) -->
         <div class="dash-panel reveal" data-page="reports" style="cursor:pointer; transition: all 0.2s;">
           <div class="panel-header">
             <div class="panel-title"><i>📁</i> Recent Reports</div>
-            <div class="panel-action" style="cursor:pointer">View All →</div>
+            <a class="panel-action" href="reports.html" onclick="event.stopPropagation()" style="cursor:pointer">View All →</a>
           </div>
+
+          <!-- Live reports table -->
           <div style="overflow-x:auto">
-            <table class="dash-table">
+            <table class="dash-table" id="dashReportsTable" style="display:none">
               <thead>
                 <tr>
                   <th>Report Name</th>
                   <th>Date</th>
                   <th>Hospital</th>
-                  <th>Action</th>
+                  <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Blood Test Results</td>
-                  <td class="td-light">15 Feb 2026</td>
-                  <td>City Hospital</td>
-                  <td><span class="badge badge-green">✓ View</span></td>
-                </tr>
-                <tr>
-                  <td>Ultrasound Scan</td>
-                  <td class="td-light">02 Feb 2026</td>
-                  <td>Nawaloka</td>
-                  <td><span class="badge badge-green">✓ View</span></td>
-                </tr>
-                <tr>
-                  <td>Hormone Panel</td>
-                  <td class="td-light">20 Jan 2026</td>
-                  <td>Lanka Hospital</td>
-                  <td><span class="badge badge-orange">⟳ Pending</span></td>
-                </tr>
-              </tbody>
+              <tbody id="dashReportsTbody"></tbody>
             </table>
           </div>
 
-          <div class="upload-area" style="margin-top:16px">
-            <div class="upload-icon">📤</div>
-            <p class="upload-text"><span>Click to upload</span> or drag and drop</p>
-            <p class="upload-hint">PDF, JPG, PNG up to 10MB</p>
+          <div id="dashReportsEmpty" style="text-align:center;padding:20px 0;font-size:0.85rem;color:var(--text-light);display:none">
+            No reports yet —
+            <a href="reports.html" style="color:var(--purple-primary)" onclick="event.stopPropagation()">upload one →</a>
           </div>
+          <div id="dashReportsLoading" style="text-align:center;padding:20px 0;font-size:0.85rem;color:var(--text-light)">
+            Loading reports...
+          </div>
+
+          <a href="reports.html" class="btn btn-primary btn-sm"
+             style="margin-top:14px;width:100%;display:block;text-align:center;"
+             onclick="event.stopPropagation()">
+            📤 Upload New Report
+          </a>
+        </div>
+
+        <!-- ── Lifestyle Log Summary Panel ── -->
+        <div class="dash-panel reveal reveal-delay-1" style="cursor:pointer;transition:all 0.2s;" onclick="window.location.href='lifestyle-log.html'">
+          <div class="panel-header">
+            <div class="panel-title"><i>🥗</i> Lifestyle Log</div>
+            <a class="panel-action" href="lifestyle-log.html" onclick="event.stopPropagation()">Open Log →</a>
+          </div>
+
+          <!-- Today's lifestyle stats grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div style="background:rgba(147,112,219,0.07);border:1.5px solid rgba(147,112,219,0.15);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:800;color:var(--purple-primary);" id="dashLifeMeals">—</div>
+              <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">🍽️ Meals Today</div>
+            </div>
+            <div style="background:rgba(59,130,246,0.07);border:1.5px solid rgba(59,130,246,0.15);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:800;color:#2563eb;" id="dashLifeWater">—</div>
+              <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">💧 Water (ml)</div>
+            </div>
+            <div style="background:rgba(34,197,94,0.07);border:1.5px solid rgba(34,197,94,0.15);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:800;color:#16a34a;" id="dashLifeExercise">—</div>
+              <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">🏃 Exercises</div>
+            </div>
+            <div style="background:rgba(249,115,22,0.07);border:1.5px solid rgba(249,115,22,0.15);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:800;color:#ea580c;" id="dashLifeSleep">—</div>
+              <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">😴 Sleep (hrs)</div>
+            </div>
+          </div>
+
+          <!-- Water progress mini bar -->
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-light);margin-bottom:5px;">
+              <span>💧 Water Goal</span><span id="dashWaterPct">0%</span>
+            </div>
+            <div style="height:7px;background:rgba(147,112,219,0.12);border-radius:4px;overflow:hidden;">
+              <div id="dashWaterBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--purple-primary),#8b5cf6);border-radius:4px;transition:width 0.5s ease;"></div>
+            </div>
+          </div>
+
+          <a href="lifestyle-log.html" class="btn btn-primary btn-sm"
+             style="width:100%;display:block;text-align:center;"
+             onclick="event.stopPropagation()">
+            📝 Log Today's Activities
+          </a>
         </div>
       </div>
 
@@ -371,14 +429,14 @@
           <div class="activity-time">22 Feb 2026, 3:00 PM</div>
         </div>
       </div>
-      <div class="activity-item">
+      <div class="activity-item" id="activityCycle">
         <div class="activity-dot-wrap">
           <div class="activity-dot" style="background:var(--orange-accent)"></div>
           <div class="activity-line"></div>
         </div>
         <div>
-          <div class="activity-text">Menstrual cycle started — Day 1 logged</div>
-          <div class="activity-time">12 Feb 2026</div>
+          <div class="activity-text" id="activityCycleText">Loading cycle activity...</div>
+          <div class="activity-time" id="activityCycleTime"></div>
         </div>
       </div>
     </div>
@@ -439,34 +497,218 @@
       }).join('');
     }
 
+    // ── Mini-calendar builder (dashboard panel) ───────────────────────
+    function buildDashCalendar(cycle) {
+      const today = new Date();
+      const year  = today.getFullYear();
+      const month = today.getMonth();
+
+      const monthLabel = today.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+      const el = document.getElementById('dashCycleMonth');
+      if (el) el.textContent = monthLabel;
+
+      // Compute marked dates
+      let periodDates = new Set(), fertileDates = new Set(), ovulationDate = null;
+      if (cycle) {
+        const start    = new Date(cycle.period_start);
+        const end      = new Date(cycle.period_end);
+        const cycleLen = parseInt(cycle.cycle_length) || 28;
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1))
+          periodDates.add(d.toISOString().split('T')[0]);
+        const ovulDay = new Date(start);
+        ovulDay.setDate(ovulDay.getDate() + cycleLen - 14);
+        ovulationDate = ovulDay.toISOString().split('T')[0];
+        for (let i = -5; i <= 0; i++) {
+          const fd = new Date(ovulDay); fd.setDate(fd.getDate() + i);
+          fertileDates.add(fd.toISOString().split('T')[0]);
+        }
+      }
+
+      const cal = document.getElementById('cycleCalendar');
+      if (!cal) return;
+      cal.innerHTML = '';
+      cal.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center';
+
+      const firstDay  = new Date(year, month, 1).getDay();
+      const lastDate  = new Date(year, month + 1, 0).getDate();
+      const prevLast  = new Date(year, month, 0).getDate();
+
+      // Padding (prev month)
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const d = document.createElement('div');
+        d.style.cssText = 'font-size:.7rem;padding:3px 0;color:#ccc;border-radius:4px';
+        d.textContent = prevLast - i;
+        cal.appendChild(d);
+      }
+      // Current month
+      for (let day = 1; day <= lastDate; day++) {
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const d = document.createElement('div');
+        d.style.cssText = 'font-size:.7rem;padding:3px 0;border-radius:4px;font-weight:600';
+        d.textContent = day;
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          d.style.background = 'var(--purple-primary)'; d.style.color = 'white';
+        } else if (dateStr === ovulationDate) {
+          d.style.background = 'var(--pink-accent)'; d.style.color = 'white';
+        } else if (fertileDates.has(dateStr)) {
+          d.style.background = 'rgba(78,205,196,0.3)'; d.style.color = '#1a9e97';
+        } else if (periodDates.has(dateStr)) {
+          d.style.background = 'rgba(229,127,175,0.3)'; d.style.color = 'var(--pink-accent)';
+        }
+        cal.appendChild(d);
+      }
+      // Padding (next month)
+      const remaining = 42 - cal.children.length;
+      for (let i = 1; i <= remaining; i++) {
+        const d = document.createElement('div');
+        d.style.cssText = 'font-size:.7rem;padding:3px 0;color:#ccc;border-radius:4px';
+        d.textContent = i;
+        cal.appendChild(d);
+      }
+    }
+
+    // ── Apply latest cycle data to all dashboard elements ─────────────
+    function applyLatestCycle(cycle) {
+      buildDashCalendar(cycle);
+      if (!cycle) {
+        // Show empty state
+        const empty = document.getElementById('dashCycleEmpty');
+        if (empty) empty.style.display = 'block';
+        const statLen = document.getElementById('statCycleLength');
+        const statSt  = document.getElementById('statCycleStatus');
+        if (statLen) statLen.textContent = '—';
+        if (statSt)  { statSt.textContent = 'Log first cycle'; statSt.className = 'stat-card-change'; }
+        const cycleText = document.getElementById('activityCycleText');
+        const cycleTime = document.getElementById('activityCycleTime');
+        if (cycleText) cycleText.textContent = 'No cycle logged yet — click Menstrual Cycle to start.';
+        if (cycleTime) cycleTime.textContent = '';
+        return;
+      }
+
+      // Welcome card — Last Cycle
+      const wLast = document.getElementById('wStatLastCycle');
+      if (wLast) {
+        const d = new Date(cycle.period_start);
+        wLast.textContent = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+      }
+
+      // Stat card — Cycle Length
+      const statLen = document.getElementById('statCycleLength');
+      const statSt  = document.getElementById('statCycleStatus');
+      const cLen = parseInt(cycle.cycle_length);
+      if (statLen) statLen.textContent = cLen;
+      if (statSt) {
+        const isRegular = cLen >= 21 && cLen <= 35;
+        statSt.textContent = (isRegular ? '↑ Regular' : '⚠ Irregular') + ' cycle';
+        statSt.className = 'stat-card-change ' + (isRegular ? 'up' : '');
+      }
+
+      // Cycle summary strip
+      const summary = document.getElementById('dashCycleSummary');
+      if (summary) { summary.style.display = 'grid'; }
+      const cLenEl  = document.getElementById('dashCycleLen');
+      const cFlowEl = document.getElementById('dashCycleFlow');
+      const cNextEl = document.getElementById('dashCycleNext');
+      if (cLenEl)  cLenEl.textContent  = cycle.cycle_length + ' days';
+      if (cFlowEl) cFlowEl.textContent = cycle.flow_intensity;
+      if (cNextEl && cycle.next_predicted) {
+        const np = new Date(cycle.next_predicted);
+        cNextEl.textContent = np.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+      }
+
+      // Activity feed — latest cycle entry
+      const cycleText = document.getElementById('activityCycleText');
+      const cycleTime = document.getElementById('activityCycleTime');
+      if (cycleText) {
+        const d = new Date(cycle.period_start);
+        cycleText.textContent = `Menstrual cycle logged — ${cycle.cycle_length}-day cycle, ${cycle.flow_intensity} flow`;
+        if (cycleTime) cycleTime.textContent = d.toLocaleDateString('en-GB',
+          { day:'2-digit', month:'short', year:'numeric' });
+      }
+    }
+
     // ── Main dashboard data loader ───────────────────────────────────
     document.addEventListener('DOMContentLoaded', async function() {
       const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+
+      // Always build calendar (shows today's date even without login)
+      buildDashCalendar(null);
+
       if (!user) return;
 
-      const params3  = new URLSearchParams({ limit: 3 });
-      const paramsAll = new URLSearchParams({ limit: 999 });
-      const params1  = new URLSearchParams({ limit: 1 });
-      if (user.id)    { params3.set('patient_id', user.id); paramsAll.set('patient_id', user.id); params1.set('patient_id', user.id); }
-      if (user.email) { params3.set('patient_email', user.email); paramsAll.set('patient_email', user.email); params1.set('patient_email', user.email); }
+      // Update name in welcome card
+      const welcomeName = document.getElementById('welcomeName');
+      if (welcomeName && user.name) welcomeName.textContent = user.name.split(' ')[0];
+      const sidebarName = document.getElementById('sidebarName');
+      if (sidebarName && user.name) sidebarName.textContent = user.name;
+      const sidebarAvatar = document.querySelector('.sidebar-avatar');
+      if (sidebarAvatar && user.name) sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
 
-      const base = API.getPHPPath('components/symptom_handler.php');
+      const params3   = new URLSearchParams({ limit: 3 });
+      const paramsAll = new URLSearchParams({ limit: 999 });
+      const params1   = new URLSearchParams({ limit: 1 });
+      const cycleP    = new URLSearchParams({ limit: 1 });
+      const reportP   = new URLSearchParams({ filter: 'all', limit: 3 });
+      const reportAll = new URLSearchParams({ filter: 'all', limit: 999 });
+      if (user.id) {
+        params3.set('patient_id', user.id);   paramsAll.set('patient_id', user.id);
+        params1.set('patient_id', user.id);   cycleP.set('patient_id', user.id);
+        reportP.set('patient_id', user.id);   reportAll.set('patient_id', user.id);
+      }
+      if (user.email) {
+        params3.set('patient_email', user.email);   paramsAll.set('patient_email', user.email);
+        params1.set('patient_email', user.email);   cycleP.set('patient_email', user.email);
+        reportP.set('patient_email', user.email);   reportAll.set('patient_email', user.email);
+      }
+
+      const symBase       = API.getPHPPath('components/symptom_handler.php');
+      const cycleBase     = API.getPHPPath('components/cycle_handler.php');
+      const reportBase    = API.getPHPPath('components/report_handler.php');
+      const lifestyleBase = API.getPHPPath('components/lifestyle_handler.php');
+      const apptBase      = API.getPHPPath('components/appointment_handler.php');
+
+      // Build lifestyle params
+      const lifeMealsP    = new URLSearchParams({ type: 'meals',     limit: 50, log_date: new Date().toISOString().split('T')[0] });
+      const lifeExP       = new URLSearchParams({ type: 'exercises', limit: 50, log_date: new Date().toISOString().split('T')[0] });
+      const lifeWaterP    = new URLSearchParams({ type: 'water',     limit: 50, log_date: new Date().toISOString().split('T')[0] });
+      const lifeSleepP    = new URLSearchParams({ type: 'sleep',     limit: 1  });
+      const apptP         = new URLSearchParams({ filter: 'upcoming', limit: 10 });
+      if (user.id) {
+        [lifeMealsP, lifeExP, lifeWaterP, lifeSleepP, apptP].forEach(p => p.set('patient_id', user.id));
+      }
+      if (user.email) {
+        [lifeMealsP, lifeExP, lifeWaterP, lifeSleepP, apptP].forEach(p => p.set('patient_email', user.email));
+      }
 
       try {
-        // Fetch last 3 for the panel + all for the count (parallel)
-        const [res3, resAll, res1] = await Promise.all([
-          fetch(base + '?' + params3.toString()),
-          fetch(base + '?' + paramsAll.toString()),
-          fetch(base + '?' + params1.toString())
+        // Fetch all data sources in parallel
+        const [res3, resAll, res1, resCycle, resRep3, resRepAll,
+               resLMeals, resLEx, resLWater, resLSleep, resAppt] = await Promise.all([
+          fetch(symBase   + '?' + params3.toString()),
+          fetch(symBase   + '?' + paramsAll.toString()),
+          fetch(symBase   + '?' + params1.toString()),
+          fetch(cycleBase + '?' + cycleP.toString()),
+          fetch(reportBase + '?' + reportP.toString()),
+          fetch(reportBase + '?' + reportAll.toString()),
+          fetch(lifestyleBase + '?' + lifeMealsP.toString()),
+          fetch(lifestyleBase + '?' + lifeExP.toString()),
+          fetch(lifestyleBase + '?' + lifeWaterP.toString()),
+          fetch(lifestyleBase + '?' + lifeSleepP.toString()),
+          fetch(apptBase + '?' + apptP.toString()),
         ]);
-        const [json3, jsonAll, json1] = await Promise.all([res3.json(), resAll.json(), res1.json()]);
+        const [json3, jsonAll, json1, jsonCycle, jsonRep3, jsonRepAll,
+               jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt] = await Promise.all([
+          res3.json(), resAll.json(), res1.json(), resCycle.json(),
+          resRep3.json(), resRepAll.json(),
+          resLMeals.json(), resLEx.json(), resLWater.json(), resLSleep.json(),
+          resAppt.json()
+        ]);
 
-        // Recent Symptoms panel
+        // ── Symptoms ─────────────────────────────────────────────────
         renderRecentSymptoms(json3.status === 'success' ? json3.data : []);
 
-        // Stat card — total count
         const total = (jsonAll.status === 'success') ? jsonAll.data.length : 0;
-        const statEl = document.getElementById('statSymptomsLogged');
+        const statEl   = document.getElementById('statSymptomsLogged');
         const changeEl = document.getElementById('statSymptomsChange');
         if (statEl) statEl.textContent = total || '0';
         if (changeEl) {
@@ -474,11 +716,10 @@
           changeEl.className = 'stat-card-change ' + (total > 0 ? 'up' : '');
         }
 
-        // Activity feed entry (last 1)
         const textEl = document.getElementById('activitySymptomsText');
         const timeEl = document.getElementById('activitySymptomsTime');
         if (textEl && json1.status === 'success' && json1.data.length > 0) {
-          const row = json1.data[0];
+          const row   = json1.data[0];
           const names = row.symptoms.map(s => s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
           textEl.textContent = 'Symptoms logged: ' + names.join(', ');
           const d = new Date(row.log_date + 'T' + row.log_time);
@@ -489,10 +730,175 @@
           textEl.textContent = 'No symptoms logged yet — click Track Symptoms to start.';
           if (timeEl) timeEl.textContent = '';
         }
+
+        // ── Cycle ─────────────────────────────────────────────────────
+        const latestCycle = (jsonCycle.status === 'success' && jsonCycle.data.length > 0)
+          ? jsonCycle.data[0] : null;
+        applyLatestCycle(latestCycle);
+
+        // ── Reports ───────────────────────────────────────────────────
+        applyDashboardReports(jsonRep3, jsonRepAll);
+
+        // ── Lifestyle Summary ─────────────────────────────────────────
+        applyLifestyleSummary(jsonLMeals, jsonLEx, jsonLWater, jsonLSleep);
+
+        // ── Appointments ──────────────────────────────────────────────
+        applyDashboardAppointments(jsonAppt);
+
       } catch(e) {
+        console.error('Dashboard load error:', e);
         renderRecentSymptoms([]);
+        buildDashCalendar(null);
+        showReportsEmpty();
       }
     });
+
+    // ── Render reports in dashboard panel ────────────────────────────
+    const TYPE_ICON = { lab:'🧪', scan:'🔬', prescription:'💊', imaging:'🩻', other:'📄' };
+
+    function applyDashboardReports(jsonRep3, jsonRepAll) {
+      const loading  = document.getElementById('dashReportsLoading');
+      const empty    = document.getElementById('dashReportsEmpty');
+      const table    = document.getElementById('dashReportsTable');
+      const tbody    = document.getElementById('dashReportsTbody');
+      const statEl   = document.getElementById('statReportsUploaded');
+      const changeEl = document.getElementById('statReportsChange');
+
+      if (loading) loading.style.display = 'none';
+
+      // Total count stat card
+      const totalReports = (jsonRepAll.status === 'success') ? jsonRepAll.data.length : 0;
+      if (statEl) statEl.textContent = totalReports || '0';
+      if (changeEl) {
+        changeEl.textContent = totalReports > 0 ? `↑ ${totalReports} total` : 'Upload first report';
+        changeEl.className = 'stat-card-change ' + (totalReports > 0 ? 'up' : '');
+      }
+
+      // Recent 3 in dashboard table
+      const rows = (jsonRep3.status === 'success') ? jsonRep3.data : [];
+      if (!rows || rows.length === 0) {
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+
+      if (empty)  empty.style.display  = 'none';
+      if (table)  table.style.display  = 'table';
+      if (tbody) {
+        tbody.innerHTML = rows.map(r => {
+          const icon    = TYPE_ICON[r.report_type] || '📄';
+          const dateStr = r.report_date
+            ? new Date(r.report_date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+            : '—';
+          const badgeClass = r.status === 'pending'  ? 'badge-orange' : 'badge-green';
+          const badgeText  = r.status === 'pending'  ? '⟳ Pending'   :
+                             r.status === 'reviewed' ? '✓ Reviewed'  : '✓ Uploaded';
+          const hosp = r.hospital_name || '—';
+          return `<tr>
+            <td>${icon} ${escHtmlDash(r.report_name)}</td>
+            <td class="td-light">${dateStr}</td>
+            <td>${escHtmlDash(hosp)}</td>
+            <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    function showReportsEmpty() {
+      const loading = document.getElementById('dashReportsLoading');
+      const empty   = document.getElementById('dashReportsEmpty');
+      if (loading) loading.style.display = 'none';
+      if (empty)   empty.style.display   = 'block';
+    }
+
+    // ── Lifestyle Summary Panel ────────────────────────────────────────
+    function applyLifestyleSummary(jsonLMeals, jsonLEx, jsonLWater, jsonLSleep) {
+      const TODAY = new Date().toISOString().split('T')[0];
+
+      // Meals today count
+      const mealsCount = (jsonLMeals.status === 'success') ? jsonLMeals.data.length : 0;
+      const el_meals = document.getElementById('dashLifeMeals');
+      if (el_meals) el_meals.textContent = mealsCount || '0';
+
+      // Exercises today count
+      const exCount = (jsonLEx.status === 'success') ? jsonLEx.data.length : 0;
+      const el_ex = document.getElementById('dashLifeExercise');
+      if (el_ex) el_ex.textContent = exCount || '0';
+
+      // Water today total (ml)
+      let waterTotal = 0;
+      if (jsonLWater.status === 'success') {
+        waterTotal = jsonLWater.data
+          .filter(r => r.log_date === TODAY)
+          .reduce((s, r) => s + parseInt(r.amount_ml || 0), 0);
+      }
+      const el_water = document.getElementById('dashLifeWater');
+      if (el_water) el_water.textContent = waterTotal || '0';
+
+      // Water progress bar
+      const pct = Math.min((waterTotal / 2500) * 100, 100);
+      const bar  = document.getElementById('dashWaterBar');
+      const pctEl = document.getElementById('dashWaterPct');
+      if (bar)   bar.style.width     = pct + '%';
+      if (pctEl) pctEl.textContent   = Math.round(pct) + '%';
+
+      // Last sleep hours
+      let sleepHrs = '—';
+      if (jsonLSleep.status === 'success' && jsonLSleep.data.length > 0) {
+        sleepHrs = jsonLSleep.data[0].duration_hours
+          ? parseFloat(jsonLSleep.data[0].duration_hours).toFixed(1) + 'h'
+          : '—';
+      }
+      const el_sleep = document.getElementById('dashLifeSleep');
+      if (el_sleep) el_sleep.textContent = sleepHrs;
+    }
+
+    function applyDashboardAppointments(json) {
+      if (json.status !== 'success' || !json.data) return;
+      const appts    = json.data.filter(a => a.status === 'upcoming' || a.status === 'rescheduled');
+      const notifDot = document.querySelector('.notif-dot');
+      
+      if (appts.length > 0) {
+        if (notifDot) notifDot.style.display = 'block';
+        
+        // Find closest
+        const closest = appts.reduce((prev, curr) => {
+          return (new Date(curr.appointment_date) < new Date(prev.appointment_date)) ? curr : prev;
+        });
+
+        const apptDate = new Date(closest.appointment_date);
+        const today    = new Date(); today.setHours(0,0,0,0);
+        const diffTime = apptDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const wNext     = document.getElementById('wStatNextAppt');
+        const statDays  = document.getElementById('statApptDays');
+        const statDate  = document.getElementById('statApptDate');
+        
+        const dateStr = apptDate.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+
+        if (wNext)    wNext.textContent    = dateStr;
+        if (statDays) statDays.textContent = diffDays < 0 ? '—' : diffDays;
+        if (statDate) {
+          statDate.textContent = '→ ' + dateStr;
+          statDate.className   = 'stat-card-change up';
+        }
+      } else {
+        if (notifDot) notifDot.style.display = 'none';
+        const statDays = document.getElementById('statApptDays');
+        const statDate = document.getElementById('statApptDate');
+        if (statDays) statDays.textContent = '—';
+        if (statDate) {
+          statDate.textContent = 'No upcoming visits';
+          statDate.className   = 'stat-card-change';
+        }
+      }
+    }
+
+    function escHtmlDash(str) {
+      const d = document.createElement('div');
+      d.textContent = str || '—';
+      return d.innerHTML;
+    }
   </script>
 
 </html>

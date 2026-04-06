@@ -5,18 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lifestyle Log — PCOS Care Hub</title>
+    <meta name="description" content="Track your diet, exercise, water intake and sleep to manage PCOS symptoms effectively.">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <style>
+        /* ── Tab system ── */
         .lifestyle-tabs {
             display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 8px;
+            margin-bottom: 28px;
             border-bottom: 2px solid var(--bg-light);
+            flex-wrap: wrap;
         }
 
         .tab-btn {
-            padding: 12px 20px;
+            padding: 12px 22px;
             border: none;
             background: transparent;
             cursor: pointer;
@@ -25,280 +28,319 @@
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
             transition: all 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .tab-btn:hover {
-            color: var(--text-dark);
-        }
+        .tab-btn:hover { color: var(--text-dark); }
 
         .tab-btn.active {
             color: var(--purple-primary);
             border-bottom-color: var(--purple-primary);
         }
 
-        .tab-content {
-            display: none;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        .meal-form,
-        .exercise-form {
+        /* ── Forms ── */
+        .log-form {
             background: rgba(147, 112, 219, 0.05);
-            padding: 24px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-        }
-
-        .form-section {
-            margin-bottom: 24px;
+            border: 1.5px solid rgba(147, 112, 219, 0.15);
+            padding: 28px;
+            border-radius: 14px;
+            margin-bottom: 32px;
         }
 
         .form-section-title {
             font-weight: 700;
             font-size: 1.1rem;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 18px; }
 
         .form-group label {
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
             color: var(--text-dark);
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: 10px 14px;
             border: 2px solid var(--bg-light);
-            border-radius: 6px;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+            color: var(--text-dark);
+            box-sizing: border-box;
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--purple-primary);
-            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.1);
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.12);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-row.three { grid-template-columns: repeat(3, 1fr); }
 
-        .form-row.three {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
+        /* ── Category chips ── */
         .meal-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-bottom: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 4px;
         }
 
         .category-tag {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px;
+            gap: 6px;
+            padding: 7px 14px;
             border: 2px solid var(--bg-light);
-            border-radius: 6px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s;
             background: white;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-light);
+            user-select: none;
         }
 
         .category-tag:hover {
             border-color: var(--purple-primary);
-            background: rgba(147, 112, 219, 0.05);
+            color: var(--purple-primary);
         }
 
-        .category-tag input[type="checkbox"] {
-            cursor: pointer;
-            width: 16px;
-            height: 16px;
-            accent-color: var(--purple-primary);
-        }
+        .category-tag input[type="checkbox"] { display: none; }
 
         .category-tag.selected {
             border-color: var(--purple-primary);
-            background: rgba(147, 112, 219, 0.1);
+            background: rgba(147, 112, 219, 0.12);
+            color: var(--purple-primary);
         }
 
+        /* ── Buttons ── */
         .submit-btn {
-            background: var(--purple-primary);
+            background: linear-gradient(135deg, var(--purple-primary), #8b5cf6);
             color: white;
             padding: 12px 32px;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1rem;
+            transition: all 0.25s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .submit-btn:hover {
-            background: #6e46b8;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(147, 112, 219, 0.3);
+            box-shadow: 0 6px 18px rgba(147, 112, 219, 0.35);
         }
 
-        .history-section {
-            margin-top: 40px;
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
+
+        /* ── Water quick buttons ── */
+        .water-btns {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .water-btn {
+            padding: 14px 8px;
+            border: 2px solid rgba(147, 112, 219, 0.3);
+            border-radius: 10px;
+            background: rgba(147, 112, 219, 0.06);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--purple-primary);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .water-btn:hover {
+            background: rgba(147, 112, 219, 0.15);
+            border-color: var(--purple-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(147, 112, 219, 0.2);
+        }
+
+        /* ── Water progress ── */
+        .water-progress-card {
+            background: linear-gradient(135deg, rgba(147,112,219,0.08), rgba(139,92,246,0.08));
+            border: 1.5px solid rgba(147,112,219,0.2);
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .water-total-display {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--purple-primary);
+            margin-bottom: 4px;
+        }
+
+        .water-goal-label { color: var(--text-light); font-size: 0.9rem; margin-bottom: 14px; }
+
+        .progress-bar-wrap {
+            height: 10px;
+            background: rgba(147,112,219,0.15);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple-primary), #8b5cf6);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ── History section ── */
+        .history-section { margin-top: 36px; }
 
         .history-title {
             font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 16px;
+            font-size: 1.15rem;
+            margin-bottom: 18px;
             color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .history-item {
+        .history-table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1.5px solid var(--bg-light);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
             background: white;
-            border: 2px solid var(--bg-light);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            transition: all 0.2s;
+            font-size: 0.92rem;
         }
 
-        .history-item:hover {
-            border-color: var(--purple-primary);
-            box-shadow: 0 2px 8px rgba(147, 112, 219, 0.15);
+        .history-table thead {
+            background: linear-gradient(135deg, rgba(147,112,219,0.1), rgba(139,92,246,0.08));
         }
 
-        .history-item-content {
-            flex: 1;
-        }
-
-        .history-item-title {
+        .history-table th {
+            padding: 13px 16px;
+            text-align: left;
             font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 4px;
-            color: var(--text-dark);
-        }
-
-        .history-item-details {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .history-item-badge {
-            display: inline-block;
-            background: rgba(147, 112, 219, 0.1);
             color: var(--purple-primary);
-            padding: 4px 10px;
-            border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 600;
-            margin-right: 8px;
-            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(147,112,219,0.15);
+            white-space: nowrap;
         }
 
-        .history-item-delete {
-            background: var(--bg-light);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+        .history-table td {
+            padding: 13px 16px;
+            border-bottom: 1px solid var(--bg-light);
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .history-table tr:last-child td { border-bottom: none; }
+
+        .history-table tr:hover td { background: rgba(147,112,219,0.03); }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .badge-purple { background: rgba(147,112,219,0.12); color: var(--purple-primary); }
+        .badge-green  { background: rgba(34,197,94,0.12);   color: #16a34a; }
+        .badge-blue   { background: rgba(59,130,246,0.12);  color: #2563eb; }
+        .badge-orange { background: rgba(249,115,22,0.12);  color: #ea580c; }
+        .badge-red    { background: rgba(239,68,68,0.12);   color: #dc2626; }
+
+        .delete-btn {
+            background: rgba(239,68,68,0.08);
+            border: 1.5px solid rgba(239,68,68,0.25);
+            color: #dc2626;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            color: var(--pink-accent);
+            font-size: 0.82rem;
             font-weight: 600;
             transition: all 0.2s;
-            margin-top: 8px;
         }
 
-        .history-item-delete:hover {
-            background: var(--pink-accent);
+        .delete-btn:hover {
+            background: #dc2626;
             color: white;
+            border-color: #dc2626;
         }
 
+        /* ── Empty state ── */
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 48px 20px;
             color: var(--text-light);
         }
 
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
+        .empty-state-icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; color: var(--text-dark); }
+        .empty-state-hint { font-size: 0.9rem; }
+
+        /* ── Saving spinner ── */
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
         }
 
-        .empty-state-text {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid var(--bg-light);
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-            color: var(--text-light);
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            border-color: var(--purple-primary);
-            background: rgba(147, 112, 219, 0.1);
-            color: var(--purple-primary);
-        }
-
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row.three {
-                grid-template-columns: 1fr;
-            }
-
-            .history-item {
-                flex-direction: column;
-            }
-
-            .meal-categories {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
+            .form-row, .form-row.three { grid-template-columns: 1fr; }
+            .water-btns { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -308,22 +350,21 @@
         <div class="loader-ring"></div>
     </div>
 
-    <!-- Mobile sidebar toggle -->
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
 
     <div class="dashboard-layout">
         <!-- ── SIDEBAR ── -->
         <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="sidebar-logo">
+            <a href="patient-dashboard.html" class="sidebar-logo">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
 
             <div class="sidebar-profile">
-                <div class="sidebar-avatar">A</div>
+                <div class="sidebar-avatar" id="sidebarAvatar">P</div>
                 <div>
-                    <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
+                    <div class="sidebar-name" id="sidebarName">Loading…</div>
                     <div class="sidebar-role">Patient</div>
                 </div>
                 <i>›</i>
@@ -331,22 +372,11 @@
 
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html">
-                    <i>🏠</i> Dashboard
-                </a>
-                <a class="sidebar-item" href="track-symptoms.html">
-                    <i>📊</i> Track Symptoms
-                </a>
-                <a class="sidebar-item" href="menstrual-cycle.html">
-                    <i>🩸</i> Menstrual Cycle
-                </a>
-                <a class="sidebar-item" href="reports.html">
-                    <i>📁</i> My Reports
-                    <span class="sidebar-badge">3</span>
-                </a>
-                <a class="sidebar-item active" href="lifestyle-log.html">
-                    <i>🥗</i> Lifestyle Log
-                </a>
+                <a class="sidebar-item" href="patient-dashboard.html"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html"><i>📊</i> Track Symptoms</a>
+                <a class="sidebar-item" href="menstrual-cycle.html"><i>🩸</i> Menstrual Cycle</a>
+                <a class="sidebar-item" href="reports.html"><i>📁</i> My Reports</a>
+                <a class="sidebar-item active" href="lifestyle-log.html"><i>🥗</i> Lifestyle Log</a>
             </div>
 
             <div class="sidebar-section">
@@ -371,16 +401,14 @@
             <div class="dash-topbar">
                 <div class="dash-page-title">
                     <h2>Lifestyle Log</h2>
-                    <p id="dateDisplay">Loading...</p>
+                    <p id="dateDisplay">Loading…</p>
                 </div>
                 <div class="topbar-actions">
                     <div class="topbar-search">
                         <i>🔍</i>
-                        <input type="text" placeholder="Search logs…">
+                        <input type="text" placeholder="Search logs…" id="historySearch">
                     </div>
-                    <button class="topbar-icon-btn" title="Notifications">
-                        🔔<span class="notif-dot"></span>
-                    </button>
+                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
                     <button class="topbar-icon-btn" title="Messages">💬</button>
                 </div>
             </div>
@@ -388,236 +416,223 @@
             <!-- Welcome Card -->
             <div class="welcome-card reveal">
                 <h3>Track Your Lifestyle 🌱</h3>
-                <p>Monitor your diet and exercise habits to manage your PCOS symptoms effectively. Log meals, workouts,
-                    and other lifestyle factors.</p>
+                <p>Monitor your diet, exercise, hydration, and sleep to manage your PCOS symptoms effectively.</p>
                 <div class="welcome-stats">
                     <div class="welcome-stat">
-                        <span class="welcome-stat-num" id="mealCount">8</span>
-                        <span class="welcome-stat-lbl">Meals Logged</span>
+                        <span class="welcome-stat-num" id="statMeals">—</span>
+                        <span class="welcome-stat-lbl">Meals Today</span>
                     </div>
                     <div class="welcome-stat">
-                        <span class="welcome-stat-num" id="exerciseCount">5</span>
-                        <span class="welcome-stat-lbl">Workouts This Week</span>
+                        <span class="welcome-stat-num" id="statExercises">—</span>
+                        <span class="welcome-stat-lbl">Exercises Today</span>
                     </div>
                     <div class="welcome-stat">
-                        <span class="welcome-stat-num" id="streakDays">12</span>
-                        <span class="welcome-stat-lbl">Day Streak</span>
+                        <span class="welcome-stat-num" id="statWater">—</span>
+                        <span class="welcome-stat-lbl">Water Today (ml)</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="welcome-stat-num" id="statSleep">—</span>
+                        <span class="welcome-stat-lbl">Sleep (hrs)</span>
                     </div>
                 </div>
             </div>
 
             <!-- Tabs -->
-            <div class="lifestyle-tabs">
-                <button class="tab-btn active" onclick="switchTab('meals')">🥗 Meals</button>
-                <button class="tab-btn" onclick="switchTab('exercises')">🏃 Exercises</button>
-                <button class="tab-btn" onclick="switchTab('water')">💧 Water Intake</button>
-                <button class="tab-btn" onclick="switchTab('sleep')">😴 Sleep</button>
+            <div class="lifestyle-tabs" id="lifestyleTabs">
+                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)">🥗 Meals</button>
+                <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)">🏃 Exercises</button>
+                <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)">💧 Water Intake</button>
+                <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)">😴 Sleep</button>
             </div>
 
-            <!-- MEALS TAB -->
-            <div id="meals" class="tab-content active">
-                <!-- Meal Form -->
-                <div class="meal-form reveal">
-                    <div class="form-section">
-                        <div class="form-section-title"><i>➕</i> Log a Meal</div>
+            <!-- ══════════════ MEALS TAB ══════════════ -->
+            <div id="tab-meals-content" class="tab-content active">
+                <div class="log-form reveal">
+                    <div class="form-section-title">➕ Log a Meal</div>
 
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="mealType">Meal Type *</label>
                             <select id="mealType" required>
-                                <option value="">Select meal type...</option>
-                                <option value="breakfast">Breakfast</option>
-                                <option value="lunch">Lunch</option>
-                                <option value="dinner">Dinner</option>
-                                <option value="snack">Snack</option>
+                                <option value="">Select meal type…</option>
+                                <option value="breakfast">🌅 Breakfast</option>
+                                <option value="lunch">☀️ Lunch</option>
+                                <option value="dinner">🌙 Dinner</option>
+                                <option value="snack">🍎 Snack</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="mealName">What did you eat? *</label>
-                            <input type="text" id="mealName" placeholder="e.g., Grilled chicken with quinoa salad"
-                                required>
+                            <label for="mealDate">Date *</label>
+                            <input type="date" id="mealDate" required>
                         </div>
-
-                        <div class="form-group">
-                            <label>Food Categories</label>
-                            <div class="meal-categories">
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="protein"> Protein
-                                </label>
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="vegetables"> Vegetables
-                                </label>
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="fruits"> Fruits
-                                </label>
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="grains"> Whole Grains
-                                </label>
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="dairy"> Dairy
-                                </label>
-                                <label class="category-tag">
-                                    <input type="checkbox" class="meal-category" value="fats"> Healthy Fats
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="mealTime">Time</label>
-                                <input type="time" id="mealTime">
-                            </div>
-                            <div class="form-group">
-                                <label for="calories">Calories (optional)</label>
-                                <input type="number" id="calories" placeholder="e.g., 450">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mealNotes">Notes</label>
-                            <textarea id="mealNotes"
-                                placeholder="How did you feel after this meal? Any symptoms?"></textarea>
-                        </div>
-
-                        <button class="submit-btn" onclick="logMeal()">Log Meal</button>
                     </div>
+
+                    <div class="form-group">
+                        <label for="mealName">What did you eat? *</label>
+                        <input type="text" id="mealName" placeholder="e.g., Grilled chicken with quinoa salad" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Food Categories</label>
+                        <div class="meal-categories" id="mealCategories">
+                            <label class="category-tag"><input type="checkbox" value="protein"> 🥩 Protein</label>
+                            <label class="category-tag"><input type="checkbox" value="vegetables"> 🥦 Vegetables</label>
+                            <label class="category-tag"><input type="checkbox" value="fruits"> 🍓 Fruits</label>
+                            <label class="category-tag"><input type="checkbox" value="grains"> 🌾 Whole Grains</label>
+                            <label class="category-tag"><input type="checkbox" value="dairy"> 🥛 Dairy</label>
+                            <label class="category-tag"><input type="checkbox" value="fats"> 🥑 Healthy Fats</label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mealTime">Time Eaten</label>
+                            <input type="time" id="mealTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="mealCalories">Calories (optional)</label>
+                            <input type="number" id="mealCalories" placeholder="e.g., 450" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mealNotes">Notes</label>
+                        <textarea id="mealNotes" placeholder="How did you feel after this meal? Any symptoms?"></textarea>
+                    </div>
+
+                    <button class="submit-btn" id="saveMealBtn" onclick="saveMeal()">💾 Save Meal</button>
                 </div>
 
-                <!-- Meals History -->
+                <!-- Meals History Table -->
                 <div class="history-section">
-                    <div class="history-title">📝 Today's Meals</div>
-                    <div id="mealsHistory">
+                    <div class="history-title">📋 Meal History <span id="mealsCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div id="mealsTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">🍽️</div>
-                            <p class="empty-state-text">No meals logged today</p>
-                            <p class="empty-state-hint">Start by logging your first meal above</p>
+                            <p class="empty-state-text">No meals logged yet</p>
+                            <p class="empty-state-hint">Fill the form above and hit Save Meal</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- EXERCISES TAB -->
-            <div id="exercises" class="tab-content">
-                <!-- Exercise Form -->
-                <div class="exercise-form reveal">
-                    <div class="form-section">
-                        <div class="form-section-title"><i>➕</i> Log an Exercise</div>
+            <!-- ══════════════ EXERCISES TAB ══════════════ -->
+            <div id="tab-exercises-content" class="tab-content">
+                <div class="log-form reveal">
+                    <div class="form-section-title">➕ Log an Exercise</div>
 
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="exerciseType">Exercise Type *</label>
                             <select id="exerciseType" required>
-                                <option value="">Select exercise type...</option>
-                                <option value="cardio">Cardio (Running, Cycling, etc.)</option>
-                                <option value="strength">Strength Training</option>
-                                <option value="yoga">Yoga</option>
-                                <option value="walking">Walking</option>
-                                <option value="swimming">Swimming</option>
-                                <option value="stretching">Stretching</option>
-                                <option value="other">Other</option>
+                                <option value="">Select type…</option>
+                                <option value="cardio">🏃 Cardio (Running, Cycling…)</option>
+                                <option value="strength">💪 Strength Training</option>
+                                <option value="yoga">🧘 Yoga</option>
+                                <option value="walking">🚶 Walking</option>
+                                <option value="swimming">🏊 Swimming</option>
+                                <option value="stretching">🤸 Stretching</option>
+                                <option value="other">⚡ Other</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="exerciseName">Exercise Name *</label>
-                            <input type="text" id="exerciseName" placeholder="e.g., Morning jog" required>
+                            <label for="exerciseDate">Date *</label>
+                            <input type="date" id="exerciseDate" required>
                         </div>
-
-                        <div class="form-row three">
-                            <div class="form-group">
-                                <label for="duration">Duration (minutes) *</label>
-                                <input type="number" id="duration" placeholder="30" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="intensity">Intensity</label>
-                                <select id="intensity">
-                                    <option value="light">Light</option>
-                                    <option value="moderate" selected>Moderate</option>
-                                    <option value="vigorous">Vigorous</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exerciseTime">Time</label>
-                                <input type="time" id="exerciseTime">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="caloriesBurned">Calories Burned (estimated)</label>
-                            <input type="number" id="caloriesBurned" placeholder="Automatically calculated">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exerciseNotes">How did you feel?</label>
-                            <textarea id="exerciseNotes"
-                                placeholder="Energy level, any pain or discomfort, how you felt during the workout..."></textarea>
-                        </div>
-
-                        <button class="submit-btn" onclick="logExercise()">Log Exercise</button>
                     </div>
+
+                    <div class="form-group">
+                        <label for="exerciseName">Exercise Name *</label>
+                        <input type="text" id="exerciseName" placeholder="e.g., Morning jog in the park" required>
+                    </div>
+
+                    <div class="form-row three">
+                        <div class="form-group">
+                            <label for="exerciseDuration">Duration (min) *</label>
+                            <input type="number" id="exerciseDuration" placeholder="30" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exerciseIntensity">Intensity</label>
+                            <select id="exerciseIntensity">
+                                <option value="light">🟢 Light</option>
+                                <option value="moderate" selected>🟡 Moderate</option>
+                                <option value="vigorous">🔴 Vigorous</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exerciseTime">Time</label>
+                            <input type="time" id="exerciseTime">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exerciseCalories">Calories Burned (estimated)</label>
+                        <input type="number" id="exerciseCalories" placeholder="e.g., 250" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exerciseNotes">How did you feel?</label>
+                        <textarea id="exerciseNotes" placeholder="Energy level, any pain or discomfort…"></textarea>
+                    </div>
+
+                    <button class="submit-btn" id="saveExerciseBtn" onclick="saveExercise()">💾 Save Exercise</button>
                 </div>
 
-                <!-- Exercise History -->
+                <!-- Exercises History Table -->
                 <div class="history-section">
-                    <div class="history-title">📝 This Week's Exercises</div>
-                    <div id="exercisesHistory">
+                    <div class="history-title">📋 Exercise History <span id="exercisesCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div id="exercisesTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">🏃</div>
-                            <p class="empty-state-text">No exercises logged this week</p>
-                            <p class="empty-state-hint">Start moving and log your workouts above</p>
+                            <p class="empty-state-text">No exercises logged yet</p>
+                            <p class="empty-state-hint">Start moving and log your first workout</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- WATER TAB -->
-            <div id="water" class="tab-content">
-                <div class="meal-form reveal">
-                    <div class="form-section">
-                        <div class="form-section-title"><i>💧</i> Log Water Intake</div>
+            <!-- ══════════════ WATER TAB ══════════════ -->
+            <div id="tab-water-content" class="tab-content">
+                <div class="log-form reveal">
+                    <div class="form-section-title">💧 Log Water Intake</div>
 
-                        <div class="form-group">
-                            <label>Daily Goal: 8-10 glasses (2-2.5 liters)</label>
-                        </div>
+                    <div class="form-group">
+                        <label for="waterDate">Date *</label>
+                        <input type="date" id="waterDate" required>
+                    </div>
 
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-bottom: 20px;">
-                            <button class="submit-btn" style="background: var(--blue-accent);" onclick="addWater(250)">+
-                                250ml</button>
-                            <button class="submit-btn" style="background: var(--blue-accent);" onclick="addWater(500)">+
-                                500ml</button>
-                            <button class="submit-btn" style="background: var(--blue-accent);" onclick="addWater(750)">+
-                                750ml</button>
-                            <button class="submit-btn" style="background: var(--blue-accent);"
-                                onclick="addWater(1000)">+ 1L</button>
+                    <div class="form-group">
+                        <label>Quick Add</label>
+                        <div class="water-btns">
+                            <button class="water-btn" onclick="quickAddWater(250)">+ 250ml<br><small>Small glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(500)">+ 500ml<br><small>Medium glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(750)">+ 750ml<br><small>Large glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(1000)">+ 1000ml<br><small>1 Litre</small></button>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="customWater">Or enter custom amount (ml)</label>
-                            <div style="display: flex; gap: 10px;">
-                                <input type="number" id="customWater" placeholder="Enter ml" style="flex: 1;">
-                                <button class="submit-btn" onclick="addCustomWater()"
-                                    style="flex: 0 0 auto;">Add</button>
-                            </div>
+                    <div class="form-group">
+                        <label for="customWater">Or enter custom amount (ml)</label>
+                        <div style="display:flex;gap:10px;">
+                            <input type="number" id="customWater" placeholder="Enter amount in ml" min="1" style="flex:1;">
+                            <button class="submit-btn" onclick="quickAddWater(null)" style="flex:0 0 auto;padding:10px 20px;">Add</button>
                         </div>
+                    </div>
 
-                        <div
-                            style="background: var(--bg-light); padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center;">
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--purple-primary); margin-bottom: 8px;"
-                                id="waterTotal">0ml</div>
-                            <div style="color: var(--text-light);">Today's water intake</div>
-                            <div
-                                style="margin-top: 12px; height: 8px; background: var(--bg-light); border-radius: 4px; overflow: hidden;">
-                                <div id="waterProgress"
-                                    style="height: 100%; background: var(--purple-primary); width: 0%; transition: width 0.3s;">
-                                </div>
-                            </div>
+                    <div class="water-progress-card">
+                        <div class="water-total-display" id="waterTotalDisplay">0 ml</div>
+                        <div class="water-goal-label">Today's intake · Goal: 2,500 ml</div>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" id="waterProgressBar"></div>
                         </div>
+                        <div style="margin-top:10px;font-size:0.88rem;color:var(--text-light);" id="waterProgressLabel">0% of daily goal</div>
                     </div>
                 </div>
 
+                <!-- Water History Table -->
                 <div class="history-section">
-                    <div class="history-title">💧 Water Log</div>
-                    <div id="waterHistory">
+                    <div class="history-title">💧 Water Log History <span id="waterCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div id="waterTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">💧</div>
                             <p class="empty-state-text">No water logged today</p>
@@ -627,58 +642,56 @@
                 </div>
             </div>
 
-            <!-- SLEEP TAB -->
-            <div id="sleep" class="tab-content">
-                <div class="meal-form reveal">
-                    <div class="form-section">
-                        <div class="form-section-title"><i>😴</i> Log Sleep</div>
+            <!-- ══════════════ SLEEP TAB ══════════════ -->
+            <div id="tab-sleep-content" class="tab-content">
+                <div class="log-form reveal">
+                    <div class="form-section-title">😴 Log Sleep</div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="sleepDate">Sleep Date *</label>
-                                <input type="date" id="sleepDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="bedtime">Bedtime *</label>
-                                <input type="time" id="bedtime" required>
-                            </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sleepDate">Sleep Date *</label>
+                            <input type="date" id="sleepDate" required>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="wakeTime">Wake Time *</label>
-                                <input type="time" id="wakeTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sleepDuration">Hours Slept (auto-calculated)</label>
-                                <input type="text" id="sleepDuration" readonly>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label for="sleepQuality">Sleep Quality</label>
                             <select id="sleepQuality">
-                                <option value="">Select quality...</option>
-                                <option value="poor">Poor (Very restless)</option>
-                                <option value="fair">Fair (Some disturbances)</option>
-                                <option value="good">Good (Mostly restful)</option>
-                                <option value="excellent">Excellent (Very restful)</option>
+                                <option value="">Select quality…</option>
+                                <option value="poor">😟 Poor (Very restless)</option>
+                                <option value="fair">😐 Fair (Some disturbances)</option>
+                                <option value="good">🙂 Good (Mostly restful)</option>
+                                <option value="excellent">😄 Excellent (Very restful)</option>
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label for="sleepNotes">Notes</label>
-                            <textarea id="sleepNotes"
-                                placeholder="Any factors that affected your sleep? (caffeine, stress, environment, etc.)"></textarea>
-                        </div>
-
-                        <button class="submit-btn" onclick="logSleep()">Log Sleep</button>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sleepBedtime">Bedtime *</label>
+                            <input type="time" id="sleepBedtime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sleepWakeTime">Wake Time *</label>
+                            <input type="time" id="sleepWakeTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sleepDurationDisplay">Hours Slept (auto-calculated)</label>
+                        <input type="text" id="sleepDurationDisplay" readonly placeholder="Set bedtime & wake time above">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sleepNotes">Notes</label>
+                        <textarea id="sleepNotes" placeholder="Factors that affected your sleep? (caffeine, stress, environment…)"></textarea>
+                    </div>
+
+                    <button class="submit-btn" id="saveSleepBtn" onclick="saveSleep()">💾 Save Sleep</button>
                 </div>
 
+                <!-- Sleep History Table -->
                 <div class="history-section">
-                    <div class="history-title">📋 Sleep History</div>
-                    <div id="sleepHistory">
+                    <div class="history-title">📋 Sleep History <span id="sleepCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div id="sleepTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">😴</div>
                             <p class="empty-state-text">No sleep logs yet</p>
@@ -695,238 +708,590 @@
     <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/dashboard.js"></script>
     <script>
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function () {
-            // Set today's date
-            const today = new Date();
-            document.getElementById('sleepDate').valueAsDate = today;
+        /* ================================================================
+           PCOS CARE HUB — Lifestyle Log · Full Backend Integration
+           API base: ../../src/php/components/lifestyle_handler.php
+        ================================================================ */
+
+        const API = '../../src/php/components/lifestyle_handler.php';
+        const TODAY = new Date().toISOString().split('T')[0];
+
+        // ── Patient context — read from pcos_user set by Auth.login() ─
+        const _pcosUser  = (() => { try { return JSON.parse(localStorage.getItem('pcos_user')); } catch(e) { return null; } })();
+        const patientId    = _pcosUser?.id    || '';
+        const patientEmail = _pcosUser?.email || '';
+        const patientName  = _pcosUser?.name  || 'Patient';
+
+        function apiParams() {
+            if (patientId)    return { patient_id:    patientId    };
+            if (patientEmail) return { patient_email: patientEmail };
+            return {};
+        }
+
+        // ── Init ──────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            // Date display
+            document.getElementById('dateDisplay').textContent =
+                new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+            // Set today in all date inputs
+            ['mealDate', 'exerciseDate', 'waterDate', 'sleepDate'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = TODAY;
+            });
 
             // Sidebar toggle
-            const sidebar = document.getElementById('sidebar');
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-            sidebarToggle.addEventListener('click', () => {
+            const sidebar   = document.getElementById('sidebar');
+            const sToggle   = document.getElementById('sidebarToggle');
+            const sOverlay  = document.getElementById('sidebar-overlay');
+            sToggle.addEventListener('click', () => {
                 sidebar.classList.toggle('active');
-                sidebarOverlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+                sOverlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
             });
-
-            sidebarOverlay.addEventListener('click', () => {
+            sOverlay.addEventListener('click', () => {
                 sidebar.classList.remove('active');
-                sidebarOverlay.style.display = 'none';
+                sOverlay.style.display = 'none';
             });
 
-            // Category tag selection
+            // Category chip toggle
             document.querySelectorAll('.category-tag').forEach(tag => {
-                tag.addEventListener('click', function () {
-                    this.classList.toggle('selected');
-                    this.querySelector('input[type="checkbox"]').checked = this.classList.contains('selected');
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('selected');
+                    tag.querySelector('input').checked = tag.classList.contains('selected');
                 });
             });
 
-            // Load sample data
-            loadSampleData();
+            // Sleep auto-duration
+            ['sleepBedtime', 'sleepWakeTime'].forEach(id => {
+                document.getElementById(id).addEventListener('change', calcSleepDuration);
+            });
+
+            // Load sidebar name
+            if (patientId || patientEmail) {
+                loadAllHistory();
+            }
+
+            // Load profile name from localStorage
+            const name = localStorage.getItem('patientName') || 'Patient';
+            document.getElementById('sidebarName').textContent = name;
+            document.getElementById('sidebarAvatar').textContent = name.charAt(0).toUpperCase();
         });
 
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+        // ── Tab switching ─────────────────────────────────────────────
+        function switchTab(name, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + name + '-content').classList.add('active');
+            btn.classList.add('active');
         }
 
-        function logMeal() {
+        // ── Auto-calc sleep duration ──────────────────────────────────
+        function calcSleepDuration() {
+            const bed  = document.getElementById('sleepBedtime').value;
+            const wake = document.getElementById('sleepWakeTime').value;
+            if (!bed || !wake) return;
+            let b = new Date('1970-01-01T' + bed);
+            let w = new Date('1970-01-01T' + wake);
+            if (w <= b) w = new Date(w.getTime() + 86400000); // next day
+            const hrs = ((w - b) / 3600000).toFixed(2);
+            document.getElementById('sleepDurationDisplay').value = hrs + ' hours';
+        }
+
+        // ══════════════════ SAVE FUNCTIONS ═══════════════════════════
+
+        async function saveMeal() {
+            const btn      = document.getElementById('saveMealBtn');
             const mealType = document.getElementById('mealType').value;
-            const mealName = document.getElementById('mealName').value;
-            const mealTime = document.getElementById('mealTime').value || new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            const calories = document.getElementById('calories').value || 'N/A';
+            const mealName = document.getElementById('mealName').value.trim();
+            const mealDate = document.getElementById('mealDate').value;
 
-            if (!mealType || !mealName) {
-                Toast.error('Please fill in required meal fields');
+            if (!mealType || !mealName || !mealDate) {
+                Toast.error('Please fill in Meal Type, Name, and Date.');
                 return;
             }
 
-            addMealToHistory(mealType, mealName, mealTime, calories);
-            document.getElementById('mealType').value = '';
-            document.getElementById('mealName').value = '';
-            document.getElementById('mealTime').value = '';
-            document.getElementById('calories').value = '';
-            document.getElementById('mealNotes').value = '';
-            document.querySelectorAll('.meal-category').forEach(cb => cb.checked = false);
-            Toast.success('Meal logged successfully!');
+            const cats = Array.from(document.querySelectorAll('#mealCategories .category-tag.selected input'))
+                              .map(i => i.value);
+
+            const payload = {
+                ...apiParams(),
+                meal_type:       mealType,
+                meal_name:       mealName,
+                food_categories: cats,
+                meal_time:       document.getElementById('mealTime').value   || null,
+                calories:        document.getElementById('mealCalories').value || null,
+                notes:           document.getElementById('mealNotes').value  || '',
+                log_date:        mealDate,
+            };
+
+            setLoading(btn, true);
+            try {
+                const res = await postAPI('meals', payload);
+                if (res.status === 'success') {
+                    Toast.success('Meal saved successfully! 🥗');
+                    resetMealForm();
+                    loadMealsHistory();
+                    refreshStats();
+                } else {
+                    Toast.error(res.message || 'Failed to save meal.');
+                }
+            } catch(e) {
+                Toast.error('Network error. Please try again.');
+            }
+            setLoading(btn, false);
         }
 
-        function logExercise() {
-            const exerciseType = document.getElementById('exerciseType').value;
-            const exerciseName = document.getElementById('exerciseName').value;
-            const duration = document.getElementById('duration').value;
-            const intensity = document.getElementById('intensity').value;
+        async function saveExercise() {
+            const btn      = document.getElementById('saveExerciseBtn');
+            const exType   = document.getElementById('exerciseType').value;
+            const exName   = document.getElementById('exerciseName').value.trim();
+            const duration = document.getElementById('exerciseDuration').value;
+            const exDate   = document.getElementById('exerciseDate').value;
 
-            if (!exerciseType || !exerciseName || !duration) {
-                Toast.error('Please fill in all required exercise fields');
+            if (!exType || !exName || !duration || !exDate) {
+                Toast.error('Please fill in Type, Name, Duration, and Date.');
                 return;
             }
 
-            addExerciseToHistory(exerciseType, exerciseName, duration, intensity);
-            document.getElementById('exerciseType').value = '';
-            document.getElementById('exerciseName').value = '';
-            document.getElementById('duration').value = '';
-            document.getElementById('intensity').value = 'moderate';
-            document.getElementById('exerciseTime').value = '';
-            document.getElementById('caloriesBurned').value = '';
-            document.getElementById('exerciseNotes').value = '';
-            Toast.success('Exercise logged successfully!');
-        }
+            const payload = {
+                ...apiParams(),
+                exercise_type:  exType,
+                exercise_name:  exName,
+                duration:       duration,
+                intensity:      document.getElementById('exerciseIntensity').value,
+                exercise_time:  document.getElementById('exerciseTime').value  || null,
+                calories_burned:document.getElementById('exerciseCalories').value || null,
+                notes:          document.getElementById('exerciseNotes').value || '',
+                log_date:       exDate,
+            };
 
-        function addWater(ml) {
-            addWaterToHistory(ml);
-            updateWaterProgress();
-        }
-
-        function addCustomWater() {
-            const ml = parseInt(document.getElementById('customWater').value);
-            if (isNaN(ml) || ml <= 0) {
-                Toast.error('Please enter a valid amount');
-                return;
+            setLoading(btn, true);
+            try {
+                const res = await postAPI('exercises', payload);
+                if (res.status === 'success') {
+                    Toast.success('Exercise saved! 🏃');
+                    resetExerciseForm();
+                    loadExercisesHistory();
+                    refreshStats();
+                } else {
+                    Toast.error(res.message || 'Failed to save exercise.');
+                }
+            } catch(e) {
+                Toast.error('Network error. Please try again.');
             }
-            addWaterToHistory(ml);
-            document.getElementById('customWater').value = '';
-            updateWaterProgress();
+            setLoading(btn, false);
         }
 
-        function logSleep() {
-            const sleepDate = document.getElementById('sleepDate').value;
-            const bedtime = document.getElementById('bedtime').value;
-            const wakeTime = document.getElementById('wakeTime').value;
-            const quality = document.getElementById('sleepQuality').value;
+        async function quickAddWater(ml) {
+            const waterDate = document.getElementById('waterDate').value;
+            if (!waterDate) { Toast.error('Please select a date.'); return; }
+
+            if (ml === null) {
+                ml = parseInt(document.getElementById('customWater').value);
+                if (!ml || ml <= 0) { Toast.error('Please enter a valid amount.'); return; }
+                document.getElementById('customWater').value = '';
+            }
+
+            const payload = { ...apiParams(), amount_ml: ml, log_date: waterDate };
+
+            try {
+                const res = await postAPI('water', payload);
+                if (res.status === 'success') {
+                    Toast.success(`+${ml}ml logged! 💧`);
+                    loadWaterHistory();
+                    refreshStats();
+                } else {
+                    Toast.error(res.message || 'Failed to log water.');
+                }
+            } catch(e) {
+                Toast.error('Network error.');
+            }
+        }
+
+        async function saveSleep() {
+            const btn      = document.getElementById('saveSleepBtn');
+            const sleepDate= document.getElementById('sleepDate').value;
+            const bedtime  = document.getElementById('sleepBedtime').value;
+            const wakeTime = document.getElementById('sleepWakeTime').value;
 
             if (!sleepDate || !bedtime || !wakeTime) {
-                Toast.error('Please fill in all required sleep fields');
+                Toast.error('Please fill in Date, Bedtime, and Wake Time.');
                 return;
             }
 
-            addSleepToHistory(sleepDate, bedtime, wakeTime, quality);
-            document.getElementById('sleepDate').valueAsDate = new Date();
-            document.getElementById('bedtime').value = '';
-            document.getElementById('wakeTime').value = '';
-            document.getElementById('sleepQuality').value = '';
-            document.getElementById('sleepNotes').value = '';
-            Toast.success('Sleep logged successfully!');
+            const payload = {
+                ...apiParams(),
+                sleep_date:    sleepDate,
+                bedtime:       bedtime,
+                wake_time:     wakeTime,
+                sleep_quality: document.getElementById('sleepQuality').value || null,
+                notes:         document.getElementById('sleepNotes').value   || '',
+            };
+
+            setLoading(btn, true);
+            try {
+                const res = await postAPI('sleep', payload);
+                if (res.status === 'success') {
+                    Toast.success(`Sleep logged! ${res.duration_hours}h recorded 😴`);
+                    resetSleepForm();
+                    loadSleepHistory();
+                    refreshStats();
+                } else {
+                    Toast.error(res.message || 'Failed to save sleep.');
+                }
+            } catch(e) {
+                Toast.error('Network error. Please try again.');
+            }
+            setLoading(btn, false);
         }
 
-        function addMealToHistory(type, name, time, calories) {
-            const history = document.getElementById('mealsHistory');
-            if (history.querySelector('.empty-state')) {
-                history.innerHTML = '';
+        // ══════════════════ DELETE FUNCTIONS ═════════════════════════
+
+        async function deleteEntry(type, id, rowEl) {
+            if (!confirm('Delete this entry?')) return;
+            const payload = { ...apiParams(), id };
+            try {
+                const res = await fetch(`${API}?type=${type}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    rowEl.style.opacity = '0';
+                    rowEl.style.transition = 'opacity 0.3s';
+                    setTimeout(() => {
+                        rowEl.remove();
+                        if (type === 'water') updateWaterProgress();
+                        refreshStats();
+                    }, 300);
+                    Toast.success('Entry deleted.');
+                } else {
+                    Toast.error(data.message || 'Could not delete.');
+                }
+            } catch(e) {
+                Toast.error('Network error.');
             }
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `
-                <div class="history-item-content">
-                    <div class="history-item-title">${name}</div>
-                    <div class="history-item-details">
-                        <span>🕐 ${time}</span>
-                        <span>🔥 ${calories} cal</span>
-                        <span class="history-item-badge">${type}</span>
-                    </div>
-                </div>
-                <button class="history-item-delete" onclick="this.parentElement.remove()">Delete</button>
-            `;
-            history.appendChild(item);
         }
 
-        function addExerciseToHistory(type, name, duration, intensity) {
-            const history = document.getElementById('exercisesHistory');
-            if (history.querySelector('.empty-state')) {
-                history.innerHTML = '';
-            }
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `
-                <div class="history-item-content">
-                    <div class="history-item-title">${name}</div>
-                    <div class="history-item-details">
-                        <span>⏱️ ${duration} min</span>
-                        <span class="history-item-badge">${type}</span>
-                        <span class="history-item-badge">${intensity} intensity</span>
-                    </div>
-                </div>
-                <button class="history-item-delete" onclick="this.parentElement.remove()">Delete</button>
-            `;
-            history.appendChild(item);
+        // ══════════════════ LOAD HISTORY ═════════════════════════════
+
+        async function loadAllHistory() {
+            await Promise.all([
+                loadMealsHistory(),
+                loadExercisesHistory(),
+                loadWaterHistory(),
+                loadSleepHistory(),
+            ]);
+            refreshStats();
         }
 
-        function addWaterToHistory(ml) {
-            const history = document.getElementById('waterHistory');
-            if (history.querySelector('.empty-state')) {
-                history.innerHTML = '';
-            }
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            item.innerHTML = `
-                <div class="history-item-content">
-                    <div class="history-item-title">Water Intake</div>
-                    <div class="history-item-details">
-                        <span>💧 ${ml}ml</span>
-                        <span>🕐 ${time}</span>
-                    </div>
-                </div>
-                <button class="history-item-delete" onclick="this.parentElement.remove(); updateWaterProgress()">Delete</button>
-            `;
-            history.appendChild(item);
+        async function loadMealsHistory() {
+            const params = new URLSearchParams({ ...apiParams(), type: 'meals', limit: 30 });
+            const wrap   = document.getElementById('mealsTableWrap');
+            try {
+                const res  = await fetch(`${API}?${params}`);
+                const data = await res.json();
+                if (data.status === 'success' && data.data.length > 0) {
+                    renderMealsTable(data.data, wrap);
+                    document.getElementById('mealsCount').textContent = `(${data.data.length} records)`;
+                } else {
+                    wrap.innerHTML = emptyState('🍽️', 'No meals logged yet', 'Fill the form above and hit Save Meal');
+                    document.getElementById('mealsCount').textContent = '';
+                }
+            } catch(e) { wrap.innerHTML = errorState(); }
         }
 
-        function addSleepToHistory(date, bedtime, wakeTime, quality) {
-            const history = document.getElementById('sleepHistory');
-            if (history.querySelector('.empty-state')) {
-                history.innerHTML = '';
-            }
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `
-                <div class="history-item-content">
-                    <div class="history-item-title">Sleep - ${new Date(date).toLocaleDateString()}</div>
-                    <div class="history-item-details">
-                        <span>🛏️ ${bedtime} to ${wakeTime}</span>
-                        <span class="history-item-badge">${quality}</span>
-                    </div>
-                </div>
-                <button class="history-item-delete" onclick="this.parentElement.remove()">Delete</button>
-            `;
-            history.appendChild(item);
+        async function loadExercisesHistory() {
+            const params = new URLSearchParams({ ...apiParams(), type: 'exercises', limit: 30 });
+            const wrap   = document.getElementById('exercisesTableWrap');
+            try {
+                const res  = await fetch(`${API}?${params}`);
+                const data = await res.json();
+                if (data.status === 'success' && data.data.length > 0) {
+                    renderExercisesTable(data.data, wrap);
+                    document.getElementById('exercisesCount').textContent = `(${data.data.length} records)`;
+                } else {
+                    wrap.innerHTML = emptyState('🏃', 'No exercises logged yet', 'Log your first workout above');
+                    document.getElementById('exercisesCount').textContent = '';
+                }
+            } catch(e) { wrap.innerHTML = errorState(); }
+        }
+
+        async function loadWaterHistory() {
+            const params = new URLSearchParams({ ...apiParams(), type: 'water', limit: 50 });
+            const wrap   = document.getElementById('waterTableWrap');
+            try {
+                const res  = await fetch(`${API}?${params}`);
+                const data = await res.json();
+                if (data.status === 'success' && data.data.length > 0) {
+                    renderWaterTable(data.data, wrap);
+                    document.getElementById('waterCount').textContent = `(${data.data.length} records)`;
+                    updateWaterProgressFromData(data.data);
+                } else {
+                    wrap.innerHTML = emptyState('💧', 'No water logged yet', 'Use the buttons above to log water');
+                    document.getElementById('waterCount').textContent = '';
+                    updateWaterProgressFromData([]);
+                }
+            } catch(e) { wrap.innerHTML = errorState(); }
+        }
+
+        async function loadSleepHistory() {
+            const params = new URLSearchParams({ ...apiParams(), type: 'sleep', limit: 30 });
+            const wrap   = document.getElementById('sleepTableWrap');
+            try {
+                const res  = await fetch(`${API}?${params}`);
+                const data = await res.json();
+                if (data.status === 'success' && data.data.length > 0) {
+                    renderSleepTable(data.data, wrap);
+                    document.getElementById('sleepCount').textContent = `(${data.data.length} records)`;
+                } else {
+                    wrap.innerHTML = emptyState('😴', 'No sleep logs yet', 'Log your sleep data above');
+                    document.getElementById('sleepCount').textContent = '';
+                }
+            } catch(e) { wrap.innerHTML = errorState(); }
+        }
+
+        // ══════════════════ RENDER TABLES ════════════════════════════
+
+        function renderMealsTable(rows, wrap) {
+            const mealEmojis = { breakfast:'🌅', lunch:'☀️', dinner:'🌙', snack:'🍎' };
+            const mealColors = { breakfast:'badge-orange', lunch:'badge-green', dinner:'badge-purple', snack:'badge-blue' };
+
+            let html = `<table class="history-table">
+                <thead><tr>
+                    <th>Date</th><th>Type</th><th>Meal</th>
+                    <th>Categories</th><th>Time</th><th>Calories</th><th>Action</th>
+                </tr></thead><tbody>`;
+
+            rows.forEach(r => {
+                const cats = r.food_categories
+                    ? r.food_categories.split(',').map(c => `<span class="badge badge-purple">${c.trim()}</span>`).join(' ')
+                    : '—';
+                html += `<tr id="meal-row-${r.id}">
+                    <td>${fmtDate(r.log_date)}</td>
+                    <td><span class="badge ${mealColors[r.meal_type] || 'badge-purple'}">${mealEmojis[r.meal_type] || ''} ${r.meal_type}</span></td>
+                    <td style="max-width:200px;">${escHtml(r.meal_name)}</td>
+                    <td>${cats}</td>
+                    <td>${r.meal_time ? r.meal_time.substring(0,5) : '—'}</td>
+                    <td>${r.calories ? r.calories + ' kcal' : '—'}</td>
+                    <td><button class="delete-btn" onclick="deleteEntry('meals', ${r.id}, document.getElementById('meal-row-${r.id}'))">🗑 Delete</button></td>
+                </tr>`;
+                if (r.notes) {
+                    html += `<tr><td colspan="7" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
+                        💬 ${escHtml(r.notes)}</td></tr>`;
+                }
+            });
+
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        }
+
+        function renderExercisesTable(rows, wrap) {
+            const typeEmojis = { cardio:'🏃', strength:'💪', yoga:'🧘', walking:'🚶', swimming:'🏊', stretching:'🤸', other:'⚡' };
+            const intColors  = { light:'badge-green', moderate:'badge-orange', vigorous:'badge-red' };
+
+            let html = `<table class="history-table">
+                <thead><tr>
+                    <th>Date</th><th>Type</th><th>Exercise</th>
+                    <th>Duration</th><th>Intensity</th><th>Calories Burned</th><th>Action</th>
+                </tr></thead><tbody>`;
+
+            rows.forEach(r => {
+                html += `<tr id="ex-row-${r.id}">
+                    <td>${fmtDate(r.log_date)}</td>
+                    <td><span class="badge badge-purple">${typeEmojis[r.exercise_type] || '⚡'} ${r.exercise_type}</span></td>
+                    <td style="max-width:180px;">${escHtml(r.exercise_name)}</td>
+                    <td>${r.duration_minutes} min</td>
+                    <td><span class="badge ${intColors[r.intensity] || 'badge-blue'}">${r.intensity}</span></td>
+                    <td>${r.calories_burned ? r.calories_burned + ' kcal' : '—'}</td>
+                    <td><button class="delete-btn" onclick="deleteEntry('exercises', ${r.id}, document.getElementById('ex-row-${r.id}'))">🗑 Delete</button></td>
+                </tr>`;
+                if (r.notes) {
+                    html += `<tr><td colspan="7" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
+                        💬 ${escHtml(r.notes)}</td></tr>`;
+                }
+            });
+
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        }
+
+        function renderWaterTable(rows, wrap) {
+            let html = `<table class="history-table">
+                <thead><tr>
+                    <th>Date</th><th>Amount</th><th>Day Total</th><th>Logged At</th><th>Action</th>
+                </tr></thead><tbody>`;
+
+            rows.forEach(r => {
+                html += `<tr id="water-row-${r.id}">
+                    <td>${fmtDate(r.log_date)}</td>
+                    <td><span class="badge badge-blue">💧 ${r.amount_ml} ml</span></td>
+                    <td>${r.day_total ? r.day_total + ' ml' : r.amount_ml + ' ml'}</td>
+                    <td>${fmtDateTime(r.logged_at)}</td>
+                    <td><button class="delete-btn" onclick="deleteEntry('water', ${r.id}, document.getElementById('water-row-${r.id}'))">🗑 Delete</button></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        }
+
+        function renderSleepTable(rows, wrap) {
+            const qualColors = { poor:'badge-red', fair:'badge-orange', good:'badge-blue', excellent:'badge-green' };
+            const qualEmojis = { poor:'😟', fair:'😐', good:'🙂', excellent:'😄' };
+
+            let html = `<table class="history-table">
+                <thead><tr>
+                    <th>Date</th><th>Bedtime</th><th>Wake Time</th>
+                    <th>Duration</th><th>Quality</th><th>Action</th>
+                </tr></thead><tbody>`;
+
+            rows.forEach(r => {
+                const qual = r.sleep_quality
+                    ? `<span class="badge ${qualColors[r.sleep_quality] || 'badge-blue'}">${qualEmojis[r.sleep_quality] || ''} ${r.sleep_quality}</span>`
+                    : '—';
+                html += `<tr id="sleep-row-${r.id}">
+                    <td>${fmtDate(r.sleep_date)}</td>
+                    <td>🛏️ ${r.bedtime ? r.bedtime.substring(0,5) : '—'}</td>
+                    <td>⏰ ${r.wake_time ? r.wake_time.substring(0,5) : '—'}</td>
+                    <td>${r.duration_hours ? r.duration_hours + ' hrs' : '—'}</td>
+                    <td>${qual}</td>
+                    <td><button class="delete-btn" onclick="deleteEntry('sleep', ${r.id}, document.getElementById('sleep-row-${r.id}'))">🗑 Delete</button></td>
+                </tr>`;
+                if (r.notes) {
+                    html += `<tr><td colspan="6" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
+                        💬 ${escHtml(r.notes)}</td></tr>`;
+                }
+            });
+
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        }
+
+        // ══════════════════ WATER PROGRESS ═══════════════════════════
+
+        function updateWaterProgressFromData(rows) {
+            const todayRows = rows.filter(r => r.log_date === TODAY);
+            const total = todayRows.reduce((s, r) => s + parseInt(r.amount_ml || 0), 0);
+            const pct   = Math.min((total / 2500) * 100, 100);
+            document.getElementById('waterTotalDisplay').textContent  = total + ' ml';
+            document.getElementById('waterProgressBar').style.width   = pct + '%';
+            document.getElementById('waterProgressLabel').textContent = Math.round(pct) + '% of daily goal';
         }
 
         function updateWaterProgress() {
-            const totalMl = Array.from(document.querySelectorAll('#waterHistory .history-item-details span')).reduce((sum, el) => {
-                const match = el.textContent.match(/(\d+)ml/);
-                return sum + (match ? parseInt(match[1]) : 0);
-            }, 0);
-
-            document.getElementById('waterTotal').textContent = totalMl + 'ml';
-            const progress = Math.min((totalMl / 2500) * 100, 100);
-            document.getElementById('waterProgress').style.width = progress + '%';
+            const rows = document.querySelectorAll('[id^="water-row-"]');
+            // Reload from server for accuracy
+            loadWaterHistory();
         }
 
-        function loadSampleData() {
-            // Add sample meal
-            addMealToHistory('Breakfast', 'Oatmeal with berries and almonds', '8:30 AM', '350');
-            addMealToHistory('Lunch', 'Grilled chicken with quinoa salad', '12:45 PM', '520');
+        // ══════════════════ STATS BANNER ═════════════════════════════
 
-            // Add sample exercise
-            addExerciseToHistory('Yoga', 'Morning yoga session', '45', 'light');
+        async function refreshStats() {
+            if (!patientId && !patientEmail) return;
 
-            // Add sample water
-            addWaterToHistory(500);
-            addWaterToHistory(500);
-            updateWaterProgress();
+            // Meals today
+            fetchCount('meals',     TODAY, 'statMeals',    d => d.length);
+            // Exercises today
+            fetchCount('exercises', TODAY, 'statExercises',d => d.length);
+            // Water today total
+            fetchCount('water',     TODAY, 'statWater',    d => {
+                const tot = d.filter(r => r.log_date === TODAY).reduce((s,r) => s + parseInt(r.amount_ml || 0), 0);
+                return tot + ' ml';
+            });
+            // Last sleep
+            fetchCount('sleep',     null,  'statSleep',    d => d.length > 0 ? d[0].duration_hours + 'h' : '—');
+        }
+
+        async function fetchCount(type, date, elId, fn) {
+            const p = new URLSearchParams({ ...apiParams(), type, limit: 50 });
+            if (date) p.set('log_date', date);
+            try {
+                const res  = await fetch(`${API}?${p}`);
+                const data = await res.json();
+                if (data.status === 'success') {
+                    document.getElementById(elId).textContent = fn(data.data);
+                }
+            } catch(e) {}
+        }
+
+        // ══════════════════ HELPERS ══════════════════════════════════
+
+        async function postAPI(type, payload) {
+            const res = await fetch(`${API}?type=${type}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+            return res.json();
+        }
+
+        function setLoading(btn, loading) {
+            if (loading) {
+                btn.disabled = true;
+                btn._orig = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Saving…';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = btn._orig || 'Save';
+            }
+        }
+
+        function resetMealForm() {
+            ['mealType', 'mealName', 'mealTime', 'mealCalories', 'mealNotes'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.tagName === 'SELECT' ? el.selectedIndex = 0 : el.value = ''; }
+            });
+            document.getElementById('mealDate').value = TODAY;
+            document.querySelectorAll('#mealCategories .category-tag').forEach(t => {
+                t.classList.remove('selected');
+                t.querySelector('input').checked = false;
+            });
+        }
+
+        function resetExerciseForm() {
+            ['exerciseType', 'exerciseName', 'exerciseDuration', 'exerciseTime', 'exerciseCalories', 'exerciseNotes'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.tagName === 'SELECT' ? el.selectedIndex = 0 : el.value = ''; }
+            });
+            document.getElementById('exerciseDate').value      = TODAY;
+            document.getElementById('exerciseIntensity').value = 'moderate';
+        }
+
+        function resetSleepForm() {
+            document.getElementById('sleepDate').value           = TODAY;
+            document.getElementById('sleepBedtime').value        = '';
+            document.getElementById('sleepWakeTime').value       = '';
+            document.getElementById('sleepQuality').value        = '';
+            document.getElementById('sleepNotes').value          = '';
+            document.getElementById('sleepDurationDisplay').value= '';
+        }
+
+        function fmtDate(d) {
+            if (!d) return '—';
+            return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+        }
+
+        function fmtDateTime(dt) {
+            if (!dt) return '—';
+            return new Date(dt).toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+        }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function emptyState(icon, text, hint) {
+            return `<div class="empty-state">
+                <div class="empty-state-icon">${icon}</div>
+                <p class="empty-state-text">${text}</p>
+                <p class="empty-state-hint">${hint}</p>
+            </div>`;
+        }
+
+        function errorState() {
+            return emptyState('⚠️', 'Could not load data', 'Check your connection or login status');
         }
     </script>
 </body>
