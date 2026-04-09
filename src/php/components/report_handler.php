@@ -46,6 +46,7 @@ if ($method === 'POST') {
     $report_name   = trim($_POST['report_name']   ?? '');
     $report_type   = trim($_POST['report_type']   ?? 'other');
     $hospital_name = trim($_POST['hospital_name'] ?? '');
+    $doctor_name   = trim($_POST['doctor_name']   ?? '');
     $notes         = trim($_POST['notes']         ?? '');
     $report_date   = trim($_POST['report_date']   ?? date('Y-m-d'));
     $status        = 'uploaded';
@@ -97,8 +98,8 @@ if ($method === 'POST') {
         $file_size      = $size;
         $file_type_mime = $mime;
     } else {
-        // No file — allow metadata-only entry (pending status)
-        $status    = 'pending';
+        // No file — still allow metadata-only entry (marked as uploaded as requested)
+        $status    = 'uploaded';
         $file_name = 'No file attached';
         $file_path = '';
     }
@@ -106,25 +107,41 @@ if ($method === 'POST') {
     try {
         $stmt = $pdo->prepare(
             "INSERT INTO patient_reports
-             (patient_id, report_name, report_type, hospital_name, file_name, file_path,
+             (patient_id, report_name, report_type, hospital_name, doctor_name, file_name, file_path,
               file_size, file_type, status, notes, report_date)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->execute([
-            $patient_id, $report_name, $report_type, $hospital_name,
+            $patient_id, $report_name, $report_type, $hospital_name, $doctor_name,
             $file_name, $file_path, $file_size, $file_type_mime,
             $status, $notes, $report_date
         ]);
+        $report_id = $pdo->lastInsertId();
+
+        // ── SYNC: If it's a lab result, also add to patient_labresults table ──
+        if ($report_type === 'lab') {
+            $labStmt = $pdo->prepare(
+                "INSERT INTO patient_labresults 
+                 (patient_id, report_id, test_name, test_type, hospital_name, report_date, file_path, status)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            $labStmt->execute([
+                $patient_id, $report_id, $report_name, 'General Lab Test', 
+                $hospital_name, $report_date, $file_path, 
+                ($status === 'pending' ? 'pending' : 'received')
+            ]);
+        }
 
         echo json_encode([
             'status'  => 'success',
             'message' => 'Report uploaded successfully!',
-            'id'      => $pdo->lastInsertId(),
+            'id'      => $report_id,
             'report'  => [
-                'id'            => $pdo->lastInsertId(),
+                'id'            => $report_id,
                 'report_name'   => $report_name,
                 'report_type'   => $report_type,
                 'hospital_name' => $hospital_name,
+                'doctor_name'   => $doctor_name,
                 'status'        => $status,
                 'report_date'   => $report_date,
                 'file_name'     => $file_name,
@@ -157,17 +174,42 @@ if ($method === 'POST') {
         $where .= " AND MONTH(report_date) = MONTH(CURDATE()) AND YEAR(report_date) = YEAR(CURDATE())";
     } elseif ($filter === 'this-year') {
         $where .= " AND YEAR(report_date) = YEAR(CURDATE())";
+    } elseif ($filter === 'lab') {
+        // Broad list of lab-type tests
+        $lab_types = [
+            'LH (Luteinizing Hormone) Test', 
+            'FSH (Follicle Stimulating Hormone) Test',
+            'Testosterone Level Test', 
+            'Prolactin Test',
+            'Thyroid Function Test (TSH, T3, T4)',
+            'Fasting Blood Sugar (FBS)', 
+            'Oral Glucose Tolerance Test (OGTT)',
+            'HbA1c Test',
+            'Lipid Profile (Cholesterol Test)',
+            'lab' // support legacy
+        ];
+        $where .= " AND report_type IN (" . implode(',', array_fill(0, count($lab_types), '?')) . ")";
+        $params = array_merge($params, $lab_types);
+    } elseif ($filter === 'scan') {
+        $scan_types = ['Pelvic Ultrasound Scan', 'scan', 'imaging', 'Ultrasound'];
+        $where .= " AND report_type IN (" . implode(',', array_fill(0, count($scan_types), '?')) . ")";
+        $params = array_merge($params, $scan_types);
+    } elseif ($filter !== 'all') {
+        // Fallback for specific categories like 'prescription', 'other' 
+        // or specific test names like 'LH (Luteinizing Hormone) Test'
+        $where .= " AND report_type = ?";
+        $params[] = $filter;
     }
 
     // limit=0 means "count all" — no LIMIT clause
     $limitClause = ($limit > 0) ? "LIMIT ?" : "";
 
     try {
-        $sql  = "SELECT id, report_name, report_type, hospital_name, file_name, file_path,
-                        file_size, file_type, status, notes, report_date, uploaded_at
+        $sql  = "SELECT id, report_name, report_type, hospital_name, doctor_name, file_name, file_path,
+                        file_size, file_type, status, notes, report_date
                  FROM patient_reports
                  $where
-                 ORDER BY report_date DESC, uploaded_at DESC
+                 ORDER BY report_date DESC
                  $limitClause";
         $stmt = $pdo->prepare($sql);
         if ($limit > 0) {
@@ -176,15 +218,27 @@ if ($method === 'POST') {
         $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
-        // Total count (unfiltered) for sidebar badge
-        $countStmt = $pdo->prepare("SELECT COUNT(*) as total FROM patient_reports WHERE patient_id = ?");
-        $countStmt->execute([$patient_id]);
-        $total = $countStmt->fetch()['total'];
+        // Statistics counts
+        $totalStmt = $pdo->prepare("SELECT COUNT(*) as c FROM patient_reports WHERE patient_id = ?");
+        $totalStmt->execute([$patient_id]);
+        $total = $totalStmt->fetch()['c'];
+
+        $monthStmt = $pdo->prepare("SELECT COUNT(*) as c FROM patient_reports WHERE patient_id = ? AND MONTH(report_date) = MONTH(CURDATE()) AND YEAR(report_date) = YEAR(CURDATE())");
+        $monthStmt->execute([$patient_id]);
+        $month = $monthStmt->fetch()['c'];
+
+        $yearStmt = $pdo->prepare("SELECT COUNT(*) as c FROM patient_reports WHERE patient_id = ? AND YEAR(report_date) = YEAR(CURDATE())");
+        $yearStmt->execute([$patient_id]);
+        $year = $yearStmt->fetch()['c'];
 
         echo json_encode([
             'status' => 'success',
             'data'   => $rows,
-            'total'  => (int)$total
+            'stats'  => [
+                'total' => (int)$total,
+                'month' => (int)$month,
+                'year'  => (int)$year
+            ]
         ]);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
@@ -212,9 +266,13 @@ if ($method === 'POST') {
             exit;
         }
 
-        // Delete from DB
+        // Delete from DB (patient_reports)
         $d = $pdo->prepare("DELETE FROM patient_reports WHERE id = ? AND patient_id = ?");
         $d->execute([$report_id, $patient_id]);
+
+        // ── SYNC: Also delete from patient_labresults if linked ──
+        $d2 = $pdo->prepare("DELETE FROM patient_labresults WHERE report_id = ? AND patient_id = ?");
+        $d2->execute([$report_id, $patient_id]);
 
         // Remove physical file if it exists
         if ($row['file_path']) {

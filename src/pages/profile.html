@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <style>
         .profile-container {
-            max-width: 900px;
-            margin: 0 auto;
+            width: 100%;
         }
 
         .profile-header {
@@ -324,8 +323,6 @@
                     <p id="topbarDate">Manage your personal and medical information</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="topbar-icon-btn">🔔</button>
-                    <button class="topbar-icon-btn">💬</button>
                 </div>
             </div>
 
@@ -419,13 +416,48 @@
                         </form>
                     </section>
 
-                    <!-- Actions -->
+                    <!-- Data Management -->
                     <section class="profile-section reveal">
-                        <div class="profile-section-title"><i>⚙️</i> Account Actions</div>
+                        <div class="profile-section-title"><i>📂</i> Data & Portability</div>
+                        <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
+                            Download a copy of your personal health data or export a medical summary for your records.
+                        </p>
                         <div class="account-actions-list">
-                            <button class="action-btn" style="color:var(--purple-primary);" onclick="Toast.info('Preparing data download...')"><i>📥</i> Download My Data (JSON)</button>
-                            <button class="action-btn" style="color:var(--purple-primary);" onclick="location.href='reports.html'"><i>📤</i> Export Medical Reports</button>
-                            <button class="action-btn danger" onclick="confirmDeactivation()"><i>⛔</i> Deactivate Account</button>
+                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadJSONData()">
+                                <i>📥</i> 
+                                <div style="display:grid;">
+                                    <span class="setting-name">Download My Data (JSON)</span>
+                                    <span class="setting-description">Full archive of symptoms, cycle, and lifestyle logs.</span>
+                                </div>
+                            </button>
+                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="exportMedicalSummary()">
+                                <i>📄</i> 
+                                <div style="display:grid;">
+                                    <span class="setting-name">Export Medical Summary (CSV)</span>
+                                    <span class="setting-description">Structured list of all uploaded lab reports and scans.</span>
+                                </div>
+                            </button>
+                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadHealthDocument()">
+                                <i>📝</i> 
+                                <div style="display:grid;">
+                                    <span class="setting-name">Personalized Health Document (TXT)</span>
+                                    <span class="setting-description">A human-readable report with your name, symptoms, and medical background.</span>
+                                </div>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Danger Zone -->
+                    <section class="profile-section reveal" style="border-color: #fca5a5; background: #fff5f5;">
+                        <div class="profile-section-title" style="color: #ef4444; border-bottom-color: #fca5a5;"><i>⚠️</i> Danger Zone</div>
+                        <div class="account-actions-list">
+                            <button class="action-btn danger" onclick="confirmDeactivation()">
+                                <i>⛔</i> 
+                                <div style="display:grid;">
+                                    <span class="setting-name">Deactivate Account</span>
+                                    <span class="setting-description">Temporarily disable your profile and visibility.</span>
+                                </div>
+                            </button>
                         </div>
                     </section>
                 </div>
@@ -461,9 +493,12 @@
             const avatarEl = document.getElementById('profileAvatar');
             const sideAv = document.getElementById('sideAvatar');
             
-            if (user.avatar) {
-                avatarEl.innerHTML = `<img src="../../${user.avatar}" alt="Profile">`;
-                sideAv.innerHTML = `<img src="../../${user.avatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
+            const displayAvatar = user.avatar_base64 || user.avatar;
+
+            if (displayAvatar) {
+                const prefix = user.avatar_base64 ? '' : '../../';
+                avatarEl.innerHTML = `<img src="${prefix}${displayAvatar}" alt="Profile">`;
+                sideAv.innerHTML = `<img src="${prefix}${displayAvatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
             } else {
                 avatarEl.textContent = initials;
                 sideAv.textContent = initials;
@@ -522,9 +557,13 @@
             // Avatar
             const avatarEl = document.getElementById('profileAvatar');
             const sideAv   = document.getElementById('sideAvatar');
-            if (p.avatar) {
-                avatarEl.innerHTML = `<img src="../../${p.avatar}" alt="Profile">`;
-                sideAv.innerHTML   = `<img src="../../${p.avatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
+            
+            const displayAvatar = user.avatar_base64 || p.avatar;
+
+            if (displayAvatar) {
+                const prefix = user.avatar_base64 ? '' : '../../';
+                avatarEl.innerHTML = `<img src="${prefix}${displayAvatar}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+                sideAv.innerHTML   = `<img src="${prefix}${displayAvatar}" alt="P" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
             } else {
                 const initial = p.full_name.charAt(0).toUpperCase();
                 avatarEl.textContent = initial;
@@ -590,50 +629,42 @@
             location.reload(); 
         }
 
-        async function uploadAvatar(e) {
+        function uploadAvatar(e) {
             const file = e.target.files[0];
             if (!file) return;
-            alert('File Selected: ' + file.name);
 
-            const formData = new FormData();
-            formData.append('action', 'update_avatar');
-            formData.append('patient_id', user.id);
-            formData.append('avatar', file);
-
-            Toast.info('Uploading image...');
-
-            alert('Starting Fetch...');
-            try {
-                const res = await fetch(API.getPHPPath('components/profile_handler.php'), {
-                    method: 'POST',
-                    body: formData
-                });
-                const text = await res.text();
-                // DEBUG ALERT: EVERYTHING
-                alert('Server Raw: ' + text);
-                
-                try {
-                    const json = JSON.parse(text);
-                    if (json.status === 'success') {
-                        // Update Local Session
-                        const updatedUser = { ...user, avatar: json.avatar };
-                        localStorage.setItem('pcos_user', JSON.stringify(updatedUser));
-                        
-                        // Show the SUCCESS BOX instead of just a toast
-                        toggleSuccessModal(true, 'Your profile picture has been updated perfectly and is now active!');
-                    } else {
-                        Toast.error(json.message);
-                    }
-                } catch(e) {
-                    console.error('JSON Parse Error:', text);
-                    alert('JSON Crash: ' + text);
-                    Toast.error('Server error during image processing.');
-                }
-            } catch (err) { 
-                console.error('Fetch Error:', err);
-                alert('Fetch CRASH: ' + err);
-                Toast.error('Upload failed. Check connection.'); 
+            // Check file size (limit to 2MB for localStorage safety)
+            if (file.size > 2 * 1024 * 1024) {
+                Toast.error('Image too large. Please select an image under 2MB.');
+                return;
             }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64Image = event.target.result;
+                
+                // Update Local Session
+                const updatedUser = { ...user, avatar_base64: base64Image };
+                localStorage.setItem('pcos_user', JSON.stringify(updatedUser));
+                
+                // Update UI immediately
+                const avatarEl = document.getElementById('profileAvatar');
+                const sideAv   = document.getElementById('sideAvatar');
+                
+                const imgHtml = `<img src="${base64Image}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+                avatarEl.innerHTML = imgHtml;
+                if (sideAv) {
+                    sideAv.innerHTML = `<img src="${base64Image}" alt="P" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                }
+                
+                toggleSuccessModal(true, 'Your profile picture has been updated locally and is now visible across your dashboard!');
+            };
+            
+            reader.onerror = function() {
+                Toast.error('Failed to process image.');
+            };
+            
+            reader.readAsDataURL(file);
         }
 
         async function updatePassword(e) {
@@ -668,6 +699,52 @@
 
         async function confirmDeactivation() {
             toggleDeactivateModal(true);
+        }
+
+        function downloadJSONData() {
+            if (!user || !user.id) return;
+            Toast.info('Preparing your secure data vault...');
+            const url = API.getPHPPath('components/export_handler.php?patient_id=' + user.id);
+            window.location.href = url;
+        }
+
+        async function exportMedicalSummary() {
+            if (!user || !user.id) return;
+            Toast.info('Generating medical summary...');
+            try {
+                const res = await fetch(API.getPHPPath('components/report_handler.php?patient_id=' + user.id + '&filter=all'));
+                const json = await res.json();
+                
+                if (json.status === 'success' && json.data.length > 0) {
+                    // Create CSV
+                    let csv = 'Report Name,Type,Hospital/Clinic,Date,Status\n';
+                    json.data.forEach(r => {
+                        csv += `"${r.report_name}","${r.report_type}","${r.hospital_name || ''}","${r.report_date}","${r.status}"\n`;
+                    });
+                    
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.setAttribute('hidden', '');
+                    a.setAttribute('href', url);
+                    a.setAttribute('download', `PCOS_Medical_Summary_${new Date().toISOString().split('T')[0]}.csv`);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    Toast.success('✓ Medical summary exported!');
+                } else {
+                    Toast.warn('No reports found to export.');
+                }
+            } catch (err) {
+                Toast.error('Export failed. Check connection.');
+            }
+        }
+
+        function downloadHealthDocument() {
+            if (!user || !user.id) return;
+            Toast.info('Generating your personalized health document...');
+            const url = API.getPHPPath('components/document_export_handler.php?patient_id=' + user.id);
+            window.location.href = url;
         }
 
         async function executeDeactivation() {

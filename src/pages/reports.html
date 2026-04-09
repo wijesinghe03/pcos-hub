@@ -5,360 +5,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reports — PCOS Care Hub</title>
-    <meta name="description" content="Upload and manage your medical reports on PCOS Care Hub.">
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <style>
-        /* ── Filter Tabs ─────────────────────────────────────── */
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .filter-tab {
-            padding: 9px 20px;
-            border: 2px solid var(--bg-light);
-            background: white;
-            border-radius: 24px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.86rem;
-            color: var(--text-light);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .filter-tab:hover {
-            border-color: var(--purple-primary);
-            color: var(--purple-primary);
-            background: rgba(147,112,219,0.05);
-        }
-        .filter-tab.active {
-            background: var(--purple-primary);
-            color: white;
-            border-color: var(--purple-primary);
-            box-shadow: 0 4px 14px rgba(147,112,219,0.3);
-        }
-        .filter-count {
-            background: rgba(255,255,255,0.25);
-            padding: 1px 7px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 800;
-        }
-        .filter-tab:not(.active) .filter-count {
-            background: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        /* ── Stats Cards ─────────────────────────────────────── */
         .report-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 14px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
         .rstat {
-            background: white;
-            border: 2px solid var(--bg-light);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            transition: border-color 0.2s;
-        }
-        .rstat:hover { border-color: var(--purple-primary); }
-        .rstat-num   { font-size: 2rem; font-weight: 800; color: var(--text-dark); line-height: 1; }
-        .rstat-label { font-size: 0.78rem; color: var(--text-light); margin-top: 5px; }
-        .rstat.highlight { border-color: var(--purple-primary); background: rgba(147,112,219,0.05); }
-        .rstat.highlight .rstat-num { color: var(--purple-primary); }
-
-        /* ── Upload Zone ─────────────────────────────────────── */
-        .upload-zone {
-            background: rgba(147,112,219,0.04);
-            border: 2px dashed rgba(147,112,219,0.5);
-            border-radius: 14px;
-            padding: 32px 24px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.25s;
-            margin-bottom: 24px;
-        }
-        .upload-zone:hover, .upload-zone.drag-over {
-            background: rgba(147,112,219,0.10);
-            border-color: var(--purple-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(147,112,219,0.15);
-        }
-        .upload-zone-icon { font-size: 2.4rem; margin-bottom: 8px; }
-        .upload-zone-title { font-weight: 700; font-size: 0.97rem; color: var(--text-dark); margin-bottom: 4px; }
-        .upload-zone-hint  { font-size: 0.82rem; color: var(--text-light); margin-bottom: 14px; }
-        .upload-zone-btn {
-            display: inline-block;
-            padding: 10px 26px;
-            background: var(--purple-primary);
-            color: white;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
-            transition: opacity 0.2s, transform 0.2s;
-        }
-        .upload-zone-btn:hover { opacity: 0.88; transform: scale(1.03); }
-
-        /* ── Search ──────────────────────────────────────────── */
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 2px solid var(--bg-light);
-            border-radius: 10px;
-            padding: 9px 16px;
-            background: white;
-            margin-bottom: 16px;
-            transition: border-color 0.2s;
-        }
-        .search-box:focus-within { border-color: var(--purple-primary); }
-        .search-box input {
-            border: none; outline: none; flex: 1;
-            font-size: 0.93rem; font-family: inherit;
-            background: transparent;
-        }
-
-        /* ── Report Cards ────────────────────────────────────── */
-        .reports-list { display: grid; gap: 12px; }
-        .report-card {
-            background: white;
-            border: 2px solid var(--bg-light);
-            border-radius: 12px;
-            padding: 16px 20px;
-            display: grid;
-            grid-template-columns: 50px 1fr auto;
-            gap: 14px;
-            align-items: center;
+            background: white; 
+            border: 2px solid var(--purple-primary);
+            border-radius: 14px; padding: 24px; text-align: center;
             transition: all 0.2s;
-            animation: slideIn 0.3s ease;
         }
-        @keyframes slideIn {
-            from { opacity:0; transform:translateY(8px); }
-            to   { opacity:1; transform:translateY(0); }
-        }
-        .report-card:hover {
-            border-color: var(--purple-primary);
-            box-shadow: 0 6px 24px rgba(147,112,219,0.12);
-            transform: translateY(-1px);
-        }
-        .report-type-icon {
-            width: 50px; height: 50px;
-            border-radius: 12px;
-            display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-        .rtype-lab          { background: rgba(76,175,80,0.12); }
-        .rtype-scan         { background: rgba(33,150,243,0.12); }
-        .rtype-prescription { background: rgba(255,152,0,0.12); }
-        .rtype-imaging      { background: rgba(156,39,176,0.12); }
-        .rtype-other        { background: rgba(147,112,219,0.12); }
+        .rstat:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(147,112,219,0.15); }
+        .rstat.highlight { background: white; }
+        .rstat-num { font-size: 2.2rem; font-weight: 800; color: var(--purple-primary); margin-bottom: 4px; }
+        .rstat-label { font-size: 0.95rem; font-weight: 700; color: var(--text-light); }
 
-        .report-name  { font-weight: 700; font-size: 0.97rem; color: var(--text-dark); margin-bottom: 6px; }
-        .report-meta  {
-            display: flex; gap: 12px; flex-wrap: wrap;
-            font-size: 0.81rem; color: var(--text-light); align-items: center;
+        .reports-list { display: grid; gap: 16px; margin-top: 20px; }
+        .report-card {
+            background: white; border: 2px solid var(--bg-light);
+            border-radius: 14px; padding: 22px 28px;
+            display: grid; grid-template-columns: 60px 1fr auto;
+            gap: 20px; align-items: center; transition: all 0.3s;
         }
-        .report-notes { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; font-style: italic; }
-
-        .report-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
-        .status-pill {
-            padding: 4px 12px; border-radius: 20px;
-            font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+        .report-card:hover { border-color: var(--purple-primary); box-shadow: 0 10px 30px rgba(147,112,219,0.12); }
+        
+        .report-icon-box {
+            width: 60px; height: 60px; background: var(--bg-light);
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.8rem;
         }
-        .pill-uploaded    { background: rgba(76,175,80,0.12);  color: #2e7d32; }
-        .pill-pending     { background: rgba(255,193,7,0.14);  color: #e65100; }
-        .pill-reviewed    { background: rgba(33,150,243,0.12); color: #1565c0; }
-
-        .report-btns { display: flex; gap: 6px; }
-        .btn-view, .btn-del {
-            padding: 6px 14px; border-radius: 7px; font-size: 0.78rem;
+        .report-name { font-weight: 800; font-size: 1.1rem; color: var(--text-dark); margin-bottom: 4px; }
+        .report-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.88rem; color: var(--text-light); }
+        .report-meta span { display: flex; align-items: center; gap: 6px; }
+        
+        .report-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .status-pill { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .pill-uploaded { background: rgba(76, 175, 80, 0.12); color: #2e7d32; }
+        .pill-pending  { background: rgba(255, 193, 7, 0.15); color: #e65100; }
+        
+        .report-btns { display: flex; gap: 8px; }
+        .btn-act {
+            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem;
             font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
         }
         .btn-view { background: rgba(147,112,219,0.1); color: var(--purple-primary); }
         .btn-view:hover { background: var(--purple-primary); color: white; }
-        .btn-del  { background: rgba(229,127,175,0.1); color: var(--pink-accent); }
-        .btn-del:hover  { background: var(--pink-accent); color: white; }
+        .btn-del { background: rgba(229,127,175,0.11); color: var(--pink-accent); }
+        .btn-del:hover { background: var(--pink-accent); color: white; }
 
-        /* ── Empty / Loading ─────────────────────────────────── */
-        .empty-state {
-            text-align: center; padding: 52px 24px;
-            color: var(--text-light); display: none;
-        }
-        .empty-icon { font-size: 3.8rem; margin-bottom: 14px; }
-        .empty-state h3 { color: var(--text-dark); margin-bottom: 8px; font-size: 1.1rem; }
-        .empty-state p  { margin-bottom: 18px; font-size: 0.9rem; }
-
-        .loading-state {
-            text-align: center; padding: 40px;
-            color: var(--text-light); font-size: 0.9rem;
-        }
-        .spinner {
-            width: 36px; height: 36px; border: 3px solid var(--bg-light);
-            border-top-color: var(--purple-primary); border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 12px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ── Upload Modal ────────────────────────────────────── */
         .modal-overlay {
             display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.55); z-index: 300;
-            align-items: center; justify-content: center; padding: 16px;
+            background: rgba(0,0,0,0.55); z-index: 1000;
+            align-items: center; justify-content: center; padding: 20px;
+            backdrop-filter: blur(5px);
         }
         .modal-overlay.open { display: flex; }
         .modal-box {
-            background: white; border-radius: 18px;
-            padding: 32px; width: 100%; max-width: 540px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.22);
-            animation: popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
-            max-height: 90vh; overflow-y: auto;
+            background: white; border-radius: 24px; padding: 40px;
+            width: 100%; max-width: 540px; box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+            position: relative; animation: popIn 0.3s ease;
         }
-        @keyframes popIn {
-            from { transform: scale(0.9) translateY(20px); opacity: 0; }
-            to   { transform: scale(1)   translateY(0);    opacity: 1; }
-        }
-        .modal-hdr {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 24px;
-        }
-        .modal-title { font-size: 1.15rem; font-weight: 800; color: var(--text-dark); }
-        .modal-close {
-            background: var(--bg-light); border: none; border-radius: 50%;
-            width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
-        }
-        .modal-close:hover { background: rgba(229,127,175,0.2); color: var(--pink-accent); }
-        .mfg { margin-bottom: 15px; }
-        .mfg label {
-            display: block; margin-bottom: 6px;
-            font-weight: 700; font-size: 0.87rem; color: var(--text-dark);
-        }
+        @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity:1; } }
+        
+        .mfg { margin-bottom: 20px; }
+        .mfg label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--text-dark); }
         .mfg input, .mfg select, .mfg textarea {
-            width: 100%; padding: 10px 13px;
-            border: 2px solid var(--bg-light); border-radius: 9px;
-            font-family: inherit; font-size: 0.91rem; transition: border-color 0.2s;
-            box-sizing: border-box;
+            width: 100%; padding: 14px; border: 2px solid var(--bg-light);
+            border-radius: 12px; font-family: inherit; font-size: 1rem;
         }
-        .mfg input:focus, .mfg select:focus, .mfg textarea:focus {
-            outline: none; border-color: var(--purple-primary);
-            box-shadow: 0 0 0 3px rgba(147,112,219,0.12);
-        }
-        .mfg textarea { resize: vertical; min-height: 68px; }
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .file-drop-area {
-            border: 2px dashed var(--bg-light); border-radius: 9px;
-            padding: 20px; text-align: center; cursor: pointer;
-            transition: all 0.2s; background: rgba(147,112,219,0.02);
-        }
-        .file-drop-area:hover { border-color: var(--purple-primary); background: rgba(147,112,219,0.05); }
-        .file-drop-area.has-file { border-color: var(--purple-primary); background: rgba(147,112,219,0.06); }
-        .file-info {
-            display: flex; align-items: center; gap: 10px;
-            margin-top: 10px; padding: 10px 14px;
-            background: rgba(147,112,219,0.07); border-radius: 8px;
-            font-size: 0.85rem; display: none;
-        }
-        .file-info.show { display: flex; }
-        .file-info-name { flex: 1; font-weight: 600; word-break: break-all; }
-        .file-info-size { color: var(--text-light); white-space: nowrap; }
-        .modal-footer { display: flex; gap: 10px; margin-top: 22px; }
-        .modal-footer .btn { flex: 1; }
-
-        @media (max-width: 640px) {
-            .report-card { grid-template-columns: 40px 1fr; }
-            .report-actions { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center; }
-            .two-col { grid-template-columns: 1fr; }
-            .filter-tab { padding: 7px 12px; font-size: 0.82rem; }
-        }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     </style>
 </head>
 
 <body>
-    <style>
-        #page-loader { display: none !important; }
-        .dashboard-layout { display: grid !important; }
-    </style>
-    <div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
-
-    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
-
-    <!-- ════════════ UPLOAD MODAL ════════════ -->
-    <div class="modal-overlay" id="uploadModal">
-        <div class="modal-box">
-            <div class="modal-hdr">
-                <div class="modal-title">📤 Upload Medical Report</div>
-                <button class="modal-close" id="modalClose" title="Close">✕</button>
-            </div>
-            <form id="uploadForm">
-                <div class="two-col">
-                    <div class="mfg">
-                        <label for="inp_name">Report Name *</label>
-                        <input type="text" id="inp_name" placeholder="e.g. Blood Test Results" required>
-                    </div>
-                    <div class="mfg">
-                        <label for="inp_type">Report Type *</label>
-                        <select id="inp_type" required>
-                            <option value="">Select type…</option>
-                            <option value="lab">🧪 Lab Result</option>
-                            <option value="scan">🔬 Scan / Ultrasound</option>
-                            <option value="prescription">💊 Prescription</option>
-                            <option value="imaging">🩻 X-Ray / MRI</option>
-                            <option value="other">📄 Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="two-col">
-                    <div class="mfg">
-                        <label for="inp_hospital">Hospital / Clinic</label>
-                        <input type="text" id="inp_hospital" placeholder="e.g. City Hospital">
-                    </div>
-                    <div class="mfg">
-                        <label for="inp_date">Report Date *</label>
-                        <input type="date" id="inp_date" required>
-                    </div>
-                </div>
-                <div class="mfg">
-                    <label>Attach File <span style="color:var(--text-light);font-weight:400">(PDF, JPG, PNG — max 10 MB)</span></label>
-                    <div class="file-drop-area" id="fileDropArea" onclick="document.getElementById('inp_file').click()">
-                        <div style="font-size:1.8rem;margin-bottom:6px">📎</div>
-                        <div style="font-weight:600;font-size:0.88rem;margin-bottom:3px">Click to choose file</div>
-                        <div style="font-size:0.78rem;color:var(--text-light)">or drag & drop here</div>
-                    </div>
-                    <input type="file" id="inp_file" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
-                    <div class="file-info" id="fileInfo">
-                        <span id="fi_icon" style="font-size:1.4rem">📄</span>
-                        <span class="file-info-name" id="fi_name"></span>
-                        <span class="file-info-size" id="fi_size"></span>
-                        <button type="button" onclick="clearFile()" style="background:none;border:none;cursor:pointer;color:var(--pink-accent);font-size:1rem">✕</button>
-                    </div>
-                </div>
-                <div class="mfg">
-                    <label for="inp_notes">Notes <span style="color:var(--text-light);font-weight:400">(optional)</span></label>
-                    <textarea id="inp_notes" placeholder="Any observations, doctor comments, or additional context…"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submitBtn">✓ Save Report</button>
-                    <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="dashboard-layout">
-        <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <a href="index.html" class="sidebar-logo">
                 <div class="sidebar-logo-icon">♥</div>
@@ -367,20 +92,16 @@
             <div class="sidebar-profile">
                 <div class="sidebar-avatar" id="sidebarAvatar">A</div>
                 <div>
-                    <div class="sidebar-name" id="sidebarName">Patient</div>
+                    <div class="sidebar-name" id="sidebarName">Patient Name</div>
                     <div class="sidebar-role">Patient</div>
                 </div>
-                <i>›</i>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Main</span>
                 <a class="sidebar-item" href="patient-dashboard.html"><i>🏠</i> Dashboard</a>
                 <a class="sidebar-item" href="track-symptoms.html"><i>📊</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html"><i>🩸</i> Menstrual Cycle</a>
-                <a class="sidebar-item active" href="reports.html">
-                    <i>📁</i> My Reports
-                    <span class="sidebar-badge" id="sidebarBadge">0</span>
-                </a>
+                <a class="sidebar-item active" href="reports.html"><i>📁</i> My Reports</a>
                 <a class="sidebar-item" href="lifestyle-log.html"><i>🥗</i> Lifestyle Log</a>
             </div>
             <div class="sidebar-section">
@@ -397,524 +118,305 @@
             </div>
         </aside>
 
-        <!-- MAIN -->
-        <main class="dash-main" id="mainContent">
-
-            <!-- Top bar -->
+        <main class="dash-main">
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2>My Reports</h2>
-                    <p id="dateDisplay">Loading…</p>
+                    <h2>My Medical Documents</h2>
+                    <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" id="openUploadBtn" style="white-space:nowrap;gap:6px">
-                        📤 Upload Report
-                    </button>
-                    <button class="topbar-icon-btn">🔔<span class="notif-dot"></span></button>
-                    <button class="topbar-icon-btn">💬</button>
-                </div>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="report-stats reveal">
-                <div class="rstat highlight">
-                    <div class="rstat-num" id="st_total">—</div>
-                    <div class="rstat-label">📋 Total Reports</div>
-                </div>
-                <div class="rstat">
-                    <div class="rstat-num" id="st_month">—</div>
-                    <div class="rstat-label">📅 This Month</div>
-                </div>
-                <div class="rstat">
-                    <div class="rstat-num" id="st_year">—</div>
-                    <div class="rstat-label">🗓 This Year</div>
-                </div>
-                <div class="rstat">
-                    <div class="rstat-num" id="st_pending">—</div>
-                    <div class="rstat-label">⏳ Pending</div>
-                </div>
-            </div>
-
-            <!-- Drop zone -->
-            <div class="upload-zone reveal" id="dropZone">
-                <div class="upload-zone-icon">📂</div>
-                <div class="upload-zone-title">Drop a file to upload instantly</div>
-                <p class="upload-zone-hint">PDF, JPG, PNG — max 10 MB</p>
-                <button type="button" class="upload-zone-btn" id="dropZoneBtn">📎 Browse Files</button>
-                <input type="file" id="dropFileInput" accept=".pdf,.jpg,.jpeg,.png" style="display:none">
-            </div>
-
-            <!-- Filter bar + Search -->
-            <div class="dash-panel reveal" style="padding:20px 24px">
-
-                <div class="search-box">
-                    <span style="font-size:1.1rem">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search by report name or hospital…">
-                    <button id="clearSearch" onclick="clearSearch()" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:1rem;display:none">✕</button>
-                </div>
-
-                <!-- Filter tabs — each click hits the DB -->
-                <div class="filter-bar">
-                    <button class="filter-tab active" data-filter="all"        id="tab_all">
-                        📋 All Reports <span class="filter-count" id="cnt_all">0</span>
-                    </button>
-                    <button class="filter-tab" data-filter="this-month" id="tab_month">
-                        📅 This Month <span class="filter-count" id="cnt_month">0</span>
-                    </button>
-                    <button class="filter-tab" data-filter="this-year"  id="tab_year">
-                        🗓 This Year <span class="filter-count" id="cnt_year">0</span>
-                    </button>
-                    <button class="filter-tab" data-filter="pending"    id="tab_pending">
-                        ⏳ Pending <span class="filter-count" id="cnt_pending">0</span>
-                    </button>
-                </div>
-
-                <!-- Loading -->
-                <div class="loading-state" id="loadingState">
-                    <div class="spinner"></div>
-                    Loading your reports…
-                </div>
-
-                <!-- Reports list -->
-                <div class="reports-list" id="reportsList" style="display:none"></div>
-
-                <!-- Empty state -->
-                <div class="empty-state" id="emptyState">
-                    <div class="empty-icon">📋</div>
-                    <h3>No reports found</h3>
-                    <p id="emptyMsg">Upload your first medical report to get started.</p>
                     <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Report</button>
                 </div>
+            </div>
 
+            <div class="report-stats">
+                <div class="rstat highlight" onclick="loadReports('all')" style="cursor:pointer;">
+                    <div class="rstat-num" id="st_total">0</div>
+                    <div class="rstat-label">Total Files</div>
+                </div>
+                <div class="rstat" onclick="loadReports('this-month')" style="cursor:pointer;">
+                    <div class="rstat-num" id="st_month">0</div>
+                    <div class="rstat-label">Added This Month</div>
+                </div>
+                <div class="rstat" onclick="loadReports('this-year')" style="cursor:pointer;">
+                    <div class="rstat-num" id="st_year">0</div>
+                    <div class="rstat-label">Added This Year</div>
+                </div>
+            </div>
+
+            <div class="dash-panel" style="padding:28px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; gap:20px;">
+                    <div style="flex:1; position:relative;">
+                        <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%); opacity:0.6;">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search by name or facility..." 
+                               style="width:100%; padding:14px 14px 14px 44px; border:2px solid var(--bg-light); border-radius:12px; font-size:1rem;">
+                    </div>
+                    <div style="min-width: 220px;">
+                        <select id="typeFilter" onchange="loadReports(this.value)" 
+                                style="width:100%; padding:14px; border:2px solid var(--purple-primary); border-radius:12px; font-weight:700; color:var(--text-dark); background:white; cursor:pointer;">
+                            <optgroup label="General View">
+                                <option value="all">All Documents</option>
+                                <option value="lab">All Lab Results</option>
+                                <option value="scan">All Scans</option>
+                            </optgroup>
+                            <optgroup label="Specific Lab Tests">
+                                <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
+                                <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
+                                <option value="Testosterone Level Test">Testosterone Level Test</option>
+                                <option value="Prolactin Test">Prolactin Test</option>
+                                <option value="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
+                                <option value="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
+                                <option value="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
+                                <option value="HbA1c Test">HbA1c Test</option>
+                                <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
+                            </optgroup>
+                            <optgroup label="Scans">
+                                <option value="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
+                            </optgroup>
+                            <optgroup label="Other">
+                                <option value="prescription">Prescription</option>
+                                <option value="other">Other</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="loadingState" style="text-align:center; padding: 60px; display:none;">
+                    <div class="spinner"></div>
+                    <p style="color:var(--text-light)">Accessing medical vault...</p>
+                </div>
+                
+                <div id="reportsList" class="reports-list"></div>
+
+                <div id="emptyState" style="display:none; text-align:center; padding:80px;">
+                    <div style="font-size:4.5rem; margin-bottom:24px;">📂</div>
+                    <h3 style="margin-bottom:10px;">No records found</h3>
+                    <p style="color:var(--text-light); margin-bottom:24px;">You haven't uploaded any reports in this category yet.</p>
+                    <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Your First File</button>
+                </div>
             </div>
         </main>
     </div>
 
-    <div class="toast-container" id="toast-container"></div>
+    <!-- UPLOAD MODAL -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-box">
+            <button onclick="closeUploadModal()" style="position:absolute; top:24px; right:24px; border:none; background:none; font-size:1.6rem; cursor:pointer; color:var(--text-light);">✕</button>
+            <h3 style="margin-bottom:28px; font-weight:800; color:var(--text-dark);">📤 Upload Document</h3>
+            <form id="uploadForm">
+                <div class="mfg">
+                    <label>Report Name *</label>
+                    <input type="text" name="report_name" placeholder="e.g. Thyroid Profile, Pelvic Scan" required>
+                </div>
+                <div class="two-col">
+                    <div class="mfg">
+                        <label>Report Type / Test *</label>
+                        <select name="report_type" required>
+                            <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
+                            <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
+                            <option value="Testosterone Level Test">Testosterone Level Test</option>
+                            <option value="Prolactin Test">Prolactin Test</option>
+                            <option value="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
+                            <option value="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
+                            <option value="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
+                            <option value="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
+                            <option value="HbA1c Test">HbA1c Test</option>
+                            <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
+                            <option value="prescription">Prescription</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mfg">
+                        <label>Date *</label>
+                        <input type="date" name="report_date" required>
+                    </div>
+                </div>
+                <div class="two-col">
+                    <div class="mfg">
+                        <label>Hospital / Clinic</label>
+                        <input type="text" name="hospital_name" placeholder="e.g. Apollo Hospital">
+                    </div>
+                    <div class="mfg">
+                        <label>Doctor Requested</label>
+                        <input type="text" name="doctor_name" placeholder="e.g. Dr. Silva">
+                    </div>
+                </div>
+                <div class="mfg">
+                    <label>Attach Report (PDF/Img)</label>
+                    <input type="file" name="report_file" accept=".pdf,.jpg,.jpeg,.png" style="padding:10px; border:2px dashed var(--bg-light); border-radius:10px; width:100%;">
+                </div>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:15px; font-weight:800; margin-top:10px;">✓ Save Medical Record</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal-overlay" id="deleteConfirmModal">
+        <div class="modal-box" style="max-width:420px; text-align:center;">
+            <div style="font-size:4rem; margin-bottom:24px;">🗑️</div>
+            <h3 style="margin-bottom:14px; font-weight:800; color:var(--text-dark);">Permanently Remove?</h3>
+            <p id="deleteMsg" style="color:var(--text-light); line-height:1.6; margin-bottom:32px;">Are you sure?</p>
+            <div style="display:flex; gap:14px;">
+                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex:1;">OK, Remove</button>
+                <button class="btn btn-ghost" onclick="closeDeleteModal()" style="flex:1; border:2px solid var(--purple-primary); color:var(--purple-primary); border-radius:12px; font-weight:700;">No, Back</button>
+            </div>
+        </div>
+    </div>
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-    // ════════════════════════════════════════════════════════
-    //   STATE
-    // ════════════════════════════════════════════════════════
-    const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
-    let currentFilter  = 'all';
-    let searchQuery    = '';
-    let filterCounts   = { all:0, 'this-month':0, 'this-year':0, pending:0 };
-
-    const TYPE_ICON = {
-        lab:'🧪', scan:'🔬', prescription:'💊', imaging:'🩻', other:'📄'
-    };
-
-    // ════════════════════════════════════════════════════════
-    //   BOOTSTRAP
-    // ════════════════════════════════════════════════════════
-    const dateEl = document.getElementById('dateDisplay');
-    if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB',
-        { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-
-    if (user) {
-        const sn = document.getElementById('sidebarName');
-        const sa = document.getElementById('sidebarAvatar');
-        if (sn) sn.textContent = user.name || 'Patient';
-        if (sa) sa.textContent = (user.name || 'P').charAt(0).toUpperCase();
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   HELPERS
-    // ════════════════════════════════════════════════════════
-    function formatSize(bytes) {
-        if (!bytes || bytes <= 0) return '';
-        if (bytes < 1024)       return bytes + ' B';
-        if (bytes < 1048576)    return (bytes/1024).toFixed(1) + ' KB';
-        return (bytes/1048576).toFixed(1) + ' MB';
-    }
-    function escHtml(str) {
-        const d = document.createElement('div');
-        d.textContent = str || '';
-        return d.innerHTML;
-    }
-    function showEl(id)  { const e=document.getElementById(id); if(e) e.style.display=''; }
-    function hideEl(id)  { const e=document.getElementById(id); if(e) e.style.display='none'; }
-    function blockEl(id) { const e=document.getElementById(id); if(e) e.style.display='block'; }
-
-    // ════════════════════════════════════════════════════════
-    //   LOAD REPORTS FROM DB (filter hits server)
-    // ════════════════════════════════════════════════════════
-    async function loadReports(filter) {
-        if (!user) { blockEl('emptyState'); hideEl('loadingState'); return; }
-
-        currentFilter = filter || 'all';
-
-        // Show spinner, hide list/empty
-        blockEl('loadingState');
-        hideEl('reportsList');
-        hideEl('emptyState');
-
-        const params = new URLSearchParams({ filter: currentFilter, limit: 200 });
-        if (user.id)    params.set('patient_id', user.id);
-        if (user.email) params.set('patient_email', user.email);
-
-        try {
-            const res  = await fetch(API.getPHPPath('components/report_handler.php') + '?' + params);
-            const json = await res.json();
-
-            hideEl('loadingState');
-
-            if (json.status === 'success') {
-                renderReports(json.data, json.total);
-            } else {
-                blockEl('emptyState');
-                document.getElementById('emptyMsg').textContent = json.message || 'Could not load reports.';
-            }
-        } catch(e) {
-            hideEl('loadingState');
-            blockEl('emptyState');
-            document.getElementById('emptyMsg').textContent = 'Network error. Please try again.';
-        }
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   LOAD ALL COUNTS (for filter badges + stat cards)
-    // ════════════════════════════════════════════════════════
-    async function loadCounts() {
-        if (!user) return;
-        const filters = ['all', 'this-month', 'this-year', 'pending'];
-        const base = API.getPHPPath('components/report_handler.php');
-
-        const makeParams = (f) => {
-            const p = new URLSearchParams({ filter: f, limit: 0 });
-            if (user.id)    p.set('patient_id', user.id);
-            if (user.email) p.set('patient_email', user.email);
-            return p;
+        const user = Auth.getUser();
+        let reportsData = [];
+        const TYPE_ICON = { 
+            'Pelvic Ultrasound Scan': '🔬',
+            'LH (Luteinizing Hormone) Test': '🧪',
+            'FSH (Follicle Simulating Hormone) Test': '🧪',
+            'Testosterone Level Test': '🧪',
+            'Prolactin Test': '🧪',
+            'Thyroid Function Test (TSH, T3, T4)': '🧪',
+            'Fasting Blood Sugar (FBS)': '🩸',
+            'Oral Glucose Tolerance Test (OGTT)': '🩸',
+            'HbA1c Test': '🩸',
+            'Lipid Profile (Cholesterol Test)': '🩸',
+            'prescription': '💊',
+            'scan': '🔬',
+            'lab': '🧪'
         };
 
-        try {
-            const results = await Promise.all(
-                filters.map(f => fetch(base + '?' + makeParams(f)).then(r => r.json()))
-            );
-            filters.forEach((f, i) => {
-                const count = results[i].status === 'success' ? results[i].data.length : 0;
-                filterCounts[f] = count;
-            });
-            updateCountBadges();
-        } catch(e) { /* silent */ }
-    }
+        function renderReports(rows) {
+            const list = document.getElementById('reportsList');
+            const empty = document.getElementById('emptyState');
+            if (!rows || rows.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+            list.innerHTML = rows.map(r => {
+                const dateStr = r.report_date ? new Date(r.report_date).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A';
+                const pillClass = r.status === 'pending' ? 'pill-pending' : 'pill-uploaded';
+                let actionBtns = '';
+                if (r.file_path) {
+                    actionBtns = `
+                        <button class="btn-act btn-view" onclick="viewReport('${escHtml(r.file_path)}')">👁 View</button>
+                        <button class="btn-act btn-view" onclick="downloadReport('${escHtml(r.file_path)}', '${escHtml(r.report_name)}')">⬇ Download</button>
+                    `;
+                }
+                actionBtns += `<button class="btn-act btn-del" onclick="deleteReport(${r.id}, '${escHtml(r.report_name)}')">🗑 Remove</button>`;
+                return `
+                    <div class="report-card">
+                        <div class="report-icon-box">${TYPE_ICON[r.report_type] || '📄'}</div>
+                        <div class="report-info">
+                            <div class="report-name">${escHtml(r.report_name)}</div>
+                            <div class="report-meta">
+                                <span>🏥 ${escHtml(r.hospital_name || 'Clinic')}</span>
+                                ${r.doctor_name ? `<span>👨‍⚕️ ${escHtml(r.doctor_name)}</span>` : ''}
+                                <span>📅 ${dateStr}</span>
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--purple-primary); font-weight: 700; margin-top: 4px;">
+                                ${escHtml(r.report_type)}
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <span class="status-pill ${pillClass}">${r.status.toUpperCase()}</span>
+                            <div class="report-btns">${actionBtns}</div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
 
-    function updateCountBadges() {
-        const idMap = { 'all':'cnt_all', 'this-month':'cnt_month', 'this-year':'cnt_year', 'pending':'cnt_pending' };
-        Object.entries(idMap).forEach(([f, id]) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = filterCounts[f] || 0;
+        async function loadReports(filter = 'all') {
+            if (!user) return;
+            const loader = document.getElementById('loadingState'), list = document.getElementById('reportsList'), empty = document.getElementById('emptyState');
+            list.style.display = 'none'; loader.style.display = 'block'; empty.style.display = 'none';
+            try {
+                const params = new URLSearchParams({ filter, patient_id: user.id, patient_email: user.email });
+                const res = await fetch(API.getPHPPath('components/report_handler.php') + '?' + params);
+                const json = await res.json();
+                loader.style.display = 'none';
+                if (json.status === 'success') {
+                    reportsData = json.data;
+                    const stats = json.stats || { total: 0, month: 0, year: 0 };
+                    document.getElementById('st_total').textContent = stats.total;
+                    document.getElementById('st_month').textContent = stats.month;
+                    document.getElementById('st_year').textContent = stats.year;
+                    list.style.display = 'grid';
+                    renderReports(reportsData);
+                } else { empty.style.display = 'block'; }
+            } catch (e) { loader.style.display = 'none'; }
+        }
+
+        function viewReport(filePath) {
+            if (!filePath) return;
+            const root = window.location.pathname.substring(0, window.location.pathname.indexOf('/pcos-hub/') + 10);
+            window.open(root + 'src/' + filePath, '_blank');
+        }
+
+        function downloadReport(filePath, name) {
+            if (!filePath) return;
+            const root = window.location.pathname.substring(0, window.location.pathname.indexOf('/pcos-hub/') + 10);
+            const link = document.createElement('a'); 
+            link.href = root + 'src/' + filePath;
+            
+            // Extract extension or default to pdf
+            const ext = filePath.split('.').pop().toLowerCase();
+            const safeExt = ['pdf', 'jpg', 'jpeg', 'png'].includes(ext) ? ext : 'pdf';
+            
+            link.download = (name || 'report').replace(/[^a-z0-9]/gi, '_') + '.' + safeExt;
+            document.body.appendChild(link); 
+            link.click(); 
+            document.body.removeChild(link);
+        }
+
+        let toDelete = null;
+        function deleteReport(id, name) {
+            toDelete = { id, name };
+            document.getElementById('deleteMsg').innerHTML = `Are you sure you want to remove <strong>"${escHtml(name)}"</strong>?`;
+            document.getElementById('deleteConfirmModal').classList.add('open');
+        }
+        function closeDeleteModal() { document.getElementById('deleteConfirmModal').classList.remove('open'); }
+        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+            if (!toDelete) return;
+            try {
+                const res = await fetch(API.getPHPPath('components/report_handler.php'), {
+                    method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ report_id: toDelete.id, patient_id: user.id, patient_email: user.email })
+                });
+                const json = await res.json();
+                if (json.status === 'success') { Toast.success('Record removed.'); closeDeleteModal(); loadReports(); }
+            } catch (e) { Toast.error('Error.'); }
         });
-        // Stats cards
-        setText('st_total',   filterCounts['all']);
-        setText('st_month',   filterCounts['this-month']);
-        setText('st_year',    filterCounts['this-year']);
-        setText('st_pending', filterCounts['pending']);
-        // Sidebar badge
-        setText('sidebarBadge', filterCounts['all']);
-    }
 
-    function setText(id, val) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   RENDER REPORTS LIST
-    // ════════════════════════════════════════════════════════
-    function renderReports(rows, total) {
-        const list  = document.getElementById('reportsList');
-        const empty = document.getElementById('emptyState');
-        const emptyMsg = document.getElementById('emptyMsg');
-
-        // Apply client-side search on top of server-filtered results
-        let filtered = rows;
-        if (searchQuery) {
-            const q = searchQuery.toLowerCase();
-            filtered = rows.filter(r =>
-                (r.report_name   || '').toLowerCase().includes(q) ||
-                (r.hospital_name || '').toLowerCase().includes(q)
-            );
-        }
-
-        if (!filtered || filtered.length === 0) {
-            list.style.display = 'none';
-            empty.style.display = 'block';
-            const messages = {
-                'all'       : 'No reports uploaded yet. Click "Upload Report" to add your first one.',
-                'this-month': 'No reports uploaded this month.',
-                'this-year' : 'No reports uploaded this year.',
-                'pending'   : 'No pending reports — all reports have been processed.'
-            };
-            emptyMsg.textContent = searchQuery
-                ? `No reports match "${searchQuery}".`
-                : (messages[currentFilter] || 'No reports found.');
-            return;
-        }
-
-        empty.style.display = 'none';
-        list.style.display  = 'grid';
-
-        list.innerHTML = filtered.map(r => {
-            const icon = TYPE_ICON[r.report_type] || '📄';
-            const dateStr = r.report_date
-                ? new Date(r.report_date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
-                : 'Date not set';
-            const uploadedStr = new Date(r.uploaded_at).toLocaleDateString('en-GB',
-                { day:'2-digit', month:'short', year:'numeric' });
-            const sizeStr = formatSize(parseInt(r.file_size));
-            const pillClass = r.status === 'pending'  ? 'pill-pending' :
-                              r.status === 'reviewed' ? 'pill-reviewed' : 'pill-uploaded';
-            const pillText  = r.status === 'pending'  ? '⏳ Pending'   :
-                              r.status === 'reviewed' ? '✓ Reviewed'  : '✓ Uploaded';
-
-            const viewBtn = r.file_path
-                ? `<button class="btn-view" onclick="viewReport('${escHtml(r.file_path)}')">👁 View</button>`
-                : '';
-
-            return `
-            <div class="report-card" id="rc-${r.id}">
-                <div class="report-type-icon rtype-${escHtml(r.report_type)}">${icon}</div>
-                <div>
-                    <div class="report-name">${escHtml(r.report_name)}</div>
-                    <div class="report-meta">
-                        ${r.hospital_name ? `<span>🏥 ${escHtml(r.hospital_name)}</span>` : ''}
-                        <span>📅 ${dateStr}</span>
-                        <span style="color:var(--text-light)">Uploaded: ${uploadedStr}</span>
-                        ${sizeStr ? `<span>💾 ${sizeStr}</span>` : ''}
-                    </div>
-                    ${r.notes ? `<div class="report-notes">📝 ${escHtml(r.notes)}</div>` : ''}
-                </div>
-                <div class="report-actions">
-                    <span class="status-pill ${pillClass}">${pillText}</span>
-                    <div class="report-btns">
-                        ${viewBtn}
-                        <button class="btn-del" onclick="deleteReport(${r.id}, '${escHtml(r.report_name)}')">🗑 Remove</button>
-                    </div>
-                </div>
-            </div>`;
-        }).join('');
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   VIEW REPORT FILE
-    // ════════════════════════════════════════════════════════
-    function viewReport(filePath) {
-        if (!filePath) return;
-        const path = window.location.pathname;
-        const root = path.substring(0, path.indexOf('/pcos-hub/') + 10);
-        window.open(root + 'src/' + filePath, '_blank');
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   DELETE REPORT
-    // ════════════════════════════════════════════════════════
-    async function deleteReport(id, name) {
-        if (!confirm(`Remove report "${name}"?\n\nThis cannot be undone.`)) return;
-        if (!user) { Toast.error('Not logged in.'); return; }
-
-        // Optimistic remove from UI
-        const card = document.getElementById(`rc-${id}`);
-        if (card) { card.style.opacity='0.4'; card.style.pointerEvents='none'; }
-
-        try {
-            const res  = await fetch(API.getPHPPath('components/report_handler.php'), {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    report_id:     id,
-                    patient_id:    user.id    || null,
-                    patient_email: user.email || null
-                })
-            });
-            const json = await res.json();
-            if (json.status === 'success') {
-                Toast.success('Report removed successfully.');
-                // Reload current filter from DB + refresh counts
-                await Promise.all([loadReports(currentFilter), loadCounts()]);
-            } else {
-                Toast.error(json.message || 'Failed to remove report.');
-                if (card) { card.style.opacity=''; card.style.pointerEvents=''; }
-            }
-        } catch(e) {
-            Toast.error('Network error. Please try again.');
-            if (card) { card.style.opacity=''; card.style.pointerEvents=''; }
-        }
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   FILTER BUTTONS
-    // ════════════════════════════════════════════════════════
-    document.querySelectorAll('.filter-tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            searchQuery = '';
-            document.getElementById('searchInput').value = '';
-            hideEl('clearSearch');
-            loadReports(btn.dataset.filter);   // ← hits the database
+        function openUploadModal() { document.getElementById('uploadModal').classList.add('open'); }
+        function closeUploadModal() { document.getElementById('uploadModal').classList.remove('open'); }
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); const btn = document.getElementById('submitBtn'), old = btn.textContent;
+            btn.disabled = true; btn.textContent = 'Syncing...';
+            const fd = new FormData(e.target); fd.append('patient_id', user.id); fd.append('patient_email', user.email);
+            try {
+                const res = await fetch(API.getPHPPath('components/report_handler.php'), { method: 'POST', body: fd });
+                const json = await res.json();
+                if (json.status === 'success') { Toast.success('Document saved!'); closeUploadModal(); loadReports(); }
+            } catch (e) { Toast.error('Fail.'); }
+            finally { btn.disabled = false; btn.textContent = old; }
         });
-    });
 
-    // ════════════════════════════════════════════════════════
-    //   SEARCH (client-side on current filter results)
-    // ════════════════════════════════════════════════════════
-    document.getElementById('searchInput').addEventListener('input', function() {
-        searchQuery = this.value.trim();
-        const clearBtn = document.getElementById('clearSearch');
-        if (clearBtn) clearBtn.style.display = searchQuery ? '' : 'none';
-        loadReports(currentFilter);
-    });
-    function clearSearch() {
-        searchQuery = '';
-        document.getElementById('searchInput').value = '';
-        hideEl('clearSearch');
-        loadReports(currentFilter);
-    }
-
-    // ════════════════════════════════════════════════════════
-    //   UPLOAD MODAL
-    // ════════════════════════════════════════════════════════
-    function openUploadModal() {
-        document.getElementById('uploadModal').classList.add('open');
-        document.getElementById('inp_date').value = new Date().toISOString().split('T')[0];
-    }
-    function closeUploadModal() {
-        document.getElementById('uploadModal').classList.remove('open');
-        document.getElementById('uploadForm').reset();
-        clearFile();
-    }
-
-    document.getElementById('openUploadBtn').addEventListener('click', openUploadModal);
-    document.getElementById('modalClose').addEventListener('click', closeUploadModal);
-    document.getElementById('cancelBtn').addEventListener('click', closeUploadModal);
-    document.getElementById('uploadModal').addEventListener('click', e => {
-        if (e.target === document.getElementById('uploadModal')) closeUploadModal();
-    });
-
-    // ── File picker ──────────────────────────────────────────
-    const inpFile = document.getElementById('inp_file');
-    inpFile.addEventListener('change', () => {
-        if (inpFile.files[0]) showFilePreview(inpFile.files[0]);
-    });
-
-    // Drag-over on file drop area inside modal
-    const fda = document.getElementById('fileDropArea');
-    fda.addEventListener('dragover',  e => { e.preventDefault(); fda.style.borderColor='var(--purple-primary)'; });
-    fda.addEventListener('dragleave', ()  => { fda.style.borderColor=''; });
-    fda.addEventListener('drop', e => {
-        e.preventDefault(); fda.style.borderColor='';
-        if (e.dataTransfer.files[0]) {
-            const dt = new DataTransfer();
-            dt.items.add(e.dataTransfer.files[0]);
-            inpFile.files = dt.files;
-            showFilePreview(e.dataTransfer.files[0]);
-        }
-    });
-
-    function showFilePreview(file) {
-        document.getElementById('fi_icon').textContent = file.name.endsWith('.pdf') ? '📄' : '🖼';
-        document.getElementById('fi_name').textContent = file.name;
-        document.getElementById('fi_size').textContent = formatSize(file.size);
-        document.getElementById('fileInfo').classList.add('show');
-        document.getElementById('fileDropArea').classList.add('has-file');
-        // Auto-fill report name if blank
-        const nm = document.getElementById('inp_name');
-        if (!nm.value) nm.value = file.name.replace(/\.[^/.]+$/, '').replace(/[_\-]/g, ' ');
-    }
-    function clearFile() {
-        inpFile.value = '';
-        document.getElementById('fileInfo').classList.remove('show');
-        document.getElementById('fileDropArea').classList.remove('has-file');
-    }
-
-    // ── Form submit ──────────────────────────────────────────
-    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        if (!user) { Toast.error('You must be logged in to upload reports.'); return; }
-
-        const repName = document.getElementById('inp_name').value.trim();
-        const repType = document.getElementById('inp_type').value;
-        const repDate = document.getElementById('inp_date').value;
-        if (!repName || !repType || !repDate) {
-            Toast.error('Please fill in all required fields (name, type, date).'); return;
-        }
-
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.textContent = '⏳ Uploading…';
-
-        const fd = new FormData();
-        if (user.id)    fd.append('patient_id',    user.id);
-        if (user.email) fd.append('patient_email', user.email);
-        fd.append('report_name',   repName);
-        fd.append('report_type',   repType);
-        fd.append('hospital_name', document.getElementById('inp_hospital').value.trim());
-        fd.append('report_date',   repDate);
-        fd.append('notes',         document.getElementById('inp_notes').value.trim());
-        if (inpFile.files[0]) fd.append('report_file', inpFile.files[0]);
-
-        try {
-            const res  = await fetch(API.getPHPPath('components/report_handler.php'), {
-                method: 'POST', body: fd
-            });
-            const json = await res.json();
-            if (json.status === 'success') {
-                Toast.success('✓ Report saved to database!');
-                closeUploadModal();
-                // Switch to "All" filter and reload
-                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-                document.getElementById('tab_all').classList.add('active');
-                await Promise.all([loadReports('all'), loadCounts()]);
-            } else {
-                Toast.error(json.message || 'Upload failed. Please try again.');
+        function init() {
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            if (user) {
+                document.getElementById('sidebarName').textContent = user.name || 'Patient';
+                document.getElementById('sidebarAvatar').textContent = (user.name || 'P').charAt(0).toUpperCase();
             }
-        } catch(err) {
-            Toast.error('Network error. Please try again.');
-        } finally {
-            btn.disabled = false; btn.textContent = '✓ Save Report';
+            loadReports();
+            
+            document.getElementById('searchInput').addEventListener('input', e => {
+                const q = e.target.value.toLowerCase();
+                renderReports(reportsData.filter(r => 
+                    r.report_name.toLowerCase().includes(q) || 
+                    (r.hospital_name && r.hospital_name.toLowerCase().includes(q)) ||
+                    (r.report_type && r.report_type.toLowerCase().includes(q))
+                ));
+            });
         }
-    });
-
-    // ════════════════════════════════════════════════════════
-    //   DROP ZONE (below topbar)
-    // ════════════════════════════════════════════════════════
-    const dropZone = document.getElementById('dropZone');
-    document.getElementById('dropZoneBtn').addEventListener('click', () =>
-        document.getElementById('dropFileInput').click());
-    document.getElementById('dropFileInput').addEventListener('change', function() {
-        if (this.files[0]) { openUploadModal(); showFilePreview(this.files[0]); }
-    });
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-    dropZone.addEventListener('drop', e => {
-        e.preventDefault(); dropZone.classList.remove('drag-over');
-        if (e.dataTransfer.files[0]) { openUploadModal(); showFilePreview(e.dataTransfer.files[0]); }
-    });
-
-    // ════════════════════════════════════════════════════════
-    //   SIDEBAR MOBILE TOGGLE
-    // ════════════════════════════════════════════════════════
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const sidebar   = document.getElementById('sidebar');
-    const overlay   = document.getElementById('sidebar-overlay');
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-        overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
-    });
-    overlay.addEventListener('click', () => {
-        sidebar.classList.remove('active'); overlay.style.display = 'none';
-    });
-
-    // ════════════════════════════════════════════════════════
-    //   INIT — load reports + counts on page load
-    // ════════════════════════════════════════════════════════
-    (async function init() {
-        await Promise.all([loadReports('all'), loadCounts()]);
-    })();
-
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>

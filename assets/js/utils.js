@@ -266,6 +266,17 @@ function initNewsletter() {
   });
 }
 
+// ── HTML Escaping ──
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // ── Session quality guard ──
 // Returns the user object if the session is valid and complete.
 // Returns null if there is no session or it lacks identifying fields.
