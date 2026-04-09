@@ -50,6 +50,104 @@
   --font-body: 'Nunito', sans-serif;
 
   --nav-h: 72px;
+  --base-font-size: 16px;
+}
+
+/* ── Dark Mode ── */
+[data-theme="dark"] {
+  --bg-light: #0F091A;
+  --bg-card: #1A1229;
+  --text-dark: #F5EDFB;
+  --text-mid: #C39BD3;
+  --text-light: #9B8BAB;
+  --border: #2D1F47;
+  --purple-ghost: #150D24;
+  --purple-pale: #2D1F47;
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 72px rgba(0, 0, 0, 0.7);
+}
+
+/* ── Theme Transition ── */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] body,
+[data-theme] body,
+[data-theme] .card,
+[data-theme] .sidebar,
+[data-theme] .dash-topbar,
+[data-theme] .settings-section,
+[data-theme] .profile-section,
+[data-theme] .profile-header,
+[data-theme] .dash-panel,
+[data-theme] .form-control {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .profile-section,
+[data-theme="dark"] .profile-header,
+[data-theme="dark"] .dash-panel,
+[data-theme="dark"] .card,
+[data-theme="dark"] .topbar-search,
+[data-theme="dark"] .topbar-icon-btn,
+[data-theme="dark"] .filter-section,
+[data-theme="dark"] .lab-result-card,
+[data-theme="dark"] .empty-state,
+[data-theme="dark"] .modal-box,
+[data-theme="dark"] .rstat,
+[data-theme="dark"] .symptom-option,
+[data-theme="dark"] .severity-btn,
+[data-theme="dark"] .history-item {
+  background-color: var(--bg-card) !important;
+  color: var(--text-dark);
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .info-value,
+[data-theme="dark"] p,
+[data-theme="dark"] .lab-meta,
+[data-theme="dark"] .sidebar-role {
+  color: var(--text-mid) !important;
+}
+
+[data-theme="dark"] .info-row,
+[data-theme="dark"] .setting-item,
+[data-theme="dark"] .history-item {
+  border-bottom-color: var(--border) !important;
+}
+
+[data-theme="dark"] .lab-icon-box {
+  background: var(--purple-ghost) !important;
+}
+
+[data-theme="dark"] .action-btn,
+[data-theme="dark"] .lab-btn {
+  background: var(--purple-ghost) !important;
+  color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] .action-btn:hover,
+[data-theme="dark"] .lab-btn:hover {
+  background: var(--bg-card) !important;
+  border-color: var(--purple-primary) !important;
+}
+
+/* ── Modals & Overlays (Dark Mode) ── */
+[data-theme="dark"] #deactivateModal > div,
+[data-theme="dark"] #successModal > div,
+[data-theme="dark"] .modal-content {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] #deactivateModal,
+[data-theme="dark"] #successModal {
+  background: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* ── Reset ── */
@@ -63,7 +161,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: var(--base-font-size);
 }
 
 body {

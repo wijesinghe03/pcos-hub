@@ -26,6 +26,46 @@
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
 }
 
+/* ── Dark Mode Overrides ── */
+[data-theme="dark"] .dash-main {
+  background: var(--bg-light);
+}
+
+[data-theme="dark"] .dash-panel,
+[data-theme="dark"] .dash-stat-card,
+[data-theme="dark"] .topbar-icon-btn,
+[data-theme="dark"] .topbar-search,
+[data-theme="dark"] .sidebar-profile,
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .card {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .dash-table th {
+  background: var(--purple-ghost);
+}
+
+[data-theme="dark"] .dash-table td {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .activity-item {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group input {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .notif-dot {
+  border-color: var(--bg-card);
+}
+
 .sidebar-logo {
   padding: 24px 20px 20px;
   display: flex;

@@ -371,26 +371,26 @@
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html"><i>🏠</i> Dashboard</a>
-                <a class="sidebar-item" href="track-symptoms.html"><i>📊</i> Track Symptoms</a>
-                <a class="sidebar-item" href="menstrual-cycle.html"><i>🩸</i> Menstrual Cycle</a>
-                <a class="sidebar-item" href="reports.html"><i>📁</i> My Reports</a>
-                <a class="sidebar-item active" href="lifestyle-log.html"><i>🥗</i> Lifestyle Log</a>
+                <span class="sidebar-section-label" data-i18n="section_main">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
+                <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
+                <a class="sidebar-item" href="reports.html" data-i18n="reports"><i>📁</i> My Reports</a>
+                <a class="sidebar-item active" href="lifestyle-log.html" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Health</span>
-                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
-                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+                <span class="sidebar-section-label" data-i18n="section_health">Health</span>
+                <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html" data-i18n="hospital"><i>🏥</i> My Hospital</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Account</span>
-                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
-                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <span class="sidebar-section-label" data-i18n="section_account">Account</span>
+                <a class="sidebar-item" href="profile.html" data-i18n="profile"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html" data-i18n="settings"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html" onclick="Auth.logout()" data-i18n="logout"><i>🚪</i> Logout</a>
             </div>
         </aside>
 
@@ -400,7 +400,7 @@
             <!-- Top bar -->
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2>Lifestyle Log</h2>
+                    <h2 data-i18n="lifestyle">Lifestyle Log</h2>
                     <p id="dateDisplay">Loading…</p>
                 </div>
                 <div class="topbar-actions">
@@ -439,10 +439,10 @@
 
             <!-- Tabs -->
             <div class="lifestyle-tabs" id="lifestyleTabs">
-                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)">🥗 Meals</button>
-                <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)">🏃 Exercises</button>
-                <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)">💧 Water Intake</button>
-                <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)">😴 Sleep</button>
+                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)"><span data-i18n="meals_today">🥗 Meals</span></button>
+                <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)"><span data-i18n="exercises">🏃 Exercises</span></button>
+                <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)"><span data-i18n="log_water">💧 Water Intake</span></button>
+                <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)"><span data-i18n="sleep_hrs">😴 Sleep</span></button>
             </div>
 
             <!-- ══════════════ MEALS TAB ══════════════ -->
@@ -731,8 +731,10 @@
         // ── Init ──────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
             // Date display
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
             document.getElementById('dateDisplay').textContent =
-                new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+                new Date().toLocaleDateString(localeMap[lang] || 'en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
             // Set today in all date inputs
             ['mealDate', 'exerciseDate', 'waterDate', 'sleepDate'].forEach(id => {

@@ -9,7 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const dateEl = document.getElementById('dateDisplay');
   if (dateEl) {
     const now = new Date();
-    dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const lang = localStorage.getItem('pcos_lang') || 'en';
+    // Map internal codes to standard locales
+    const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+    dateEl.textContent = now.toLocaleDateString(localeMap[lang] || 'en-GB', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   }
 
   // User name from auth

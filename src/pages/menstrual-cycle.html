@@ -280,37 +280,36 @@
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" data-page="patient-dashboard.html" href="patient-dashboard.html">
+                <span class="sidebar-section-label" data-i18n="section_main">Main</span>
+                <a class="sidebar-item" data-page="patient-dashboard.html" href="patient-dashboard.html" data-i18n="dashboard">
                     <i>🏠</i> Dashboard
                 </a>
-                <a class="sidebar-item" data-page="track-symptoms.html" href="track-symptoms.html">
+                <a class="sidebar-item" data-page="track-symptoms.html" href="track-symptoms.html" data-i18n="symptoms">
                     <i>📊</i> Track Symptoms
                 </a>
-                <a class="sidebar-item active" data-page="menstrual-cycle.html" href="menstrual-cycle.html">
+                <a class="sidebar-item active" data-page="menstrual-cycle.html" href="menstrual-cycle.html" data-i18n="cycle">
                     <i>🩸</i> Menstrual Cycle
                 </a>
-                <a class="sidebar-item" data-page="reports.html" href="reports.html">
+                <a class="sidebar-item" data-page="reports.html" href="reports.html" data-i18n="reports">
                     <i>📁</i> My Reports
-                    <span class="sidebar-badge">3</span>
                 </a>
-                <a class="sidebar-item" href="lifestyle-log.html">
+                <a class="sidebar-item" href="lifestyle-log.html" data-i18n="lifestyle">
                     <i>🥗</i> Lifestyle Log
                 </a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Health</span>
-                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
-                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+                <span class="sidebar-section-label" data-i18n="section_health">Health</span>
+                <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html" data-i18n="hospital"><i>🏥</i> My Hospital</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Account</span>
-                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
-                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <span class="sidebar-section-label" data-i18n="section_account">Account</span>
+                <a class="sidebar-item" href="profile.html" data-i18n="profile"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html" data-i18n="settings"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html" onclick="Auth.logout()" data-i18n="logout"><i>🚪</i> Logout</a>
             </div>
         </aside>
 
@@ -320,7 +319,7 @@
             <!-- Top bar -->
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2>Menstrual Cycle Tracker</h2>
+                    <h2 data-i18n="cycle">Menstrual Cycle Tracker</h2>
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
@@ -338,62 +337,62 @@
             <!-- Cycle Info Cards -->
             <div class="cycle-info reveal">
                 <div class="cycle-info-card period">
-                    <div class="cycle-info-label">📍 Current Phase</div>
+                    <div class="cycle-info-label" data-i18n="current_phase">📍 Current Phase</div>
                     <div class="cycle-info-value" id="currentPhase">Day 15</div>
                     <div class="cycle-info-status">Fertile Window</div>
                 </div>
                 <div class="cycle-info-card">
-                    <div class="cycle-info-label">📅 Cycle Length</div>
+                    <div class="cycle-info-label" data-i18n="cycle_length">📅 Cycle Length</div>
                     <div class="cycle-info-value" id="cycleLength">28</div>
                     <div class="cycle-info-status">days</div>
                 </div>
                 <div class="cycle-info-card">
-                    <div class="cycle-info-label">🩸 Period Duration</div>
+                    <div class="cycle-info-label" data-i18n="period_duration_label">🩸 Period Duration</div>
                     <div class="cycle-info-value" id="periodDuration">5</div>
                     <div class="cycle-info-status">days</div>
                 </div>
                 <div class="cycle-info-card fertile">
-                    <div class="cycle-info-label">📌 Next Period</div>
+                    <div class="cycle-info-label" data-i18n="next_period">📌 Next Period</div>
                     <div class="cycle-info-value" id="nextPeriod">12 Mar</div>
-                    <div class="cycle-info-status">Predicted</div>
+                    <div class="cycle-info-status" data-i18n="predicted">Predicted</div>
                 </div>
             </div>
 
             <!-- Calendar Section -->
             <div class="dash-panel reveal">
                 <div class="panel-header">
-                    <div class="panel-title"><i>📆</i> Monthly Cycle Calendar</div>
+                    <div class="panel-title" data-i18n="cycle_calendar"><i>📆</i> Monthly Cycle Calendar</div>
                 </div>
 
                 <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
                     <h3 id="monthYear" style="font-weight: 700; margin: 0;">February 2026</h3>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-ghost btn-sm" onclick="previousMonth()">‹ Previous</button>
-                        <button class="btn btn-ghost btn-sm" onclick="nextMonth()">Next ›</button>
+                        <button class="btn btn-ghost btn-sm" onclick="previousMonth()" data-i18n="previous">‹ Previous</button>
+                        <button class="btn btn-ghost btn-sm" onclick="nextMonth()" data-i18n="next">Next ›</button>
                     </div>
                 </div>
 
                 <!-- Day headers -->
                 <div class="calendar-grid" style="margin-bottom: 0;">
-                    <div
+                    <div data-i18n="sun"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Sun</div>
-                    <div
+                    <div data-i18n="mon"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Mon</div>
-                    <div
+                    <div data-i18n="tue"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Tue</div>
-                    <div
+                    <div data-i18n="wed"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Wed</div>
-                    <div
+                    <div data-i18n="thu"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Thu</div>
-                    <div
+                    <div data-i18n="fri"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Fri</div>
-                    <div
+                    <div data-i18n="sat"
                         style="text-align: center; font-weight: 700; color: var(--text-light); font-size: 0.9rem; padding: 8px 0;">
                         Sat</div>
                 </div>
@@ -408,23 +407,23 @@
                         <div
                             style="width: 16px; height: 16px; border-radius: 4px; background: rgba(229,127,175,0.3); border: 2px solid var(--pink-accent);">
                         </div>
-                        <span style="font-size: 0.9rem;">Period</span>
+                        <span style="font-size: 0.9rem;" data-i18n="legend_period">Period</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div
                             style="width: 16px; height: 16px; border-radius: 4px; background: rgba(78,205,196,0.3); border: 2px solid #4ecdc4;">
                         </div>
-                        <span style="font-size: 0.9rem;">Fertile</span>
+                        <span style="font-size: 0.9rem;" data-i18n="legend_fertile">Fertile</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--pink-accent);">
                         </div>
-                        <span style="font-size: 0.9rem;">Ovulation</span>
+                        <span style="font-size: 0.9rem;" data-i18n="legend_ovulation">Ovulation</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--purple-primary);">
                         </div>
-                        <span style="font-size: 0.9rem;">Today</span>
+                        <span style="font-size: 0.9rem;" data-i18n="legend_today">Today</span>
                     </div>
                 </div>
             </div>
@@ -432,53 +431,53 @@
             <!-- Log Cycle Data -->
             <div class="dash-panel reveal">
                 <div class="panel-header">
-                    <div class="panel-title"><i>✏️</i> Log Cycle Information</div>
+                    <div class="panel-title" data-i18n="log_activities"><i>✏️</i> Log Cycle Information</div>
                 </div>
 
                 <form id="cycleForm">
                     <div class="two-col">
                         <div class="form-group">
-                            <label for="periodStartDate">Period Start Date</label>
+                            <label for="periodStartDate" data-i18n="period_start_date">Period Start Date</label>
                             <input type="date" id="periodStartDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="periodEndDate">Period End Date</label>
+                            <label for="periodEndDate" data-i18n="period_end_date">Period End Date</label>
                             <input type="date" id="periodEndDate" required>
                         </div>
                     </div>
 
                     <div class="two-col">
                         <div class="form-group">
-                            <label for="cycleLength">Average Cycle Length (days)</label>
+                            <label for="cycleLength" data-i18n="cycle_length">Average Cycle Length (days)</label>
                             <input type="number" id="cycleLength" name="cycleLength" min="20" max="40" value="28"
                                 required>
                         </div>
                         <div class="form-group">
-                            <label for="periodFlow">Flow Intensity</label>
+                            <label for="periodFlow" data-i18n="flow_intensity">Flow Intensity</label>
                             <select id="periodFlow" name="periodFlow" required>
-                                <option value="">Select flow intensity...</option>
-                                <option value="light">🟡 Light</option>
-                                <option value="normal">🔴 Normal</option>
-                                <option value="heavy">🔴🔴 Heavy</option>
+                                <option value="" data-i18n="select_flow">Select flow intensity...</option>
+                                <option value="light" data-i18n="light_flow">🟡 Light</option>
+                                <option value="normal" data-i18n="normal_flow">🔴 Normal</option>
+                                <option value="heavy" data-i18n="heavy_flow">🔴🔴 Heavy</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="cycleNotes">Cycle Notes & Observations</label>
-                        <textarea id="cycleNotes" name="notes"
+                        <label for="cycleNotes" data-i18n="additional_notes">Cycle Notes & Observations</label>
+                        <textarea id="cycleNotes" name="notes" data-i18n="irregularities_mood_notes"
                             placeholder="Note any irregularities, pain levels, mood changes, or other observations related to your cycle..."></textarea>
                     </div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 10px; margin-top: 24px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;" data-i18n="save_cycle_data">
                             ✓ Save Cycle Data
                         </button>
-                        <button type="reset" class="btn btn-ghost" style="flex: 1;">
+                        <button type="reset" class="btn btn-ghost" style="flex: 1;" data-i18n="clear">
                             ↻ Clear
                         </button>
-                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;">
+                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;" data-i18n="back">
                             ← Back
                         </a>
                     </div>
@@ -520,15 +519,22 @@
 
         // Date display
         const dateEl = document.getElementById('dateDisplay');
-        if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB',
-            { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        if (dateEl) {
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+            dateEl.textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-GB',
+                { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        }
 
         // ── Calendar ───────────────────────────────────────────────
         function buildCalendar(date, cycle) {
             const year  = date.getFullYear();
             const month = date.getMonth();
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+            
             document.getElementById('monthYear').textContent =
-                date.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+                date.toLocaleDateString(localeMap[lang] || 'en-US', { month:'long', year:'numeric' });
 
             // Compute period / fertile / ovulation days from latest cycle
             let periodDates = new Set();
@@ -616,13 +622,18 @@
             const start    = new Date(cycle.period_start);
             const today    = new Date();
             const dayOfCycle = Math.floor((today - start) / 86400000) + 1;
-            document.getElementById('currentPhase').textContent = 'Day ' + Math.max(1, dayOfCycle);
+            
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const dayLabel = lang === 'si' ? 'දිනය' : (lang === 'ta' ? 'நாள்' : 'Day');
+            
+            document.getElementById('currentPhase').textContent = `${dayLabel} ${Math.max(1, dayOfCycle)}`;
             document.getElementById('cycleLength').textContent  = cycle.cycle_length;
             document.getElementById('periodDuration').textContent = cycle.period_duration;
             if (cycle.next_predicted) {
                 const np = new Date(cycle.next_predicted);
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
                 document.getElementById('nextPeriod').textContent =
-                    np.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+                    np.toLocaleDateString(localeMap[lang] || 'en-GB', { day:'2-digit', month:'short' });
             }
         }
 
@@ -630,31 +641,42 @@
         function renderHistory(rows) {
             const container = document.getElementById('cycleHistoryContainer');
             if (!rows || rows.length === 0) {
-                container.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light)">No cycle data logged yet. Use the form above to start tracking! 🦡</div>';
+                container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-light)">${t('no_cycle')}</div>`;
                 return;
             }
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+            
             container.innerHTML = rows.map((row, i) => {
                 const start   = new Date(row.period_start);
-                const dateStr = start.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                const dateStr = start.toLocaleDateString(localeMap[lang] || 'en-GB', { day:'2-digit', month:'short', year:'numeric' });
                 const num     = rows.length - i;
-                const flowMap = { light:'Light', normal:'Normal', heavy:'Heavy' };
+                const flowMap = { 
+                    light: t('light_flow'), 
+                    normal: t('normal_flow'), 
+                    heavy: t('heavy_flow') 
+                };
                 const cycleLen = parseInt(row.cycle_length) || 28;
-                const status  = (cycleLen >= 21 && cycleLen <= 35) ? 'Regular' : 'Irregular';
+                const status  = (cycleLen >= 21 && cycleLen <= 35) ? (lang === 'si' ? 'සාමාන්‍ය' : (lang === 'ta' ? 'சாதாரண' : 'Regular')) : (lang === 'si' ? 'අක්‍රමවත්' : (lang === 'ta' ? 'ஒழுங்கற்ற' : 'Irregular'));
+                
+                const cycleText = lang === 'si' ? 'චක්‍රය' : (lang === 'ta' ? 'சுழற்சி' : 'Cycle');
+                const startedText = t('started_on');
+                
                 return `
                 <div class="history-item">
                     <div class="history-item-header">
                         <div>
-                            <div class="history-item-title">Cycle #${num}</div>
-                            <div class="history-item-date">Started ${dateStr}</div>
+                            <div class="history-item-title">${cycleText} #${num}</div>
+                            <div class="history-item-date">${startedText} ${dateStr}</div>
                         </div>
-                        <span class="status-badge active">◉ Completed</span>
+                        <span class="status-badge active" style="color:var(--purple-primary);background:rgba(147,112,219,0.1)">◉ ${lang === 'si' ? 'සම්පූර්ණයි' : (lang === 'ta' ? 'நிறைவுற்றது' : 'Completed')}</span>
                     </div>
                     <div class="history-item-details">
-                        <div class="detail-box"><span class="detail-label">Length</span><span class="detail-value">${row.cycle_length} days</span></div>
-                        <div class="detail-box"><span class="detail-label">Duration</span><span class="detail-value">${row.period_duration} days</span></div>
-                        <div class="detail-box"><span class="detail-label">Flow</span><span class="detail-value">${flowMap[row.flow_intensity] || row.flow_intensity}</span></div>
+                        <div class="detail-box"><span class="detail-label">${t('cycle_length')}</span><span class="detail-value">${row.cycle_length} ${lang === 'si' ? 'දින' : (lang === 'ta' ? 'நாட்கள்' : 'days')}</span></div>
+                        <div class="detail-box"><span class="detail-label">${t('period_duration_label')}</span><span class="detail-value">${row.period_duration} ${lang === 'si' ? 'දින' : (lang === 'ta' ? 'நாட்கள்' : 'days')}</span></div>
+                        <div class="detail-box"><span class="detail-label">${t('flow')}</span><span class="detail-value">${flowMap[row.flow_intensity] || row.flow_intensity}</span></div>
                         <div class="detail-box"><span class="detail-label">Status</span><span class="detail-value">${status}</span></div>
-                        ${row.notes ? `<div class="detail-box" style="grid-column:1/-1"><span class="detail-label">Notes</span><span class="detail-value" style="font-weight:400">${row.notes}</span></div>` : ''}
+                        ${row.notes ? `<div class="detail-box" style="grid-column:1/-1"><span class="detail-label">${t('additional_notes')}</span><span class="detail-value" style="font-weight:400">${row.notes}</span></div>` : ''}
                     </div>
                 </div>`;
             }).join('');

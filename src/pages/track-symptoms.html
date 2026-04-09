@@ -199,37 +199,26 @@
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" data-page="patient-dashboard.html" href="patient-dashboard.html">
-                    <i>🏠</i> Dashboard
-                </a>
-                <a class="sidebar-item active" href="#" onclick="window.location.href='track-symptoms.html'">
-                    <i>📊</i> Track Symptoms
-                </a>
-                <a class="sidebar-item" href="menstrual-cycle.html">
-                    <i>🩸</i> Menstrual Cycle
-                </a>
-                <a class="sidebar-item" href="reports.html">
-                    <i>📁</i> My Reports
-                    <span class="sidebar-badge">3</span>
-                </a>
-                <a class="sidebar-item" href="lifestyle-log.html">
-                    <i>🥗</i> Lifestyle Log
-                </a>
+                <span class="sidebar-section-label" data-i18n="section_main">Main</span>
+                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item active" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
+                <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
+                <a class="sidebar-item" href="reports.html" data-i18n="reports"><i>📁</i> My Reports</a>
+                <a class="sidebar-item" href="lifestyle-log.html" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Health</span>
-                <a class="sidebar-item" href="appointments.html"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="lab-results.html"><i>🔬</i> Lab Results</a>
-                <a class="sidebar-item" href="my-hospital.html"><i>🏥</i> My Hospital</a>
+                <span class="sidebar-section-label" data-i18n="section_health">Health</span>
+                <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i>📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i>🔬</i> Lab Results</a>
+                <a class="sidebar-item" href="my-hospital.html" data-i18n="hospital"><i>🏥</i> My Hospital</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Account</span>
-                <a class="sidebar-item" href="profile.html"><i>👤</i> Profile</a>
-                <a class="sidebar-item" href="settings.html"><i>⚙️</i> Settings</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <span class="sidebar-section-label" data-i18n="section_account">Account</span>
+                <a class="sidebar-item" href="profile.html" data-i18n="profile"><i>👤</i> Profile</a>
+                <a class="sidebar-item" href="settings.html" data-i18n="settings"><i>⚙️</i> Settings</a>
+                <a class="sidebar-item" href="logout.html" onclick="Auth.logout()" data-i18n="logout"><i>🚪</i> Logout</a>
             </div>
         </aside>
 
@@ -239,13 +228,13 @@
             <!-- Top bar -->
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2>Track Symptoms</h2>
+                    <h2 data-i18n="track_symptoms_title">Track Symptoms</h2>
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
                     <div class="topbar-search">
                         <i>🔍</i>
-                        <input type="text" placeholder="Search symptoms…">
+                        <input type="text" data-i18n="search_placeholder" placeholder="Search symptoms…">
                     </div>
                     <button class="topbar-icon-btn" title="Notifications">
                         🔔<span class="notif-dot"></span>
@@ -257,141 +246,141 @@
             <!-- Main symptom logging form -->
             <div class="dash-panel reveal">
                 <div class="panel-header">
-                    <div class="panel-title"><i>📝</i> Log Your Symptoms</div>
+                    <div class="panel-title" data-i18n="log_your_symptoms"><i>📝</i> Log Your Symptoms</div>
                 </div>
 
                 <form id="symptomForm">
                     <!-- Date and Time -->
                     <div class="two-col">
                         <div class="form-group">
-                            <label for="symptomDate">Date</label>
+                            <label for="symptomDate" data-i18n="date">Date</label>
                             <input type="date" id="symptomDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="symptomTime">Time</label>
+                            <label for="symptomTime" data-i18n="time">Time</label>
                             <input type="time" id="symptomTime" required>
                         </div>
                     </div>
 
                     <!-- Physical Symptoms -->
                     <div class="symptom-category">
-                        <div class="symptom-category-title">
+                        <div class="symptom-category-title" data-i18n="physical_symptoms">
                             <i>💪</i> Physical Symptoms
                         </div>
                         <div class="symptom-options">
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="cramps">
-                                <span>😣 Cramps</span>
+                                <span data-i18n="cramps">😣 Cramps</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="fatigue">
-                                <span>😴 Fatigue</span>
+                                <span data-i18n="fatigue">😴 Fatigue</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="headache">
-                                <span>🤯 Headache</span>
+                                <span data-i18n="headache">🤯 Headache</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="bloating">
-                                <span>😓 Bloating</span>
+                                <span data-i18n="bloating">😓 Bloating</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="weight-change">
-                                <span>⚖️ Weight Change</span>
+                                <span data-i18n="weight_change">⚖️ Weight Change</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="joint-pain">
-                                <span>🦵 Joint Pain</span>
+                                <span data-i18n="joint_pain">🦵 Joint Pain</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Skin & Hair -->
                     <div class="symptom-category">
-                        <div class="symptom-category-title">
+                        <div class="symptom-category-title" data-i18n="skin_hair">
                             <i>✨</i> Skin & Hair
                         </div>
                         <div class="symptom-options">
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="acne">
-                                <span>🌿 Acne</span>
+                                <span data-i18n="acne">🌿 Acne</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="hair-loss">
-                                <span>💇 Hair Loss</span>
+                                <span data-i18n="hair_loss">💇 Hair Loss</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="hair-growth">
-                                <span>🌱 Excess Hair Growth</span>
+                                <span data-i18n="excess_hair_growth">🌱 Excess Hair Growth</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="skin-darkening">
-                                <span>🌚 Dark Patches</span>
+                                <span data-i18n="dark_patches">🌚 Dark Patches</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Emotional & Mental -->
                     <div class="symptom-category">
-                        <div class="symptom-category-title">
+                        <div class="symptom-category-title" data-i18n="emotional_mental">
                             <i>🧠</i> Emotional & Mental
                         </div>
                         <div class="symptom-options">
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="mood-swings">
-                                <span>😰 Mood Swings</span>
+                                <span data-i18n="mood_swings">😰 Mood Swings</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="anxiety">
-                                <span>😟 Anxiety</span>
+                                <span data-i18n="anxiety">😟 Anxiety</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="depression">
-                                <span>😔 Depression</span>
+                                <span data-i18n="depression">😔 Depression</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="stress">
-                                <span>😤 Stress</span>
+                                <span data-i18n="stress">😤 Stress</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Reproductive -->
                     <div class="symptom-category">
-                        <div class="symptom-category-title">
+                        <div class="symptom-category-title" data-i18n="reproductive">
                             <i>🩸</i> Reproductive
                         </div>
                         <div class="symptom-options">
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="irregular-period">
-                                <span>📅 Irregular Period</span>
+                                <span data-i18n="irregular_period">📅 Irregular Period</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="heavy-bleeding">
-                                <span>🔴 Heavy Bleeding</span>
+                                <span data-i18n="heavy_bleeding">🔴 Heavy Bleeding</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="light-bleeding">
-                                <span>🟡 Light Bleeding</span>
+                                <span data-i18n="light_bleeding">🟡 Light Bleeding</span>
                             </label>
                             <label class="symptom-option">
                                 <input type="checkbox" name="symptom" value="pelvic-pain">
-                                <span>🩹 Pelvic Pain</span>
+                                <span data-i18n="pelvic_pain">🩹 Pelvic Pain</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Severity -->
                     <div class="form-group">
-                        <label>Overall Severity</label>
+                        <label data-i18n="overall_severity">Overall Severity</label>
                         <div class="severity-selector">
-                            <button type="button" class="severity-btn mild" data-severity="mild">
+                            <button type="button" class="severity-btn mild" data-severity="mild" data-i18n="mild">
                                 🟢 Mild
                             </button>
-                            <button type="button" class="severity-btn moderate" data-severity="moderate">
+                            <button type="button" class="severity-btn moderate" data-severity="moderate" data-i18n="moderate">
                                 🟠 Moderate
                             </button>
-                            <button type="button" class="severity-btn severe" data-severity="severe">
+                            <button type="button" class="severity-btn severe" data-severity="severe" data-i18n="severe">
                                 🔴 Severe
                             </button>
                         </div>
@@ -400,20 +389,20 @@
 
                     <!-- Notes -->
                     <div class="form-group">
-                        <label for="symptomNotes">Additional Notes</label>
-                        <textarea id="symptomNotes" name="notes"
+                        <label for="symptomNotes" data-i18n="additional_notes">Additional Notes</label>
+                        <textarea id="symptomNotes" name="notes" data-i18n="notes_placeholder"
                             placeholder="Any additional details about your symptoms, triggers, or how they affect your day..."></textarea>
                     </div>
 
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 10px; margin-top: 24px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;" data-i18n="save_symptoms">
                             ✓ Save Symptoms
                         </button>
-                        <button type="reset" class="btn btn-ghost" style="flex: 1;">
+                        <button type="reset" class="btn btn-ghost" style="flex: 1;" data-i18n="clear">
                             ↻ Clear
                         </button>
-                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;">
+                        <a href="patient-dashboard.html" class="btn btn-ghost" style="flex: 1; text-align: center;" data-i18n="back">
                             ← Back
                         </a>
                     </div>
@@ -423,8 +412,8 @@
             <!-- Recent Symptom History -->
             <div class="dash-panel reveal symptom-history">
                 <div class="panel-header">
-                    <div class="panel-title"><i>📋</i> Your Symptom History</div>
-                    <a class="panel-action" href="#">View All →</a>
+                    <div class="panel-title" data-i18n="your_symptom_history"><i>📋</i> Your Symptom History</div>
+                    <a class="panel-action" href="#" data-i18n="view_all">View All →</a>
                 </div>
 
                 <div id="symptomHistoryContainer">
@@ -450,11 +439,19 @@
 
         // Date display in topbar
         const dateEl = document.getElementById('dateDisplay');
-        if (dateEl) {
-            dateEl.textContent = new Date().toLocaleDateString('en-GB', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            });
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply localization
+            if (typeof L10n !== 'undefined') L10n.init();
+
+            // Update date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                dateEl.textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-GB',
+                    { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            }
+        });
 
         // Get the logged-in user directly — no auto-redirect on page load
         const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
@@ -498,21 +495,36 @@
             return map[sev] || map['mild'];
         }
 
+        // ── Translation Helper ───────────────────────────────────
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            return (L10n.dict[lang] && L10n.dict[lang][key]) || 
+                   (L10n.dict['en'][key]) || key;
+        }
+
         // ── Render symptom history ────────────────────────────────
         function renderHistory(rows) {
             const container = document.getElementById('symptomHistoryContainer');
             if (!rows || rows.length === 0) {
-                container.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light)">No symptoms logged yet. Start tracking above! 💜</div>';
+                container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-light)">${t('no_symptoms_logged')} 💜</div>`;
                 return;
             }
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+            
             container.innerHTML = rows.map(row => {
                 const d   = new Date(row.log_date + 'T' + row.log_time);
-                const dateStr = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-                const timeStr = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+                const dateStr = d.toLocaleDateString(localeMap[lang] || 'en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                const timeStr = d.toLocaleTimeString(localeMap[lang] || 'en-GB', { hour:'2-digit', minute:'2-digit' });
                 const style   = severityStyle(row.severity);
-                const badges  = row.symptoms.map(s =>
-                    `<span class="history-badge">${s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>`
-                ).join('');
+                
+                // Map values to dictionary keys
+                const badges  = row.symptoms.map(s => {
+                    const key = s.replace(/-/g, '_');
+                    return `<span class="history-badge">${t(key)}</span>`;
+                }).join('');
+
                 return `
                 <div class="history-item">
                     <div>
@@ -521,7 +533,7 @@
                         ${row.notes ? `<div style="margin-top:6px;font-size:0.85rem;color:var(--text-light)">${row.notes}</div>` : ''}
                     </div>
                     <div style="text-align:right;flex-shrink:0">
-                        <span style="background:${style.bg};color:${style.color};padding:6px 12px;border-radius:4px;font-weight:600;font-size:0.85rem;text-transform:capitalize">${row.severity}</span>
+                        <span style="background:${style.bg};color:${style.color};padding:6px 12px;border-radius:4px;font-weight:600;font-size:0.85rem;text-transform:capitalize">${t(row.severity)}</span>
                     </div>
                 </div>`;
             }).join('');
@@ -530,7 +542,6 @@
         // ── Load history from DB ──────────────────────────────────
         async function loadHistory() {
             if (!user) { renderHistory([]); return; }
-            // Support both new sessions (id) and old sessions (email only)
             const params = new URLSearchParams({ limit: 10 });
             if (user.id)    params.set('patient_id', user.id);
             if (user.email) params.set('patient_email', user.email);
@@ -549,7 +560,6 @@
         document.getElementById('symptomForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Must be logged in — either name-only sessions are allowed to try
             if (!user || !user.loggedIn) {
                 Toast.error('You must be logged in to save symptoms.');
                 setTimeout(() => { window.location.href = 'login.html'; }, 2000);
@@ -565,13 +575,13 @@
             const time     = timeInput.value;
             const notes    = document.getElementById('symptomNotes').value;
 
-            if (!date || !time) { Toast.error('Please select date and time.'); return; }
-            if (selectedSymptoms.length === 0) { Toast.error('Please select at least one symptom.'); return; }
-            if (!severity) { Toast.error('Please select a severity level.'); return; }
+            if (!date || !time) { Toast.error(t('date') + '/' + t('time') + '?'); return; }
+            if (selectedSymptoms.length === 0) { Toast.error(t('add_symptom')); return; }
+            if (!severity) { Toast.error(t('overall_severity') + '?'); return; }
 
             const submitBtn = this.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Saving...';
+            submitBtn.textContent = '⏳ ...';
 
             try {
                 const response = await API.call('components/symptom_handler.php', {
@@ -584,7 +594,7 @@
                 });
 
                 if (response.status === 'success') {
-                    Toast.success('✓ Symptoms saved successfully!');
+                    Toast.success('✓');
 
                     // Reset form
                     this.reset();
@@ -597,20 +607,19 @@
                     // Reload history panel
                     loadHistory();
                 } else if (response.message && response.message.toLowerCase().includes('patient not found')) {
-                    // Session is stale — prompt re-login
-                    Toast.warning('Session expired. Please log in again.');
+                    Toast.warning('Session expired.');
                     setTimeout(() => {
                         localStorage.removeItem('pcos_user');
                         window.location.href = 'login.html';
                     }, 2000);
                 } else {
-                    Toast.error(response.message || 'Failed to save symptoms.');
+                    Toast.error(response.message);
                 }
             } catch(err) {
-                Toast.error('Network error. Please try again.');
+                Toast.error('Error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = '✓ Save Symptoms';
+                submitBtn.textContent = '✓ ' + t('save_symptoms');
             }
         });
 
