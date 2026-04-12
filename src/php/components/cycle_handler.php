@@ -103,9 +103,9 @@ if ($method === 'POST') {
              FROM cycle_logs
              WHERE patient_id = ?
              ORDER BY period_start DESC
-             LIMIT ?"
+             LIMIT " . (int)$limit
         );
-        $stmt->execute([$patient_id, $limit]);
+        $stmt->execute([$patient_id]);
         $rows = $stmt->fetchAll();
 
         echo json_encode(['status'=>'success', 'data'=>$rows]);

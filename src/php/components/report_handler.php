@@ -202,7 +202,7 @@ if ($method === 'POST') {
     }
 
     // limit=0 means "count all" — no LIMIT clause
-    $limitClause = ($limit > 0) ? "LIMIT ?" : "";
+    $limitClause = ($limit > 0) ? "LIMIT " . (int)$limit : "";
 
     try {
         $sql  = "SELECT id, report_name, report_type, hospital_name, doctor_name, file_name, file_path,
@@ -212,9 +212,6 @@ if ($method === 'POST') {
                  ORDER BY report_date DESC
                  $limitClause";
         $stmt = $pdo->prepare($sql);
-        if ($limit > 0) {
-            $params[] = $limit;
-        }
         $stmt->execute($params);
         $rows = $stmt->fetchAll();
 

@@ -133,9 +133,9 @@
           </div>
         </div>
         <div class="welcome-actions">
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='track-symptoms.html'" data-i18n="symptoms"><i>🌡️</i> Log Symptoms</button>
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='menstrual-cycle.html'" data-i18n="cycle"><i>🩸</i> Log Cycle</button>
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='lifestyle-log.html'" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='track-symptoms.html'" data-i18n="add_symptom"><i>🌡️</i> Log Symptoms</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='menstrual-cycle.html'" data-i18n="log_first_cycle"><i>🩸</i> Log Cycle</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='lifestyle-log.html'" data-i18n="log_activities"><i>🥗</i> Lifestyle Log</button>
         </div>
       </div>
 
@@ -184,9 +184,9 @@
             <a class="panel-action" href="track-symptoms.html" data-i18n="view_all">View All →</a>
           </div>
           <div id="recentSymptomsContainer">
-            <div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.9rem;">Loading...</div>
+            <div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.9rem;" data-i18n="loading">Loading...</div>
           </div>
-          <a href="track-symptoms.html" class="btn btn-primary btn-sm" style="margin-top:16px;width:100%;display:block;text-align:center;">+ Log Symptoms</a>
+          <a href="track-symptoms.html" class="btn btn-primary btn-sm" style="margin-top:16px;width:100%;display:block;text-align:center;" data-i18n="add_symptom">+ Log Symptoms</a>
         </div>
 
         <!-- Cycle Tracker -->
@@ -352,21 +352,21 @@
           </div>
         </div>
         <div class="progress-item">
-          <div class="progress-header"><span>Exercise Goals</span><span style="color:var(--green-accent)">65%</span>
+          <div class="progress-header"><span data-i18n="exercise_goals">Exercise Goals</span><span style="color:var(--green-accent)">65%</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill green" data-width="65%" style="width:0"></div>
           </div>
         </div>
         <div class="progress-item">
-          <div class="progress-header"><span>Diet Compliance</span><span style="color:var(--orange-accent)">52%</span>
+          <div class="progress-header"><span data-i18n="diet_compliance">Diet Compliance</span><span style="color:var(--orange-accent)">52%</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill orange" data-width="52%" style="width:0"></div>
           </div>
         </div>
         <div class="progress-item">
-          <div class="progress-header"><span>Water Intake</span><span style="color:var(--purple-primary)">85%</span>
+          <div class="progress-header"><span data-i18n="water_intake">Water Intake</span><span style="color:var(--purple-primary)">85%</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" data-width="85%" style="width:0"></div>
@@ -387,46 +387,9 @@
         <div class="panel-header">
           <div class="panel-title" data-i18n="recent_activity"><i>🕐</i> Recent Activity</div>
         </div>
-    <div class="activity-feed">
-      <div class="activity-item">
-        <div class="activity-dot-wrap">
-          <div class="activity-dot" style="background:var(--purple-primary)"></div>
-          <div class="activity-line"></div>
-        </div>
-        <div>
-          <div class="activity-text">Blood test results uploaded by City Hospital</div>
-          <div class="activity-time">Today, 10:30 AM</div>
-        </div>
-      </div>
-      <div class="activity-item" id="activitySymptoms">
-        <div class="activity-dot-wrap">
-          <div class="activity-dot" style="background:var(--pink-accent)"></div>
-          <div class="activity-line"></div>
-        </div>
-        <div>
-          <div class="activity-text" id="activitySymptomsText">Loading recent symptoms...</div>
-          <div class="activity-time" id="activitySymptomsTime"></div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="activity-dot-wrap">
-          <div class="activity-dot" style="background:var(--green-accent)"></div>
-          <div class="activity-line"></div>
-        </div>
-        <div>
-          <div class="activity-text">Appointment confirmed: 20 Feb 2026 at City Hospital</div>
-          <div class="activity-time">22 Feb 2026, 3:00 PM</div>
-        </div>
-      </div>
-      <div class="activity-item" id="activityCycle">
-        <div class="activity-dot-wrap">
-          <div class="activity-dot" style="background:var(--orange-accent)"></div>
-          <div class="activity-line"></div>
-        </div>
-        <div>
-          <div class="activity-text" id="activityCycleText">Loading cycle activity...</div>
-          <div class="activity-time" id="activityCycleTime"></div>
-        </div>
+    <div class="activity-feed" id="dashActivityFeed">
+      <div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.9rem;" data-i18n="loading">
+        Loading recent activity...
       </div>
     </div>
   </div>
@@ -449,9 +412,23 @@
       'irregular-period':'📅', 'heavy-bleeding':'🔴',
       'light-bleeding':'🟡', 'pelvic-pain':'🩹'
     };
+    // ── Translation Helper ───────────────────────────────────────────
+    function t(key) {
+      if (typeof L10n === 'undefined') return key;
+      const lang = L10n.get() || 'en';
+      const dict = L10n.translations[lang] || L10n.translations['en'];
+      return dict[key] || key;
+    }
+
     function symptomLabel(s) {
-      return (SYMPTOM_EMOJI[s] || '•') + ' ' +
-        s.replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+      const emoji = SYMPTOM_EMOJI[s] || '•';
+      if (typeof L10n !== 'undefined') {
+        const lang = L10n.get();
+        const dict = L10n.translations[lang] || L10n.translations['en'];
+        const key = s.replace(/-/g, '_');
+        if (dict[key]) return emoji + ' ' + dict[key];
+      }
+      return emoji + ' ' + s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     }
     function severityColour(sev) {
       return { mild:'var(--green-accent)', moderate:'var(--orange-accent)', severe:'var(--pink-accent)' }[sev] || '#888';
@@ -462,24 +439,31 @@
       const container = document.getElementById('recentSymptomsContainer');
       if (!container) return;
       if (!rows || rows.length === 0) {
-        container.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-light);font-size:0.9rem">No symptoms logged yet 💜</div>';
+        const msg = (typeof L10n !== 'undefined' && L10n.translations[L10n.get()] && L10n.translations[L10n.get()].no_symptoms_logged) || 'No symptoms logged yet';
+        container.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-light);font-size:0.9rem">${msg} 💜</div>`;
         return;
       }
+      const lang = typeof L10n !== 'undefined' ? L10n.get() : 'en';
+      const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+      const dict = (typeof L10n !== 'undefined' && L10n.translations[lang]) || {};
+
       container.innerHTML = rows.map(row => {
         const d = new Date(row.log_date + 'T' + row.log_time);
-        const dateStr = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' }) +
-          ' · ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        const dateStr = d.toLocaleDateString(localeMap[lang] || 'en-GB', { day: '2-digit', month: 'short' }) +
+          ' · ' + d.toLocaleTimeString(localeMap[lang] || 'en-GB', { hour: '2-digit', minute: '2-digit' });
         const badges = row.symptoms.map(s =>
           `<span style="background:rgba(147,112,219,0.1);color:var(--purple-primary);
             padding:3px 8px;border-radius:4px;font-size:0.78rem;font-weight:600;white-space:nowrap">
             ${symptomLabel(s)}</span>`
         ).join('');
         const sevColor = severityColour(row.severity);
+        const sevLabel = dict[row.severity] || row.severity;
+
         return `
         <div style="padding:10px 0;border-bottom:1px solid var(--bg-light);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <span style="font-size:0.82rem;color:var(--text-light)">${dateStr}</span>
-            <span style="font-size:0.78rem;font-weight:700;color:${sevColor};text-transform:capitalize">${row.severity}</span>
+            <span style="font-size:0.78rem;font-weight:700;color:${sevColor};text-transform:capitalize">${sevLabel}</span>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:4px">${badges}</div>
         </div>`;
@@ -492,7 +476,9 @@
       const year  = today.getFullYear();
       const month = today.getMonth();
 
-      const monthLabel = today.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+      const lang = typeof L10n !== 'undefined' ? L10n.get() : 'en';
+      const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+      const monthLabel = today.toLocaleDateString(localeMap[lang] || 'en-US', { month:'long', year:'numeric' });
       const el = document.getElementById('dashCycleMonth');
       if (el) el.textContent = monthLabel;
 
@@ -559,6 +545,9 @@
     // ── Apply latest cycle data to all dashboard elements ─────────────
     function applyLatestCycle(cycle) {
       buildDashCalendar(cycle);
+      const lang = typeof L10n !== 'undefined' ? L10n.get() : 'en';
+      const dict = (typeof L10n !== 'undefined' && L10n.translations[lang]) || {};
+      
       if (!cycle) {
         // Show empty state
         const empty = document.getElementById('dashCycleEmpty');
@@ -566,10 +555,13 @@
         const statLen = document.getElementById('statCycleLength');
         const statSt  = document.getElementById('statCycleStatus');
         if (statLen) statLen.textContent = '—';
-        if (statSt)  { statSt.textContent = 'Log first cycle'; statSt.className = 'stat-card-change'; }
+        if (statSt)  { 
+          statSt.textContent = t('log_first_cycle'); 
+          statSt.className = 'stat-card-change'; 
+        }
         const cycleText = document.getElementById('activityCycleText');
         const cycleTime = document.getElementById('activityCycleTime');
-        if (cycleText) cycleText.textContent = 'No cycle logged yet — click Menstrual Cycle to start.';
+        if (cycleText) cycleText.textContent = t('no_cycle_logged');
         if (cycleTime) cycleTime.textContent = '';
         return;
       }
@@ -588,7 +580,9 @@
       if (statLen) statLen.textContent = cLen;
       if (statSt) {
         const isRegular = cLen >= 21 && cLen <= 35;
-        statSt.textContent = (isRegular ? '↑ Regular' : '⚠ Irregular') + ' cycle';
+        const statusKey = isRegular ? 'regular_cycle' : 'irregular_cycle';
+        const prefix = isRegular ? '↑ ' : '⚠ ';
+        statSt.textContent = prefix + t(statusKey);
         statSt.className = 'stat-card-change ' + (isRegular ? 'up' : '');
       }
 
@@ -598,8 +592,11 @@
       const cLenEl  = document.getElementById('dashCycleLen');
       const cFlowEl = document.getElementById('dashCycleFlow');
       const cNextEl = document.getElementById('dashCycleNext');
-      if (cLenEl)  cLenEl.textContent  = cycle.cycle_length + ' days';
-      if (cFlowEl) cFlowEl.textContent = cycle.flow_intensity;
+      if (cLenEl)  cLenEl.textContent  = cycle.cycle_length + ' ' + t('days');
+      if (cFlowEl) {
+        const flowLabel = t(cycle.flow_intensity + '_flow');
+        cFlowEl.textContent = flowLabel;
+      }
       if (cNextEl && cycle.next_predicted) {
         const np = new Date(cycle.next_predicted);
         cNextEl.textContent = np.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
@@ -610,14 +607,23 @@
       const cycleTime = document.getElementById('activityCycleTime');
       if (cycleText) {
         const d = new Date(cycle.period_start);
-        cycleText.textContent = `Menstrual cycle logged — ${cycle.cycle_length}-day cycle, ${cycle.flow_intensity} flow`;
-        if (cycleTime) cycleTime.textContent = d.toLocaleDateString('en-GB',
+        const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+        
+        let actMsg = dict.cycle_logged_activity || 'Menstrual cycle logged — {length}-day cycle, {flow} flow';
+        const flowLabel = dict[cycle.flow_intensity + '_flow'] || (dict[cycle.flow_intensity] || cycle.flow_intensity);
+        actMsg = actMsg.replace('{length}', cycle.cycle_length).replace('{flow}', flowLabel);
+        
+        cycleText.textContent = actMsg;
+        if (cycleTime) cycleTime.textContent = d.toLocaleDateString(localeMap[lang] || 'en-GB',
           { day:'2-digit', month:'short', year:'numeric' });
       }
     }
 
     // ── Main dashboard data loader ───────────────────────────────────
     document.addEventListener('DOMContentLoaded', async function() {
+      // ── Initialize Localization ──
+      if (typeof L10n !== 'undefined') L10n.init();
+
       // Update date
       const dateEl = document.getElementById('dateDisplay');
       if (dateEl) {
@@ -675,9 +681,12 @@
       const apptBase      = API.getPHPPath('components/appointment_handler.php');
 
       // Build lifestyle params
-      const lifeMealsP    = new URLSearchParams({ type: 'meals',     limit: 50, log_date: new Date().toISOString().split('T')[0] });
-      const lifeExP       = new URLSearchParams({ type: 'exercises', limit: 50, log_date: new Date().toISOString().split('T')[0] });
-      const lifeWaterP    = new URLSearchParams({ type: 'water',     limit: 50, log_date: new Date().toISOString().split('T')[0] });
+      const localNow      = new Date();
+      const TODAY         = [localNow.getFullYear(), String(localNow.getMonth()+1).padStart(2,'0'), String(localNow.getDate()).padStart(2,'0')].join('-');
+      
+      const lifeMealsP    = new URLSearchParams({ type: 'meals',     limit: 50, log_date: TODAY });
+      const lifeExP       = new URLSearchParams({ type: 'exercises', limit: 50, log_date: TODAY });
+      const lifeWaterP    = new URLSearchParams({ type: 'water',     limit: 50, log_date: TODAY });
       const lifeSleepP    = new URLSearchParams({ type: 'sleep',     limit: 1  });
       const apptP         = new URLSearchParams({ filter: 'upcoming', limit: 10 });
       if (user.id) {
@@ -746,19 +755,150 @@
         // ── Reports ───────────────────────────────────────────────────
         applyDashboardReports(jsonRep3, jsonRepAll);
 
-        // ── Lifestyle Summary ─────────────────────────────────────────
-        applyLifestyleSummary(jsonLMeals, jsonLEx, jsonLWater, jsonLSleep);
-
-        // ── Appointments ──────────────────────────────────────────────
-        applyDashboardAppointments(jsonAppt);
+        // ── Unified Activity Feed (History) ──────────────────────────
+        renderUnifiedActivityFeed(json3, jsonCycle, jsonRep3, jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt);
 
       } catch(e) {
         console.error('Dashboard load error:', e);
-        renderRecentSymptoms([]);
+        // Fallback for UI if error occurs
+        const feed = document.getElementById('dashActivityFeed');
+        if (feed) feed.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:0.9rem;">Could not load recent activity.</div>';
         buildDashCalendar(null);
         showReportsEmpty();
       }
     });
+
+    // ── Unified Activity Feed Implementation ─────────────────────────
+    function renderUnifiedActivityFeed(jsonSym, jsonCycle, jsonRep, jsonMeals, jsonEx, jsonWater, jsonSleep, jsonAppt) {
+      const feed = document.getElementById('dashActivityFeed');
+      if (!feed) return;
+
+      const lang = typeof L10n !== 'undefined' ? L10n.get() : 'en';
+      const dict = (typeof L10n !== 'undefined' && L10n.translations[lang]) || {};
+      const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+      const locale = localeMap[lang] || 'en-GB';
+
+      let items = [];
+
+      // 1. Symptoms (Up to 2)
+      if (jsonSym.status === 'success' && jsonSym.data) {
+        jsonSym.data.slice(0, 2).forEach(row => {
+          items.push({
+            date: new Date(row.log_date + 'T' + row.log_time),
+            color: 'var(--pink-accent)',
+            text: symptomLabel(row.symptoms[0]) + (row.symptoms.length > 1 ? ` +${row.symptoms.length - 1}` : '') + ' logged'
+          });
+        });
+      }
+
+      // 2. Cycle Logs (Latest)
+      if (jsonCycle.status === 'success' && jsonCycle.data && jsonCycle.data.length > 0) {
+        const c = jsonCycle.data[0];
+        let msg = dict.cycle_logged_activity || 'Cycle logged — {length} days, {flow} flow';
+        const flowLabel = dict[c.flow_intensity + '_flow'] || (dict[c.flow_intensity] || c.flow_intensity);
+        msg = msg.replace('{length}', c.cycle_length).replace('{flow}', flowLabel);
+        items.push({
+          date: new Date(c.period_start),
+          color: 'var(--orange-accent)',
+          text: msg
+        });
+      }
+
+      // 3. Reports (Up to 2)
+      if (jsonRep.status === 'success' && jsonRep.data) {
+        jsonRep.data.slice(0, 2).forEach(r => {
+          let msg = dict.report_uploaded_activity || 'New report: {name}';
+          items.push({
+            date: new Date(r.report_date),
+            color: 'var(--purple-primary)',
+            text: msg.replace('{name}', r.report_name)
+          });
+        });
+      }
+
+      // 4. Meals (Today's count)
+      if (jsonMeals.status === 'success' && jsonMeals.data && jsonMeals.data.length > 0) {
+        const count = jsonMeals.data.length;
+        items.push({
+          date: new Date(jsonMeals.data[0].log_date + 'T' + (jsonMeals.data[0].meal_time || '12:00')),
+          color: 'var(--green-accent)',
+          text: (dict.meals_today || 'Meals Today') + ': ' + count + ' ' + (dict.recorded || 'recorded')
+        });
+      }
+
+      // 5. Exercises
+      if (jsonEx.status === 'success' && jsonEx.data && jsonEx.data.length > 0) {
+        const ex = jsonEx.data[0];
+        let msg = dict.exercise_logged_activity || 'Exercise: {name} ({duration}m)';
+        items.push({
+          date: new Date(ex.log_date + 'T' + (ex.exercise_time || '12:00')),
+          color: '#2563eb',
+          text: msg.replace('{name}', ex.exercise_name).replace('{duration}', ex.duration_minutes)
+        });
+      }
+
+      // 6. Water (Latest total)
+      if (jsonWater.status === 'success' && jsonWater.data && jsonWater.data.length > 0) {
+        const total = jsonWater.data.filter(r => r.log_date === [new Date().getFullYear(), String(new Date().getMonth()+1).padStart(2,'0'), String(new Date().getDate()).padStart(2,'0')].join('-')).reduce((s, r) => s + parseInt(r.amount_ml || 0), 0);
+        if (total > 0) {
+          let msg = dict.water_logged_activity || 'Water log: {total}ml total today';
+          items.push({
+            date: new Date(), // Just show as "Today"
+            color: '#06b6d4',
+            text: msg.replace('{total}', total)
+          });
+        }
+      }
+
+      // 7. Sleep
+      if (jsonSleep.status === 'success' && jsonSleep.data && jsonSleep.data.length > 0) {
+        const s = jsonSleep.data[0];
+        let msg = dict.sleep_logged_activity || 'Sleep logged: {duration}h ({quality})';
+        items.push({
+          date: new Date(s.sleep_date),
+          color: '#6366f1',
+          text: msg.replace('{duration}', s.duration_hours).replace('{quality}', dict[s.sleep_quality] || s.sleep_quality)
+        });
+      }
+
+      // 8. Appointments
+      if (jsonAppt.status === 'success' && jsonAppt.data) {
+        jsonAppt.data.slice(0, 1).forEach(a => {
+           let msg = dict.appointment_activity || 'Upcoming: {reason} at {hospital}';
+           items.push({
+             date: new Date(a.appointment_date + 'T' + a.appointment_time),
+             color: '#4c1d95',
+             text: msg.replace('{reason}', a.reason).replace('{hospital}', a.hospital_name)
+           });
+        });
+      }
+
+      // Sort chronological (newest first)
+      items.sort((a, b) => b.date - a.date);
+
+      if (items.length === 0) {
+        feed.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-light);font-size:0.9rem;">${dict.no_activity || 'No steady activity yet. Start logging your health! 💫'}</div>`;
+        return;
+      }
+
+      feed.innerHTML = items.slice(0, 10).map(item => {
+        const d = item.date;
+        const timeStr = d.toLocaleDateString(locale, { day: '2-digit', month: 'short' }) + ', ' +
+                        d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+        
+        return `
+        <div class="activity-item">
+          <div class="activity-dot-wrap">
+            <div class="activity-dot" style="background:${item.color}"></div>
+            <div class="activity-line"></div>
+          </div>
+          <div>
+            <div class="activity-text">${item.text}</div>
+            <div class="activity-time">${timeStr}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
 
     // ── Render reports in dashboard panel ────────────────────────────
     const TYPE_ICON = { lab:'🧪', scan:'🔬', prescription:'💊', imaging:'🩻', other:'📄' };
@@ -777,7 +917,7 @@
       const totalReports = (jsonRepAll.status === 'success') ? jsonRepAll.data.length : 0;
       if (statEl) statEl.textContent = totalReports || '0';
       if (changeEl) {
-        changeEl.textContent = totalReports > 0 ? `↑ ${totalReports} total` : 'Upload first report';
+        changeEl.textContent = totalReports > 0 ? `↑ ${totalReports} ${t('total')}` : t('upload_first_report');
         changeEl.className = 'stat-card-change ' + (totalReports > 0 ? 'up' : '');
       }
 
@@ -794,11 +934,11 @@
         tbody.innerHTML = rows.map(r => {
           const icon    = TYPE_ICON[r.report_type] || '📄';
           const dateStr = r.report_date
-            ? new Date(r.report_date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+            ? new Date(r.report_date).toLocaleDateString(L10n.get() === 'si' ? 'si-LK' : 'en-GB', { day:'2-digit', month:'short', year:'numeric' })
             : '—';
           const badgeClass = r.status === 'pending'  ? 'badge-orange' : 'badge-green';
-          const badgeText  = r.status === 'pending'  ? '⟳ Pending'   :
-                             r.status === 'reviewed' ? '✓ Reviewed'  : '✓ Uploaded';
+          const badgeText  = r.status === 'pending'  ? t('pending_status')   :
+                             r.status === 'reviewed' ? t('reviewed_status')  : t('uploaded_status');
           const hosp = r.hospital_name || '—';
           return `<tr>
             <td>${icon} ${escHtmlDash(r.report_name)}</td>
@@ -819,7 +959,8 @@
 
     // ── Lifestyle Summary Panel ────────────────────────────────────────
     function applyLifestyleSummary(jsonLMeals, jsonLEx, jsonLWater, jsonLSleep) {
-      const TODAY = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const TODAY = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
 
       // Meals today count
       const mealsCount = (jsonLMeals.status === 'success') ? jsonLMeals.data.length : 0;
@@ -891,11 +1032,9 @@
         }
       } else {
         if (notifDot) notifDot.style.display = 'none';
-        const statDays = document.getElementById('statApptDays');
-        const statDate = document.getElementById('statApptDate');
         if (statDays) statDays.textContent = '—';
         if (statDate) {
-          statDate.textContent = 'No upcoming visits';
+          statDate.textContent = t('no_upcoming_visits');
           statDate.className   = 'stat-card-change';
         }
       }

@@ -111,9 +111,9 @@ if ($method === 'POST') {
              FROM symptom_logs
              WHERE patient_id = ?
              ORDER BY log_date DESC, log_time DESC
-             LIMIT ?"
+             LIMIT " . (int)$limit
         );
-        $stmt->execute([$patient_id, $limit]);
+        $stmt->execute([$patient_id]);
         $rows = $stmt->fetchAll();
 
         // Decode symptoms JSON for each row

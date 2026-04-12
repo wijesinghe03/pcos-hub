@@ -10,9 +10,9 @@
     <style>
         .report-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
         .rstat {
             background: white; 
@@ -79,10 +79,26 @@
             border-radius: 12px; font-family: inherit; font-size: 1rem;
         }
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* Responsive Fixes */
+        @media (max-width: 768px) {
+            .dash-main { padding: 20px 16px; margin-top: 60px; }
+            .dash-topbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .report-stats { grid-template-columns: 1fr; gap: 12px; }
+            .search-row { flex-direction: column; gap: 12px; }
+            .report-card { grid-template-columns: 1fr; text-align: center; padding: 20px; }
+            .report-icon-box { margin: 0 auto; }
+            .report-meta { justify-content: center; gap: 12px; }
+            .report-actions { align-items: center; }
+            .sidebar-toggle { display: flex !important; }
+        }
     </style>
 </head>
 
 <body>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:999;"></div>
+
     <div class="dashboard-layout">
         <aside class="sidebar" id="sidebar">
             <a href="index.html" class="sidebar-logo">
@@ -97,7 +113,7 @@
                 </div>
             </div>
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
+                <span class="sidebar-section-label" data-i18n="section_main">Main</span>
                 <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
                 <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
@@ -105,13 +121,13 @@
                 <a class="sidebar-item" href="lifestyle-log.html" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</a>
             </div>
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Health</span>
+                <span class="sidebar-section-label" data-i18n="section_health">Health</span>
                 <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i>📅</i> Appointments</a>
                 <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i>🔬</i> Lab Results</a>
                 <a class="sidebar-item" href="my-hospital.html" data-i18n="hospital"><i>🏥</i> My Hospital</a>
             </div>
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Account</span>
+                <span class="sidebar-section-label" data-i18n="section_account">Account</span>
                 <a class="sidebar-item" href="profile.html" data-i18n="profile"><i>👤</i> Profile</a>
                 <a class="sidebar-item" href="settings.html" data-i18n="settings"><i>⚙️</i> Settings</a>
                 <a class="sidebar-item" href="logout.html" onclick="Auth.logout()" data-i18n="logout"><i>🚪</i> Logout</a>
@@ -121,45 +137,46 @@
         <main class="dash-main">
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2>My Medical Documents</h2>
+                    <h2 data-i18n="medical_documents">My Medical Documents</h2>
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Report</button>
+                    <button class="btn btn-primary" onclick="openUploadModal()"><span data-i18n="upload_report">📤 Upload Report</span></button>
                 </div>
             </div>
-
+ 
             <div class="report-stats">
                 <div class="rstat highlight" onclick="loadReports('all')" style="cursor:pointer;">
                     <div class="rstat-num" id="st_total">0</div>
-                    <div class="rstat-label">Total Files</div>
+                    <div class="rstat-label" data-i18n="total_files">Total Files</div>
                 </div>
                 <div class="rstat" onclick="loadReports('this-month')" style="cursor:pointer;">
                     <div class="rstat-num" id="st_month">0</div>
-                    <div class="rstat-label">Added This Month</div>
+                    <div class="rstat-label" data-i18n="added_this_month">Added This Month</div>
                 </div>
                 <div class="rstat" onclick="loadReports('this-year')" style="cursor:pointer;">
                     <div class="rstat-num" id="st_year">0</div>
-                    <div class="rstat-label">Added This Year</div>
+                    <div class="rstat-label" data-i18n="added_this_year">Added This Year</div>
                 </div>
             </div>
 
             <div class="dash-panel" style="padding:28px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; gap:20px;">
+                <div class="search-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; gap:20px;">
                     <div style="flex:1; position:relative;">
                         <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%); opacity:0.6;">🔍</span>
-                        <input type="text" id="searchInput" placeholder="Search by name or facility..." 
+                        <input type="text" id="searchInput" data-i18n="search_reports_placeholder" placeholder="Search by name or facility..." 
                                style="width:100%; padding:14px 14px 14px 44px; border:2px solid var(--bg-light); border-radius:12px; font-size:1rem;">
                     </div>
                     <div style="min-width: 220px;">
                         <select id="typeFilter" onchange="loadReports(this.value)" 
                                 style="width:100%; padding:14px; border:2px solid var(--purple-primary); border-radius:12px; font-weight:700; color:var(--text-dark); background:white; cursor:pointer;">
-                            <optgroup label="General View">
-                                <option value="all">All Documents</option>
-                                <option value="lab">All Lab Results</option>
-                                <option value="scan">All Scans</option>
+                            <option value="all" data-i18n="filter_by_type">🔍 Filter by type...</option>
+                            <optgroup data-i18n="general_view" label="General View">
+                                <option value="all" data-i18n="all_documents">All Documents</option>
+                                <option value="lab" data-i18n="all_lab_results">All Lab Results</option>
+                                <option value="scan" data-i18n="all_scans">All Scans</option>
                             </optgroup>
-                            <optgroup label="Specific Lab Tests">
+                            <optgroup data-i18n="specific_lab_tests" label="Specific Lab Tests">
                                 <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
                                 <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
                                 <option value="Testosterone Level Test">Testosterone Level Test</option>
@@ -170,12 +187,12 @@
                                 <option value="HbA1c Test">HbA1c Test</option>
                                 <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
                             </optgroup>
-                            <optgroup label="Scans">
+                            <optgroup data-i18n="scans" label="Scans">
                                 <option value="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
                             </optgroup>
-                            <optgroup label="Other">
-                                <option value="prescription">Prescription</option>
-                                <option value="other">Other</option>
+                            <optgroup data-i18n="other" label="Other">
+                                <option value="prescription" data-i18n="prescription">Prescription</option>
+                                <option value="other" data-i18n="other">Other</option>
                             </optgroup>
                         </select>
                     </div>
@@ -183,16 +200,16 @@
 
                 <div id="loadingState" style="text-align:center; padding: 60px; display:none;">
                     <div class="spinner"></div>
-                    <p style="color:var(--text-light)">Accessing medical vault...</p>
+                    <p style="color:var(--text-light)" data-i18n="loading_vault">Accessing medical vault...</p>
                 </div>
                 
                 <div id="reportsList" class="reports-list"></div>
 
                 <div id="emptyState" style="display:none; text-align:center; padding:80px;">
                     <div style="font-size:4.5rem; margin-bottom:24px;">📂</div>
-                    <h3 style="margin-bottom:10px;">No records found</h3>
-                    <p style="color:var(--text-light); margin-bottom:24px;">You haven't uploaded any reports in this category yet.</p>
-                    <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Your First File</button>
+                    <h3 style="margin-bottom:10px;" data-i18n="no_records_found">No records found</h3>
+                    <p style="color:var(--text-light); margin-bottom:24px;" data-i18n="no_records_msg">You haven't uploaded any reports in this category yet.</p>
+                    <button class="btn btn-primary" onclick="openUploadModal()"><span data-i18n="upload_first_file">📤 Upload Your First File</span></button>
                 </div>
             </div>
         </main>
@@ -202,15 +219,15 @@
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-box">
             <button onclick="closeUploadModal()" style="position:absolute; top:24px; right:24px; border:none; background:none; font-size:1.6rem; cursor:pointer; color:var(--text-light);">✕</button>
-            <h3 style="margin-bottom:28px; font-weight:800; color:var(--text-dark);">📤 Upload Document</h3>
+            <h3 style="margin-bottom:28px; font-weight:800; color:var(--text-dark);" data-i18n="upload_report">📤 Upload Document</h3>
             <form id="uploadForm">
                 <div class="mfg">
-                    <label>Report Name *</label>
+                    <label data-i18n="report_name_label">Report Name *</label>
                     <input type="text" name="report_name" placeholder="e.g. Thyroid Profile, Pelvic Scan" required>
                 </div>
                 <div class="two-col">
                     <div class="mfg">
-                        <label>Report Type / Test *</label>
+                        <label data-i18n="report_type_label">Report Type / Test *</label>
                         <select name="report_type" required>
                             <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
                             <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
@@ -222,30 +239,30 @@
                             <option value="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
                             <option value="HbA1c Test">HbA1c Test</option>
                             <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
-                            <option value="prescription">Prescription</option>
-                            <option value="other">Other</option>
+                            <option value="prescription" data-i18n="prescription">Prescription</option>
+                            <option value="other" data-i18n="other">Other</option>
                         </select>
                     </div>
                     <div class="mfg">
-                        <label>Date *</label>
+                        <label data-i18n="date">Date *</label>
                         <input type="date" name="report_date" required>
                     </div>
                 </div>
                 <div class="two-col">
                     <div class="mfg">
-                        <label>Hospital / Clinic</label>
+                        <label data-i18n="hospital_clinic_label">Hospital / Clinic</label>
                         <input type="text" name="hospital_name" placeholder="e.g. Apollo Hospital">
                     </div>
                     <div class="mfg">
-                        <label>Doctor Requested</label>
+                        <label data-i18n="doctor_requested_label">Doctor Requested</label>
                         <input type="text" name="doctor_name" placeholder="e.g. Dr. Silva">
                     </div>
                 </div>
                 <div class="mfg">
-                    <label>Attach Report (PDF/Img)</label>
+                    <label data-i18n="attach_report_label">Attach Report (PDF/Img)</label>
                     <input type="file" name="report_file" accept=".pdf,.jpg,.jpeg,.png" style="padding:10px; border:2px dashed var(--bg-light); border-radius:10px; width:100%;">
                 </div>
-                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:15px; font-weight:800; margin-top:10px;">✓ Save Medical Record</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:15px; font-weight:800; margin-top:10px;" data-i18n="save_medical_record">✓ Save Medical Record</button>
             </form>
         </div>
     </div>
@@ -254,11 +271,11 @@
     <div class="modal-overlay" id="deleteConfirmModal">
         <div class="modal-box" style="max-width:420px; text-align:center;">
             <div style="font-size:4rem; margin-bottom:24px;">🗑️</div>
-            <h3 style="margin-bottom:14px; font-weight:800; color:var(--text-dark);">Permanently Remove?</h3>
-            <p id="deleteMsg" style="color:var(--text-light); line-height:1.6; margin-bottom:32px;">Are you sure?</p>
+            <h3 style="margin-bottom:14px; font-weight:800; color:var(--text-dark);" data-i18n="permanently_remove">Permanently Remove?</h3>
+            <p id="deleteMsg" style="color:var(--text-light); line-height:1.6; margin-bottom:32px;" data-i18n="are_you_sure_remove">Are you sure?</p>
             <div style="display:flex; gap:14px;">
-                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex:1;">OK, Remove</button>
-                <button class="btn btn-ghost" onclick="closeDeleteModal()" style="flex:1; border:2px solid var(--purple-primary); color:var(--purple-primary); border-radius:12px; font-weight:700;">No, Back</button>
+                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex:1;" data-i18n="ok_remove">OK, Remove</button>
+                <button class="btn btn-ghost" onclick="closeDeleteModal()" style="flex:1; border:2px solid var(--purple-primary); color:var(--purple-primary); border-radius:12px; font-weight:700;" data-i18n="no_back">No, Back</button>
             </div>
         </div>
     </div>
@@ -266,6 +283,13 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
+        }
+
         const user = Auth.getUser();
         let reportsData = [];
         const TYPE_ICON = { 
@@ -289,33 +313,38 @@
             const empty = document.getElementById('emptyState');
             if (!rows || rows.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
             empty.style.display = 'none';
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+            
             list.innerHTML = rows.map(r => {
-                const dateStr = r.report_date ? new Date(r.report_date).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A';
+                const dateStr = r.report_date ? new Date(r.report_date).toLocaleDateString(localeMap[lang] || 'en-GB', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A';
                 const pillClass = r.status === 'pending' ? 'pill-pending' : 'pill-uploaded';
+                const statusText = t(r.status.toLowerCase());
+                
                 let actionBtns = '';
                 if (r.file_path) {
                     actionBtns = `
-                        <button class="btn-act btn-view" onclick="viewReport('${escHtml(r.file_path)}')">👁 View</button>
-                        <button class="btn-act btn-view" onclick="downloadReport('${escHtml(r.file_path)}', '${escHtml(r.report_name)}')">⬇ Download</button>
+                        <button class="btn-act btn-view" onclick="viewReport('${escHtml(r.file_path)}')">👁 ${t('view')}</button>
+                        <button class="btn-act btn-view" onclick="downloadReport('${escHtml(r.file_path)}', '${escHtml(r.report_name)}')">⬇ ${t('download')}</button>
                     `;
                 }
-                actionBtns += `<button class="btn-act btn-del" onclick="deleteReport(${r.id}, '${escHtml(r.report_name)}')">🗑 Remove</button>`;
+                actionBtns += `<button class="btn-act btn-del" onclick="deleteReport(${r.id}, '${escHtml(r.report_name)}')">🗑 ${t('remove')}</button>`;
                 return `
                     <div class="report-card">
                         <div class="report-icon-box">${TYPE_ICON[r.report_type] || '📄'}</div>
                         <div class="report-info">
                             <div class="report-name">${escHtml(r.report_name)}</div>
                             <div class="report-meta">
-                                <span>🏥 ${escHtml(r.hospital_name || 'Clinic')}</span>
+                                <span>🏥 ${escHtml(r.hospital_name || (lang === 'si' ? 'සායනය' : 'Clinic'))}</span>
                                 ${r.doctor_name ? `<span>👨‍⚕️ ${escHtml(r.doctor_name)}</span>` : ''}
                                 <span>📅 ${dateStr}</span>
                             </div>
                             <div style="font-size: 0.75rem; color: var(--purple-primary); font-weight: 700; margin-top: 4px;">
-                                ${escHtml(r.report_type)}
+                                ${escHtml(t(r.report_type) || r.report_type)}
                             </div>
                         </div>
                         <div class="report-actions">
-                            <span class="status-pill ${pillClass}">${r.status.toUpperCase()}</span>
+                            <span class="status-pill ${pillClass}">${statusText.toUpperCase()}</span>
                             <div class="report-btns">${actionBtns}</div>
                         </div>
                     </div>`;
@@ -368,7 +397,7 @@
         let toDelete = null;
         function deleteReport(id, name) {
             toDelete = { id, name };
-            document.getElementById('deleteMsg').innerHTML = `Are you sure you want to remove <strong>"${escHtml(name)}"</strong>?`;
+            document.getElementById('deleteMsg').innerHTML = `${t('are_you_sure_remove')} <br><strong>"${escHtml(name)}"</strong>`;
             document.getElementById('deleteConfirmModal').classList.add('open');
         }
         function closeDeleteModal() { document.getElementById('deleteConfirmModal').classList.remove('open'); }
@@ -384,23 +413,40 @@
             } catch (e) { Toast.error('Error.'); }
         });
 
-        function openUploadModal() { document.getElementById('uploadModal').classList.add('open'); }
+        function openUploadModal() { 
+            const now = new Date();
+            const localToday = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
+            const dateInput = document.querySelector('#uploadForm input[name="report_date"]');
+            if (dateInput) dateInput.value = localToday;
+            document.getElementById('uploadModal').classList.add('open'); 
+        }
         function closeUploadModal() { document.getElementById('uploadModal').classList.remove('open'); }
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('submitBtn'), old = btn.textContent;
-            btn.disabled = true; btn.textContent = 'Syncing...';
+            btn.disabled = true; btn.textContent = t('syncing') || 'Syncing...';
             const fd = new FormData(e.target); fd.append('patient_id', user.id); fd.append('patient_email', user.email);
             try {
                 const res = await fetch(API.getPHPPath('components/report_handler.php'), { method: 'POST', body: fd });
                 const json = await res.json();
-                if (json.status === 'success') { Toast.success('Document saved!'); closeUploadModal(); loadReports(); }
+                if (json.status === 'success') { 
+                    Toast.success(t('save_medical_record_success')); 
+                    closeUploadModal(); 
+                    // Redirect to dashboard after short delay
+                    setTimeout(() => {
+                        window.location.href = 'patient-dashboard.html';
+                    }, 1500);
+                }
             } catch (e) { Toast.error('Fail.'); }
             finally { btn.disabled = false; btn.textContent = old; }
         });
 
         function init() {
             const dateEl = document.getElementById('dateDisplay');
-            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            if (dateEl) {
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                dateEl.textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            }
             if (user) {
                 document.getElementById('sidebarName').textContent = user.name || 'Patient';
                 document.getElementById('sidebarAvatar').textContent = (user.name || 'P').charAt(0).toUpperCase();
@@ -409,11 +455,12 @@
             
             document.getElementById('searchInput').addEventListener('input', e => {
                 const q = e.target.value.toLowerCase();
-                renderReports(reportsData.filter(r => 
-                    r.report_name.toLowerCase().includes(q) || 
-                    (r.hospital_name && r.hospital_name.toLowerCase().includes(q)) ||
-                    (r.report_type && r.report_type.toLowerCase().includes(q))
-                ));
+                renderReports(reportsData.filter(r => {
+                    const localizedType = t(r.report_type).toLowerCase();
+                    return r.report_name.toLowerCase().includes(q) || 
+                           (r.hospital_name && r.hospital_name.toLowerCase().includes(q)) ||
+                           localizedType.includes(q);
+                }));
             });
         }
         document.addEventListener('DOMContentLoaded', init);

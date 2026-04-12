@@ -432,8 +432,9 @@
         // ── Init date/time inputs ──────────────────────────────────
         const dateInput = document.getElementById('symptomDate');
         const timeInput = document.getElementById('symptomTime');
-        const todayStr  = new Date().toISOString().split('T')[0];
-        const nowStr    = new Date().toTimeString().slice(0, 5);
+        const now       = new Date();
+        const todayStr  = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
+        const nowStr    = [String(now.getHours()).padStart(2,'0'), String(now.getMinutes()).padStart(2,'0')].join(':');
         dateInput.value = todayStr;
         timeInput.value = nowStr;
 
@@ -499,8 +500,8 @@
         function t(key) {
             if (typeof L10n === 'undefined') return key;
             const lang = localStorage.getItem('pcos_lang') || 'en';
-            return (L10n.dict[lang] && L10n.dict[lang][key]) || 
-                   (L10n.dict['en'][key]) || key;
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
         }
 
         // ── Render symptom history ────────────────────────────────
@@ -594,18 +595,12 @@
                 });
 
                 if (response.status === 'success') {
-                    Toast.success('✓');
+                    Toast.success('✓ Symptoms saved successfully!');
 
-                    // Reset form
-                    this.reset();
-                    dateInput.value = todayStr;
-                    timeInput.value = nowStr;
-                    document.querySelectorAll('.symptom-option').forEach(o => o.classList.remove('selected'));
-                    document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('selected'));
-                    document.getElementById('selectedSeverity').value = '';
-
-                    // Reload history panel
-                    loadHistory();
+                    // Redirect to dashboard after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'patient-dashboard.html';
+                    }, 1500);
                 } else if (response.message && response.message.toLowerCase().includes('patient not found')) {
                     Toast.warning('Session expired.');
                     setTimeout(() => {

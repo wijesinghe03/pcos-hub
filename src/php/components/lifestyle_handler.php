@@ -213,51 +213,47 @@ if ($method === 'POST') {
     try {
         if ($type === 'meals') {
             $where = $log_date ? "AND log_date = ?" : "";
-            $params = $log_date ? [$patient_id, $log_date, $limit] : [$patient_id, $limit];
+            $params = $log_date ? [$patient_id, $log_date] : [$patient_id];
             $stmt = $pdo->prepare(
                 "SELECT * FROM lifestyle_meals
                  WHERE patient_id = ? $where
                  ORDER BY log_date DESC, meal_time DESC
-                 LIMIT ?"
+                 LIMIT " . (int)$limit
             );
             $stmt->execute($params);
 
         } elseif ($type === 'exercises') {
             $where = $log_date ? "AND log_date = ?" : "";
-            $params = $log_date ? [$patient_id, $log_date, $limit] : [$patient_id, $limit];
+            $params = $log_date ? [$patient_id, $log_date] : [$patient_id];
             $stmt = $pdo->prepare(
                 "SELECT * FROM lifestyle_exercises
                  WHERE patient_id = ? $where
                  ORDER BY log_date DESC, exercise_time DESC
-                 LIMIT ?"
+                 LIMIT " . (int)$limit
             );
             $stmt->execute($params);
 
         } elseif ($type === 'water') {
             $where = $log_date ? "AND log_date = ?" : "";
-            $params = $log_date ? [$patient_id, $log_date, $limit] : [$patient_id, $limit];
+            $params = $log_date ? [$patient_id, $patient_id, $log_date] : [$patient_id, $patient_id];
             $stmt = $pdo->prepare(
                 "SELECT *, 
                  (SELECT COALESCE(SUM(amount_ml),0) FROM lifestyle_water WHERE patient_id = ? AND log_date = lw.log_date) AS day_total
                  FROM lifestyle_water lw
                  WHERE patient_id = ? $where
                  ORDER BY logged_at DESC
-                 LIMIT ?"
+                 LIMIT " . (int)$limit
             );
-            // Adjust params for subquery
-            $params = $log_date
-                ? [$patient_id, $patient_id, $log_date, $limit]
-                : [$patient_id, $patient_id, $limit];
             $stmt->execute($params);
 
         } elseif ($type === 'sleep') {
             $where = $log_date ? "AND sleep_date = ?" : "";
-            $params = $log_date ? [$patient_id, $log_date, $limit] : [$patient_id, $limit];
+            $params = $log_date ? [$patient_id, $log_date] : [$patient_id];
             $stmt = $pdo->prepare(
                 "SELECT * FROM lifestyle_sleep
                  WHERE patient_id = ? $where
                  ORDER BY sleep_date DESC
-                 LIMIT ?"
+                 LIMIT " . (int)$limit
             );
             $stmt->execute($params);
         }

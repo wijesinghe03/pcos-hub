@@ -415,31 +415,31 @@
 
             <!-- Welcome Card -->
             <div class="welcome-card reveal">
-                <h3>Track Your Lifestyle 🌱</h3>
-                <p>Monitor your diet, exercise, hydration, and sleep to manage your PCOS symptoms effectively.</p>
+                <h3 data-i18n="track_lifestyle_title">Track Your Lifestyle 🌱</h3>
+                <p data-i18n="track_lifestyle_desc">Monitor your diet, exercise, hydration, and sleep to manage your PCOS symptoms effectively.</p>
                 <div class="welcome-stats">
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statMeals">—</span>
-                        <span class="welcome-stat-lbl">Meals Today</span>
+                        <span class="welcome-stat-lbl" data-i18n="meals_today">Meals Today</span>
                     </div>
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statExercises">—</span>
-                        <span class="welcome-stat-lbl">Exercises Today</span>
+                        <span class="welcome-stat-lbl" data-i18n="exercises">Exercises Today</span>
                     </div>
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statWater">—</span>
-                        <span class="welcome-stat-lbl">Water Today (ml)</span>
+                        <span class="welcome-stat-lbl" data-i18n="water_ml">Water Today (ml)</span>
                     </div>
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statSleep">—</span>
-                        <span class="welcome-stat-lbl">Sleep (hrs)</span>
+                        <span class="welcome-stat-lbl" data-i18n="sleep_hrs">Sleep (hrs)</span>
                     </div>
                 </div>
             </div>
 
             <!-- Tabs -->
             <div class="lifestyle-tabs" id="lifestyleTabs">
-                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)"><span data-i18n="meals_today">🥗 Meals</span></button>
+                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)"><span data-i18n="meals_today">🥗 Meals Today</span></button>
                 <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)"><span data-i18n="exercises">🏃 Exercises</span></button>
                 <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)"><span data-i18n="log_water">💧 Water Intake</span></button>
                 <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)"><span data-i18n="sleep_hrs">😴 Sleep</span></button>
@@ -448,64 +448,64 @@
             <!-- ══════════════ MEALS TAB ══════════════ -->
             <div id="tab-meals-content" class="tab-content active">
                 <div class="log-form reveal">
-                    <div class="form-section-title">➕ Log a Meal</div>
+                    <div class="form-section-title" data-i18n="log_meal_title">➕ Log a Meal</div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="mealType">Meal Type *</label>
+                            <label for="mealType" data-i18n="meal_type_label">Meal Type *</label>
                             <select id="mealType" required>
-                                <option value="">Select meal type…</option>
-                                <option value="breakfast">🌅 Breakfast</option>
-                                <option value="lunch">☀️ Lunch</option>
-                                <option value="dinner">🌙 Dinner</option>
-                                <option value="snack">🍎 Snack</option>
+                                <option value="" data-i18n="meal_type_placeholder">Select meal type…</option>
+                                <option value="breakfast" data-i18n="breakfast">🌅 Breakfast</option>
+                                <option value="lunch" data-i18n="lunch">☀️ Lunch</option>
+                                <option value="dinner" data-i18n="dinner">🌙 Dinner</option>
+                                <option value="snack" data-i18n="snack">🍎 Snack</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="mealDate">Date *</label>
+                            <label for="mealDate" data-i18n="date">Date *</label>
                             <input type="date" id="mealDate" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="mealName">What did you eat? *</label>
-                        <input type="text" id="mealName" placeholder="e.g., Grilled chicken with quinoa salad" required>
+                        <label for="mealName" data-i18n="meal_name_label">What did you eat? *</label>
+                        <input type="text" id="mealName" data-i18n="meal_name_placeholder" placeholder="e.g., Grilled chicken with quinoa salad" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Food Categories</label>
+                        <label data-i18n="food_categories">Food Categories</label>
                         <div class="meal-categories" id="mealCategories">
-                            <label class="category-tag"><input type="checkbox" value="protein"> 🥩 Protein</label>
-                            <label class="category-tag"><input type="checkbox" value="vegetables"> 🥦 Vegetables</label>
-                            <label class="category-tag"><input type="checkbox" value="fruits"> 🍓 Fruits</label>
-                            <label class="category-tag"><input type="checkbox" value="grains"> 🌾 Whole Grains</label>
-                            <label class="category-tag"><input type="checkbox" value="dairy"> 🥛 Dairy</label>
-                            <label class="category-tag"><input type="checkbox" value="fats"> 🥑 Healthy Fats</label>
+                            <label class="category-tag"><input type="checkbox" value="protein"> <span data-i18n="protein">🥩 Protein</span></label>
+                            <label class="category-tag"><input type="checkbox" value="vegetables"> <span data-i18n="vegetables">🥦 Vegetables</span></label>
+                            <label class="category-tag"><input type="checkbox" value="fruits"> <span data-i18n="fruits">🍓 Fruits</span></label>
+                            <label class="category-tag"><input type="checkbox" value="grains"> <span data-i18n="grains">🌾 Whole Grains</span></label>
+                            <label class="category-tag"><input type="checkbox" value="dairy"> <span data-i18n="dairy">🥛 Dairy</span></label>
+                            <label class="category-tag"><input type="checkbox" value="fats"> <span data-i18n="fats">🥑 Healthy Fats</span></label>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="mealTime">Time Eaten</label>
+                            <label for="mealTime" data-i18n="time">Time Eaten</label>
                             <input type="time" id="mealTime">
                         </div>
                         <div class="form-group">
-                            <label for="mealCalories">Calories (optional)</label>
-                            <input type="number" id="mealCalories" placeholder="e.g., 450" min="0">
+                            <label for="mealCalories" data-i18n="calories_label">Calories (optional)</label>
+                            <input type="number" id="mealCalories" data-i18n="calories_placeholder" placeholder="e.g., 450" min="0">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="mealNotes">Notes</label>
-                        <textarea id="mealNotes" placeholder="How did you feel after this meal? Any symptoms?"></textarea>
+                        <label for="mealNotes" data-i18n="notes_label">Notes</label>
+                        <textarea id="mealNotes" data-i18n="meal_notes_placeholder" placeholder="How did you feel after this meal? Any symptoms?"></textarea>
                     </div>
 
-                    <button class="submit-btn" id="saveMealBtn" onclick="saveMeal()">💾 Save Meal</button>
+                    <button class="submit-btn" id="saveMealBtn" onclick="saveMeal()" data-i18n="save_meal">💾 Save Meal</button>
                 </div>
 
                 <!-- Meals History Table -->
                 <div class="history-section">
-                    <div class="history-title">📋 Meal History <span id="mealsCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div class="history-title"><span data-i18n="meal_history">📋 Meal History</span> <span id="mealsCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
                     <div id="mealsTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">🍽️</div>
@@ -519,68 +519,68 @@
             <!-- ══════════════ EXERCISES TAB ══════════════ -->
             <div id="tab-exercises-content" class="tab-content">
                 <div class="log-form reveal">
-                    <div class="form-section-title">➕ Log an Exercise</div>
+                    <div class="form-section-title" data-i18n="log_exercise_title">➕ Log an Exercise</div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="exerciseType">Exercise Type *</label>
+                            <label for="exerciseType" data-i18n="exercise_type_label">Exercise Type *</label>
                             <select id="exerciseType" required>
-                                <option value="">Select type…</option>
-                                <option value="cardio">🏃 Cardio (Running, Cycling…)</option>
-                                <option value="strength">💪 Strength Training</option>
-                                <option value="yoga">🧘 Yoga</option>
-                                <option value="walking">🚶 Walking</option>
-                                <option value="swimming">🏊 Swimming</option>
-                                <option value="stretching">🤸 Stretching</option>
-                                <option value="other">⚡ Other</option>
+                                <option value="" data-i18n="exercise_type_placeholder">Select type…</option>
+                                <option value="cardio" data-i18n="cardio">🏃 Cardio (Running, Cycling…)</option>
+                                <option value="strength" data-i18n="strength">💪 Strength Training</option>
+                                <option value="yoga" data-i18n="yoga">🧘 Yoga</option>
+                                <option value="walking" data-i18n="walking">🚶 Walking</option>
+                                <option value="swimming" data-i18n="swimming">🏊 Swimming</option>
+                                <option value="stretching" data-i18n="stretching">🤸 Stretching</option>
+                                <option value="other" data-i18n="other">⚡ Other</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exerciseDate">Date *</label>
+                            <label for="exerciseDate" data-i18n="date">Date *</label>
                             <input type="date" id="exerciseDate" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="exerciseName">Exercise Name *</label>
-                        <input type="text" id="exerciseName" placeholder="e.g., Morning jog in the park" required>
+                        <label for="exerciseName" data-i18n="exercise_name_label">Exercise Name *</label>
+                        <input type="text" id="exerciseName" data-i18n="exercise_name_placeholder" placeholder="e.g., Morning jog in the park" required>
                     </div>
 
                     <div class="form-row three">
                         <div class="form-group">
-                            <label for="exerciseDuration">Duration (min) *</label>
+                            <label for="exerciseDuration" data-i18n="duration_label">Duration (min) *</label>
                             <input type="number" id="exerciseDuration" placeholder="30" min="1" required>
                         </div>
                         <div class="form-group">
-                            <label for="exerciseIntensity">Intensity</label>
+                            <label for="exerciseIntensity" data-i18n="intensity_label">Intensity</label>
                             <select id="exerciseIntensity">
-                                <option value="light">🟢 Light</option>
-                                <option value="moderate" selected>🟡 Moderate</option>
-                                <option value="vigorous">🔴 Vigorous</option>
+                                <option value="light" data-i18n="light">🟢 Light</option>
+                                <option value="moderate" data-i18n="moderate" selected>🟡 Moderate</option>
+                                <option value="vigorous" data-i18n="vigorous">🔴 Vigorous</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exerciseTime">Time</label>
+                            <label for="exerciseTime" data-i18n="time">Time</label>
                             <input type="time" id="exerciseTime">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="exerciseCalories">Calories Burned (estimated)</label>
+                        <label for="exerciseCalories" data-i18n="calories_burned_label">Calories Burned (estimated)</label>
                         <input type="number" id="exerciseCalories" placeholder="e.g., 250" min="0">
                     </div>
 
                     <div class="form-group">
-                        <label for="exerciseNotes">How did you feel?</label>
-                        <textarea id="exerciseNotes" placeholder="Energy level, any pain or discomfort…"></textarea>
+                        <label for="exerciseNotes" data-i18n="notes_label">How did you feel?</label>
+                        <textarea id="exerciseNotes" data-i18n="feel_notes_placeholder" placeholder="Energy level, any pain or discomfort…"></textarea>
                     </div>
 
-                    <button class="submit-btn" id="saveExerciseBtn" onclick="saveExercise()">💾 Save Exercise</button>
+                    <button class="submit-btn" id="saveExerciseBtn" onclick="saveExercise()" data-i18n="save_exercise">💾 Save Exercise</button>
                 </div>
 
                 <!-- Exercises History Table -->
                 <div class="history-section">
-                    <div class="history-title">📋 Exercise History <span id="exercisesCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div class="history-title"><span data-i18n="exercise_history">📋 Exercise History</span> <span id="exercisesCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
                     <div id="exercisesTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">🏃</div>
@@ -594,44 +594,44 @@
             <!-- ══════════════ WATER TAB ══════════════ -->
             <div id="tab-water-content" class="tab-content">
                 <div class="log-form reveal">
-                    <div class="form-section-title">💧 Log Water Intake</div>
+                    <div class="form-section-title" data-i18n="log_water_title">💧 Log Water Intake</div>
 
                     <div class="form-group">
-                        <label for="waterDate">Date *</label>
+                        <label for="waterDate" data-i18n="date">Date *</label>
                         <input type="date" id="waterDate" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Quick Add</label>
+                        <label data-i18n="quick_add">Quick Add</label>
                         <div class="water-btns">
-                            <button class="water-btn" onclick="quickAddWater(250)">+ 250ml<br><small>Small glass</small></button>
-                            <button class="water-btn" onclick="quickAddWater(500)">+ 500ml<br><small>Medium glass</small></button>
-                            <button class="water-btn" onclick="quickAddWater(750)">+ 750ml<br><small>Large glass</small></button>
-                            <button class="water-btn" onclick="quickAddWater(1000)">+ 1000ml<br><small>1 Litre</small></button>
+                            <button class="water-btn" onclick="quickAddWater(250)">+ 250ml<br><small data-i18n="small_glass">Small glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(500)">+ 500ml<br><small data-i18n="medium_glass">Medium glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(750)">+ 750ml<br><small data-i18n="large_glass">Large glass</small></button>
+                            <button class="water-btn" onclick="quickAddWater(1000)">+ 1000ml<br><small data-i18n="one_litre">1 Litre</small></button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="customWater">Or enter custom amount (ml)</label>
+                        <label for="customWater" data-i18n="custom_water_label">Or enter custom amount (ml)</label>
                         <div style="display:flex;gap:10px;">
-                            <input type="number" id="customWater" placeholder="Enter amount in ml" min="1" style="flex:1;">
+                            <input type="number" id="customWater" data-i18n="custom_water_placeholder" placeholder="Enter amount in ml" min="1" style="flex:1;">
                             <button class="submit-btn" onclick="quickAddWater(null)" style="flex:0 0 auto;padding:10px 20px;">Add</button>
                         </div>
                     </div>
 
                     <div class="water-progress-card">
                         <div class="water-total-display" id="waterTotalDisplay">0 ml</div>
-                        <div class="water-goal-label">Today's intake · Goal: 2,500 ml</div>
+                        <div class="water-goal-label" data-i18n="today_intake_goal">Today's intake · Goal: 2,500 ml</div>
                         <div class="progress-bar-wrap">
                             <div class="progress-bar-fill" id="waterProgressBar"></div>
                         </div>
-                        <div style="margin-top:10px;font-size:0.88rem;color:var(--text-light);" id="waterProgressLabel">0% of daily goal</div>
+                        <div style="margin-top:10px;font-size:0.88rem;color:var(--text-light);" id="waterProgressLabel">0% <span data-i18n="water_goal_reached">of daily goal</span></div>
                     </div>
                 </div>
 
                 <!-- Water History Table -->
                 <div class="history-section">
-                    <div class="history-title">💧 Water Log History <span id="waterCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div class="history-title"><span data-i18n="water_history">💧 Water Log History</span> <span id="waterCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
                     <div id="waterTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">💧</div>
@@ -645,52 +645,52 @@
             <!-- ══════════════ SLEEP TAB ══════════════ -->
             <div id="tab-sleep-content" class="tab-content">
                 <div class="log-form reveal">
-                    <div class="form-section-title">😴 Log Sleep</div>
+                    <div class="form-section-title" data-i18n="log_sleep_title">😴 Log Sleep</div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="sleepDate">Sleep Date *</label>
+                            <label for="sleepDate" data-i18n="sleep_date_label">Sleep Date *</label>
                             <input type="date" id="sleepDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="sleepQuality">Sleep Quality</label>
+                            <label for="sleepQuality" data-i18n="sleep_quality_label">Sleep Quality</label>
                             <select id="sleepQuality">
-                                <option value="">Select quality…</option>
-                                <option value="poor">😟 Poor (Very restless)</option>
-                                <option value="fair">😐 Fair (Some disturbances)</option>
-                                <option value="good">🙂 Good (Mostly restful)</option>
-                                <option value="excellent">😄 Excellent (Very restful)</option>
+                                <option value="" data-i18n="select_quality">Select quality…</option>
+                                <option value="poor" data-i18n="poor">😟 Poor (Very restless)</option>
+                                <option value="fair" data-i18n="fair">😐 Fair (Some disturbances)</option>
+                                <option value="good" data-i18n="good">🙂 Good (Mostly restful)</option>
+                                <option value="excellent" data-i18n="excellent">😄 Excellent (Very restful)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="sleepBedtime">Bedtime *</label>
+                            <label for="sleepBedtime" data-i18n="bedtime_label">Bedtime *</label>
                             <input type="time" id="sleepBedtime" required>
                         </div>
                         <div class="form-group">
-                            <label for="sleepWakeTime">Wake Time *</label>
+                            <label for="sleepWakeTime" data-i18n="waketime_label">Wake Time *</label>
                             <input type="time" id="sleepWakeTime" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="sleepDurationDisplay">Hours Slept (auto-calculated)</label>
+                        <label for="sleepDurationDisplay" data-i18n="hours_slept_label">Hours Slept (auto-calculated)</label>
                         <input type="text" id="sleepDurationDisplay" readonly placeholder="Set bedtime & wake time above">
                     </div>
 
                     <div class="form-group">
-                        <label for="sleepNotes">Notes</label>
-                        <textarea id="sleepNotes" placeholder="Factors that affected your sleep? (caffeine, stress, environment…)"></textarea>
+                        <label for="sleepNotes" data-i18n="notes_label">Notes</label>
+                        <textarea id="sleepNotes" data-i18n="sleep_notes_placeholder" placeholder="Factors that affected your sleep? (caffeine, stress, environment…)"></textarea>
                     </div>
 
-                    <button class="submit-btn" id="saveSleepBtn" onclick="saveSleep()">💾 Save Sleep</button>
+                    <button class="submit-btn" id="saveSleepBtn" onclick="saveSleep()" data-i18n="save_sleep">💾 Save Sleep</button>
                 </div>
 
                 <!-- Sleep History Table -->
                 <div class="history-section">
-                    <div class="history-title">📋 Sleep History <span id="sleepCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
+                    <div class="history-title"><span data-i18n="sleep_history">📋 Sleep History</span> <span id="sleepCount" style="font-size:0.85rem;color:var(--text-light);font-weight:500;"></span></div>
                     <div id="sleepTableWrap" class="history-table-wrap">
                         <div class="empty-state">
                             <div class="empty-state-icon">😴</div>
@@ -714,7 +714,8 @@
         ================================================================ */
 
         const API = '../../src/php/components/lifestyle_handler.php';
-        const TODAY = new Date().toISOString().split('T')[0];
+        const localNow = new Date();
+        const TODAY    = [localNow.getFullYear(), String(localNow.getMonth()+1).padStart(2,'0'), String(localNow.getDate()).padStart(2,'0')].join('-');
 
         // ── Patient context — read from pcos_user set by Auth.login() ─
         const _pcosUser  = (() => { try { return JSON.parse(localStorage.getItem('pcos_user')); } catch(e) { return null; } })();
@@ -831,9 +832,7 @@
                 const res = await postAPI('meals', payload);
                 if (res.status === 'success') {
                     Toast.success('Meal saved successfully! 🥗');
-                    resetMealForm();
-                    loadMealsHistory();
-                    refreshStats();
+                    setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save meal.');
                 }
@@ -872,9 +871,7 @@
                 const res = await postAPI('exercises', payload);
                 if (res.status === 'success') {
                     Toast.success('Exercise saved! 🏃');
-                    resetExerciseForm();
-                    loadExercisesHistory();
-                    refreshStats();
+                    setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save exercise.');
                 }
@@ -900,8 +897,7 @@
                 const res = await postAPI('water', payload);
                 if (res.status === 'success') {
                     Toast.success(`+${ml}ml logged! 💧`);
-                    loadWaterHistory();
-                    refreshStats();
+                    setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to log water.');
                 }
@@ -935,9 +931,7 @@
                 const res = await postAPI('sleep', payload);
                 if (res.status === 'success') {
                     Toast.success(`Sleep logged! ${res.duration_hours}h recorded 😴`);
-                    resetSleepForm();
-                    loadSleepHistory();
-                    refreshStats();
+                    setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save sleep.');
                 }
@@ -996,9 +990,9 @@
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderMealsTable(data.data, wrap);
-                    document.getElementById('mealsCount').textContent = `(${data.data.length} records)`;
+                    document.getElementById('mealsCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('🍽️', 'No meals logged yet', 'Fill the form above and hit Save Meal');
+                    wrap.innerHTML = emptyState('🍽️', t('no_meals_msg'), t('log_meal_hint') || 'Fill the form above');
                     document.getElementById('mealsCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1012,9 +1006,9 @@
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderExercisesTable(data.data, wrap);
-                    document.getElementById('exercisesCount').textContent = `(${data.data.length} records)`;
+                    document.getElementById('exercisesCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('🏃', 'No exercises logged yet', 'Log your first workout above');
+                    wrap.innerHTML = emptyState('🏃', t('no_exercises_msg'), t('log_exercise_hint') || 'Log your first workout');
                     document.getElementById('exercisesCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1028,10 +1022,10 @@
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderWaterTable(data.data, wrap);
-                    document.getElementById('waterCount').textContent = `(${data.data.length} records)`;
+                    document.getElementById('waterCount').textContent = `(${data.data.length} ${t('records')})`;
                     updateWaterProgressFromData(data.data);
                 } else {
-                    wrap.innerHTML = emptyState('💧', 'No water logged yet', 'Use the buttons above to log water');
+                    wrap.innerHTML = emptyState('💧', t('no_water_msg'), t('log_water_hint') || 'Use buttons above');
                     document.getElementById('waterCount').textContent = '';
                     updateWaterProgressFromData([]);
                 }
@@ -1046,9 +1040,9 @@
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderSleepTable(data.data, wrap);
-                    document.getElementById('sleepCount').textContent = `(${data.data.length} records)`;
+                    document.getElementById('sleepCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('😴', 'No sleep logs yet', 'Log your sleep data above');
+                    wrap.innerHTML = emptyState('😴', t('no_sleep_msg'), t('log_sleep_hint') || 'Log your sleep data above');
                     document.getElementById('sleepCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1062,8 +1056,13 @@
 
             let html = `<table class="history-table">
                 <thead><tr>
-                    <th>Date</th><th>Type</th><th>Meal</th>
-                    <th>Categories</th><th>Time</th><th>Calories</th><th>Action</th>
+                    <th data-i18n="date">${t('date')}</th>
+                    <th data-i18n="meal_type_label">${t('meal_type_label')}</th>
+                    <th data-i18n="meal_name_label">${t('meal_name_label')}</th>
+                    <th data-i18n="food_categories">${t('food_categories')}</th>
+                    <th data-i18n="time">${t('time')}</th>
+                    <th data-i18n="calories_label">${t('calories_label')}</th>
+                    <th data-i18n="action">${t('action')}</th>
                 </tr></thead><tbody>`;
 
             rows.forEach(r => {
@@ -1072,12 +1071,12 @@
                     : '—';
                 html += `<tr id="meal-row-${r.id}">
                     <td>${fmtDate(r.log_date)}</td>
-                    <td><span class="badge ${mealColors[r.meal_type] || 'badge-purple'}">${mealEmojis[r.meal_type] || ''} ${r.meal_type}</span></td>
+                    <td><span class="badge ${mealColors[r.meal_type] || 'badge-purple'}">${mealEmojis[r.meal_type] || ''} ${t(r.meal_type)}</span></td>
                     <td style="max-width:200px;">${escHtml(r.meal_name)}</td>
                     <td>${cats}</td>
                     <td>${r.meal_time ? r.meal_time.substring(0,5) : '—'}</td>
                     <td>${r.calories ? r.calories + ' kcal' : '—'}</td>
-                    <td><button class="delete-btn" onclick="deleteEntry('meals', ${r.id}, document.getElementById('meal-row-${r.id}'))">🗑 Delete</button></td>
+                    <td><button class="delete-btn" onclick="deleteEntry('meals', ${r.id}, document.getElementById('meal-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
                 if (r.notes) {
                     html += `<tr><td colspan="7" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
@@ -1095,19 +1094,24 @@
 
             let html = `<table class="history-table">
                 <thead><tr>
-                    <th>Date</th><th>Type</th><th>Exercise</th>
-                    <th>Duration</th><th>Intensity</th><th>Calories Burned</th><th>Action</th>
+                    <th data-i18n="date">${t('date')}</th>
+                    <th data-i18n="exercise_type_label">${t('exercise_type_label')}</th>
+                    <th data-i18n="exercise_name_label">${t('exercise_name_label')}</th>
+                    <th data-i18n="duration_label">${t('duration_label')}</th>
+                    <th data-i18n="intensity_label">${t('intensity_label')}</th>
+                    <th data-i18n="calories_burned_label">${t('calories_burned_label')}</th>
+                    <th data-i18n="action">${t('action')}</th>
                 </tr></thead><tbody>`;
 
             rows.forEach(r => {
                 html += `<tr id="ex-row-${r.id}">
                     <td>${fmtDate(r.log_date)}</td>
-                    <td><span class="badge badge-purple">${typeEmojis[r.exercise_type] || '⚡'} ${r.exercise_type}</span></td>
+                    <td><span class="badge badge-purple">${typeEmojis[r.exercise_type] || '⚡'} ${t(r.exercise_type)}</span></td>
                     <td style="max-width:180px;">${escHtml(r.exercise_name)}</td>
                     <td>${r.duration_minutes} min</td>
-                    <td><span class="badge ${intColors[r.intensity] || 'badge-blue'}">${r.intensity}</span></td>
+                    <td><span class="badge ${intColors[r.intensity] || 'badge-blue'}">${t(r.intensity)}</span></td>
                     <td>${r.calories_burned ? r.calories_burned + ' kcal' : '—'}</td>
-                    <td><button class="delete-btn" onclick="deleteEntry('exercises', ${r.id}, document.getElementById('ex-row-${r.id}'))">🗑 Delete</button></td>
+                    <td><button class="delete-btn" onclick="deleteEntry('exercises', ${r.id}, document.getElementById('ex-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
                 if (r.notes) {
                     html += `<tr><td colspan="7" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
@@ -1122,7 +1126,11 @@
         function renderWaterTable(rows, wrap) {
             let html = `<table class="history-table">
                 <thead><tr>
-                    <th>Date</th><th>Amount</th><th>Day Total</th><th>Logged At</th><th>Action</th>
+                    <th data-i18n="date">${t('date')}</th>
+                    <th data-i18n="amount">${t('amount') || 'Amount'}</th>
+                    <th data-i18n="day_total">${t('day_total') || 'Day Total'}</th>
+                    <th data-i18n="logged_at">${t('logged_at') || 'Logged At'}</th>
+                    <th data-i18n="action">${t('action')}</th>
                 </tr></thead><tbody>`;
 
             rows.forEach(r => {
@@ -1131,7 +1139,7 @@
                     <td><span class="badge badge-blue">💧 ${r.amount_ml} ml</span></td>
                     <td>${r.day_total ? r.day_total + ' ml' : r.amount_ml + ' ml'}</td>
                     <td>${fmtDateTime(r.logged_at)}</td>
-                    <td><button class="delete-btn" onclick="deleteEntry('water', ${r.id}, document.getElementById('water-row-${r.id}'))">🗑 Delete</button></td>
+                    <td><button class="delete-btn" onclick="deleteEntry('water', ${r.id}, document.getElementById('water-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
             });
 
@@ -1145,13 +1153,17 @@
 
             let html = `<table class="history-table">
                 <thead><tr>
-                    <th>Date</th><th>Bedtime</th><th>Wake Time</th>
-                    <th>Duration</th><th>Quality</th><th>Action</th>
+                    <th data-i18n="date">${t('date')}</th>
+                    <th data-i18n="bedtime_label">${t('bedtime_label')}</th>
+                    <th data-i18n="waketime_label">${t('waketime_label')}</th>
+                    <th data-i18n="duration_label">${t('duration_label')}</th>
+                    <th data-i18n="sleep_quality_label">${t('sleep_quality_label')}</th>
+                    <th data-i18n="action">${t('action')}</th>
                 </tr></thead><tbody>`;
 
             rows.forEach(r => {
                 const qual = r.sleep_quality
-                    ? `<span class="badge ${qualColors[r.sleep_quality] || 'badge-blue'}">${qualEmojis[r.sleep_quality] || ''} ${r.sleep_quality}</span>`
+                    ? `<span class="badge ${qualColors[r.sleep_quality] || 'badge-blue'}">${qualEmojis[r.sleep_quality] || ''} ${t(r.sleep_quality)}</span>`
                     : '—';
                 html += `<tr id="sleep-row-${r.id}">
                     <td>${fmtDate(r.sleep_date)}</td>
@@ -1159,7 +1171,7 @@
                     <td>⏰ ${r.wake_time ? r.wake_time.substring(0,5) : '—'}</td>
                     <td>${r.duration_hours ? r.duration_hours + ' hrs' : '—'}</td>
                     <td>${qual}</td>
-                    <td><button class="delete-btn" onclick="deleteEntry('sleep', ${r.id}, document.getElementById('sleep-row-${r.id}'))">🗑 Delete</button></td>
+                    <td><button class="delete-btn" onclick="deleteEntry('sleep', ${r.id}, document.getElementById('sleep-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
                 if (r.notes) {
                     html += `<tr><td colspan="6" style="padding:4px 16px 12px;color:var(--text-light);font-size:0.87rem;">
@@ -1272,12 +1284,16 @@
 
         function fmtDate(d) {
             if (!d) return '—';
-            return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+            const lang = L10n.get();
+            const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+            return new Date(d).toLocaleDateString(localeMap[lang] || 'en-US', { year:'numeric', month:'short', day:'numeric' });
         }
 
         function fmtDateTime(dt) {
             if (!dt) return '—';
-            return new Date(dt).toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+            const lang = L10n.get();
+            const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+            return new Date(dt).toLocaleString(localeMap[lang] || 'en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
         }
 
         function escHtml(s) {
