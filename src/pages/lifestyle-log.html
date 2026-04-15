@@ -406,7 +406,7 @@
                 <div class="topbar-actions">
                     <div class="topbar-search">
                         <i>🔍</i>
-                        <input type="text" placeholder="Search logs…" id="historySearch">
+                        <input type="text" data-i18n="search_logs_placeholder" placeholder="Search logs…" id="historySearch">
                     </div>
                     <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
                     <button class="topbar-icon-btn" title="Messages">💬</button>
@@ -439,10 +439,10 @@
 
             <!-- Tabs -->
             <div class="lifestyle-tabs" id="lifestyleTabs">
-                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)"><span data-i18n="meals_today">🥗 Meals Today</span></button>
-                <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)"><span data-i18n="exercises">🏃 Exercises</span></button>
-                <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)"><span data-i18n="log_water">💧 Water Intake</span></button>
-                <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)"><span data-i18n="sleep_hrs">😴 Sleep</span></button>
+                <button class="tab-btn active" id="tab-meals"     onclick="switchTab('meals',     this)"><span data-i18n="meal_log">🥗 Meals Today</span></button>
+                <button class="tab-btn"         id="tab-exercises" onclick="switchTab('exercises', this)"><span data-i18n="exercise_log">🏃 Exercises</span></button>
+                <button class="tab-btn"         id="tab-water"    onclick="switchTab('water',     this)"><span data-i18n="hydration_log">💧 Water Intake</span></button>
+                <button class="tab-btn"         id="tab-sleep"    onclick="switchTab('sleep',     this)"><span data-i18n="sleep_log">😴 Sleep</span></button>
             </div>
 
             <!-- ══════════════ MEALS TAB ══════════════ -->
@@ -454,7 +454,7 @@
                         <div class="form-group">
                             <label for="mealType" data-i18n="meal_type_label">Meal Type *</label>
                             <select id="mealType" required>
-                                <option value="" data-i18n="meal_type_placeholder">Select meal type…</option>
+                                <option value="" data-i18n="select_type">Select meal type…</option>
                                 <option value="breakfast" data-i18n="breakfast">🌅 Breakfast</option>
                                 <option value="lunch" data-i18n="lunch">☀️ Lunch</option>
                                 <option value="dinner" data-i18n="dinner">🌙 Dinner</option>
@@ -500,7 +500,7 @@
                         <textarea id="mealNotes" data-i18n="meal_notes_placeholder" placeholder="How did you feel after this meal? Any symptoms?"></textarea>
                     </div>
 
-                    <button class="submit-btn" id="saveMealBtn" onclick="saveMeal()" data-i18n="save_meal">💾 Save Meal</button>
+                    <button class="submit-btn" id="saveMealBtn" onclick="saveMeal()"><i>💾</i> <span data-i18n="save_meal">Save Meal</span></button>
                 </div>
 
                 <!-- Meals History Table -->
@@ -525,9 +525,9 @@
                         <div class="form-group">
                             <label for="exerciseType" data-i18n="exercise_type_label">Exercise Type *</label>
                             <select id="exerciseType" required>
-                                <option value="" data-i18n="exercise_type_placeholder">Select type…</option>
-                                <option value="cardio" data-i18n="cardio">🏃 Cardio (Running, Cycling…)</option>
-                                <option value="strength" data-i18n="strength">💪 Strength Training</option>
+                                <option value="" data-i18n="select_type">Select type…</option>
+                                <option value="cardio" data-i18n="cardio">🏃 Cardio</option>
+                                <option value="strength" data-i18n="strength">💪 Strength</option>
                                 <option value="yoga" data-i18n="yoga">🧘 Yoga</option>
                                 <option value="walking" data-i18n="walking">🚶 Walking</option>
                                 <option value="swimming" data-i18n="swimming">🏊 Swimming</option>
@@ -567,7 +567,7 @@
 
                     <div class="form-group">
                         <label for="exerciseCalories" data-i18n="calories_burned_label">Calories Burned (estimated)</label>
-                        <input type="number" id="exerciseCalories" placeholder="e.g., 250" min="0">
+                        <input type="number" id="exerciseCalories" data-i18n="calories_placeholder" placeholder="e.g., 250" min="0">
                     </div>
 
                     <div class="form-group">
@@ -575,7 +575,7 @@
                         <textarea id="exerciseNotes" data-i18n="feel_notes_placeholder" placeholder="Energy level, any pain or discomfort…"></textarea>
                     </div>
 
-                    <button class="submit-btn" id="saveExerciseBtn" onclick="saveExercise()" data-i18n="save_exercise">💾 Save Exercise</button>
+                    <button class="submit-btn" id="saveExerciseBtn" onclick="saveExercise()"><i>💾</i> <span data-i18n="save_exercise">Save Exercise</span></button>
                 </div>
 
                 <!-- Exercises History Table -->
@@ -594,7 +594,7 @@
             <!-- ══════════════ WATER TAB ══════════════ -->
             <div id="tab-water-content" class="tab-content">
                 <div class="log-form reveal">
-                    <div class="form-section-title" data-i18n="log_water_title">💧 Log Water Intake</div>
+                    <div class="form-section-title" data-i18n="hydration_title">💧 Log Water Intake</div>
 
                     <div class="form-group">
                         <label for="waterDate" data-i18n="date">Date *</label>
@@ -615,7 +615,7 @@
                         <label for="customWater" data-i18n="custom_water_label">Or enter custom amount (ml)</label>
                         <div style="display:flex;gap:10px;">
                             <input type="number" id="customWater" data-i18n="custom_water_placeholder" placeholder="Enter amount in ml" min="1" style="flex:1;">
-                            <button class="submit-btn" onclick="quickAddWater(null)" style="flex:0 0 auto;padding:10px 20px;">Add</button>
+                            <button class="submit-btn" onclick="quickAddWater(null)" data-i18n="add" style="flex:0 0 auto;padding:10px 20px;">Add</button>
                         </div>
                     </div>
 
@@ -677,7 +677,7 @@
 
                     <div class="form-group">
                         <label for="sleepDurationDisplay" data-i18n="hours_slept_label">Hours Slept (auto-calculated)</label>
-                        <input type="text" id="sleepDurationDisplay" readonly placeholder="Set bedtime & wake time above">
+                        <input type="text" id="sleepDurationDisplay" readonly data-i18n="sleep_duration_placeholder" placeholder="Set bedtime & wake time above">
                     </div>
 
                     <div class="form-group">
@@ -731,6 +731,9 @@
 
         // ── Init ──────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Localization
+            if (typeof L10n !== 'undefined') L10n.init();
+
             // Date display
             const lang = localStorage.getItem('pcos_lang') || 'en';
             const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
@@ -809,7 +812,7 @@
             const mealDate = document.getElementById('mealDate').value;
 
             if (!mealType || !mealName || !mealDate) {
-                Toast.error('Please fill in Meal Type, Name, and Date.');
+                Toast.error(t('fill_fields_error'));
                 return;
             }
 
@@ -831,7 +834,7 @@
             try {
                 const res = await postAPI('meals', payload);
                 if (res.status === 'success') {
-                    Toast.success('Meal saved successfully! 🥗');
+                    Toast.success(t('meal_saved_success'));
                     setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save meal.');
@@ -850,7 +853,7 @@
             const exDate   = document.getElementById('exerciseDate').value;
 
             if (!exType || !exName || !duration || !exDate) {
-                Toast.error('Please fill in Type, Name, Duration, and Date.');
+                Toast.error(t('fill_fields_error'));
                 return;
             }
 
@@ -870,7 +873,7 @@
             try {
                 const res = await postAPI('exercises', payload);
                 if (res.status === 'success') {
-                    Toast.success('Exercise saved! 🏃');
+                    Toast.success(t('exercise_saved_success'));
                     setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save exercise.');
@@ -896,7 +899,7 @@
             try {
                 const res = await postAPI('water', payload);
                 if (res.status === 'success') {
-                    Toast.success(`+${ml}ml logged! 💧`);
+                    Toast.success(t('water_logged_success'));
                     setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to log water.');
@@ -913,7 +916,7 @@
             const wakeTime = document.getElementById('sleepWakeTime').value;
 
             if (!sleepDate || !bedtime || !wakeTime) {
-                Toast.error('Please fill in Date, Bedtime, and Wake Time.');
+                Toast.error(t('fill_fields_error'));
                 return;
             }
 
@@ -930,7 +933,7 @@
             try {
                 const res = await postAPI('sleep', payload);
                 if (res.status === 'success') {
-                    Toast.success(`Sleep logged! ${res.duration_hours}h recorded 😴`);
+                    Toast.success(t('sleep_logged_success'));
                     setTimeout(() => window.location.href = 'patient-dashboard.html', 1500);
                 } else {
                     Toast.error(res.message || 'Failed to save sleep.');
@@ -944,7 +947,7 @@
         // ══════════════════ DELETE FUNCTIONS ═════════════════════════
 
         async function deleteEntry(type, id, rowEl) {
-            if (!confirm('Delete this entry?')) return;
+            if (!confirm(t('delete_confirm'))) return;
             const payload = { ...apiParams(), id };
             try {
                 const res = await fetch(`${API}?type=${type}`, {
@@ -961,7 +964,7 @@
                         if (type === 'water') updateWaterProgress();
                         refreshStats();
                     }, 300);
-                    Toast.success('Entry deleted.');
+                    Toast.success(t('entry_deleted'));
                 } else {
                     Toast.error(data.message || 'Could not delete.');
                 }
@@ -992,7 +995,7 @@
                     renderMealsTable(data.data, wrap);
                     document.getElementById('mealsCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('🍽️', t('no_meals_msg'), t('log_meal_hint') || 'Fill the form above');
+                    wrap.innerHTML = emptyState('🍽️', t('no_meals_today'), t('log_meal_hint') || 'Fill the form above');
                     document.getElementById('mealsCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1008,7 +1011,7 @@
                     renderExercisesTable(data.data, wrap);
                     document.getElementById('exercisesCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('🏃', t('no_exercises_msg'), t('log_exercise_hint') || 'Log your first workout');
+                    wrap.innerHTML = emptyState('🏃', t('no_exercises_today'), t('log_exercise_hint') || 'Log your first workout');
                     document.getElementById('exercisesCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1042,7 +1045,7 @@
                     renderSleepTable(data.data, wrap);
                     document.getElementById('sleepCount').textContent = `(${data.data.length} ${t('records')})`;
                 } else {
-                    wrap.innerHTML = emptyState('😴', t('no_sleep_msg'), t('log_sleep_hint') || 'Log your sleep data above');
+                    wrap.innerHTML = emptyState('😴', t('no_sleep_logged'), t('log_sleep_hint') || 'Log your sleep data above');
                     document.getElementById('sleepCount').textContent = '';
                 }
             } catch(e) { wrap.innerHTML = errorState(); }
@@ -1067,7 +1070,7 @@
 
             rows.forEach(r => {
                 const cats = r.food_categories
-                    ? r.food_categories.split(',').map(c => `<span class="badge badge-purple">${c.trim()}</span>`).join(' ')
+                    ? r.food_categories.split(',').map(c => `<span class="badge badge-purple">${t(c.trim())}</span>`).join(' ')
                     : '—';
                 html += `<tr id="meal-row-${r.id}">
                     <td>${fmtDate(r.log_date)}</td>
@@ -1075,7 +1078,7 @@
                     <td style="max-width:200px;">${escHtml(r.meal_name)}</td>
                     <td>${cats}</td>
                     <td>${r.meal_time ? r.meal_time.substring(0,5) : '—'}</td>
-                    <td>${r.calories ? r.calories + ' kcal' : '—'}</td>
+                    <td>${r.calories ? r.calories + ' ' + t('calories_unit') : '—'}</td>
                     <td><button class="delete-btn" onclick="deleteEntry('meals', ${r.id}, document.getElementById('meal-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
                 if (r.notes) {
@@ -1108,9 +1111,9 @@
                     <td>${fmtDate(r.log_date)}</td>
                     <td><span class="badge badge-purple">${typeEmojis[r.exercise_type] || '⚡'} ${t(r.exercise_type)}</span></td>
                     <td style="max-width:180px;">${escHtml(r.exercise_name)}</td>
-                    <td>${r.duration_minutes} min</td>
+                    <td>${r.duration_minutes} ${t('minutes_unit')}</td>
                     <td><span class="badge ${intColors[r.intensity] || 'badge-blue'}">${t(r.intensity)}</span></td>
-                    <td>${r.calories_burned ? r.calories_burned + ' kcal' : '—'}</td>
+                    <td>${r.calories_burned ? r.calories_burned + ' ' + t('calories_unit') : '—'}</td>
                     <td><button class="delete-btn" onclick="deleteEntry('exercises', ${r.id}, document.getElementById('ex-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
                 if (r.notes) {
@@ -1169,7 +1172,7 @@
                     <td>${fmtDate(r.sleep_date)}</td>
                     <td>🛏️ ${r.bedtime ? r.bedtime.substring(0,5) : '—'}</td>
                     <td>⏰ ${r.wake_time ? r.wake_time.substring(0,5) : '—'}</td>
-                    <td>${r.duration_hours ? r.duration_hours + ' hrs' : '—'}</td>
+                    <td>${r.duration_hours ? r.duration_hours + ' ' + t('hours_unit') : '—'}</td>
                     <td>${qual}</td>
                     <td><button class="delete-btn" onclick="deleteEntry('sleep', ${r.id}, document.getElementById('sleep-row-${r.id}'))">🗑 ${t('remove')}</button></td>
                 </tr>`;
@@ -1282,22 +1285,34 @@
             document.getElementById('sleepDurationDisplay').value= '';
         }
 
+        // ── Translation Helper ───────────────────────────────────────────
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = L10n.get() || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
+        }
+
         function fmtDate(d) {
             if (!d) return '—';
             const lang = L10n.get();
             const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
-            return new Date(d).toLocaleDateString(localeMap[lang] || 'en-US', { year:'numeric', month:'short', day:'numeric' });
+            // Ensure YYYY-MM-DD is parsed correctly in all browsers
+            const dateObj = new Date(d.indexOf('T') === -1 ? d + 'T00:00:00' : d);
+            return dateObj.toLocaleDateString(localeMap[lang] || 'en-US', { year:'numeric', month:'short', day:'numeric' });
         }
 
         function fmtDateTime(dt) {
             if (!dt) return '—';
             const lang = L10n.get();
             const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
-            return new Date(dt).toLocaleString(localeMap[lang] || 'en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+            // Replace space with T for ISO format compatibility
+            const dateObj = new Date(dt.replace(' ', 'T'));
+            return dateObj.toLocaleString(localeMap[lang] || 'en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
         }
 
         function escHtml(s) {
-            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
 
         function emptyState(icon, text, hint) {

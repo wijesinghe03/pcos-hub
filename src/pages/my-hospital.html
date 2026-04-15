@@ -10,13 +10,17 @@
         /* ── My Hospital Specific Styling ── */
         .hospital-grid {
             display: grid;
-            grid-template-columns: 1fr 340px;
+            grid-template-columns: 1fr 360px;
             gap: 24px;
             align-items: start;
         }
 
-        @media (max-width: 950px) {
-            .hospital-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1400px) {
+            .hospital-grid { 
+                grid-template-columns: 1fr; 
+                gap: 32px;
+            }
+            .dash-panel { order: -1; } 
         }
 
         .hospital-card {
@@ -58,10 +62,13 @@
         }
 
         .hospital-name {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: var(--text-dark);
             margin-bottom: 4px;
+            padding-right: 140px; /* Room for primary badge pill */
+            line-height: 1.4;
+            word-wrap: break-word;
         }
 
         .hospital-detail-item {
@@ -111,6 +118,25 @@
             align-items: center;
             gap: 8px;
         }
+        .welcome-actions {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        /* Prevent global button nowrap from breaking Tamil view */
+        .btn {
+            white-space: normal !important;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -135,13 +161,12 @@
                 <div class="sidebar-avatar" id="sidebarAvatar">A</div>
                 <div>
                     <div class="sidebar-name" id="sidebarName">Loading...</div>
-                    <div class="sidebar-role">Patient</div>
+                    <div class="sidebar-role" data-i18n="profile">Patient</div>
                 </div>
-                <i>›</i>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
+                <span class="sidebar-section-label" data-i18n="section_main">Main</span>
                 <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
                 <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
@@ -150,14 +175,14 @@
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Health</span>
-                <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i>🔬</i> Lab Results</a>
-                <a class="sidebar-item active" href="my-hospital.html" data-i18n="hospital"><i>🏥</i> My Hospital</a>
+                <span class="sidebar-section-label" data-i18n="section_health">Health</span>
+                <a class="sidebar-item" href="appointments.html" data-i18n="appointments"><i style="flex-shrink:0;">📅</i> Appointments</a>
+                <a class="sidebar-item" href="lab-results.html" data-i18n="lab_results"><i style="flex-shrink:0;">🔬</i> Lab Results</a>
+                <a class="sidebar-item active" href="my-hospital.html" data-i18n="hospital"><i style="flex-shrink:0;">🏥</i> My Hospital</a>
             </div>
 
             <div class="sidebar-section">
-                <span class="sidebar-section-label">Account</span>
+                <span class="sidebar-section-label" data-i18n="section_account">Account</span>
                 <a class="sidebar-item" href="profile.html" data-i18n="profile"><i>👤</i> Profile</a>
                 <a class="sidebar-item" href="settings.html" data-i18n="settings"><i>⚙️</i> Settings</a>
                 <a class="sidebar-item" href="logout.html" onclick="Auth.logout()" data-i18n="logout"><i>🚪</i> Logout</a>
@@ -168,22 +193,22 @@
         <main class="dash-main">
             <!-- Top bar -->
             <header class="dash-topbar">
-                <div class="dash-page-title">
-                    <h2>My Hospital</h2>
-                    <p id="topbarDate">Manage your healthcare providers</p>
-                </div>
+                    <div class="dash-page-title" style="min-width: 0; flex: 1;">
+                        <h2 data-i18n="my_hospital_title">My Hospital</h2>
+                        <p id="topbarDate" data-i18n="manage_healthcare">Manage your healthcare providers</p>
+                    </div>
                 <div class="topbar-actions">
-                    <button class="topbar-icon-btn">🔔</button>
-                    <button class="topbar-icon-btn">💬</button>
+                    <button class="topbar-icon-btn" data-i18n-title="notifications" title="Notifications">🔔</button>
+                    <button class="topbar-icon-btn" data-i18n-title="messages" title="Messages">💬</button>
                 </div>
             </header>
 
             <!-- Hero/Welcome Card for Hospital -->
-            <div class="welcome-card reveal">
-                <h3>Find Your Best Healthcare 🏥</h3>
-                <p>Register with your primary hospital and specialist clinic to keep all your medical care in one place. </p>
+            <div class="welcome-card reveal" style="overflow: visible;">
+                <h3 data-i18n="hospital_hero_title" style="white-space: normal; overflow: visible;">Find Your Best Healthcare 🏥</h3>
+                <p data-i18n="hospital_hero_desc" style="white-space: normal;">Register with your primary hospital and specialist clinic to keep all your medical care in one place. </p>
                 <div class="welcome-actions">
-                    <button class="btn btn-sm" style="background:white; color:var(--purple-deep);" onclick="document.getElementById('hospitalNameInput').focus()">
+                    <button class="btn" style="background:white; color:var(--purple-deep); padding: 12px 24px; font-size: 0.95rem;" onclick="document.getElementById('hospitalNameInput').focus()" data-i18n="register_new_hospital">
                         Register New Hospital
                     </button>
                 </div>
@@ -195,53 +220,54 @@
                     <!-- Loading... -->
                     <div style="text-align:center; padding:50px 0; color:var(--text-light);">
                         <div class="loader-ring" style="width:30px;height:30px;border-width:3px;margin-bottom:15px;"></div>
-                        Fetching your registered hospitals...
+                        <span data-i18n="fetching_hospitals">Fetching your registered hospitals...</span>
                     </div>
                 </div>
 
                 <!-- FORM SIDE -->
                 <aside class="dash-panel">
-                    <div class="form-section-title"><i>📝</i> Register New</div>
+                    <div class="form-section-title"><i data-i18n="register_new_title">📝 Register New</i></div>
                     <form id="hospitalForm" onsubmit="handleRegister(event)" style="display:grid; gap:16px;">
                         <input type="hidden" name="action" value="save">
                         
                         <div class="form-group">
-                            <label class="stat-card-label">Hospital Name *</label>
-                            <input type="text" id="hospitalNameInput" class="topbar-search" name="hospital_name" placeholder="e.g. Asiri Hospital" required style="width:100%; border-radius:10px; margin-top:5px; padding:12px;">
+                            <label class="form-label" data-i18n="hospital_name_label">Hospital Name *</label>
+                            <input type="text" id="hospitalNameInput" class="form-control" name="hospital_name" data-i18n="hospital_name_placeholder" placeholder="e.g. Asiri Hospital" required style="width:100%;">
                         </div>
 
                         <div class="form-group">
-                            <label class="stat-card-label">Specialist Doctor</label>
-                            <input type="text" class="topbar-search" name="specialist_doctor" placeholder="Dr. Jane Smith" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;">
+                            <label class="form-label" data-i18n="specialist_doctor_label">Specialist Doctor</label>
+                            <input type="text" class="form-control" name="specialist_doctor" data-i18n="doctor_placeholder" placeholder="Dr. Jane Smith" style="width:100%;">
                         </div>
 
                         <div class="form-group">
-                            <label class="stat-card-label">Address</label>
-                            <textarea class="topbar-search" name="address" rows="2" placeholder="Street, City..." style="width:100%; border-radius:10px; margin-top:5px; padding:12px; resize:vertical;"></textarea>
+                            <label class="form-label" data-i18n="address_label">Address</label>
+                            <textarea class="form-control" name="address" rows="2" data-i18n="address_placeholder" placeholder="Street, City..." style="width:100%; resize:vertical;"></textarea>
                         </div>
 
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
                             <div class="form-group">
-                                <label class="stat-card-label">Contact Number *</label>
-                                <input type="tel" class="topbar-search" name="contact_number" 
+                                <label class="form-label" data-i18n="contact_number_label">Contact Number *</label>
+                                <input type="tel" class="form-control" name="contact_number" 
+                                       data-i18n="contact_placeholder"
                                        placeholder="10 digits (e.g. 0771234567)" 
                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
                                        required
-                                       style="width:100%; border-radius:10px; margin-top:5px; padding:12px;"
+                                       style="width:100%;"
                                        title="Please enter exactly 10 digits">
                             </div>
                             <div class="form-group">
-                                <label class="stat-card-label">Email</label>
-                                <input type="email" class="topbar-search" name="email" placeholder="info@hosp.com" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;">
+                                <label class="form-label" data-i18n="email_label">Email</label>
+                                <input type="email" class="form-control" name="email" data-i18n="email_placeholder" placeholder="info@hosp.com" style="width:100%;">
                             </div>
                         </div>
 
-                        <div class="form-group" style="display:flex; align-items:center; gap:8px; margin-top:5px;">
-                            <input type="checkbox" name="is_primary" value="1" id="isPrimaryCheck" style="width:18px; height:18px; accent-color:var(--purple-primary);">
-                            <label for="isPrimaryCheck" style="font-size:0.85rem; font-weight:700; color:var(--text-mid); cursor:pointer;">Set as Primary Hospital</label>
+                        <div style="display:flex; align-items:center; gap:8px; margin-top:5px; flex-wrap: wrap;">
+                            <input type="checkbox" name="is_primary" value="1" id="isPrimary" style="width:18px; height:18px; flex-shrink: 0; accent-color: var(--purple-primary);">
+                            <label for="isPrimary" style="font-size:0.85rem; font-weight:700; color:var(--text-mid); cursor:pointer;" data-i18n="set_primary_label">Set as Primary Hospital</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; margin-top:10px; font-weight:800;">
+                        <button type="submit" id="registerBtn" class="btn btn-primary" style="width:100%; padding:14px; margin-top:10px; font-weight:800; white-space: normal; min-height: 54px; height: auto; word-break: break-word;" data-i18n="register_hospital_btn">
                            🏥 Register Hospital
                         </button>
                     </form>
@@ -259,9 +285,17 @@
         if (!user) window.location.href = 'login.html';
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (typeof L10n !== 'undefined') L10n.init();
+            
             document.getElementById('sidebarName').textContent = user.name;
             document.getElementById('sidebarAvatar').textContent = user.name.charAt(0).toUpperCase();
-            document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long' });
+            
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+            const dateStr = new Date().toLocaleDateString(localeMap[lang] || 'en-US', { weekday:'long', day:'numeric', month:'long' });
+            
+            const transDesc = t('manage_healthcare');
+            document.getElementById('topbarDate').textContent = transDesc + " · " + dateStr;
 
             loadHospitals();
             
@@ -281,25 +315,32 @@
                 }
             } catch (e) {
                 console.error(e);
-                Toast.error('Failed to load registered hospitals.');
+                Toast.error(t('failed_load_hospitals') || 'Failed to load registered hospitals.');
             }
+        }
+
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
         }
 
         function renderHospitals(rows) {
             const container = document.getElementById('hospitalList');
             if (rows.length === 0) {
                 container.innerHTML = `<div style="text-align:center; padding:100px 0; color:var(--text-light);">
-                    <p>No hospitals registered yet. Register your first clinic on the right!</p>
+                    <p>${t('no_hospitals_registered')}</p>
                 </div>`;
                 return;
             }
 
             container.innerHTML = rows.map(h => `
                 <div class="hospital-card ${h.is_primary == 1 ? 'primary' : ''}">
-                    ${h.is_primary == 1 ? '<span class="primary-badge">Primary Provider</span>' : ''}
+                    ${h.is_primary == 1 ? `<span class="primary-badge">${t('primary_provider_badge')}</span>` : ''}
                     <div class="hospital-name">${h.hospital_name}</div>
                     
-                    ${h.specialist_doctor ? `<div class="doctor-badge">🩺 Special Care: ${h.specialist_doctor}</div>` : ''}
+                    ${h.specialist_doctor ? `<div class="doctor-badge">🩺 ${t('special_care')}: ${h.specialist_doctor}</div>` : ''}
 
                     <div style="display:grid; gap:8px;">
                         ${h.address ? `<div class="hospital-detail-item"><i>🏠</i> ${h.address}</div>` : ''}
@@ -308,8 +349,8 @@
                     </div>
 
                     <div class="hospital-actions">
-                        <button class="btn btn-sm btn-ghost" style="color:var(--purple-primary);" onclick="handleDelete(${h.id})">🗑 Remove</button>
-                        ${h.is_primary == 0 ? `<button class="btn btn-sm btn-ghost" onclick="setPrimary(${h.id})">⭐ Make Primary</button>` : ''}
+                        <button class="btn btn-sm btn-ghost" style="color:var(--purple-primary);" onclick="handleDelete(${h.id}, '${h.hospital_name}')">🗑 ${t('remove')}</button>
+                        ${h.is_primary == 0 ? `<button class="btn btn-sm btn-ghost" onclick="setPrimary(${h.id})">⭐ ${t('make_primary')}</button>` : ''}
                     </div>
                 </div>
             `).join('');
@@ -325,14 +366,14 @@
             // Extra strict validation for 10-digit number
             const phone = data.contact_number;
             if (!/^\d{10}$/.test(phone)) {
-                Toast.warning('Contact number must be exactly 10 digits.');
+                Toast.warning(t('contact_10_digits_error'));
                 return;
             }
 
             try {
                 const res = await API.call('components/myhospital_handler.php', data);
                 if (res.status === 'success') {
-                    Toast.success('✓ Hospital registered successfully!');
+                    Toast.success(t('hospital_registered_success'));
                     e.target.reset();
                     loadHospitals();
                 } else {
@@ -344,8 +385,8 @@
             }
         }
 
-        async function handleDelete(id) {
-            if (!confirm('Remove this hospital from your registry?')) return;
+        async function handleDelete(id, name) {
+            if (!confirm(`${t('are_you_sure_remove')} \n"${name}"?`)) return;
             try {
                 const res = await API.call('components/myhospital_handler.php', { 
                     action: 'delete', 
@@ -353,7 +394,7 @@
                     patient_id: user.id 
                 });
                 if (res.status === 'success') {
-                    Toast.success('✓ Hospital removed');
+                    Toast.success(t('hospital_removed'));
                     loadHospitals();
                 } else {
                     Toast.error(res.message);
@@ -364,7 +405,7 @@
         async function setPrimary(id) {
             try {
                 const res = await API.call('components/myhospital_handler.php', { action: 'set-primary', id, patient_id: user.id });
-                Toast.success('✓ Primary provider updated!');
+                Toast.success(t('primary_provider_updated'));
                 loadHospitals();
             } catch(e) { loadHospitals(); }
         }

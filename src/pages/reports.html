@@ -137,7 +137,7 @@
         <main class="dash-main">
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2 data-i18n="medical_documents">My Medical Documents</h2>
+                    <h2 data-i18n="medical_documents_title">My Medical Documents</h2>
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
@@ -177,18 +177,18 @@
                                 <option value="scan" data-i18n="all_scans">All Scans</option>
                             </optgroup>
                             <optgroup data-i18n="specific_lab_tests" label="Specific Lab Tests">
-                                <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
-                                <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
-                                <option value="Testosterone Level Test">Testosterone Level Test</option>
-                                <option value="Prolactin Test">Prolactin Test</option>
-                                <option value="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
-                                <option value="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
-                                <option value="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
-                                <option value="HbA1c Test">HbA1c Test</option>
-                                <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
+                                <option value="LH (Luteinizing Hormone) Test" data-i18n="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
+                                <option value="FSH (Follicle Stimulating Hormone) Test" data-i18n="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
+                                <option value="Testosterone Level Test" data-i18n="Testosterone Level Test">Testosterone Level Test</option>
+                                <option value="Prolactin Test" data-i18n="Prolactin Test">Prolactin Test</option>
+                                <option value="Thyroid Function Test (TSH, T3, T4)" data-i18n="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
+                                <option value="Fasting Blood Sugar (FBS)" data-i18n="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
+                                <option value="Oral Glucose Tolerance Test (OGTT)" data-i18n="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
+                                <option value="HbA1c Test" data-i18n="HbA1c Test">HbA1c Test</option>
+                                <option value="Lipid Profile (Cholesterol Test)" data-i18n="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
                             </optgroup>
                             <optgroup data-i18n="scans" label="Scans">
-                                <option value="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
+                                <option value="Pelvic Ultrasound Scan" data-i18n="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
                             </optgroup>
                             <optgroup data-i18n="other" label="Other">
                                 <option value="prescription" data-i18n="prescription">Prescription</option>
@@ -200,7 +200,7 @@
 
                 <div id="loadingState" style="text-align:center; padding: 60px; display:none;">
                     <div class="spinner"></div>
-                    <p style="color:var(--text-light)" data-i18n="loading_vault">Accessing medical vault...</p>
+                    <p style="color:var(--text-light)" data-i18n="accessing_vault">Accessing medical vault...</p>
                 </div>
                 
                 <div id="reportsList" class="reports-list"></div>
@@ -219,26 +219,26 @@
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-box">
             <button onclick="closeUploadModal()" style="position:absolute; top:24px; right:24px; border:none; background:none; font-size:1.6rem; cursor:pointer; color:var(--text-light);">✕</button>
-            <h3 style="margin-bottom:28px; font-weight:800; color:var(--text-dark);" data-i18n="upload_report">📤 Upload Document</h3>
+            <h3 style="margin-bottom:28px; font-weight:800; color:var(--text-dark);" data-i18n="upload_document_title">📤 Upload Document</h3>
             <form id="uploadForm">
                 <div class="mfg">
                     <label data-i18n="report_name_label">Report Name *</label>
-                    <input type="text" name="report_name" placeholder="e.g. Thyroid Profile, Pelvic Scan" required>
+                    <input type="text" name="report_name" data-i18n="report_name_placeholder" placeholder="e.g. Thyroid Profile, Pelvic Scan" required>
                 </div>
                 <div class="two-col">
                     <div class="mfg">
                         <label data-i18n="report_type_label">Report Type / Test *</label>
                         <select name="report_type" required>
-                            <option value="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
-                            <option value="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
-                            <option value="Testosterone Level Test">Testosterone Level Test</option>
-                            <option value="Prolactin Test">Prolactin Test</option>
-                            <option value="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
-                            <option value="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
-                            <option value="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
-                            <option value="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
-                            <option value="HbA1c Test">HbA1c Test</option>
-                            <option value="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
+                            <option value="LH (Luteinizing Hormone) Test" data-i18n="LH (Luteinizing Hormone) Test">LH (Luteinizing Hormone) Test</option>
+                            <option value="FSH (Follicle Stimulating Hormone) Test" data-i18n="FSH (Follicle Stimulating Hormone) Test">FSH (Follicle Stimulating Hormone) Test</option>
+                            <option value="Testosterone Level Test" data-i18n="Testosterone Level Test">Testosterone Level Test</option>
+                            <option value="Prolactin Test" data-i18n="Prolactin Test">Prolactin Test</option>
+                            <option value="Thyroid Function Test (TSH, T3, T4)" data-i18n="Thyroid Function Test (TSH, T3, T4)">Thyroid Function Test (TSH, T3, T4)</option>
+                            <option value="Pelvic Ultrasound Scan" data-i18n="Pelvic Ultrasound Scan">Pelvic Ultrasound Scan</option>
+                            <option value="Fasting Blood Sugar (FBS)" data-i18n="Fasting Blood Sugar (FBS)">Fasting Blood Sugar (FBS)</option>
+                            <option value="Oral Glucose Tolerance Test (OGTT)" data-i18n="Oral Glucose Tolerance Test (OGTT)">Oral Glucose Tolerance Test (OGTT)</option>
+                            <option value="HbA1c Test" data-i18n="HbA1c Test">HbA1c Test</option>
+                            <option value="Lipid Profile (Cholesterol Test)" data-i18n="Lipid Profile (Cholesterol Test)">Lipid Profile (Cholesterol Test)</option>
                             <option value="prescription" data-i18n="prescription">Prescription</option>
                             <option value="other" data-i18n="other">Other</option>
                         </select>
@@ -251,11 +251,11 @@
                 <div class="two-col">
                     <div class="mfg">
                         <label data-i18n="hospital_clinic_label">Hospital / Clinic</label>
-                        <input type="text" name="hospital_name" placeholder="e.g. Apollo Hospital">
+                        <input type="text" name="hospital_name" data-i18n="hospital_name_placeholder" placeholder="e.g. Apollo Hospital">
                     </div>
                     <div class="mfg">
                         <label data-i18n="doctor_requested_label">Doctor Requested</label>
-                        <input type="text" name="doctor_name" placeholder="e.g. Dr. Silva">
+                        <input type="text" name="doctor_name" data-i18n="doctor_name_placeholder" placeholder="e.g. Dr. Silva">
                     </div>
                 </div>
                 <div class="mfg">
@@ -441,6 +441,7 @@
         });
 
         function init() {
+            if (typeof L10n !== 'undefined') L10n.init();
             const dateEl = document.getElementById('dateDisplay');
             if (dateEl) {
                 const lang = localStorage.getItem('pcos_lang') || 'en';

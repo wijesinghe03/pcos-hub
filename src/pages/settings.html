@@ -315,12 +315,11 @@
             </a>
 
             <div class="sidebar-profile">
-                <div class="sidebar-avatar">A</div>
+                <div class="sidebar-avatar" id="sideAvatar">A</div>
                 <div>
                     <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
-                    <div class="sidebar-role">Patient</div>
+                    <div class="sidebar-role" data-i18n="profile">Patient</div>
                 </div>
-                <i>›</i>
             </div>
 
             <div class="sidebar-section">
@@ -363,13 +362,13 @@
             <div class="settings-container">
                 <!-- Notifications Settings -->
                 <div class="settings-section">
-                    <div class="settings-section-title"><i>🔔</i> Notifications</div>
-                    <div class="setting-description">Manage how you receive notifications and reminders</div>
+                    <div class="settings-section-title"><i data-i18n="notifications">🔔 Notifications</i></div>
+                    <div class="setting-description" data-i18n="notifications_desc">Manage how you receive notifications and reminders</div>
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Email Notifications</div>
-                            <div class="setting-description">Receive email updates about appointments and health</div>
+                            <div class="setting-name" data-i18n="email_notif">Email Notifications</div>
+                            <div class="setting-description" data-i18n="email_notif_desc">Receive email updates about appointments and health</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="emailNotif" checked>
@@ -379,8 +378,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">SMS Alerts</div>
-                            <div class="setting-description">Get text message reminders for appointments</div>
+                            <div class="setting-name" data-i18n="sms_alerts">SMS Alerts</div>
+                            <div class="setting-description" data-i18n="sms_alerts_desc">Get text message reminders for appointments</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="smsNotif" checked>
@@ -390,8 +389,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Appointment Reminders</div>
-                            <div class="setting-description">Get reminded before your scheduled appointments</div>
+                            <div class="setting-name" data-i18n="appointment_reminders">Appointment Reminders</div>
+                            <div class="setting-description" data-i18n="appointment_reminders_desc">Get reminded before your scheduled appointments</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="appointmentReminder" checked>
@@ -401,8 +400,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Cycle Reminders</div>
-                            <div class="setting-description">Get notified about your menstrual cycle events</div>
+                            <div class="setting-name" data-i18n="cycle_reminders">Cycle Reminders</div>
+                            <div class="setting-description" data-i18n="cycle_reminders_desc">Get notified about your menstrual cycle events</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="cycleReminder" checked>
@@ -412,8 +411,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Health Tips & Articles</div>
-                            <div class="setting-description">Receive weekly health tips and educational content</div>
+                            <div class="setting-name" data-i18n="health_tips_articles">Health Tips & Articles</div>
+                            <div class="setting-description" data-i18n="health_tips_articles_desc">Receive weekly health tips and educational content</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="healthTips">
@@ -424,17 +423,17 @@
 
                 <!-- Privacy & Data Settings -->
                 <div class="settings-section">
-                    <div class="settings-section-title"><i>🔒</i> Privacy & Data</div>
+                    <div class="settings-section-title"><i data-i18n="privacy_data">🔒 Privacy & Data</i></div>
 
-                    <div class="privacy-info">
+                    <div class="privacy-info" data-i18n="privacy_info_banner">
                         Your health data is encrypted and stored securely. We never share your personal information with
                         third parties without your consent.
                     </div>
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Data Sharing</div>
-                            <div class="setting-description">Allow clinics to access your health records</div>
+                            <div class="setting-name" data-i18n="data_sharing">Data Sharing</div>
+                            <div class="setting-description" data-i18n="data_sharing_desc">Allow clinics to access your health records</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="dataSharing" checked>
@@ -444,8 +443,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Research Participation</div>
-                            <div class="setting-description">Help us improve PCOS care by participating in research
+                            <div class="setting-name" data-i18n="research_participation">Research Participation</div>
+                            <div class="setting-description" data-i18n="research_participation_desc">Help us improve PCOS care by participating in research
                             </div>
                         </div>
                         <label class="toggle-switch">
@@ -456,8 +455,8 @@
 
                     <div class="setting-item">
                         <div class="setting-label">
-                            <div class="setting-name">Anonymous Analytics</div>
-                            <div class="setting-description">Help us improve the app by sending usage statistics</div>
+                            <div class="setting-name" data-i18n="anonymous_analytics">Anonymous Analytics</div>
+                            <div class="setting-description" data-i18n="anonymous_analytics_desc">Help us improve the app by sending usage statistics</div>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="analytics" checked>
@@ -472,18 +471,18 @@
 
                     <div class="form-row full">
                         <div class="form-group">
-                            <label for="themeSelect">Theme</label>
+                            <label for="themeSelect" data-i18n="theme">Theme</label>
                             <select id="themeSelect">
-                                <option value="light" selected>Light Mode</option>
-                                <option value="dark">Dark Mode</option>
-                                <option value="auto">Auto (System)</option>
+                                <option value="light" selected data-i18n="light_mode">Light Mode</option>
+                                <option value="dark" data-i18n="dark_mode">Dark Mode</option>
+                                <option value="auto" data-i18n="auto_system">Auto (System)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-row full">
                         <div class="form-group">
-                            <label>Primary Color</label>
+                            <label data-i18n="primary_color">Primary Color</label>
                             <div class="color-picker-grid">
                                 <div class="color-option selected" style="background: #9370DB;"
                                     onclick="selectColor(this, '#9370DB')"></div>
@@ -499,11 +498,11 @@
 
                     <div class="form-row full">
                         <div class="form-group">
-                            <label for="fontSizeSelect">Text Size</label>
+                            <label for="fontSizeSelect" data-i18n="text_size">Text Size</label>
                             <select id="fontSizeSelect">
-                                <option value="small">Small</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="large">Large</option>
+                                <option value="small" data-i18n="small_size">Small</option>
+                                <option value="medium" selected data-i18n="medium_size">Medium</option>
+                                <option value="large" data-i18n="large_size">Large</option>
                             </select>
                         </div>
                     </div>
@@ -515,62 +514,62 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="weightUnit">Weight Unit</label>
+                            <label for="weightUnit" data-i18n="weight_unit">Weight Unit</label>
                             <select id="weightUnit">
-                                <option value="kg" selected>Kilograms (kg)</option>
-                                <option value="lbs">Pounds (lbs)</option>
+                                <option value="kg" selected data-i18n="kilograms">Kilograms (kg)</option>
+                                <option value="lbs" data-i18n="pounds">Pounds (lbs)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="heightUnit">Height Unit</label>
+                            <label for="heightUnit" data-i18n="height_unit">Height Unit</label>
                             <select id="heightUnit">
-                                <option value="cm" selected>Centimeters (cm)</option>
-                                <option value="feet">Feet & Inches</option>
+                                <option value="cm" selected data-i18n="centimeters">Centimeters (cm)</option>
+                                <option value="feet" data-i18n="feet_inches">Feet & Inches</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="cycleLength">Average Cycle Length (days)</label>
+                            <label for="cycleLength" data-i18n="avg_cycle_length">Average Cycle Length (days)</label>
                             <input type="number" id="cycleLength" min="20" max="45" value="28">
                         </div>
                         <div class="form-group">
-                            <label for="periodDuration">Average Period Duration (days)</label>
+                            <label for="periodDuration" data-i18n="avg_period_duration">Average Period Duration (days)</label>
                             <input type="number" id="periodDuration" min="3" max="10" value="5">
                         </div>
                     </div>
 
                     <div class="form-row full">
                         <div class="form-group">
-                            <label>Health Tracking Priorities</label>
+                            <label data-i18n="health_tracking_priorities">Health Tracking Priorities</label>
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="track-symptoms" checked>
-                                    <label for="track-symptoms">Symptom tracking</label>
+                                    <label for="track-symptoms" data-i18n="track_symptoms_opt">Symptom tracking</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="track-exercise" checked>
-                                    <label for="track-exercise">Exercise & Activity</label>
+                                    <label for="track-exercise" data-i18n="track_exercise_opt">Exercise & Activity</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="track-nutrition" checked>
-                                    <label for="track-nutrition">Nutrition & Diet</label>
+                                    <label for="track-nutrition" data-i18n="track_nutrition_opt">Nutrition & Diet</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="track-mood" checked>
-                                    <label for="track-mood">Mood & Stress</label>
+                                    <label for="track-mood" data-i18n="track_mood_opt">Mood & Stress</label>
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" id="track-sleep" checked>
-                                    <label for="track-sleep">Sleep Quality</label>
+                                    <label for="track-sleep" data-i18n="track_sleep_opt">Sleep Quality</label>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-actions">
-                        <button class="btn btn-primary" onclick="saveHealthSettings()">Save Health Settings</button>
+                        <button class="btn btn-primary" onclick="saveHealthSettings()" data-i18n="save_health_settings_btn">Save Health Settings</button>
                     </div>
                 </div>
 
@@ -580,7 +579,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="language">Language</label>
+                            <label for="language" data-i18n="language_label">Language</label>
                             <select id="language">
                                 <option value="en" selected>English</option>
                                 <option value="si">Sinhala</option>
@@ -588,7 +587,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="timezone">Timezone</label>
+                            <label for="timezone" data-i18n="timezone_label">Timezone</label>
                             <select id="timezone">
                                 <option value="Asia/Colombo" selected>Asia/Colombo (GMT +5:30)</option>
                                 <option value="UTC">UTC (GMT)</option>
@@ -598,15 +597,15 @@
                     </div>
 
                     <div class="form-actions">
-                        <button class="btn btn-primary" onclick="saveLanguageSettings()">Save Language Settings</button>
+                        <button class="btn btn-primary" onclick="saveLanguageSettings()" data-i18n="save_language_settings_btn">Save Language Settings</button>
                     </div>
                 </div>
 
                 <!-- Danger Zone -->
                 <div class="danger-zone">
-                    <div class="danger-zone-title">⚠️ Danger Zone</div>
-                    <button class="danger-btn" onclick="clearAllData()">Clear All Local Data</button>
-                    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">This will clear cached
+                    <div class="danger-zone-title" data-i18n="danger_zone">⚠️ Danger Zone</div>
+                    <button class="danger-btn" onclick="clearAllData()" data-i18n="clear_local_data_btn">Clear All Local Data</button>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;" data-i18n="clear_data_desc">This will clear cached
                         data but won't affect your account on the server.</p>
                 </div>
             </div>
@@ -672,9 +671,21 @@
             initColorPicker();
 
             // Set user name
-            const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+            const user = (typeof Auth !== 'undefined') ? Auth.getUser() : JSON.parse(localStorage.getItem('pcos_user') || '{}');
             if (user && document.getElementById('sidebarName')) {
                 document.getElementById('sidebarName').textContent = user.name || 'User';
+                
+                // Sync Side Avatar
+                const sideAv = document.getElementById('sideAvatar');
+                if (sideAv) {
+                    const displayAvatar = user.avatar_base64 || user.avatar;
+                    if (displayAvatar) {
+                        const prefix = user.avatar_base64 ? '' : '../../';
+                        sideAv.innerHTML = `<img src="${prefix}${displayAvatar}" alt="P" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    } else if (user.name) {
+                        sideAv.textContent = user.name.charAt(0).toUpperCase();
+                    }
+                }
             }
 
             // Setup toggle switches

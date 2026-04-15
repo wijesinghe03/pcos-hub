@@ -242,17 +242,17 @@
     <div id="deactivateModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px;">
         <div class="dash-panel reveal active" style="max-width:450px; width:100%; text-align:center; padding:40px 30px; border:2px solid #ef4444; box-shadow:0 20px 40px rgba(239, 68, 68, 0.15);">
             <div style="font-size:3.5rem; margin-bottom:20px;">⛔</div>
-            <h3 style="color:#ef4444; font-weight:800; font-size:1.4rem; margin-bottom:15px;">Confirm Deactivation</h3>
-            <p style="color:var(--text-mid); line-height:1.6; margin-bottom:20px; font-size:0.95rem;">
+            <h3 style="color:#ef4444; font-weight:800; font-size:1.4rem; margin-bottom:15px;" data-i18n="confirm_deactivation_title">Confirm Deactivation</h3>
+            <p style="color:var(--text-mid); line-height:1.6; margin-bottom:20px; font-size:0.95rem;" data-i18n="deactivate_msg">
                 If this account is not logged into within <b>30 days</b>, it will be permanently deleted. <br><br>
-                <span style="color:#ef4444; font-weight:700;">Please enter your password to confirm deactivation:</span>
+                <span style="color:#ef4444; font-weight:700;" data-i18n="enter_password_confirm">Please enter your password to confirm deactivation:</span>
             </p>
             
             <input type="password" id="deactivatePassword" class="topbar-search" style="width:100%; border-radius:10px; padding:14px; margin-bottom:24px; border:1.5px solid var(--border); text-align:center;" placeholder="Enter Current Password">
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                <button class="btn btn-primary" style="background:#ef4444; border-color:#ef4444;" onclick="executeDeactivation()">Confirm & Logout</button>
-                <button class="btn btn-ghost" style="color:#27ae60; font-weight:700;" onclick="toggleDeactivateModal(false)">Keep My Account</button>
+                <button class="btn btn-primary" style="background:#ef4444; border-color:#ef4444;" onclick="executeDeactivation()" data-i18n="confirm_logout">Confirm & Logout</button>
+                <button class="btn btn-ghost" style="color:#27ae60; font-weight:700;" onclick="toggleDeactivateModal(false)" data-i18n="keep_account">Keep My Account</button>
             </div>
         </div>
     </div>
@@ -261,11 +261,11 @@
     <div id="successModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1001; display:flex; align-items:center; justify-content:center; padding:20px;">
         <div class="dash-panel reveal active" style="max-width:400px; width:100%; text-align:center; padding:40px 30px; border:2px solid var(--purple-primary); box-shadow:0 20px 40px rgba(123, 63, 190, 0.15);">
             <div style="font-size:3.5rem; margin-bottom:20px;">🖼️</div>
-            <h3 style="color:var(--purple-primary); font-weight:800; font-size:1.4rem; margin-bottom:15px;">Image Added!</h3>
+            <h3 style="color:var(--purple-primary); font-weight:800; font-size:1.4rem; margin-bottom:15px;" id="successTitle">Image Added!</h3>
             <p id="successMsg" style="color:var(--text-mid); line-height:1.6; margin-bottom:25px; font-size:0.95rem;">
                 Your profile picture has been updated successfully and is now live across your dashboard.
             </p>
-            <button class="btn btn-primary" style="width:100%;" onclick="closeSuccessModal()">Great!</button>
+            <button class="btn btn-primary" style="width:100%;" onclick="closeSuccessModal()" data-i18n="view">Great!</button>
         </div>
     </div>
 
@@ -285,9 +285,8 @@
                 <div class="sidebar-avatar" id="sideAvatar" onclick="document.getElementById('avatarInput').click()" style="cursor:pointer;">A</div>
                 <div>
                     <div class="sidebar-name" id="sideName">Loading...</div>
-                    <div class="sidebar-role">Patient</div>
+                    <div class="sidebar-role" data-i18n="profile">Patient</div>
                 </div>
-                <i>›</i>
             </div>
 
             <div class="sidebar-section">
@@ -319,8 +318,8 @@
             <!-- Top bar -->
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2 data-i18n="profile">My Profile</h2>
-                    <p id="topbarDate">Manage your personal and medical information</p>
+                    <h2 data-i18n="profile_title">My Profile</h2>
+                    <p id="topbarDate" data-i18n="profile_subtitle">Manage your personal and medical information</p>
                 </div>
                 <div class="topbar-actions">
                 </div>
@@ -342,51 +341,51 @@
                 <div class="profile-sections">
                     <!-- Personal Info -->
                     <section class="profile-section reveal">
-                        <div class="profile-section-title"><i>👤</i> Personal Information</div>
+                        <div class="profile-section-title"><i data-i18n="personal_info">👤 Personal Information</i></div>
                         
                         <div id="personalView">
-                            <div class="info-row"><div class="info-label">Full Name</div><div class="info-value" id="valName">—</div></div>
-                            <div class="info-row"><div class="info-label">Email Address</div><div class="info-value" id="valEmail">—</div></div>
-                            <div class="info-row"><div class="info-label">Phone Number</div><div class="info-value" id="valPhone">—</div></div>
-                            <div class="info-row"><div class="info-label">Date of Birth</div><div class="info-value" id="valDob">—</div></div>
-                            <div class="info-row"><div class="info-label">Gender</div><div class="info-value" id="valGender">—</div></div>
-                            <div class="info-row"><div class="info-label">Blood Group</div><div class="info-value" id="valBlood">—</div></div>
-                            <button class="btn btn-sm btn-ghost" style="margin-top:20px;" onclick="switchMode('personal', 'edit')">✏️ Edit Personal Info</button>
+                            <div class="info-row"><div class="info-label" data-i18n="full_name_label">Full Name</div><div class="info-value" id="valName">—</div></div>
+                            <div class="info-row"><div class="info-label" data-i18n="email_address_label">Email Address</div><div class="info-value" id="valEmail">—</div></div>
+                            <div class="info-row"><div class="info-label" data-i18n="phone_number_label">Phone Number</div><div class="info-value" id="valPhone">—</div></div>
+                            <div class="info-row"><div class="info-label" data-i18n="dob_label">Date of Birth</div><div class="info-value" id="valDob">—</div></div>
+                            <div class="info-row"><div class="info-label" data-i18n="gender_label">Gender</div><div class="info-value" id="valGender">—</div></div>
+                            <div class="info-row"><div class="info-label" data-i18n="blood_group_label">Blood Group</div><div class="info-value" id="valBlood">—</div></div>
+                            <button class="btn btn-sm btn-ghost" style="margin-top:20px;" onclick="switchMode('personal', 'edit')" data-i18n="edit_personal_info_btn">✏️ Edit Personal Info</button>
                         </div>
 
                         <div id="personalEdit" class="hidden">
                             <form id="personalForm" onsubmit="saveProfile(event)">
                                 <div class="form-row">
-                                    <div class="form-group"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
-                                    <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" class="form-control"></div>
+                                    <div class="form-group"><label data-i18n="full_name_label">Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+                                    <div class="form-group"><label data-i18n="phone_number_label">Phone Number</label><input type="tel" name="phone" class="form-control"></div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group"><label>Date of Birth</label><input type="date" name="dob" class="form-control"></div>
+                                    <div class="form-group"><label data-i18n="dob_label">Date of Birth</label><input type="date" name="dob" class="form-control"></div>
                                     <div class="form-group">
-                                        <label>Gender</label>
+                                        <label data-i18n="gender_label">Gender</label>
                                         <select name="gender" class="form-control">
-                                            <option value="Female">Female</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Other">Other</option>
+                                            <option value="Female" data-i18n="female">Female</option>
+                                            <option value="Male" data-i18n="male">Male</option>
+                                            <option value="Other" data-i18n="other_gender">Other</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label>Blood Group</label>
+                                        <label data-i18n="blood_group_label">Blood Group</label>
                                         <select name="blood_group" class="form-control">
-                                            <option value="">Unknown</option>
+                                            <option value="" data-i18n="unknown_blood">Unknown</option>
                                             <option value="A+">A+</option><option value="A-">A-</option>
                                             <option value="B+">B+</option><option value="B-">B-</option>
                                             <option value="O+">O+</option><option value="O-">O-</option>
                                             <option value="AB+">AB+</option><option value="AB-">AB-</option>
                                         </select>
                                     </div>
-                                    <div class="form-group"><label>Address</label><input type="text" name="address" class="form-control"></div>
+                                    <div class="form-group"><label data-i18n="profile_address">Address</label><input type="text" name="address" class="form-control"></div>
                                 </div>
                                 <div class="form-actions" style="display:flex; gap:10px; margin-top:10px;">
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    <button type="button" class="btn btn-ghost" onclick="switchMode('personal', 'view')">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" data-i18n="save_changes_btn">Save Changes</button>
+                                    <button type="button" class="btn btn-ghost" onclick="switchMode('personal', 'view')" data-i18n="cancel">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -394,31 +393,31 @@
 
                     <!-- Security -->
                     <section class="profile-section reveal">
-                        <div class="profile-section-title"><i>🔒</i> Security & Password</div>
+                        <div class="profile-section-title"><i data-i18n="security_password">🔒 Security & Password</i></div>
                         <form id="passwordForm" onsubmit="updatePassword(event)">
                             <div class="form-group" style="margin-bottom:15px;">
-                                <label>Current Password</label>
+                                <label data-i18n="current_password">Current Password</label>
                                 <div class="password-field">
                                     <input type="password" name="current_password" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>New Password</label>
+                                    <label data-i18n="new_password">New Password</label>
                                     <input type="password" name="new_password" class="form-control" minlength="6" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Confirm New Password</label>
+                                    <label data-i18n="confirm_new_password">Confirm New Password</label>
                                     <input type="password" name="confirm_password" class="form-control" minlength="6" required>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="margin-top:10px;">Update Password</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top:10px;" data-i18n="update_password_btn">Update Password</button>
                         </form>
                     </section>
 
                     <!-- Data Management -->
                     <section class="profile-section reveal">
-                        <div class="profile-section-title"><i>📂</i> Data & Portability</div>
+                        <div class="profile-section-title"><i data-i18n="data_management">📂 Data & Portability</i></div>
                         <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
                             Download a copy of your personal health data or export a medical summary for your records.
                         </p>
@@ -426,21 +425,21 @@
                             <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadJSONData()">
                                 <i>📥</i> 
                                 <div style="display:grid;">
-                                    <span class="setting-name">Download My Data (JSON)</span>
+                                    <span class="setting-name" data-i18n="download_data_json">Download My Data (JSON)</span>
                                     <span class="setting-description">Full archive of symptoms, cycle, and lifestyle logs.</span>
                                 </div>
                             </button>
                             <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="exportMedicalSummary()">
                                 <i>📄</i> 
                                 <div style="display:grid;">
-                                    <span class="setting-name">Export Medical Summary (CSV)</span>
+                                    <span class="setting-name" data-i18n="export_summary_csv">Export Medical Summary (CSV)</span>
                                     <span class="setting-description">Structured list of all uploaded lab reports and scans.</span>
                                 </div>
                             </button>
                             <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadHealthDocument()">
                                 <i>📝</i> 
                                 <div style="display:grid;">
-                                    <span class="setting-name">Personalized Health Document (TXT)</span>
+                                    <span class="setting-name" data-i18n="download_health_doc">Personalized Health Document (TXT)</span>
                                     <span class="setting-description">A human-readable report with your name, symptoms, and medical background.</span>
                                 </div>
                             </button>
@@ -449,12 +448,12 @@
 
                     <!-- Danger Zone -->
                     <section class="profile-section reveal" style="border-color: #fca5a5; background: #fff5f5;">
-                        <div class="profile-section-title" style="color: #ef4444; border-bottom-color: #fca5a5;"><i>⚠️</i> Danger Zone</div>
+                        <div class="profile-section-title" style="color: #ef4444; border-bottom-color: #fca5a5;"><i data-i18n="danger_zone">⚠️ Danger Zone</i></div>
                         <div class="account-actions-list">
                             <button class="action-btn danger" onclick="confirmDeactivation()">
                                 <i>⛔</i> 
                                 <div style="display:grid;">
-                                    <span class="setting-name">Deactivate Account</span>
+                                    <span class="setting-name" data-i18n="deactivate_account">Deactivate Account</span>
                                     <span class="setting-description">Temporarily disable your profile and visibility.</span>
                                 </div>
                             </button>
@@ -476,6 +475,8 @@
         let fullProfile = null;
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (typeof L10n !== 'undefined') L10n.init();
+            
             const lang = localStorage.getItem('pcos_lang') || 'en';
             const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
             document.getElementById('topbarDate').textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-US', { weekday:'long', day:'numeric', month:'long' });
@@ -505,6 +506,9 @@
                 avatarEl.textContent = initials;
                 sideAv.textContent = initials;
             }
+
+            // Sync placeholders
+            document.getElementById('deactivatePassword').placeholder = t('current_password');
 
             loadProfile();
 
@@ -549,6 +553,13 @@
             }
         }
 
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
+        }
+
         function renderProfile() {
             const p = fullProfile;
             // Header
@@ -580,10 +591,10 @@
             // View Mode
             document.getElementById('valName').textContent   = p.full_name;
             document.getElementById('valEmail').textContent  = p.email;
-            document.getElementById('valPhone').textContent  = p.phone || 'Not provided';
-            document.getElementById('valDob').textContent    = p.dob ? new Date(p.dob).toLocaleDateString() : 'Not set';
-            document.getElementById('valGender').textContent = p.gender || 'Not set';
-            document.getElementById('valBlood').textContent  = p.blood_group || 'Unknown';
+            document.getElementById('valPhone').textContent  = p.phone || t('not_provided');
+            document.getElementById('valDob').textContent    = p.dob ? new Date(p.dob).toLocaleDateString() : t('not_provided');
+            document.getElementById('valGender').textContent = t((p.gender || 'Female').toLowerCase()) || p.gender;
+            document.getElementById('valBlood').textContent  = (p.blood_group && p.blood_group !== 'Unknown') ? p.blood_group : t('unknown_blood');
 
             // Form Population
             const f = document.getElementById('personalForm');
@@ -609,7 +620,7 @@
             try {
                 const res = await API.call('components/profile_handler.php', data);
                 if (res.status === 'success') {
-                    Toast.success('✓ Profile updated!');
+                    Toast.success(t('profile_updated_success'));
                     loadProfile();
                     switchMode('personal', 'view');
                 } else {
@@ -687,7 +698,7 @@
             try {
                 const res = await API.call('components/profile_handler.php', data);
                 if (res.status === 'success') {
-                    Toast.success('✓ Password changed successfully!');
+                    Toast.success(t('password_changed_success'));
                     f.reset();
                 } else {
                     Toast.error(res.message);
@@ -771,8 +782,8 @@
                 if (json.status === 'success') {
                     toggleDeactivateModal(false);
                     // Using the Success Modal for a "Successful Deactivation" box
-                    toggleSuccessModal(true, 'Your account has been deactivated successfully as requested. Logging out in 4 seconds...');
-                    document.querySelector('#successModal h3').textContent = 'Account Deactivated 🔒';
+                    toggleSuccessModal(true, t('account_deactivated_success'));
+                    document.querySelector('#successModal h3').textContent = t('account_deactivated_success').split('.')[0];
                     document.querySelector('#successModal div[style*="font-size:3.5rem"]').textContent = '📂';
                     
                     setTimeout(() => {

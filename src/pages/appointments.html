@@ -228,36 +228,36 @@
             <header class="dash-topbar">
                 <div class="dash-page-title">
                     <h2 data-i18n="appointments">Appointments</h2>
-                    <p id="topbarDate">Manage your clinic visits and consultations</p>
+                    <p id="topbarDate" data-i18n="manage_visits">Manage your clinic visits and consultations</p>
                 </div>
                 <div class="topbar-actions">
                     <div class="topbar-search">
                         <i>🔍</i>
-                        <input type="text" id="apptSearch" placeholder="Search by hospital/doctor..." oninput="debounceFilter()">
+                        <input type="text" id="apptSearch" data-i18n="search_appts" placeholder="Search by hospital/doctor..." oninput="debounceFilter()">
                     </div>
-                    <button class="topbar-icon-btn" title="Notifications">
+                    <button class="topbar-icon-btn" data-i18n-title="notifications" title="Notifications">
                         🔔<span class="notif-dot" id="notifBadge" style="display:none"></span>
                     </button>
-                    <button class="topbar-icon-btn" title="Settings">⚙️</button>
+                    <button class="topbar-icon-btn" data-i18n-title="settings" title="Settings">⚙️</button>
                 </div>
             </header>
 
             <!-- Hero Section -->
             <div class="welcome-card reveal">
-                <h3>Your Health Schedule 📅</h3>
-                <p>Keep track of your medical visits. Regular check-ups are key to effective PCOS management.</p>
+                <h3 data-i18n="health_schedule_title">Your Health Schedule 📅</h3>
+                <p data-i18n="health_schedule_subtitle">Keep track of your medical visits. Regular check-ups are key to effective PCOS management.</p>
                 <div class="welcome-stats">
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statUpcomingCount">0</span>
-                        <span class="welcome-stat-lbl">Upcoming</span>
+                        <span class="welcome-stat-lbl" data-i18n="upcoming">Upcoming</span>
                     </div>
                     <div class="welcome-stat">
                         <span class="welcome-stat-num" id="statTotalCount">0</span>
-                        <span class="welcome-stat-lbl">Total Visits</span>
+                        <span class="welcome-stat-lbl" data-i18n="total_visits">Total Visits</span>
                     </div>
                 </div>
                 <div class="welcome-actions">
-                    <button class="btn btn-sm" style="background:white; color:var(--purple-deep); font-weight:800;" onclick="scrollToBooking()">
+                    <button class="btn btn-sm" style="background:white; color:var(--purple-deep); font-weight:800;" onclick="scrollToBooking()" data-i18n="book_appointment">
                        ➕ Book Appointment
                     </button>
                 </div>
@@ -267,17 +267,17 @@
                 <!-- LISTING AREA -->
                 <div class="appt-list-container">
                     <div class="category-tabs">
-                        <div class="category-tab active" onclick="setFilter('all', this)">All Appointments</div>
-                        <div class="category-tab" onclick="setFilter('upcoming', this)">Upcoming</div>
-                        <div class="category-tab" onclick="setFilter('past', this)">History</div>
+                        <div class="category-tab active" onclick="setFilter('all', this)" data-i18n="all_appointments">All Appointments</div>
+                        <div class="category-tab" onclick="setFilter('upcoming', this)" data-i18n="upcoming">Upcoming</div>
+                        <div class="category-tab" onclick="setFilter('past', this)" data-i18n="history">History</div>
                     </div>
 
                     <div id="apptList" style="display:grid; gap:20px;">
                         <!-- Default empty state before load -->
                         <div style="text-align:center; padding:100px 20px; color:var(--text-light); background:white; border-radius:var(--radius-lg); border:1.5px dashed var(--border);">
                             <div style="font-size:3rem; margin-bottom:15px;">📅</div>
-                            <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;">No Appointments Found</p>
-                            <p style="font-size:0.9rem;">You haven't scheduled any clinic visits yet. <br> Use the form on the right to book your first appointment!</p>
+                            <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;" data-i18n="no_appts_found">No Appointments Found</p>
+                            <p style="font-size:0.9rem;" data-i18n="no_appts_msg">You haven't scheduled any clinic visits yet. <br> Use the form on the right to book your first appointment!</p>
                         </div>
                     </div>
                 </div>
@@ -286,43 +286,43 @@
                 <aside class="appt-form-container" id="bookingPanel">
                     <div class="dash-panel" style="position: sticky; top: 20px;">
                         <div class="panel-header">
-                            <div class="panel-title"><i>📝</i> Schedule New</div>
+                            <div class="panel-title"><i data-i18n="schedule_new">📝 Schedule New</i></div>
                         </div>
                         
                         <form id="bookingForm" onsubmit="handleBookAppt(event)" style="display:grid; gap:18px;">
                             <div class="form-group">
-                                <label class="stat-card-label">Hospital Name</label>
-                                <input type="text" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;" name="hospital_name" placeholder="Enter Hospital/Clinic" required>
+                                <label class="stat-card-label" data-i18n="hospital_name">Hospital Name</label>
+                                <input type="text" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;" name="hospital_name" data-i18n="enter_hospital" placeholder="Enter Hospital/Clinic" required>
                             </div>
                             <div class="form-group">
-                                <label class="stat-card-label">Doctor Name</label>
-                                <input type="text" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;" name="doctor_name" placeholder="Dr. Name (Optional)">
+                                <label class="stat-card-label" data-i18n="doctor_name">Doctor Name</label>
+                                <input type="text" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;" name="doctor_name" data-i18n="dr_name_optional" placeholder="Dr. Name (Optional)">
                             </div>
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                                 <div class="form-group">
-                                    <label class="stat-card-label">Date</label>
+                                    <label class="stat-card-label" data-i18n="date">Date</label>
                                     <input type="date" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:10px;" name="appointment_date" id="bookDateInput" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="stat-card-label">Time</label>
+                                    <label class="stat-card-label" data-i18n="time">Time</label>
                                     <input type="time" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:10px;" name="appointment_time" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="stat-card-label">Visit Type</label>
+                                <label class="stat-card-label" data-i18n="visit_type">Visit Type</label>
                                 <select class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px;" name="appointment_type">
-                                    <option value="consultation">Consultation</option>
-                                    <option value="check-up">PCOS Check-up</option>
-                                    <option value="follow-up">Follow-up</option>
-                                    <option value="lab-test">Lab/Scan</option>
-                                    <option value="other">Other</option>
+                                    <option value="consultation" data-i18n="consultation">Consultation</option>
+                                    <option value="check-up" data-i18n="pcos-check-up">PCOS Check-up</option>
+                                    <option value="follow-up" data-i18n="follow-up">Follow-up</option>
+                                    <option value="lab-test" data-i18n="lab-test">Lab/Scan</option>
+                                    <option value="other" data-i18n="other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="stat-card-label">Reason / Notes</label>
-                                <textarea class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px; height:80px; resize:none;" name="reason" placeholder="What is the visit for?"></textarea>
+                                <label class="stat-card-label" data-i18n="reason_notes">Reason / Notes</label>
+                                <textarea class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px; height:80px; resize:none;" name="reason" data-i18n="visit_reason_placeholder" placeholder="What is the visit for?"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-weight:800; margin-top:10px;">
+                            <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-weight:800; margin-top:10px;" data-i18n="save_appointment">
                                 💾 Save Appointment
                             </button>
                         </form>
@@ -335,22 +335,22 @@
     <!-- Reschedule Modal -->
     <div id="reschedModal" class="modal-overlay">
         <div class="modal-card">
-            <h3 style="font-size:1.4rem; color:var(--text-dark); margin-bottom:10px;">Reschedule Visit 🕓</h3>
-            <p style="color:var(--text-light); font-size:0.9rem; margin-bottom:24px;">Please pick a new date and time for your consultation.</p>
+            <h3 style="font-size:1.4rem; color:var(--text-dark); margin-bottom:10px;" data-i18n="reschedule_visit">Reschedule Visit 🕓</h3>
+            <p style="color:var(--text-light); font-size:0.9rem; margin-bottom:24px;" data-i18n="reschedule_msg">Please pick a new date and time for your consultation.</p>
             
             <form id="reschedForm" onsubmit="handleReschedule(event)" style="display:grid; gap:20px;">
                 <input type="hidden" id="reschedId">
                 <div class="form-group">
-                    <label class="stat-card-label">New Date</label>
+                    <label class="stat-card-label" data-i18n="new_date">New Date</label>
                     <input type="date" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px;" id="reschedDate" required>
                 </div>
                 <div class="form-group">
-                    <label class="stat-card-label">New Time</label>
+                    <label class="stat-card-label" data-i18n="new_time">New Time</label>
                     <input type="time" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px;" id="reschedTime" required>
                 </div>
                 <div style="display:flex; gap:12px; margin-top:10px;">
-                    <button type="button" class="btn" style="flex:1; background:var(--bg-light); color:var(--text-dark);" onclick="closeResched()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="flex:1;">Update Schedule</button>
+                    <button type="button" class="btn" style="flex:1; background:var(--bg-light); color:var(--text-dark);" onclick="closeResched()" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="update_schedule">Update Schedule</button>
                 </div>
             </form>
         </div>
@@ -366,6 +366,9 @@
         if (!user) window.location.href = 'login.html';
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Localization
+            if (typeof L10n !== 'undefined') L10n.init();
+
             // Sidebar UI
             document.getElementById('sidebarName').textContent = user.name;
             const sidebarAvatar = document.getElementById('sidebarAvatar');
@@ -381,14 +384,31 @@
             document.getElementById('bookDateInput').min = today;
             const lang = localStorage.getItem('pcos_lang') || 'en';
             const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
-            const portalText = lang === 'si' ? 'රෝගී ද්වාරය' : (lang === 'ta' ? 'நோயாளி போர்டல்' : 'Patient Portal');
-            document.getElementById('topbarDate').textContent = portalText + " · " + new Date().toLocaleDateString(localeMap[lang] || 'en-US', { weekday:'long', day:'numeric', month:'long' });
+            const portalText = t('patient_portal');
+            
+            const dateEl = document.getElementById('topbarDate');
+            if (dateEl) {
+                const dateStr = new Date().toLocaleDateString(localeMap[lang] || 'en-US', { weekday:'long', day:'numeric', month:'long' });
+                dateEl.textContent = portalText + " · " + dateStr;
+                // If it was already localized by L10n.init(), we might want to preserve the date part
+                // The data-i18n attribute on topbarDate is "manage_visits"
+                // Let's actually use the data-i18n value but append the date
+                const manageVisits = (typeof L10n !== 'undefined' && L10n.translations[lang]) ? L10n.translations[lang].manage_visits : 'Manage your clinic visits and consultations';
+                dateEl.textContent = manageVisits + " · " + dateStr;
+            }
 
             loadAppointments();
             
             // Reveal animations
             setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')); }, 100);
         });
+
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = L10n.get() || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
+        }
 
         // ── Core Logic ──
         let ALL_APPTS = [];
@@ -424,15 +444,17 @@
                 container.innerHTML = `
                 <div style="text-align:center; padding:100px 20px; color:var(--text-light); background:white; border-radius:var(--radius-lg); border:1.5px dashed var(--border);">
                     <div style="font-size:3rem; margin-bottom:15px;">📅</div>
-                    <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;">No Appointments Found</p>
-                    <p style="font-size:0.9rem;">You haven't scheduled any clinic visits yet. <br> Use the form on the right to book your first appointment!</p>
+                    <p style="font-weight:700; color:var(--text-dark); margin-bottom:8px;">${t('no_appts_found')}</p>
+                    <p style="font-size:0.9rem;">${t('no_appts_msg')}</p>
                 </div>`;
                 return;
             }
 
             container.innerHTML = appts.map(appt => {
                 const date = new Date(appt.appointment_date);
-                const dateFmt = date.toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' });
+                const lang = L10n.get();
+                const localeMap = { en: 'en-US', si: 'si-LK', ta: 'ta-LK' };
+                const dateFmt = date.toLocaleDateString(localeMap[lang] || 'en-US', { day:'numeric', month:'short', year:'numeric' });
                 const timeFmt = appt.appointment_time.substring(0, 5);
                 const statusCls = `status-${appt.status}`;
 
@@ -440,20 +462,20 @@
                 <div class="appt-card ${appt.status}">
                     <div class="appt-header">
                         <div class="appt-info">
-                            <h4>${appt.doctor_name || 'Medical Officer'}</h4>
+                            <h4>${appt.doctor_name || t('medical_officer')}</h4>
                             <div class="appt-hosp">📍 ${appt.hospital_name}</div>
                         </div>
-                        <span class="status-pill status-${appt.status}">${appt.status}</span>
+                        <span class="status-pill status-${appt.status}">${t(appt.status)}</span>
                     </div>
                     
                     <div class="appt-details">
                         <div class="detail-item">
-                            <span class="detail-label">Date & Time</span>
-                            <span class="detail-value">📅 ${dateFmt} at ${timeFmt}</span>
+                            <span class="detail-label" data-i18n="date">${t('date')}</span>
+                            <span class="detail-value">📅 ${dateFmt} ${t('at')} ${timeFmt}</span>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">Consultation Type</span>
-                            <span class="detail-value">🩺 ${appt.appointment_type.replace('-', ' ')}</span>
+                            <span class="detail-label" data-i18n="visit_type">${t('visit_type')}</span>
+                            <span class="detail-value">🩺 ${t(appt.appointment_type) || appt.appointment_type.replace('-', ' ')}</span>
                         </div>
                     </div>
 
@@ -461,8 +483,8 @@
 
                     ${(appt.status==='upcoming'||appt.status==='rescheduled') ? `
                     <div class="appt-footer">
-                        <button class="btn btn-sm" style="background:var(--purple-ghost); color:var(--purple-primary);" onclick="openResched(${appt.id},'${appt.appointment_date}','${appt.appointment_time}')">🕓 Reschedule</button>
-                        <button class="btn btn-sm" style="background:#fef2f2; color:var(--red-accent);" onclick="handleCancel(${appt.id})">✕ Cancel</button>
+                        <button class="btn btn-sm" style="background:var(--purple-ghost); color:var(--purple-primary);" onclick="openResched(${appt.id},'${appt.appointment_date}','${appt.appointment_time}')">${t('reschedule')}</button>
+                        <button class="btn btn-sm" style="background:#fef2f2; color:var(--red-accent);" onclick="handleCancel(${appt.id})">${t('cancel_visit')}</button>
                     </div>
                     ` : ''}
                 </div>`;

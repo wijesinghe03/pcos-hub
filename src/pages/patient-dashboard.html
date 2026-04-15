@@ -61,12 +61,11 @@
       </a>
 
       <div class="sidebar-profile">
-        <div class="sidebar-avatar">A</div>
+        <div class="sidebar-avatar" id="sideAvatar">A</div>
         <div>
           <div class="sidebar-name" id="sidebarName">Amanda Perera</div>
-          <div class="sidebar-role">Patient</div>
+          <div class="sidebar-role" data-i18n="role_patient">Patient</div>
         </div>
-        <i>›</i>
       </div>
 
       <div class="sidebar-section">
@@ -107,10 +106,10 @@
             <i>🔍</i>
             <input type="text" data-i18n="search_placeholder" placeholder="Search records…">
           </div>
-          <button class="topbar-icon-btn" title="Notifications">
+          <button class="topbar-icon-btn" data-i18n-title="notifications" title="Notifications">
             🔔<span class="notif-dot"></span>
           </button>
-          <button class="topbar-icon-btn" title="Messages">💬</button>
+          <button class="topbar-icon-btn" data-i18n-title="messages" title="Messages">💬</button>
         </div>
       </div>
 
@@ -679,6 +678,7 @@
       const reportBase    = API.getPHPPath('components/report_handler.php');
       const lifestyleBase = API.getPHPPath('components/lifestyle_handler.php');
       const apptBase      = API.getPHPPath('components/appointment_handler.php');
+      const hospBase      = API.getPHPPath('components/myhospital_handler.php');
 
       // Build lifestyle params
       const localNow      = new Date();
@@ -695,11 +695,12 @@
       if (user.email) {
         [lifeMealsP, lifeExP, lifeWaterP, lifeSleepP, apptP].forEach(p => p.set('patient_email', user.email));
       }
+      const hospP = new URLSearchParams({ patient_id: user.id });
 
       try {
         // Fetch all data sources in parallel
         const [res3, resAll, res1, resCycle, resRep3, resRepAll,
-               resLMeals, resLEx, resLWater, resLSleep, resAppt] = await Promise.all([
+               resLMeals, resLEx, resLWater, resLSleep, resAppt, resHosp] = await Promise.all([
           fetch(symBase   + '?' + params3.toString()),
           fetch(symBase   + '?' + paramsAll.toString()),
           fetch(symBase   + '?' + params1.toString()),
@@ -711,13 +712,14 @@
           fetch(lifestyleBase + '?' + lifeWaterP.toString()),
           fetch(lifestyleBase + '?' + lifeSleepP.toString()),
           fetch(apptBase + '?' + apptP.toString()),
+          fetch(hospBase + '?' + hospP.toString()),
         ]);
         const [json3, jsonAll, json1, jsonCycle, jsonRep3, jsonRepAll,
-               jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt] = await Promise.all([
+               jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt, jsonHosp] = await Promise.all([
           res3.json(), resAll.json(), res1.json(), resCycle.json(),
           resRep3.json(), resRepAll.json(),
           resLMeals.json(), resLEx.json(), resLWater.json(), resLSleep.json(),
-          resAppt.json()
+          resAppt.json(), resHosp.json()
         ]);
 
         // ── Symptoms ─────────────────────────────────────────────────
@@ -755,8 +757,14 @@
         // ── Reports ───────────────────────────────────────────────────
         applyDashboardReports(jsonRep3, jsonRepAll);
 
+        // ── Lifestyle Summary ─────────────────────────────────────────
+        applyLifestyleSummary(jsonLMeals, jsonLEx, jsonLWater, jsonLSleep);
+
+        // ── Appointments ──────────────────────────────────────────────
+        applyDashboardAppointments(jsonAppt);
+
         // ── Unified Activity Feed (History) ──────────────────────────
-        renderUnifiedActivityFeed(json3, jsonCycle, jsonRep3, jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt);
+        renderUnifiedActivityFeed(json3, jsonCycle, jsonRep3, jsonLMeals, jsonLEx, jsonLWater, jsonLSleep, jsonAppt, jsonHosp);
 
       } catch(e) {
         console.error('Dashboard load error:', e);
@@ -769,7 +777,7 @@
     });
 
     // ── Unified Activity Feed Implementation ─────────────────────────
-    function renderUnifiedActivityFeed(jsonSym, jsonCycle, jsonRep, jsonMeals, jsonEx, jsonWater, jsonSleep, jsonAppt) {
+    function renderUnifiedActivityFeed(jsonSym, jsonCycle, jsonRep, jsonMeals, jsonEx, jsonWater, jsonSleep, jsonAppt, jsonHosp) {
       const feed = document.getElementById('dashActivityFeed');
       if (!feed) return;
 
@@ -819,10 +827,12 @@
       // 4. Meals (Today's count)
       if (jsonMeals.status === 'success' && jsonMeals.data && jsonMeals.data.length > 0) {
         const count = jsonMeals.data.length;
+        let msg = dict.meal_logged_activity || '{type} logged: {name}';
+        msg = msg.replace('{type}', dict.meals_today || 'Meals').replace('{name}', count + ' ' + (dict.records || 'records'));
         items.push({
           date: new Date(jsonMeals.data[0].log_date + 'T' + (jsonMeals.data[0].meal_time || '12:00')),
           color: 'var(--green-accent)',
-          text: (dict.meals_today || 'Meals Today') + ': ' + count + ' ' + (dict.recorded || 'recorded')
+          text: msg
         });
       }
 
@@ -870,6 +880,18 @@
              color: '#4c1d95',
              text: msg.replace('{reason}', a.reason).replace('{hospital}', a.hospital_name)
            });
+        });
+      }
+
+      // 9. Hospitals
+      if (jsonHosp.status === 'success' && jsonHosp.data) {
+        jsonHosp.data.slice(0, 2).forEach(h => {
+          let msg = dict.hospital_registered_activity || 'Registered with hospital: {name}';
+          items.push({
+            date: new Date(h.registered_at),
+            color: 'var(--purple-deep)',
+            text: msg.replace('{name}', h.hospital_name)
+          });
         });
       }
 
@@ -933,8 +955,9 @@
       if (tbody) {
         tbody.innerHTML = rows.map(r => {
           const icon    = TYPE_ICON[r.report_type] || '📄';
+          const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
           const dateStr = r.report_date
-            ? new Date(r.report_date).toLocaleDateString(L10n.get() === 'si' ? 'si-LK' : 'en-GB', { day:'2-digit', month:'short', year:'numeric' })
+            ? new Date(r.report_date).toLocaleDateString(localeMap[L10n.get()] || 'en-GB', { day:'2-digit', month:'short', year:'numeric' })
             : '—';
           const badgeClass = r.status === 'pending'  ? 'badge-orange' : 'badge-green';
           const badgeText  = r.status === 'pending'  ? t('pending_status')   :

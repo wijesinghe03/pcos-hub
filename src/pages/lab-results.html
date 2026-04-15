@@ -245,7 +245,7 @@
 
     <div class="dashboard-layout">
         <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="sidebar-logo">
+            <a href="patient-dashboard.html" class="sidebar-logo">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
@@ -281,11 +281,11 @@
         <main class="dash-main" id="mainContent">
             <div class="dash-topbar">
                 <div class="dash-page-title">
-                    <h2 data-i18n="lab_results">Lab Results</h2>
+                    <h2 data-i18n="lab_results_title">Lab Results</h2>
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" onclick="openUploadModal()">📤 Upload Lab Result</button>
+                    <button class="btn btn-primary" onclick="openUploadModal()" data-i18n="upload_lab_result_title">📤 Upload Lab Result</button>
                 </div>
             </div>
 
@@ -293,44 +293,44 @@
                 <div class="report-stats">
                     <div class="rstat highlight" onclick="loadLabResults('all')">
                         <div class="rstat-num" id="st_total">0</div>
-                        <div class="rstat-label">Total Results</div>
+                        <div class="rstat-label" data-i18n="total_results">Total Results</div>
                     </div>
                     <div class="rstat" onclick="loadLabResults('this-month')">
                         <div class="rstat-num" id="st_month">0</div>
-                        <div class="rstat-label">Added This Month</div>
+                        <div class="rstat-label" data-i18n="added_this_month">Added This Month</div>
                     </div>
                     <div class="rstat" onclick="loadLabResults('this-year')">
                         <div class="rstat-num" id="st_year">0</div>
-                        <div class="rstat-label">Added This Year</div>
+                        <div class="rstat-label" data-i18n="added_this_year">Added This Year</div>
                     </div>
                 </div>
                 <div class="dash-panel" style="padding:28px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
                         <div style="flex:1; position:relative; min-width:300px;">
                             <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%); opacity:0.6;">🔍</span>
-                            <input type="text" id="searchInput" placeholder="Search by test, lab, or category..." 
+                            <input type="text" id="searchInput" data-i18n="search_lab_placeholder" placeholder="Search by test, lab, or category..." 
                                    style="width:100%; padding:14px 14px 14px 44px; border:2px solid var(--bg-light); border-radius:12px; font-size:1rem;">
                         </div>
                         <div style="min-width: 240px;">
                             <select id="typeFilter" onchange="loadLabResults(this.value)" 
                                     style="width:100%; padding:14px; border:2px solid var(--purple-primary); border-radius:12px; font-weight:700; color:var(--text-dark); background:white; cursor:pointer;">
-                                <optgroup label="General View">
-                                    <option value="all">All Lab Results</option>
-                                    <option value="received">Received Only</option>
-                                    <option value="pending">Pending Only</option>
+                                <optgroup label="General View" data-i18n="general_view">
+                                    <option value="all" data-i18n="all_lab_results">All Lab Results</option>
+                                    <option value="received" data-i18n="received_only">Received Only</option>
+                                    <option value="pending" data-i18n="pending_only">Pending Only</option>
                                 </optgroup>
-                                <optgroup label="Test Category">
-                                    <option value="FBC (Full Blood Count / CBC)">FBC (Full Blood Count / CBC)</option>
-                                    <option value="Vitamin D Test">Vitamin D Test</option>
-                                    <option value="Vitamin B12 Test">Vitamin B12 Test</option>
-                                    <option value="Ferritin (Iron Stores Test)">Ferritin (Iron Stores Test)</option>
-                                    <option value="Serum Insulin Test">Serum Insulin Test</option>
-                                    <option value="DHEA-S Test (Dehydroepiandrosterone Sulfate)">DHEA-S Test (Dehydroepiandrosterone Sulfate)</option>
-                                    <option value="Cortisol Test">Cortisol Test</option>
-                                    <option value="Liver Function Test (LFT)">Liver Function Test (LFT)</option>
-                                    <option value="Kidney Function Test (KFT)">Kidney Function Test (KFT)</option>
-                                    <option value="Sex Hormone Binding Globulin (SHBG) Test">Sex Hormone Binding Globulin (SHBG) Test</option>
-                                    <option value="Other">Other</option>
+                                <optgroup label="Test Category" data-i18n="test_category_label">
+                                    <option value="FBC (Full Blood Count / CBC)" data-i18n="FBC (Full Blood Count / CBC)">FBC (Full Blood Count / CBC)</option>
+                                    <option value="Vitamin D Test" data-i18n="Vitamin D Test">Vitamin D Test</option>
+                                    <option value="Vitamin B12 Test" data-i18n="Vitamin B12 Test">Vitamin B12 Test</option>
+                                    <option value="Ferritin (Iron Stores Test)" data-i18n="Ferritin (Iron Stores Test)">Ferritin (Iron Stores Test)</option>
+                                    <option value="Serum Insulin Test" data-i18n="Serum Insulin Test">Serum Insulin Test</option>
+                                    <option value="DHEA-S Test (Dehydroepiandrosterone Sulfate)" data-i18n="DHEA-S Test (Dehydroepiandrosterone Sulfate)">DHEA-S Test (Dehydroepiandrosterone Sulfate)</option>
+                                    <option value="Cortisol Test" data-i18n="Cortisol Test">Cortisol Test</option>
+                                    <option value="Liver Function Test (LFT)" data-i18n="Liver Function Test (LFT)">Liver Function Test (LFT)</option>
+                                    <option value="Kidney Function Test (KFT)" data-i18n="Kidney Function Test (KFT)">Kidney Function Test (KFT)</option>
+                                    <option value="Sex Hormone Binding Globulin (SHBG) Test" data-i18n="Sex Hormone Binding Globulin (SHBG) Test">Sex Hormone Binding Globulin (SHBG) Test</option>
+                                    <option value="Other" data-i18n="other">Other</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -339,16 +339,16 @@
 
                 <div id="loadingState" style="text-align:center; padding: 60px; display:none;">
                     <div class="spinner"></div>
-                    <p style="color:var(--text-light)">Retrieving your medical records...</p>
+                    <p style="color:var(--text-light)" data-i18n="loading_medical_records">Retrieving your medical records...</p>
                 </div>
                 
                 <div class="lab-results-list" id="labResultsList"></div>
 
                 <div class="empty-state" id="emptyState" style="display:none">
                     <div class="empty-icon">🧪</div>
-                    <h3>No lab results found</h3>
-                    <p>Your diagnostic records will appear here once uploaded or received from labs.</p>
-                    <button class="btn btn-primary" onclick="openUploadModal()" style="margin-top: 20px;">📤 Upload First Result</button>
+                    <h3 data-i18n="no_lab_results_found">No lab results found</h3>
+                    <p data-i18n="no_lab_results_msg">Your diagnostic records will appear here once uploaded or received from labs.</p>
+                    <button class="btn btn-primary" onclick="openUploadModal()" style="margin-top: 20px;" data-i18n="upload_first_result">📤 Upload First Result</button>
                 </div>
             </div>
         </main>
@@ -358,58 +358,58 @@
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-box">
             <button class="modal-close" onclick="closeUploadModal()">✕</button>
-            <h3 style="margin-bottom:24px; color:var(--text-dark); font-weight:800;">📤 Upload Lab Result</h3>
+            <h3 style="margin-bottom:24px; color:var(--text-dark); font-weight:800;" data-i18n="upload_lab_result_title">📤 Upload Lab Result</h3>
             
             <form id="labUploadForm">
                 <div class="mfg">
-                    <label>Test Name *</label>
-                    <input type="text" name="test_name" placeholder="e.g. Full Blood Count, HbA1c" required>
+                    <label data-i18n="test_name_label">Test Name *</label>
+                    <input type="text" name="test_name" data-i18n="test_name_placeholder" placeholder="e.g. Full Blood Count, HbA1c" required>
                 </div>
                 
                 <div class="mfg">
-                    <label>Test Category</label>
+                    <label data-i18n="test_category_label">Test Category</label>
                     <select name="test_type" required>
-                        <option value="FBC (Full Blood Count / CBC)">FBC (Full Blood Count / CBC)</option>
-                        <option value="Vitamin D Test">Vitamin D Test</option>
-                        <option value="Vitamin B12 Test">Vitamin B12 Test</option>
-                        <option value="Ferritin (Iron Stores Test)">Ferritin (Iron Stores Test)</option>
-                        <option value="Serum Insulin Test">Serum Insulin Test</option>
-                        <option value="DHEA-S Test (Dehydroepiandrosterone Sulfate)">DHEA-S Test (Dehydroepiandrosterone Sulfate)</option>
-                        <option value="Cortisol Test">Cortisol Test</option>
-                        <option value="Liver Function Test (LFT)">Liver Function Test (LFT)</option>
-                        <option value="Kidney Function Test (KFT)">Kidney Function Test (KFT)</option>
-                        <option value="Sex Hormone Binding Globulin (SHBG) Test">Sex Hormone Binding Globulin (SHBG) Test</option>
-                        <option value="Other">Other</option>
+                        <option value="FBC (Full Blood Count / CBC)" data-i18n="FBC (Full Blood Count / CBC)">FBC (Full Blood Count / CBC)</option>
+                        <option value="Vitamin D Test" data-i18n="Vitamin D Test">Vitamin D Test</option>
+                        <option value="Vitamin B12 Test" data-i18n="Vitamin B12 Test">Vitamin B12 Test</option>
+                        <option value="Ferritin (Iron Stores Test)" data-i18n="Ferritin (Iron Stores Test)">Ferritin (Iron Stores Test)</option>
+                        <option value="Serum Insulin Test" data-i18n="Serum Insulin Test">Serum Insulin Test</option>
+                        <option value="DHEA-S Test (Dehydroepiandrosterone Sulfate)" data-i18n="DHEA-S Test (Dehydroepiandrosterone Sulfate)">DHEA-S Test (Dehydroepiandrosterone Sulfate)</option>
+                        <option value="Cortisol Test" data-i18n="Cortisol Test">Cortisol Test</option>
+                        <option value="Liver Function Test (LFT)" data-i18n="Liver Function Test (LFT)">Liver Function Test (LFT)</option>
+                        <option value="Kidney Function Test (KFT)" data-i18n="Kidney Function Test (KFT)">Kidney Function Test (KFT)</option>
+                        <option value="Sex Hormone Binding Globulin (SHBG) Test" data-i18n="Sex Hormone Binding Globulin (SHBG) Test">Sex Hormone Binding Globulin (SHBG) Test</option>
+                        <option value="Other" data-i18n="other">Other</option>
                     </select>
                 </div>
 
                 <div class="two-col">
                     <div class="mfg">
-                        <label>Hospital / Clinic</label>
-                        <input type="text" name="hospital_name" placeholder="e.g. Asiri Health">
+                        <label data-i18n="hospital_clinic_label">Hospital / Clinic</label>
+                        <input type="text" name="hospital_name" data-i18n="hospital_name_placeholder" placeholder="e.g. Asiri Health">
                     </div>
                     <div class="mfg">
-                        <label>Doctor Requested</label>
-                        <input type="text" name="doctor_name" placeholder="e.g. Dr. Perera">
+                        <label data-i18n="doctor_requested_label">Doctor Requested</label>
+                        <input type="text" name="doctor_name" data-i18n="doctor_name_placeholder" placeholder="e.g. Dr. Perera">
                     </div>
                 </div>
                 <div class="mfg">
-                    <label>Test Date *</label>
+                    <label data-i18n="test_date_label">Test Date *</label>
                     <input type="date" name="report_date" required>
                 </div>
 
                 <div class="mfg">
-                    <label>Attach PDF or Image</label>
+                    <label data-i18n="attach_file_label">Attach PDF or Image</label>
                     <div class="drop-zone" onclick="document.getElementById('labFile').click()">
                         <div style="font-size:1.8rem; margin-bottom:8px;">📄</div>
-                        <p style="font-size:0.9rem; font-weight:600;">Click to select file</p>
-                        <p style="font-size:0.75rem; color:var(--text-light); margin-top:4px;">Max size 10MB (PDF, JPG, PNG)</p>
+                        <p style="font-size:0.9rem; font-weight:600;" data-i18n="click_to_select">Click to select file</p>
+                        <p style="font-size:0.75rem; color:var(--text-light); margin-top:4px;" data-i18n="upload_size_limit">Max size 10MB (PDF, JPG, PNG)</p>
                         <p id="fileName" style="margin-top:10px; font-weight:700; color:var(--purple-primary); display:none;"></p>
                     </div>
                     <input type="file" id="labFile" name="report_file" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileSelect(this)">
                 </div>
 
-                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;">✓ Save Medical Result</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;" data-i18n="save_medical_result">✓ Save Medical Result</button>
             </form>
         </div>
     </div>
@@ -418,11 +418,11 @@
     <div class="modal-overlay" id="deleteConfirmModal">
         <div class="modal-box" style="max-width:400px; text-align:center; padding: 40px 30px;">
             <div style="font-size:3.5rem; margin-bottom:20px;">🗑️</div>
-            <h3 style="margin-bottom:12px; color:var(--text-dark); font-weight:800;">Remove Result?</h3>
-            <p id="deleteMsg" style="color:var(--text-light); line-height:1.5; margin-bottom:28px;">Are you sure you want to remove this diagnostic result?</p>
+            <h3 style="margin-bottom:12px; color:var(--text-dark); font-weight:800;" data-i18n="remove_result_title">Remove Result?</h3>
+            <p id="deleteMsg" style="color:var(--text-light); line-height:1.5; margin-bottom:28px;" data-i18n="remove_result_msg">Are you sure you want to remove this diagnostic result?</p>
             <div style="display:flex; gap:12px;">
-                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex:1;">OK, Remove</button>
-                <button class="btn btn-ghost" onclick="closeDeleteModal()" style="flex:1; border:2px solid var(--purple-primary); color:var(--purple-primary); border-radius:8px;">No, Back</button>
+                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex:1;" data-i18n="ok_remove">OK, Remove</button>
+                <button class="btn btn-ghost" onclick="closeDeleteModal()" style="flex:1; border:2px solid var(--purple-primary); color:var(--purple-primary); border-radius:8px;" data-i18n="no_back">No, Back</button>
             </div>
         </div>
     </div>
@@ -430,6 +430,12 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
+        function t(key) {
+            if (typeof L10n === 'undefined') return key;
+            const lang = localStorage.getItem('pcos_lang') || 'en';
+            const dict = L10n.translations[lang] || L10n.translations['en'];
+            return dict[key] || key;
+        }
         const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
         let labResults = [];
 
@@ -445,19 +451,21 @@
 
             empty.style.display = 'none';
             list.innerHTML = results.map(lab => {
-                const dateStr = lab.report_date ? new Date(lab.report_date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) : 'Unknown Date';
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                const dateStr = lab.report_date ? new Date(lab.report_date).toLocaleDateString(localeMap[lang] || 'en-GB', { day:'2-digit', month:'short', year:'numeric' }) : t('unknown_date');
                 
                 const badgeClass = lab.status === 'received' ? 'badge-received' : (lab.status === 'pending' ? 'badge-pending' : 'badge-processing');
-                const badgeText = lab.status.charAt(0).toUpperCase() + lab.status.slice(1);
+                const badgeText = t(lab.status);
 
                 let actionBtns = '';
                 if (lab.file_path) {
                     actionBtns = `
-                        <button class="lab-btn primary" onclick="viewLabResult('${escHtml(lab.file_path)}')">👁 View</button>
-                        <button class="lab-btn" onclick="downloadLabResult('${escHtml(lab.file_path)}', '${escHtml(lab.test_name)}')">⬇ Download</button>
+                        <button class="lab-btn primary" onclick="viewLabResult('${escHtml(lab.file_path)}')">👁 ${t('view')}</button>
+                        <button class="lab-btn" onclick="downloadLabResult('${escHtml(lab.file_path)}', '${escHtml(lab.test_name)}')">⬇ ${t('download')}</button>
                     `;
                 }
-                actionBtns += `<button class="lab-btn danger" onclick="deleteLabResult(${lab.id}, '${escHtml(lab.test_name)}')">🗑 Delete</button>`;
+                actionBtns += `<button class="lab-btn danger" onclick="deleteLabResult(${lab.id}, '${escHtml(lab.test_name)}')">🗑 ${t('remove')}</button>`;
 
                 return `
                     <div class="lab-result-card ${lab.status === 'pending' ? 'pending' : ''}">
@@ -465,9 +473,9 @@
                         <div class="lab-info">
                             <div class="lab-title">${escHtml(lab.test_name)}</div>
                             <div class="lab-meta">
-                                <span>🏥 ${escHtml(lab.hospital_name || 'Not Specified')}</span>
+                                <span>🏥 ${escHtml(lab.hospital_name || t('not_specified'))}</span>
                                 ${lab.doctor_name ? `<span>👨‍⚕️ ${escHtml(lab.doctor_name)}</span>` : ''}
-                                <span>🏷️ ${escHtml(lab.test_type || 'General')}</span>
+                                <span>🏷️ ${escHtml(t(lab.test_type) || t('general'))}</span>
                                 <span>📅 ${dateStr}</span>
                             </div>
                         </div>
@@ -549,7 +557,7 @@
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const originalText = btn.textContent;
-            btn.disabled = true; btn.textContent = 'Syncing...';
+            btn.disabled = true; btn.textContent = t('syncing') || 'Syncing...';
 
             const formData = new FormData(e.target);
             if (user.id) formData.append('patient_id', user.id);
@@ -559,13 +567,13 @@
                 const res = await fetch(API.getPHPPath('components/lab_handler.php'), { method: 'POST', body: formData });
                 const json = await res.json();
                 if (json.status === 'success') {
-                    Toast.success('Sync complete! Result added to Lab Results and My Reports.');
+                    Toast.success(t('sync_complete_msg'));
                     closeUploadModal();
                     loadLabResults();
                 } else {
                     Toast.error(json.message);
                 }
-            } catch (err) { Toast.error('Communication error.'); }
+            } catch (err) { Toast.error(t('error_comm')); }
             finally { btn.disabled = false; btn.textContent = originalText; }
         });
 
@@ -592,7 +600,7 @@
 
         function deleteLabResult(id, name) {
             labToDelete = { id, name };
-            document.getElementById('deleteMsg').innerHTML = `Are you sure you want to remove <strong>"${name}"</strong>?<br><span style="font-size:0.8rem; margin-top:8px; display:block;">(This also removes it from your Reports list)</span>`;
+            document.getElementById('deleteMsg').innerHTML = `${t('are_you_sure_remove')} <br><strong>"${name}"</strong>?<br><span style="font-size:0.8rem; margin-top:8px; display:block;">(${t('removed_from_both')})</span>`;
             document.getElementById('deleteConfirmModal').classList.add('open');
         }
 
@@ -602,7 +610,7 @@
             const btn = document.getElementById('confirmDeleteBtn');
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = 'Removing...';
+            btn.textContent = t('removing_msg');
 
             try {
                 const res = await fetch(API.getPHPPath('components/lab_handler.php'), {
