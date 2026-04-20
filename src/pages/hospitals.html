@@ -22,11 +22,18 @@
     }
 
     .hospital-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: var(--radius-lg);
       padding: 28px;
       border: 1.5px solid var(--border);
       transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .hospital-card p {
+      flex-grow: 1;
     }
 
     .hospital-card:hover {
@@ -84,6 +91,10 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    [data-theme="dark"] .hospitals-hero {
+      background: linear-gradient(135deg, var(--bg-light), var(--bg-card));
+    }
   </style>
 </head>
 
@@ -101,63 +112,163 @@
       <div class="hospitals-grid">
         <div class="hospital-card reveal">
           <div class="hospital-icon">🏥</div>
-          <h4>City Hospital Colombo</h4>
-          <div class="location">📍 Colombo 03</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
-              class="specialty-tag">Endocrinology</span><span class="specialty-tag">Fertility</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Leading private hospital with dedicated PCOS clinic and
-            specialist endocrinologists.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting with City Hospital...')">Connect</button>
+          <h4>Castle Street Hospital for Women</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Fertility</span><span class="specialty-tag">Endocrinology</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Premier women’s hospital offering comprehensive care for hormonal disorders, infertility, and reproductive health.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Castle Street Hospital for Women...')">Connect</button>
         </div>
         <div class="hospital-card reveal reveal-delay-1">
           <div class="hospital-icon">🏥</div>
-          <h4>Nawaloka Hospital</h4>
-          <div class="location">📍 Colombo 02</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
-              class="specialty-tag">Nutrition</span><span class="specialty-tag">Mental Health</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Comprehensive women's health services with integrated
-            nutritional counselling for PCOS.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting with Nawaloka...')">Connect</button>
+          <h4>De Soysa Hospital for Women</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Subfertility Clinics</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">One of the largest maternity hospitals with specialized clinics for hormonal imbalance and fertility issues.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with De Soysa Hospital for Women...')">Connect</button>
         </div>
         <div class="hospital-card reveal reveal-delay-2">
           <div class="hospital-icon">🏥</div>
-          <h4>Lanka Hospital</h4>
-          <div class="location">📍 Colombo 05</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Hormones</span><span
-              class="specialty-tag">Ultrasound</span><span class="specialty-tag">Lab Services</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Specialised endocrinology department with advanced hormonal
-            testing and monitoring.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting with Lanka Hospital...')">Connect</button>
+          <h4>National Hospital of Sri Lanka</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Endocrinology</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Largest tertiary hospital providing multidisciplinary treatment for complex PCOS cases.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with National Hospital of Sri Lanka...')">Connect</button>
         </div>
         <div class="hospital-card reveal">
           <div class="hospital-icon">🏥</div>
-          <h4>Kandy Teaching Hospital</h4>
+          <h4>Teaching Hospital Kandy</h4>
           <div class="location">📍 Kandy</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span
-              class="specialty-tag">Research</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Leading academic medical centre with cutting-edge research in
-            women's hormonal health.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting...')">Connect</button>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Research</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Leading academic medical centre with strong women’s health and hormonal research facilities.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Kandy...')">Connect</button>
         </div>
         <div class="hospital-card reveal reveal-delay-1">
           <div class="hospital-icon">🏥</div>
-          <h4>Durdans Hospital</h4>
-          <div class="location">📍 Colombo 03</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Fertility</span><span
-              class="specialty-tag">Gynaecology</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Renowned fertility centre with comprehensive PCOS management
-            and IVF services.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting...')">Connect</button>
+          <h4>Teaching Hospital Karapitiya</h4>
+          <div class="location">📍 Galle</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Endocrine Care</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Major teaching hospital with advanced reproductive and hormonal disorder management.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Karapitiya...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Mahamodara</h4>
+          <div class="location">📍 Galle</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Maternity</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Specialized maternity hospital with services for menstrual and fertility-related conditions.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Mahamodara...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Ragama (Colombo North)</h4>
+          <div class="location">📍 Ragama</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Endocrinology</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Academic hospital with specialist clinics for hormonal imbalance and reproductive health.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Ragama (Colombo North)...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Kalubowila (Colombo South)</h4>
+          <div class="location">📍 Kalubowila</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">General Medicine</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Provides accessible PCOS diagnosis and treatment with specialist clinics.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Kalubowila (Colombo South)...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Anuradhapura</h4>
+          <div class="location">📍 Anuradhapura</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Rural Health</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Major regional hospital supporting women’s hormonal and reproductive care.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Anuradhapura...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Jaffna</h4>
+          <div class="location">📍 Jaffna</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Fertility</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Northern province’s main teaching hospital with advanced women’s health services.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Jaffna...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Teaching Hospital Batticaloa</h4>
+          <div class="location">📍 Batticaloa</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Community Care</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Provides reproductive and hormonal disorder management for eastern region patients.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Teaching Hospital Batticaloa...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Sri Jayewardenepura General Hospital</h4>
+          <div class="location">📍 Nugegoda</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Multidisciplinary Clinics</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Offers specialized gynaecology clinics including hormonal and obesity-related conditions.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Sri Jayewardenepura General Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Lanka Hospitals</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Women’s Wellness</span><span class="specialty-tag">Gynaecology</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Private hospital with advanced diagnostics and comprehensive care for PCOS and hormonal disorders.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Lanka Hospitals...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Ninewells Hospital</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Fertility</span><span class="specialty-tag">Well-woman clinics</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Specialized private hospital focusing on women’s health, fertility, and hormonal conditions.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Ninewells Hospital...')">Connect</button>
         </div>
         <div class="hospital-card reveal reveal-delay-2">
           <div class="hospital-icon">🏥</div>
           <h4>Asiri Medical Hospital</h4>
-          <div class="location">📍 Colombo 05</div>
-          <div class="hospital-specialties"><span class="specialty-tag">Endocrinology</span><span
-              class="specialty-tag">Nutrition</span></div>
-          <p style="font-size:.875rem;margin-bottom:16px">Award-winning medical centre with dedicated PCOS nutrition and
-            lifestyle clinic.</p><button class="btn btn-primary btn-sm" style="width:100%"
-            onclick="Toast.success('Connecting...')">Connect</button>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Surgical Care</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Provides advanced treatment for ovarian cysts, hormonal disorders, and reproductive issues.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Asiri Medical Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Durdans Hospital</h4>
+          <div class="location">📍 Colombo</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Fertility</span><span class="specialty-tag">Endocrine</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Well-established private hospital with expert specialists in reproductive health.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Durdans Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Hemas Hospital Wattala</h4>
+          <div class="location">📍 Wattala</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Maternity</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Modern private hospital offering comprehensive women’s health and hormonal care.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Hemas Hospital Wattala...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-2">
+          <div class="hospital-icon">🏥</div>
+          <h4>Hemas Hospital Thalawathugoda</h4>
+          <div class="location">📍 Thalawathugoda</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Fertility</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Well-equipped facility with specialist obstetric and gynaecological services.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Hemas Hospital Thalawathugoda...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal">
+          <div class="hospital-icon">🏥</div>
+          <h4>Blue Cross Hospital</h4>
+          <div class="location">📍 Rajagiriya</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Specialist Clinics</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Provides consultant-led care for PCOS, menstrual disorders, and reproductive issues.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Blue Cross Hospital...')">Connect</button>
+        </div>
+        <div class="hospital-card reveal reveal-delay-1">
+          <div class="hospital-icon">🏥</div>
+          <h4>Neville Fernando Teaching Hospital</h4>
+          <div class="location">📍 Malabe</div>
+          <div class="hospital-specialties"><span class="specialty-tag">Gynaecology</span><span class="specialty-tag">Teaching & Research</span></div>
+          <p style="font-size:.875rem;margin-bottom:auto">Modern teaching hospital with specialist obstetric and gynaecology services.</p>
+          <button class="btn btn-primary btn-sm" style="width:100%; margin-top:16px;" onclick="Toast.success('Connecting with Neville Fernando Teaching Hospital...')">Connect</button>
         </div>
       </div>
     </div>

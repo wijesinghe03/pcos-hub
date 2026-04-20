@@ -66,7 +66,7 @@
 .auth-panel-right {
   display: flex; align-items: center; justify-content: center;
   padding: 40px 50px;
-  background: white;
+  background: var(--bg-card);
 }
 .auth-form-wrap { width: 100%; max-width: 420px; }
 
@@ -94,6 +94,8 @@
   padding: 14px 8px; border-radius: var(--radius-md);
   border: 2px solid var(--border); cursor: pointer;
   transition: var(--transition); text-align: center;
+  background: var(--bg-card);
+  color: var(--text-dark);
 }
 .role-option label:hover { border-color: var(--purple-light); background: var(--purple-ghost); }
 .role-option input:checked + label {
@@ -148,6 +150,23 @@
 .terms-check input { margin-top: 3px; accent-color: var(--purple-primary); }
 .terms-check label { font-size: 0.85rem; color: var(--text-mid); cursor: pointer; }
 .terms-check label a { color: var(--purple-primary); font-weight: 600; }
+
+/* ── Dark Mode: Auth Pages ── */
+[data-theme="dark"] .auth-page {
+  background: var(--bg-light);
+}
+[data-theme="dark"] .auth-panel-right {
+  background: var(--bg-card);
+}
+[data-theme="dark"] .auth-header h3,
+[data-theme="dark"] .auth-header p {
+  color: var(--text-mid);
+}
+[data-theme="dark"] .role-option label {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text-dark);
+}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {

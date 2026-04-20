@@ -40,30 +40,17 @@
 [data-theme="dark"] .card {
   background: var(--bg-card);
   border-color: var(--border);
+  color: var(--text-dark);
 }
 
 [data-theme="dark"] .dash-table th {
   background: var(--purple-ghost);
+  color: var(--text-mid);
 }
 
 [data-theme="dark"] .dash-table td {
   border-bottom-color: var(--border);
-}
-
-[data-theme="dark"] .activity-item {
-  border-bottom-color: var(--border);
-}
-
-[data-theme="dark"] .form-control,
-[data-theme="dark"] .form-group select,
-[data-theme="dark"] .form-group input {
-  background: var(--bg-card);
-  border-color: var(--border);
   color: var(--text-dark);
-}
-
-[data-theme="dark"] .notif-dot {
-  border-color: var(--bg-card);
 }
 
 .sidebar-logo {
@@ -276,7 +263,7 @@
   align-items: center;
   gap: 8px;
   padding: 9px 16px;
-  background: white;
+  background: var(--bg-card);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-full);
   transition: var(--transition);
@@ -301,11 +288,36 @@
   font-size: 0.85rem;
 }
 
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1.1rem;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--purple-primary);
+  color: var(--purple-primary);
+  transform: rotate(15deg);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: var(--bg-card);
+}
+
 .topbar-icon-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: white;
+  background: var(--bg-card);
   border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
@@ -329,7 +341,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--pink-accent);
-  border: 2px solid white;
+  border: 2px solid var(--bg-card);
 }
 
 /* ── STAT CARDS ── */
@@ -341,7 +353,7 @@
 }
 
 .dash-stat-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 22px;
   border: 1.5px solid var(--border);
@@ -457,7 +469,7 @@
 
 /* ── PANEL ── */
 .dash-panel {
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 22px;
   border: 1.5px solid var(--border);
@@ -877,7 +889,7 @@
   padding: 14px;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--border);
-  background: white;
+  background: var(--bg-card);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -956,4 +968,303 @@
   .symptom-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ════════════════════════════════════════════════════════════
+   COMPREHENSIVE DARK MODE — All Dashboard Pages
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Core page background & text ── */
+[data-theme="dark"] body,
+[data-theme="dark"] .dash-main {
+  background: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* ── All card/panel containers ── */
+[data-theme="dark"] .dash-stat-card,
+[data-theme="dark"] .dash-panel,
+[data-theme="dark"] .card,
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .profile-section,
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .modal-box,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .modal-inner,
+[data-theme="dark"] .rstat,
+[data-theme="dark"] .filter-section,
+[data-theme="dark"] .history-item,
+[data-theme="dark"] .detail-box,
+[data-theme="dark"] .cycle-info-card,
+[data-theme="dark"] .lab-result-card,
+[data-theme="dark"] .appt-card,
+[data-theme="dark"] .report-card,
+[data-theme="dark"] .hospital-card,
+[data-theme="dark"] .empty-state,
+[data-theme="dark"] .symptom-option,
+[data-theme="dark"] .severity-btn,
+[data-theme="dark"] .calendar-day {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-dark) !important;
+}
+
+/* ── Topbar elements ── */
+[data-theme="dark"] .dash-topbar,
+[data-theme="dark"] .topbar-search,
+[data-theme="dark"] .topbar-icon-btn,
+[data-theme="dark"] .theme-toggle-btn {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-mid) !important;
+}
+
+[data-theme="dark"] .topbar-search input {
+  background: transparent !important;
+  color: var(--text-dark) !important;
+}
+
+/* ── All form controls ── */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+  background: var(--input-bg) !important;
+  color: var(--text-dark) !important;
+  border-color: var(--input-border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] .form-control::placeholder {
+  color: var(--text-light) !important;
+  opacity: 0.7;
+}
+
+/* ── Labels & section titles ── */
+[data-theme="dark"] label,
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-group label,
+[data-theme="dark"] .setting-name,
+[data-theme="dark"] .settings-section-title,
+[data-theme="dark"] .panel-title,
+[data-theme="dark"] .symptom-category-title,
+[data-theme="dark"] h1, [data-theme="dark"] h2,
+[data-theme="dark"] h3, [data-theme="dark"] h4,
+[data-theme="dark"] h5 {
+  color: var(--text-dark) !important;
+}
+
+/* ── Secondary / muted text ── */
+[data-theme="dark"] p,
+[data-theme="dark"] .setting-description,
+[data-theme="dark"] .stat-card-label,
+[data-theme="dark"] .activity-time,
+[data-theme="dark"] .cycle-info-label,
+[data-theme="dark"] .history-item-date,
+[data-theme="dark"] .detail-label,
+[data-theme="dark"] .lab-meta,
+[data-theme="dark"] .sidebar-role,
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .text-muted {
+  color: var(--text-mid) !important;
+}
+
+/* ── Table headers & cells ── */
+[data-theme="dark"] .dash-table th {
+  background: var(--purple-ghost) !important;
+  color: var(--text-light) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+[data-theme="dark"] .dash-table td {
+  color: var(--text-dark) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+[data-theme="dark"] .dash-table tr:hover td {
+  background: var(--purple-ghost) !important;
+}
+
+/* ── Borders / dividers ── */
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .panel-header,
+[data-theme="dark"] .setting-item,
+[data-theme="dark"] .info-row,
+[data-theme="dark"] .activity-item,
+[data-theme="dark"] hr {
+  border-color: var(--border) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+/* ── Symptom chips ── */
+[data-theme="dark"] .symptom-chip {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-dark) !important;
+}
+
+[data-theme="dark"] .symptom-chip.active {
+  background: var(--purple-pale) !important;
+  border-color: var(--purple-primary) !important;
+  color: var(--purple-mid) !important;
+}
+
+/* ── Quick action buttons ── */
+[data-theme="dark"] .quick-action-btn {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .quick-action-btn span {
+  color: var(--text-dark) !important;
+}
+
+/* ── Progress bars ── */
+[data-theme="dark"] .progress-bar {
+  background: var(--purple-ghost) !important;
+}
+
+/* ── Toast notifications ── */
+[data-theme="dark"] .toast {
+  background: var(--bg-card) !important;
+  color: var(--text-dark) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ── Page loader ── */
+[data-theme="dark"] .page-loader {
+  background: var(--bg-light) !important;
+}
+
+/* ── Modals overlays ── */
+[data-theme="dark"] .modal-overlay,
+[data-theme="dark"] #deactivateModal,
+[data-theme="dark"] #successModal,
+[data-theme="dark"] #reportModal,
+[data-theme="dark"] #labModal,
+[data-theme="dark"] #apptModal,
+[data-theme="dark"] #rescheduleModal,
+[data-theme="dark"] #confirmModal {
+  background: rgba(0,0,0,0.8) !important;
+}
+
+[data-theme="dark"] #deactivateModal > div,
+[data-theme="dark"] #successModal > div,
+[data-theme="dark"] #reportModal > div,
+[data-theme="dark"] #labModal > div,
+[data-theme="dark"] #apptModal > div,
+[data-theme="dark"] #rescheduleModal > div,
+[data-theme="dark"] #confirmModal > div,
+[data-theme="dark"] .modal-content {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text-dark) !important;
+}
+
+/* ── Badges ── */
+[data-theme="dark"] .badge-purple {
+  background: var(--purple-pale) !important;
+  color: var(--purple-mid) !important;
+}
+
+[data-theme="dark"] .badge-green {
+  background: rgba(39,174,96,0.2) !important;
+  color: #5dca8a !important;
+}
+
+[data-theme="dark"] .badge-orange {
+  background: rgba(243,156,18,0.2) !important;
+  color: #f5b942 !important;
+}
+
+[data-theme="dark"] .badge-red {
+  background: rgba(231,76,60,0.2) !important;
+  color: #f1948a !important;
+}
+
+/* ── Lab result icon boxes ── */
+[data-theme="dark"] .lab-icon-box {
+  background: var(--purple-ghost) !important;
+  color: var(--purple-mid) !important;
+}
+
+/* ── Action buttons (non-primary) ── */
+[data-theme="dark"] .action-btn,
+[data-theme="dark"] .lab-btn,
+[data-theme="dark"] .icon-btn {
+  background: var(--purple-ghost) !important;
+  color: var(--text-dark) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .action-btn:hover,
+[data-theme="dark"] .lab-btn:hover,
+[data-theme="dark"] .icon-btn:hover {
+  background: var(--purple-pale) !important;
+  border-color: var(--purple-primary) !important;
+}
+
+/* ── Calendar day overrides ── */
+[data-theme="dark"] .calendar-day.today,
+[data-theme="dark"] .cycle-day.today {
+  background: var(--purple-primary) !important;
+  color: #fff !important;
+  border-color: var(--purple-primary) !important;
+}
+
+[data-theme="dark"] .calendar-day.period,
+[data-theme="dark"] .cycle-day.period {
+  background: rgba(229,127,175,0.25) !important;
+  color: var(--pink-accent) !important;
+  border-color: var(--pink-accent) !important;
+}
+
+[data-theme="dark"] .calendar-day.fertile,
+[data-theme="dark"] .cycle-day.fertile {
+  background: rgba(78,205,196,0.2) !important;
+  color: var(--teal-accent) !important;
+}
+
+[data-theme="dark"] .calendar-day.ovulation,
+[data-theme="dark"] .cycle-day.ovulation {
+  background: var(--pink-accent) !important;
+  color: #fff !important;
+}
+
+/* ── Privacy info banner in settings ── */
+[data-theme="dark"] .privacy-info {
+  background: rgba(33,150,243,0.12) !important;
+  border-left-color: #42a5f5 !important;
+  color: #90caf9 !important;
+}
+
+/* ── Scrollbar in dark mode ── */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--bg-card);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--purple-mid);
+}
+/* -- Specific Alert Overrides -- */
+[data-theme="dark"] .alert-banner {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .alert-med {
+  background: rgba(234, 88, 12, 0.1) !important;
+  border-color: rgba(234, 88, 12, 0.3) !important;
+  color: #fdba74 !important;
+}
+
+[data-theme="dark"] .disclaimer-box {
+  background: rgba(229, 127, 175, 0.08) !important;
+  color: var(--text-mid) !important;
 }

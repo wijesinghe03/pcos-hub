@@ -26,10 +26,14 @@
   --white: #FFFFFF;
   --bg-light: #F8F4FF;
   --bg-card: #FFFFFF;
+  --bg-panel: #FFFFFF;
   --text-dark: #2C1654;
   --text-mid: #5A4070;
   --text-light: #9B8BAB;
   --border: #E2D4F0;
+
+  --input-bg: #FFFFFF;
+  --input-border: #E2D4F0;
 
   --shadow-sm: 0 2px 8px rgba(91, 45, 142, 0.08);
   --shadow-md: 0 4px 20px rgba(91, 45, 142, 0.14);
@@ -57,12 +61,17 @@
 [data-theme="dark"] {
   --bg-light: #0F091A;
   --bg-card: #1A1229;
+  --bg-panel: #1A1229;
   --text-dark: #F5EDFB;
   --text-mid: #C39BD3;
   --text-light: #9B8BAB;
   --border: #2D1F47;
   --purple-ghost: #150D24;
   --purple-pale: #2D1F47;
+  
+  --input-bg: #150D24;
+  --input-border: #2D1F47;
+
   --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.6);
@@ -87,6 +96,11 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+[data-theme="dark"] body {
+  background: var(--bg-light);
+  color: var(--text-dark);
+}
+
 [data-theme="dark"] .settings-section,
 [data-theme="dark"] .profile-section,
 [data-theme="dark"] .profile-header,
@@ -107,33 +121,22 @@ body {
   border-color: var(--border) !important;
 }
 
+[data-theme="dark"] .form-control {
+  background-color: var(--input-bg) !important;
+  color: var(--text-dark) !important;
+  border-color: var(--input-border) !important;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+  color: var(--text-light) !important;
+  opacity: 0.6;
+}
+
 [data-theme="dark"] .info-value,
 [data-theme="dark"] p,
 [data-theme="dark"] .lab-meta,
 [data-theme="dark"] .sidebar-role {
   color: var(--text-mid) !important;
-}
-
-[data-theme="dark"] .info-row,
-[data-theme="dark"] .setting-item,
-[data-theme="dark"] .history-item {
-  border-bottom-color: var(--border) !important;
-}
-
-[data-theme="dark"] .lab-icon-box {
-  background: var(--purple-ghost) !important;
-}
-
-[data-theme="dark"] .action-btn,
-[data-theme="dark"] .lab-btn {
-  background: var(--purple-ghost) !important;
-  color: var(--text-dark) !important;
-}
-
-[data-theme="dark"] .action-btn:hover,
-[data-theme="dark"] .lab-btn:hover {
-  background: var(--bg-card) !important;
-  border-color: var(--purple-primary) !important;
 }
 
 /* ── Modals & Overlays (Dark Mode) ── */
@@ -467,7 +470,7 @@ p {
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--text-dark);
-  background: var(--white);
+  background: var(--input-bg);
   transition: var(--transition);
   outline: none;
 }
@@ -706,7 +709,7 @@ select.form-control {
 .toast {
   padding: 14px 20px;
   border-radius: var(--radius-md);
-  background: var(--white);
+  background: var(--bg-card);
   box-shadow: var(--shadow-lg);
   border-left: 4px solid var(--purple-primary);
   font-size: 0.9rem;
@@ -732,7 +735,7 @@ select.form-control {
 .page-loader {
   position: fixed;
   inset: 0;
-  background: var(--white);
+  background: var(--bg-light);
   display: flex;
   align-items: center;
   justify-content: center;

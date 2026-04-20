@@ -5,6 +5,9 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Ensure theme toggle button is injected if topbar already rendered
+  if (typeof Theme !== 'undefined' && Theme.injectToggle) Theme.injectToggle();
+
   // Date display
   const dateEl = document.getElementById('dateDisplay');
   if (dateEl) {

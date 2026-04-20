@@ -21,7 +21,7 @@ function renderNavbar(activePage = '') {
       </div>
       <div class="nav-actions">
         <button class="nav-btn-login" onclick="window.location.href='login.html'">Log In</button>
-        <button class="nav-btn-cta"   onclick="window.location.href='signup.html'">Get Connected</button>
+        <button class="nav-btn-cta"   onclick="window.location.href='signup-choice.html'">Get Connected</button>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -37,7 +37,7 @@ function renderNavbar(activePage = '') {
     <a href="blog.html"        class="nav-link">Blog</a>
     <div class="nav-actions" style="flex-direction:column;margin-top:16px;gap:10px">
       <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="window.location.href='login.html'">Log In</button>
-      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup.html'">Get Connected</button>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup-choice.html'">Get Connected</button>
     </div>
   </div>
   <button class="scroll-to-top" id="scrollToTop" title="Scroll to top" aria-label="Scroll to top">↑</button>`;
@@ -75,7 +75,7 @@ function renderFooter() {
               <li><a href="hospitals.html"  class="footer-link"><i class="arrow">›</i> Hospitals</a></li>
               <li><a href="blog.html"       class="footer-link"><i class="arrow">›</i> PCOS Blog</a></li>
               <li><a href="login.html"     class="footer-link"><i class="arrow">›</i> Login</a></li>
-              <li><a href="signup.html"    class="footer-link"><i class="arrow">›</i> Register</a></li>
+              <li><a href="signup-choice.html"    class="footer-link"><i class="arrow">›</i> Register</a></li>
             </ul>
           </div>
 
@@ -112,11 +112,11 @@ function renderFooter() {
         <!-- Stats -->
         <div class="footer-stats reveal">
           <div class="footer-stat">
-            <span class="footer-stat-num"><span data-count="5000" data-suffix="+">0+</span></span>
+            <span class="footer-stat-num"><span data-count="2" data-suffix="">0</span></span>
             <span class="footer-stat-label">Patients Registered</span>
           </div>
           <div class="footer-stat">
-            <span class="footer-stat-num"><span data-count="120" data-suffix="+">0+</span></span>
+            <span class="footer-stat-num"><span data-count="20" data-suffix="">0</span></span>
             <span class="footer-stat-label">Partner Hospitals</span>
           </div>
           <div class="footer-stat">

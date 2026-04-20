@@ -175,7 +175,7 @@
 /* Floating stat cards */
 .hero-card {
   position: absolute;
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 14px 18px;
@@ -260,7 +260,7 @@
 /* ── FEATURE PILLS ── */
 .feature-pills {
   padding: 40px 0;
-  background: white;
+  background: var(--bg-card);
   border-bottom: 1px solid var(--border);
 }
 
@@ -299,7 +299,7 @@
 
 /* ── ABOUT ── */
 .about-section {
-  background: var(--white);
+  background: var(--bg-light);
 }
 
 .about-grid {
@@ -325,7 +325,7 @@
   position: absolute;
   bottom: -20px;
   right: -20px;
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 18px 22px;
@@ -407,7 +407,7 @@
 
 /* ── FEATURES ── */
 .features-section {
-  background: linear-gradient(170deg, var(--bg-light) 0%, white 100%);
+  background: linear-gradient(170deg, var(--bg-light) 0%, var(--bg-card) 100%);
 }
 
 .features-header {
@@ -441,7 +441,7 @@
 }
 
 .feature-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
   border: 1.5px solid var(--border);
@@ -501,7 +501,7 @@
 
 /* ── PCOS INFO SECTION ── */
 .pcos-info {
-  background: white;
+  background: var(--bg-light);
 }
 
 .pcos-info-header {
@@ -688,7 +688,7 @@
   margin: 0 auto 20px;
   box-shadow: 0 6px 22px rgba(123, 63, 190, 0.35);
   transition: var(--transition);
-  border: 4px solid white;
+  border: 4px solid var(--bg-card);
 }
 
 .howit-step:hover .step-circle {
@@ -722,7 +722,7 @@
 
 /* ── ROLES SECTION ── */
 .roles-section {
-  background: white;
+  background: var(--bg-card);
 }
 
 .roles-header {
@@ -857,7 +857,7 @@
 }
 
 .testimonial-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 28px;
   border: 1.5px solid var(--border);
@@ -1069,4 +1069,100 @@
     flex-direction: column;
     align-items: center;
   }
+}
+
+/* ----------------------------------------
+   DARK MODE � Public / Home Pages
+   ---------------------------------------- */
+[data-theme="dark"] .hero-card,
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .about-badge-float,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .blog-card,
+[data-theme="dark"] .contact-card,
+[data-theme="dark"] .faq-item,
+[data-theme="dark"] .stat-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .feature-pills {
+  background: var(--bg-card);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .pill-item {
+  background: var(--purple-ghost);
+  border-color: var(--border);
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .roles-section,
+[data-theme="dark"] .pcos-info,
+[data-theme="dark"] .about-section {
+  background: var(--bg-light);
+}
+
+[data-theme="dark"] .features-section {
+  background: linear-gradient(170deg, var(--bg-light) 0%, var(--bg-card) 100%);
+}
+
+[data-theme="dark"] .role-card.patient {
+  background: linear-gradient(160deg, rgba(91,45,142,0.25), rgba(229,127,175,0.15));
+  border-color: rgba(155,89,208,0.35);
+}
+
+[data-theme="dark"] .role-card.hospital {
+  background: linear-gradient(160deg, rgba(52,152,219,0.15), rgba(41,128,185,0.1));
+  border-color: rgba(52,152,219,0.3);
+}
+
+[data-theme="dark"] .role-card.admin {
+  background: linear-gradient(160deg, rgba(39,174,96,0.15), rgba(33,154,82,0.1));
+  border-color: rgba(39,174,96,0.3);
+}
+
+[data-theme="dark"] .hero-card-num,
+[data-theme="dark"] .about-badge-float .num {
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .hero-card-lbl,
+[data-theme="dark"] .about-badge-float .lbl,
+[data-theme="dark"] .testimonial-text {
+  color: var(--text-mid);
+}
+
+[data-theme="dark"] .step-circle {
+  border-color: var(--bg-card);
+}
+
+[data-theme="dark"] .footer,
+[data-theme="dark"] footer {
+  background: #0a0612;
+  border-top-color: var(--border);
+}
+
+[data-theme="dark"] .hero {
+  background: linear-gradient(160deg, var(--bg-light) 0%, var(--purple-deep) 40%, var(--bg-card) 100%);
+}
+
+[data-theme="dark"] .hero-wave svg path {
+  fill: var(--bg-card) !important;
+}
+
+[data-theme="dark"] .hero-blob {
+  opacity: 0.5;
+}
+
+/* ----------------------------------------
+   Hero Small (About Us, Features)
+   ---------------------------------------- */
+.hero-small {
+  background: linear-gradient(160deg, #f0e6ff 0%, #fce4f0 40%, #e8f4ff 100%);
+}
+
+[data-theme="dark"] .hero-small {
+  background: linear-gradient(160deg, var(--bg-light) 0%, var(--purple-deep) 40%, var(--bg-card) 100%);
 }
