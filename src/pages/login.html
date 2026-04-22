@@ -148,10 +148,10 @@
       const identity = document.getElementById('identity').value;
       const password = document.getElementById('password').value;
       const role = document.querySelector('input[name="role"]:checked').value;
-      
-      if (!identity || !password) { 
-        Toast.error('Please fill in all fields.'); 
-        return; 
+
+      if (!identity || !password) {
+        Toast.error('Please fill in all fields.');
+        return;
       }
 
       const submitBtn = e.target.querySelector('.auth-submit');
@@ -170,9 +170,9 @@
           Auth.login(response.user);
           Toast.success(response.message || 'Login successful! Redirecting...');
           setTimeout(() => {
-            const pages = { 
-              patient: 'patient-dashboard.html', 
-              hospital: 'hospital-dashboard.html', 
+            const pages = {
+              patient: 'patient-dashboard.html',
+              hospital: 'hospital-dashboard.html',
               admin: 'admin-dashboard.html',
               superadmin: 'admin-dashboard.html'
             };
@@ -200,7 +200,7 @@
       if (!account) return;
 
       Toast.info(`Attempting demo login for ${role}...`);
-      
+
       try {
         const response = await API.call('components/login_handler.php', {
           identity: account.id,

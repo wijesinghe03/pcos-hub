@@ -674,6 +674,12 @@
         </div>
       </div>
       
+      <!-- Success Message Box -->
+      <div id="success-message-box" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--purple-primary, #6b46c1); color:white; padding:25px 40px; border-radius:var(--radius-lg, 12px); box-shadow:0 10px 30px rgba(107, 70, 193, 0.3); z-index:10000; text-align:center; font-size:1.2rem; font-weight:500;">
+        <div style="font-size:2.5rem; margin-bottom:10px;">🎉</div>
+        Thank you for adding review!
+      </div>
+
       <script>
       async function submitReview(e) {
           e.preventDefault();
@@ -695,10 +701,17 @@
               });
               const data = await res.json();
               if (data.status === 'success') {
-                  if (typeof Toast !== 'undefined') Toast.success('Thank you for your review!');
-                  else alert('Thank you for your review!');
                   document.getElementById('review-form').reset();
                   document.getElementById('review-modal').style.display='none';
+                  
+                  // Show the success message box
+                  const successBox = document.getElementById('success-message-box');
+                  successBox.style.display = 'block';
+                  
+                  // Hide it after 3 seconds
+                  setTimeout(() => {
+                      successBox.style.display = 'none';
+                  }, 3000);
               } else {
                   if (typeof Toast !== 'undefined') Toast.error(data.message);
                   else alert(data.message);
