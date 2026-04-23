@@ -52,6 +52,36 @@ function handleSignup($pdo) {
             return;
         }
 
+        // Send Welcome Email
+        try {
+            require_once '../utils/Mailer.php';
+            $subject = "Welcome to PCOS Care Hub!";
+            $name = $data['full_name'];
+            
+            if ($role === 'patient') {
+                $emailBody = "
+                    <p>Hi <strong>$name</strong>,</p>
+                    <p>Welcome to <strong>PCOS Care Hub</strong>! We're thrilled to have you join our community.</p>
+                    <p>Our platform is designed to help you track your symptoms, manage your lifestyle, and connect with healthcare providers specialized in PCOS care.</p>
+                    <p>Log in now to start your journey towards better health management.</p>
+                    <a href='#' class='button'>Go to Dashboard</a>
+                ";
+            } else {
+                $emailBody = "
+                    <p>Hello <strong>$name</strong> Team,</p>
+                    <p>Welcome to <strong>PCOS Care Hub</strong>! We are excited to partner with your institution.</p>
+                    <p>Your hospital account is now active. You can start managing patient appointments and health records through our secure platform.</p>
+                    <p>Our team will review your registration details shortly to ensure full verification.</p>
+                    <a href='#' class='button'>Go to Hospital Dashboard</a>
+                ";
+            }
+            
+            Mailer::send($email, $subject, $emailBody);
+        } catch (Exception $e) {
+            // Log error but don't stop the signup response
+            error_log("Welcome email failed: " . $e->getMessage());
+        }
+
         echo json_encode([
             'status' => 'success',
             'message' => 'Account created successfully!',

@@ -109,6 +109,32 @@ if ($method === 'POST') {
 
         $pdo->commit();
 
+        // Send Notification Email to Patient
+        try {
+            require_once '../utils/Mailer.php';
+            $patientStmt = $pdo->prepare("SELECT email, full_name FROM patients WHERE id = ?");
+            $patientStmt->execute([$patient_id]);
+            $patient = $patientStmt->fetch();
+
+            if ($patient) {
+                $subject = "New Lab Result Available: $test_name";
+                $emailBody = "
+                    <p>Hi <strong>{$patient['full_name']}</strong>,</p>
+                    <p>A new lab result has been uploaded to your profile.</p>
+                    <div style='background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6a11cb;'>
+                        <p><strong>Test Name:</strong> $test_name</p>
+                        <p><strong>Hospital:</strong> $hospital_name</p>
+                        <p><strong>Date:</strong> $report_date</p>
+                    </div>
+                    <p>Log in to your dashboard to view the full report and details.</p>
+                    <a href='#' class='button'>View Lab Results</a>
+                ";
+                Mailer::send($patient['email'], $subject, $emailBody);
+            }
+        } catch (Exception $e) {
+            error_log("Lab result email failed: " . $e->getMessage());
+        }
+
         echo json_encode([
             'status' => 'success',
             'message' => 'Lab result uploaded and synced successfully!',

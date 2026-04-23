@@ -131,6 +131,31 @@ if ($method === 'POST') {
                 ($status === 'pending' ? 'pending' : 'received')
             ]);
         }
+        // Send Notification Email to Patient
+        try {
+            require_once '../utils/Mailer.php';
+            $patientStmt = $pdo->prepare("SELECT email, full_name FROM patients WHERE id = ?");
+            $patientStmt->execute([$patient_id]);
+            $patient = $patientStmt->fetch();
+
+            if ($patient) {
+                $subject = "New Medical Report Uploaded: $report_name";
+                $emailBody = "
+                    <p>Hi <strong>{$patient['full_name']}</strong>,</p>
+                    <p>A new medical report has been added to your profile.</p>
+                    <div style='background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6a11cb;'>
+                        <p><strong>Report Name:</strong> $report_name</p>
+                        <p><strong>Type:</strong> $report_type</p>
+                        <p><strong>Hospital:</strong> $hospital_name</p>
+                    </div>
+                    <p>You can view and download this report from your medical history dashboard.</p>
+                    <a href='#' class='button'>View My Reports</a>
+                ";
+                Mailer::send($patient['email'], $subject, $emailBody);
+            }
+        } catch (Exception $e) {
+            error_log("Medical report email failed: " . $e->getMessage());
+        }
 
         echo json_encode([
             'status'  => 'success',

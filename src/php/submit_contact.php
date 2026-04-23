@@ -16,6 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO contactus_message (name, email, subject, message) VALUES (?, ?, ?, ?)");
         $stmt->execute([$name, $email, $subject, $message]);
+
+        // Send Email Notification to Admin
+        require_once 'utils/Mailer.php';
+        $adminEmail = 'admin@pcos-hub.com'; // Replace with actual admin email
+        $emailBody = "
+            <p>You have received a new message from the contact form:</p>
+            <p><strong>Name:</strong> $name</p>
+            <p><strong>Email:</strong> $email</p>
+            <p><strong>Subject:</strong> $subject</p>
+            <p><strong>Message:</strong><br>$message</p>
+        ";
+        
+        Mailer::send($adminEmail, "New Contact Message: $subject", $emailBody);
+
         echo json_encode(['status' => 'success', 'message' => 'Message sent successfully.']);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);

@@ -136,7 +136,37 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'upcoming')");
         $stmt->execute([$patient_id, $hosp, $doctor, $date, $time, $type, $reason]);
-        echo json_encode(['status' => 'success', 'message' => 'Appointment scheduled successfully!', 'id' => $pdo->lastInsertId()]);
+        
+        $appt_id = $pdo->lastInsertId();
+
+        // Send Confirmation Email
+        try {
+            require_once '../utils/Mailer.php';
+            $patientStmt = $pdo->prepare("SELECT email, full_name FROM patients WHERE id = ?");
+            $patientStmt->execute([$patient_id]);
+            $patient = $patientStmt->fetch();
+
+            if ($patient) {
+                $subject = "Appointment Confirmation: $hosp";
+                $emailBody = "
+                    <p>Hi <strong>{$patient['full_name']}</strong>,</p>
+                    <p>Your appointment has been successfully scheduled.</p>
+                    <div style='background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6a11cb;'>
+                        <p><strong>Hospital:</strong> $hosp</p>
+                        <p><strong>Doctor:</strong> $doctor</p>
+                        <p><strong>Date:</strong> $date</p>
+                        <p><strong>Time:</strong> $time</p>
+                        <p><strong>Type:</strong> $type</p>
+                    </div>
+                    <p>Please arrive 15 minutes early for your appointment.</p>
+                ";
+                Mailer::send($patient['email'], $subject, $emailBody);
+            }
+        } catch (Exception $e) {
+            error_log("Appointment email failed: " . $e->getMessage());
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'Appointment scheduled successfully!', 'id' => $appt_id]);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
