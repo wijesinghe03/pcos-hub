@@ -409,7 +409,7 @@
                     <input type="file" id="labFile" name="report_file" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileSelect(this)">
                 </div>
 
-                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;" data-i18n="save_medical_result">✓ Save Medical Result</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;" data-i18n="save_medical_result">Save Medical Result</button>
             </form>
         </div>
     </div>
@@ -469,7 +469,7 @@
 
                 return `
                     <div class="lab-result-card ${lab.status === 'pending' ? 'pending' : ''}">
-                        <div class="lab-icon-box">${lab.status === 'received' ? '✓' : '💉'}</div>
+                        <div class="lab-icon-box">${lab.status === 'received' ? '' : '💉'}</div>
                         <div class="lab-info">
                             <div class="lab-title">${escHtml(lab.test_name)}</div>
                             <div class="lab-meta">

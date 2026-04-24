@@ -18,6 +18,7 @@ function renderNavbar(activePage = '') {
         <a href="pcos-info.html"     class="nav-link ${activePage === 'pcos-info' ? 'active' : ''}" data-page="pcos-info.html">PCOS Info</a>
         <a href="hospitals.html"     class="nav-link ${activePage === 'hospitals' ? 'active' : ''}" data-page="hospitals.html">Hospitals</a>
         <a href="blog.html"          class="nav-link ${activePage === 'blog' ? 'active' : ''}"      data-page="blog.html">Blog</a>
+        <a href="contact.html"       class="nav-link ${activePage === 'contact' ? 'active' : ''}"   data-page="contact.html">Contact</a>
       </div>
       <div class="nav-actions">
         <button class="nav-btn-login" onclick="window.location.href='login.html'">Log In</button>
@@ -35,6 +36,7 @@ function renderNavbar(activePage = '') {
     <a href="pcos-info.html"   class="nav-link">PCOS Info</a>
     <a href="hospitals.html"   class="nav-link">Hospitals</a>
     <a href="blog.html"        class="nav-link">Blog</a>
+    <a href="contact.html"     class="nav-link">Contact</a>
     <div class="nav-actions" style="flex-direction:column;margin-top:16px;gap:10px">
       <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="window.location.href='login.html'">Log In</button>
       <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup-choice.html'">Get Connected</button>
@@ -102,7 +104,7 @@ function renderFooter() {
             </form>
             <div style="margin-top:16px">
               <div class="trust-badge" style="display:inline-flex;margin-bottom:6px">
-                <i style="color:#27ae60">✓</i>
+                
                 <span>No spam, unsubscribe anytime</span>
               </div>
             </div>
@@ -135,7 +137,7 @@ function renderFooter() {
           <p class="footer-copy">© 2025 <a href="index.html">PCOS Care Hub</a>. Built with ♥ for Sri Lankan Women's Health. All rights reserved.</p>
           <div class="footer-trust">
             <div class="trust-badge"><i>🔒</i> SSL Secured</div>
-            <div class="trust-badge"><i style="color:#27ae60">✓</i> HIPAA Compliant</div>
+            <div class="trust-badge"> HIPAA Compliant</div>
           </div>
           <nav class="footer-legal">
             <a href="privacy-policy.html">Privacy Policy</a>

@@ -636,17 +636,17 @@
         }
 
         function saveHealthSettings() {
-            Toast.success('✓ Health settings saved successfully!');
+            Toast.success('Health settings saved successfully!');
         }
 
         function saveLanguageSettings() {
-            Toast.success('✓ Language and region settings saved!');
+            Toast.success('Language and region settings saved!');
         }
 
         function clearAllData() {
             if (confirm('Are you sure you want to clear all local data? This action cannot be undone.')) {
                 localStorage.clear();
-                Toast.success('✓ All local data cleared!');
+                Toast.success('All local data cleared!');
             }
         }
 
@@ -695,7 +695,7 @@
                     const settingName = e.target.id;
                     const isChecked = e.target.checked;
                     localStorage.setItem(`setting_${settingName}`, isChecked);
-                    Toast.success(`✓ Setting updated!`);
+                    Toast.success(`Setting updated!`);
                 });
             });
 
@@ -723,7 +723,7 @@
                     const settingName = e.target.id;
                     const value = e.target.value;
                     localStorage.setItem(`setting_${settingName}`, value);
-                    Toast.success('✓ Setting saved');
+                    Toast.success('Setting saved');
                 });
             });
 

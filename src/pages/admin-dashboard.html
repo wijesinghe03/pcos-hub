@@ -367,7 +367,7 @@
       const row = btn.closest('tr');
       row.querySelector('.badge').className = 'badge badge-green';
       row.querySelector('.badge').textContent = 'Approved';
-      btn.parentElement.innerHTML = '<span style="color:var(--green-accent);font-weight:700">✓ Approved</span>';
+      btn.parentElement.innerHTML = '<span style="color:var(--green-accent);font-weight:700">Approved</span>';
       Toast.success(`${name} has been approved!`);
     }
     function rejectHospital(btn) {

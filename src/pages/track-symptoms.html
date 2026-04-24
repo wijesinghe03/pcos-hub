@@ -397,7 +397,7 @@
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 10px; margin-top: 24px;">
                         <button type="submit" class="btn btn-primary" style="flex: 1;" data-i18n="save_symptoms">
-                            ✓ Save Symptoms
+                            Save Symptoms
                         </button>
                         <button type="reset" class="btn btn-ghost" style="flex: 1;" data-i18n="clear">
                             ↻ Clear
@@ -595,7 +595,7 @@
                 });
 
                 if (response.status === 'success') {
-                    Toast.success('✓ Symptoms saved successfully!');
+                    Toast.success('Symptoms saved successfully!');
 
                     // Redirect to dashboard after a short delay
                     setTimeout(() => {
@@ -614,7 +614,7 @@
                 Toast.error('Error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = '✓ ' + t('save_symptoms');
+                submitBtn.textContent = '' + t('save_symptoms');
             }
         });
 

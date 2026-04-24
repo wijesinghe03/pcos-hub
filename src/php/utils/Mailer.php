@@ -40,7 +40,7 @@ class Mailer {
         }
 
         $mail = new PHPMailer(true);
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER; // Enabled for testing
+        $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable debug output for production/JSON responses
 
         try {
             // Server settings
