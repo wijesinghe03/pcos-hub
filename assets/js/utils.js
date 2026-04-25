@@ -127,9 +127,11 @@ const Theme = {
     }
     document.documentElement.setAttribute('data-theme', targetTheme);
     
-    // Update global toggle icon if it exists
-    const toggle = document.getElementById('globalThemeToggle');
-    if (toggle) toggle.innerHTML = this.getIcon();
+    // Update all toggle icons if they exist
+    const toggles = document.querySelectorAll('.theme-toggle-btn');
+    toggles.forEach(toggle => {
+      toggle.innerHTML = this.getIcon();
+    });
   },
   get() {
     return localStorage.getItem('pcos_theme') || 'auto';
@@ -641,6 +643,192 @@ const L10n = {
       profile_updated_success: "Profile updated!",
       password_changed_success: "Password changed successfully!",
       account_deactivated_success: "Your account has been deactivated successfully. Logging out...",
+      
+      // Public Pages
+      nav_home: "Home",
+      nav_about: "About Us",
+      nav_features: "Features",
+      nav_pcos_info: "PCOS Info",
+      nav_hospitals: "Hospitals",
+      nav_blog: "Blog",
+      nav_contact: "Contact",
+      nav_login: "Log In",
+      nav_signup: "Get Connected",
+      
+      hero_badge_text: "Sri Lanka's #1 PCOS Platform",
+      hero_title_main: "Manage PCOS",
+      hero_title_highlight: "Smarter & Safer",
+      hero_desc_text: "A comprehensive platform for Sri Lankan women to manage PCOS smartly and securely — track symptoms, connect with hospitals, and access your health records anytime.",
+      btn_get_started: "Get Started Free",
+      btn_learn_more: "Learn More",
+      trust_free: "Free to join",
+      trust_secure: "Secure & Private",
+      trust_hospital: "Hospital Integrated",
+      
+      choose_language: "Choose Language:",
+      
+      footer_about_title: "About PCOS Care Hub",
+      footer_about_desc: "Sri Lanka's first dedicated digital healthcare platform for PCOS management. Empowering women through technology and secure health data.",
+      footer_links_title: "Quick Links",
+      footer_legal_title: "Legal & Privacy",
+      footer_contact_title: "Contact Us",
+      footer_copyright: "All Rights Reserved.",
+      
+      feature_section_title: "Everything You Need to Manage PCOS",
+      feature_section_subtitle: "Powerful features designed for patients, healthcare providers, and clinics to work together.",
+      feature_1_title: "Symptom Tracking",
+      feature_1_desc: "Log your daily symptoms, cycle changes, and mood to see long-term patterns and triggers.",
+      feature_2_title: "Secure Health Vault",
+      feature_2_desc: "Upload and organize all your medical reports, scans, and lab results in one encrypted place.",
+      feature_3_title: "Hospital Integration",
+      feature_3_desc: "Connect directly with leading clinics and hospitals in Sri Lanka for seamless data sharing.",
+      feature_4_title: "Lifestyle Logs",
+      feature_3_desc: "Connect directly with leading clinics and hospitals in Sri Lanka for seamless data sharing.",
+      feature_4_title: "Lifestyle Logs",
+      feature_4_desc: "Monitor your nutrition, exercise, water intake, and sleep quality to improve hormonal balance.",
+      
+      stat_patients_reg: "Patients Registered",
+      stat_sat_rate_short: "Patient Satisfaction",
+      how_works_title_small: "How It Works",
+      roles_title_small: "User Roles",
+      // Home Page Sections
+      about_hub_title: "About PCOS Care Hub",
+      about_hub_text_1: "Polycystic Ovary Syndrome (PCOS) is a chronic hormonal condition affecting 8–13% of women of reproductive age. In Sri Lanka, many women struggle with fragmented paper-based records, limited doctor-patient communication, and lack of a centralized management system.",
+      about_hub_text_2: "PCOS Care Hub was built specifically to address these gaps — offering a secure, web-based platform where patients, hospitals, and administrators all work together in one unified ecosystem.",
+      portal_title: "Patient Portal",
+      portal_desc: "Track symptoms, menstrual cycles, lifestyle data, upload reports and view your health timeline.",
+      interface_title: "Hospital Interface",
+      interface_desc: "Manage lab results, consultations, and patient records under controlled, role-based access.",
+      admin_title: "Admin Dashboard",
+      admin_desc: "Full system oversight, hospital approvals, user management and audit logs.",
+      btn_join: "Join PCOS Care Hub",
+      
+      platform_features_title: "Platform Features",
+      features_main_title: "Everything You Need to Manage PCOS",
+      features_main_subtitle: "Comprehensive tools designed for patients, hospitals, and administrators to work together seamlessly.",
+      feat_symptom_title: "Symptom Tracking",
+      feat_symptom_desc: "Log daily symptoms like irregular periods, acne, hair loss, fatigue and mood changes. Visualize patterns over time with intuitive charts and trend analysis.",
+      feat_cycle_title: "Menstrual Cycle Tracker",
+      feat_cycle_desc: "Track cycle length, flow intensity, and predict ovulation windows. Log period dates and receive smart reminders for upcoming cycles and appointments.",
+      feat_records_title: "Secure Medical Records",
+      feat_records_desc: "Upload, store and share lab reports, ultrasound scans, and prescriptions securely. No more lost paper records — your history is always accessible.",
+      feat_hosp_title: "Hospital Integration",
+      feat_hosp_desc: "Hospitals can post lab results directly to patient profiles, manage consultations, and ensure physicians have complete, accurate medical histories.",
+      feat_lifestyle_title: "Lifestyle & Nutrition Log",
+      feat_lifestyle_desc: "Track your daily meals, water intake, exercise routines and sleep quality. Get personalized lifestyle insights based on PCOS management guidelines.",
+      feat_role_title: "Role-Based Access Control",
+      feat_role_desc: "Three distinct user roles — Patient, Hospital, Administrator — with carefully controlled permissions ensuring data privacy and HIPAA-compliant security.",
+      
+      knowledge_center: "PCOS Knowledge Center",
+      knowledge_title: "Everything You Need to Know About PCOS",
+      knowledge_subtitle: "Evidence-based information to help you understand, manage, and thrive with PCOS.",
+      know_symptoms: "Symptoms",
+      know_causes: "Causes",
+      know_treatment: "Treatment",
+      know_diet: "Diet & Lifestyle",
+      know_mental: "Mental Health",
+      
+      symp_periods_title: "Irregular Periods",
+      symp_periods_desc: "Having fewer than 8 menstrual cycles per year, cycles longer than 35 days, or complete absence of menstruation. This is one of the most common PCOS symptoms.",
+      symp_androgen_title: "Excess Androgen",
+      symp_androgen_desc: "Elevated male hormones causing excess facial/body hair (hirsutism), severe acne, and male-pattern baldness or thinning hair on the scalp.",
+      symp_ovaries_title: "Polycystic Ovaries",
+      symp_ovaries_desc: "Enlarged ovaries containing many small fluid-filled sacs (follicles) that surround the eggs, visible on ultrasound. Despite the name, cysts may not always be present.",
+      symp_weight_title: "Weight Changes",
+      symp_weight_desc: "Unexplained weight gain, especially around the abdomen, or difficulty losing weight despite diet and exercise. Insulin resistance is often a contributing factor.",
+      symp_fatigue_title: "Fatigue & Sleep Issues",
+      symp_fatigue_desc: "Persistent tiredness, low energy, and difficulty sleeping are common in PCOS, often linked to hormonal imbalances and insulin resistance.",
+      symp_mood_title: "Mood Changes",
+      symp_mood_desc: "Higher rates of depression, anxiety, and mood swings are associated with PCOS due to hormonal fluctuations and the emotional impact of chronic illness.",
+      
+      cause_insulin_title: "Insulin Resistance",
+      cause_insulin_desc: "Up to 70% of women with PCOS have insulin resistance. When cells don't respond properly to insulin, the pancreas produces more, which can stimulate excess androgen production.",
+      cause_genetics_title: "Genetics",
+      cause_genetics_desc: "PCOS tends to run in families. If your mother or sister has PCOS, you have a significantly higher risk. Multiple genes are likely involved, making it a complex genetic condition.",
+      cause_hormone_title: "Hormonal Imbalance",
+      cause_hormone_desc: "Excess production of androgens (male hormones) disrupts follicle development, preventing regular ovulation. LH and FSH imbalances also contribute to cycle irregularities.",
+      cause_inflammation_title: "Inflammation",
+      cause_inflammation_desc: "Low-grade chronic inflammation is common in PCOS and may stimulate polycystic ovaries to produce androgens. Diet, lifestyle, and gut health all play roles.",
+      
+      treat_pill_title: "Hormonal Contraceptives",
+      treat_pill_desc: "Combined oral contraceptives help regulate menstrual cycles, reduce androgen levels, clear acne, and decrease hair growth. Often first-line treatment for cycle irregularities.",
+      treat_metformin_title: "Metformin",
+      treat_metformin_desc: "An insulin-sensitizing medication that can improve insulin resistance, help regulate menstrual cycles, support weight management, and reduce long-term diabetes risk.",
+      treat_lifestyle_title: "Lifestyle Therapy",
+      treat_lifestyle_desc: "Even 5–10% weight loss can significantly improve PCOS symptoms, restore ovulation, and reduce health risks. Regular exercise and a balanced diet are foundational treatments.",
+      treat_fertility_title: "Fertility Treatments",
+      treat_fertility_desc: "For women trying to conceive, options include ovulation induction (Clomifene, Letrozole), Gonadotropins, and in some cases, laparoscopic ovarian drilling.",
+      
+      diet_gi_title: "Low Glycaemic Diet",
+      diet_gi_desc: "Foods that don't spike blood sugar — whole grains, legumes, vegetables, and fruits — help manage insulin resistance. Avoid white rice, refined flour, and sugary drinks.",
+      diet_anti_title: "Anti-Inflammatory Foods",
+      diet_anti_desc: "Include fatty fish (salmon, mackerel), leafy greens, berries, nuts, and olive oil. Omega-3 fatty acids can reduce androgen levels and improve insulin sensitivity.",
+      diet_exercise_title: "Regular Exercise",
+      diet_exercise_desc: "Aim for 150+ minutes of moderate activity weekly. Strength training improves insulin sensitivity; cardio helps with weight management. Even brisk walking makes a difference.",
+      diet_sleep_title: "Sleep & Stress Management",
+      diet_sleep_desc: "Poor sleep worsens insulin resistance and hormonal balance. Aim for 7–9 hours. Stress-reduction techniques like yoga, meditation, and mindfulness can help regulate cortisol.",
+      
+      mental_anxiety_title: "Depression & Anxiety",
+      mental_anxiety_desc: "Women with PCOS are significantly more likely to experience depression and anxiety. Hormonal fluctuations, body image concerns, and fertility worries all contribute. Seeking support is vital.",
+      mental_image_title: "Body Image & Self-Esteem",
+      mental_image_desc: "Visible symptoms like acne, hair changes, and weight gain can affect self-confidence. PCOS Care Hub connects you with supportive communities and resources to build resilience.",
+      mental_support_title: "Support Networks",
+      mental_support_desc: "Connecting with others who have PCOS reduces isolation and improves mental wellbeing. Online communities, local support groups, and therapy can all make a meaningful difference.",
+      mental_cbt_title: "Cognitive Behavioral Therapy",
+      mental_cbt_desc: "CBT has shown evidence for improving depression, anxiety, and body image in PCOS. Don't hesitate to speak with a mental health professional who understands chronic conditions.",
+      
+      stat_women_global: "Women Affected Globally",
+      stat_prev_sl: "Prevalence in Sri Lanka",
+      stat_partner_hosp: "Partner Hospitals",
+      stat_sat_rate: "Patient Satisfaction Rate",
+      
+      how_works_title: "Get Started in 4 Simple Steps",
+      how_works_subtitle: "Join thousands of Sri Lankan women already managing their PCOS smarter.",
+      step_1_title: "Create Account",
+      step_1_desc: "Sign up as a Patient or Hospital in minutes with secure email verification.",
+      step_2_title: "Build Your Profile",
+      step_2_desc: "Enter your health history, connect with your hospital, and upload existing medical records.",
+      step_3_title: "Track & Monitor",
+      step_3_desc: "Log daily symptoms, cycles, meals and activity. Watch your health patterns emerge.",
+      step_4_title: "Connect with Care",
+      step_4_desc: "Share records with your hospital, receive lab results, and attend consultations with complete data.",
+      
+      roles_title: "Built for Everyone in the PCOS Journey",
+      role_patient_title: "Patient Login",
+      role_patient_subtitle: "Take control of your health journey with powerful self-management tools.",
+      role_patient_feat_1: "Symptom & cycle tracking",
+      role_patient_feat_2: "Upload & manage reports",
+      role_patient_feat_3: "Lifestyle & diet logging",
+      role_patient_feat_4: "View lab results",
+      role_patient_feat_5: "Appointment reminders",
+      role_patient_btn: "Sign In as Patient",
+      role_hospital_title: "Hospital Login",
+      role_hospital_subtitle: "Streamline patient management and improve clinical decision-making.",
+      role_hospital_feat_1: "Manage patient records",
+      role_hospital_feat_2: "Upload lab results",
+      role_hospital_feat_3: "Consultation management",
+      role_hospital_feat_4: "Search patient history",
+      role_hospital_feat_5: "Secure role-based access",
+      role_hospital_btn: "Sign In as Hospital",
+      
+      cta_journey_title: "Start Your PCOS Journey Today",
+      cta_journey_desc: "Join thousands of Sri Lankan women who are managing their PCOS smarter, safer, and with more confidence.",
+      cta_create_btn: "Create Free Account",
+      cta_login_text: "Already a member? Log In",
+      
+      footer_resources_title: "PCOS Resources",
+      res_understanding: "Understanding PCOS",
+      res_symptom_checker: "Symptom Checker",
+      res_diet: "Diet & Nutrition",
+      res_exercise: "Exercise Guide",
+      res_mental: "Mental Wellness",
+      res_faqs: "FAQs",
+      footer_stay_updated: "Stay Updated",
+      footer_newsletter_desc: "Get the latest PCOS news, research, and wellness tips delivered to your inbox.",
+      footer_email_placeholder: "Your email address",
+      footer_subscribe_btn: "Subscribe",
+      footer_no_spam: "No spam, unsubscribe anytime",
+      
       notifications: "Notifications",
       notifications_desc: "Manage how you receive notifications and reminders",
       email_notif: "Email Notifications",
@@ -1350,7 +1538,190 @@ const L10n = {
       test_name_placeholder: "උදා: සම්පූර්ණ රුධිර පරීක්ෂාව, HbA1c",
       hospital_name_placeholder: "උදා: ආසිරි හෙල්ත්",
       doctor_name_placeholder: "උදා: වෛද්‍ය පෙරේරා",
-      upload_size_limit: "උපරිම ප්‍රමාණය 10MB (PDF, JPG, PNG)"
+      upload_size_limit: "උපරිම ප්‍රමාණය 10MB (PDF, JPG, PNG)",
+
+      // Public Pages
+      nav_home: "මුල් පිටුව",
+      nav_about: "අප ගැන",
+      nav_features: "විශේෂාංග",
+      nav_pcos_info: "PCOS තොරතුරු",
+      nav_hospitals: "රෝහල්",
+      nav_blog: "බ්ලොග්",
+      nav_contact: "සම්බන්ධ වන්න",
+      nav_login: "පිවිසෙන්න",
+      nav_signup: "සම්බන්ධ වන්න",
+      
+      hero_badge_text: "ශ්‍රී ලංකාවේ අංක 1 PCOS වේදිකාව",
+      hero_title_main: "PCOS කළමනාකරණය",
+      hero_title_highlight: "බුද්ධිමත් සහ ආරක්ෂිතයි",
+      hero_desc_text: "ශ්‍රී ලාංකික කාන්තාවන්ට PCOS බුද්ධිමත්ව සහ ආරක්ෂිතව කළමනාකරණය කිරීම සඳහා වන විස්තීර්ණ වේදිකාවකි — රෝග ලක්ෂණ නිරීක්ෂණය කරන්න, රෝහල් සමඟ සම්බන්ධ වන්න, සහ ඕනෑම වේලාවක ඔබේ සෞඛ්‍ය වාර්තා වෙත ප්‍රවේශ වන්න.",
+      btn_get_started: "නොමිලේ ආරම්භ කරන්න",
+      btn_learn_more: "වැඩි විස්තර",
+      trust_free: "සම්බන්ධ වීම නොමිලේ",
+      trust_secure: "ආරක්ෂිත සහ පෞද්ගලික",
+      trust_hospital: "රෝහල් සමඟ ඒකාබද්ධයි",
+      
+      choose_language: "භාෂාව තෝරන්න:",
+      
+      footer_about_title: "PCOS Care Hub ගැන",
+      footer_about_desc: "PCOS කළමනාකරණය සඳහා ශ්‍රී ලංකාවේ ප්‍රථම කැපවූ ඩිජිටල් සෞඛ්‍ය සේවා වේදිකාව. තාක්ෂණය සහ ආරක්ෂිත සෞඛ්‍ය දත්ත හරහා කාන්තාවන් සවිබල ගැන්වීම.",
+      footer_links_title: "ඉක්මන් සබැඳි",
+      footer_legal_title: "නීතිමය සහ පෞද්ගලිකත්වය",
+      footer_contact_title: "අප හා සම්බන්ධ වන්න",
+      footer_copyright: "සියලුම හිමිකම් ඇවිරිණි.",
+      
+      feature_section_title: "PCOS කළමනාකරණයට අවශ්‍ය සියල්ල",
+      feature_section_subtitle: "රෝගීන්, සෞඛ්‍ය සේවා සපයන්නන් සහ සායන සඳහා එකට වැඩ කිරීමට නිර්මාණය කර ඇති ප්‍රබල විශේෂාංග.",
+      feature_1_title: "රෝග ලක්ෂණ නිරීක්ෂණය",
+      feature_1_desc: "දිගුකාලීන රටාවන් සහ හේතු හඳුනා ගැනීමට ඔබේ දෛනික රෝග ලක්ෂණ, චක්‍රීය වෙනස්කම් සහ මනෝභාවය සටහන් කරන්න.",
+      feature_2_title: "ආරක්ෂිත සෞඛ්‍ය ගබඩාව",
+      feature_2_desc: "ඔබේ සියලුම වෛද්‍ය වාර්තා, ස්කෑන් සහ පරීක්ෂණ වාර්තා එක් ආරක්ෂිත ස්ථානයක උඩුගත කර කළමනාකරණය කරන්න.",
+      feature_3_title: "රෝහල් ඒකාබද්ධ කිරීම",
+      feature_3_desc: "බාධාවකින් තොරව දත්ත හුවමාරු කර ගැනීම සඳහා ශ්‍රී ලංකාවේ ප්‍රමුඛ පෙළේ සායන සහ රෝහල් සමඟ සෘජුවම සම්බන්ධ වන්න.",
+      feature_4_title: "ජීවන රටා සටහන්",
+      feature_4_desc: "හෝමෝන සමතුලිතතාවය වැඩි දියුණු කිරීම සඳහා ඔබේ පෝෂණය, ව්‍යායාම, ජල පරිභෝජනය සහ නින්දේ ගුණාත්මකභාවය නිරීක්ෂණය කරන්න.",
+      
+      stat_patients_reg: "ලියාපදිංචි රෝගීන්",
+      stat_sat_rate_short: "රෝගී තෘප්තිය",
+      how_works_title_small: "ක්‍රියා පටිපාටිය",
+      roles_title_small: "පරිශීලක භූමිකාවන්",
+      // Home Page Sections
+      about_hub_title: "PCOS Care Hub ගැන",
+      about_hub_text_1: "බහුඅන්තරාසර්ග ඩිම්බ කෝෂ රෝගී තත්ත්වය (PCOS) යනු ප්‍රජනන වයසේ පසුවන කාන්තාවන්ගෙන් 8-13% කට බලපාන නිදන්ගත හෝමෝන තත්ත්වයකි. ශ්‍රී ලංකාවේ බොහෝ කාන්තාවන් විසිරී පවතින කඩදාසි වාර්තා, සීමිත වෛද්‍ය-රෝගී සන්නිවේදනය සහ මධ්‍යගත කළමනාකරණ පද්ධතියක් නොමැතිකම නිසා පීඩා විඳිති.",
+      about_hub_text_2: "PCOS Care Hub ගොඩනගා ඇත්තේ විශේෂයෙන්ම මෙම අඩුපාඩු පියවා ගැනීමටයි — රෝගීන්, රෝහල් සහ පරිපාලකයින් සියල්ලන්ම එක් ඒකාබද්ධ පරිසර පද්ධතියක එකට වැඩ කරන ආරක්ෂිත, වෙබ් පාදක වේදිකාවක් ලබා දෙයි.",
+      portal_title: "රෝගී ද්වාරය",
+      portal_desc: "රෝග ලක්ෂණ, ඔසප් චක්‍ර, ජීවන රටා දත්ත නිරීක්ෂණය කරන්න, වාර්තා උඩුගත කරන්න සහ ඔබේ සෞඛ්‍ය කාලරාමුව බලන්න.",
+      interface_title: "රෝහල් අතුරුමුහුණත",
+      interface_desc: "පාලනය කරන ලද ප්‍රවේශය යටතේ ලැබ් වාර්තා, උපදේශන සහ රෝගී වාර්තා කළමනාකරණය කරන්න.",
+      admin_title: "පරිපාලක උපකරණ පුවරුව",
+      admin_desc: "සම්පූර්ණ පද්ධති අධීක්ෂණය, රෝහල් අනුමැතිය, පරිශීලක කළමනාකරණය සහ විගණන ලඝු-සටහන්.",
+      btn_join: "PCOS Care Hub සමඟ සම්බන්ධ වන්න",
+      
+      platform_features_title: "වේදිකාවේ විශේෂාංග",
+      features_main_title: "PCOS කළමනාකරණයට අවශ්‍ය සියල්ල",
+      features_main_subtitle: "රෝගීන්, රෝහල් සහ පරිපාලකයින්ට බාධාවකින් තොරව එකට වැඩ කිරීමට නිර්මාණය කර ඇති විස්තීර්ණ මෙවලම්.",
+      feat_symptom_title: "රෝග ලක්ෂණ නිරීක්ෂණය",
+      feat_symptom_desc: "අක්‍රමවත් ඔසප් වීම, කුරුලෑ, කොණ්ඩය යෑම, තෙහෙට්ටුව සහ මනෝභාවය වෙනස් වීම වැනි දෛනික රෝග ලක්ෂණ සටහන් කරන්න. සරල ප්‍රස්තාර මගින් කාලයත් සමඟ සිදුවන වෙනස්කම් හඳුනා ගන්න.",
+      feat_cycle_title: "ඔසප් චක්‍ර නිරීක්ෂකය",
+      feat_cycle_desc: "චක්‍රයේ දිග, ප්‍රමාණය නිරීක්ෂණය කර ඔසප් වන කාලය සහ සරු කාලය ගැන දැනුම්දීම් ලබා ගන්න.",
+      feat_records_title: "ආරක්ෂිත වෛද්‍ය වාර්තා",
+      feat_records_desc: "ලැබ් වාර්තා, ස්කෑන් වාර්තා සහ බෙහෙත් වට්ටෝරු ආරක්ෂිතව ගබඩා කරන්න. තවදුරටත් කඩදාසි වාර්තා නැතිවීම ගැන බිය විය යුතු නැත.",
+      feat_hosp_title: "රෝහල් ඒකාබද්ධ කිරීම",
+      feat_hosp_desc: "රෝහල්වලට රෝගී පැතිකඩ වෙත සෘජුවම ලැබ් වාර්තා එක් කළ හැකි අතර, වෛද්‍යවරුන්ට නිවැරදි වෛද්‍ය ඉතිහාසයක් ලබා ගැනීමට ඉඩ සලසයි.",
+      feat_lifestyle_title: "ජීවන රටා සටහන",
+      feat_lifestyle_desc: "ඔබේ දෛනික ආහාර, ජල පරිභෝජනය, ව්‍යායාම සහ නින්දේ ගුණාත්මකභාවය නිරීක්ෂණය කරන්න. PCOS කළමනාකරණය සඳහා පුද්ගලාරෝපිත උපදෙස් ලබා ගන්න.",
+      feat_role_title: "භූමිකාව මත පදනම් වූ ප්‍රවේශය",
+      feat_role_desc: "රෝගියා, රෝහල, පරිපාලක ලෙස භූමිකාවන් තුනක් ඇත — දත්ත පෞද්ගලිකත්වය සහ ආරක්ෂාව සහතික කිරීම සඳහා ප්‍රවේශයන් පාලනය කර ඇත.",
+      
+      knowledge_center: "PCOS දැනුම මධ්‍යස්ථානය",
+      knowledge_title: "PCOS ගැන ඔබ දැනගත යුතු සියල්ල",
+      knowledge_subtitle: "PCOS තත්ත්වය තේරුම් ගැනීමට, කළමනාකරණය කිරීමට සහ සාර්ථක වීමට උපකාරී වන සාක්ෂි මත පදනම් වූ තොරතුරු.",
+      know_symptoms: "රෝග ලක්ෂණ",
+      know_causes: "හේතු",
+      know_treatment: "ප්‍රතිකාර",
+      know_diet: "ආහාර සහ ජීවන රටාව",
+      know_mental: "මානසික සෞඛ්‍යය",
+      
+      symp_periods_title: "අක්‍රමවත් ඔසප් වීම",
+      symp_periods_desc: "වසරකට ඔසප් චක්‍ර 8 කට වඩා අඩු වීම, දින 35 කට වඩා වැඩි චක්‍ර හෝ ඔසප් වීම සම්පූර්ණයෙන්ම නතර වීම. මෙය වඩාත් පොදු PCOS රෝග ලක්ෂණයකි.",
+      symp_androgen_title: "වැඩි ඇන්ඩ්‍රොජන්",
+      symp_androgen_desc: "පුරුෂ හෝමෝන මට්ටම ඉහළ යාම නිසා මුහුණේ/ශරීරයේ අනවශ්‍ය රෝම වර්ධනය වීම, දරුණු කුරුලෑ සහ හිසකෙස් තුනී වීම.",
+      symp_ovaries_title: "බහුඅන්තරාසර්ග ඩිම්බ කෝෂ",
+      symp_ovaries_desc: "අල්ට්‍රාසවුන්ඩ් පරීක්ෂණයේදී ඩිම්බ කෝෂ විශාල වී ඇති බව සහ කුඩා තරල පිරුණු බිජුවට (follicles) දැකගත හැකිය.",
+      symp_weight_title: "බර වෙනස් වීම",
+      symp_weight_desc: "විශේෂයෙන් උදරය අවට පැහැදිලි කළ නොහැකි ලෙස බර වැඩිවීම හෝ ආහාර පාලනය සහ ව්‍යායාම කළත් බර අඩු කර ගැනීමට අපහසු වීම.",
+      symp_fatigue_title: "තෙහෙට්ටුව සහ නින්දේ ගැටළු",
+      symp_fatigue_desc: "නිරන්තර තෙහෙට්ටුව, ශක්තිය අඩු වීම සහ නිදා ගැනීමට අපහසු වීම PCOS හි බහුලව දක්නට ලැබේ.",
+      symp_mood_title: "මනෝභාවය වෙනස් වීම",
+      symp_mood_desc: "හෝමෝන උච්චාවචනයන් සහ නිදන්ගත රෝගී තත්ත්වයේ මානසික බලපෑම හේතුවෙන් මානසික අවපීඩනය සහ කනස්සල්ල ඇති විය හැකිය.",
+      
+      cause_insulin_title: "ඉන්සියුලින් ප්‍රතිරෝධය",
+      cause_insulin_desc: "PCOS සහිත කාන්තාවන්ගෙන් 70% ක් දක්වා ඉන්සියුලින් ප්‍රතිරෝධය පවතී. සෛල ඉන්සියුලින් වලට නිසි ලෙස ප්‍රතිචාර නොදක්වන විට, අග්න්‍යාශය වැඩිපුර නිපදවන අතර එමඟින් වැඩිපුර ඇන්ඩ්‍රොජන් නිපදවීම උත්තේජනය කළ හැකිය.",
+      cause_genetics_title: "ජාන විද්‍යාව",
+      cause_genetics_desc: "PCOS පවුල්වල පැතිර යන ප්‍රවණතාවක් ඇත. ඔබේ මවට හෝ සහෝදරියට PCOS තිබේ නම්, ඔබට සැලකිය යුතු ඉහළ අවදානමක් ඇත. මෙය සංකීර්ණ ජානමය තත්ත්වයකි.",
+      cause_hormone_title: "හෝමෝන අසමතුලිතතාවය",
+      cause_hormone_desc: "ඇන්ඩ්‍රොජන් (පුරුෂ හෝමෝන) අධික ලෙස නිපදවීම ඩිම්බ මෝරන ක්‍රියාවලියට බාධා කරයි. LH සහ FSH අසමතුලිතතාවයන් ද චක්‍රීය අක්‍රමිකතා සඳහා දායක වේ.",
+      cause_inflammation_title: "ප්‍රදාහය",
+      cause_inflammation_desc: "නිදන්ගත ප්‍රදාහය PCOS හි බහුලව දක්නට ලැබෙන අතර එය ඇන්ඩ්‍රොජන් නිපදවීමට ඩිම්බ කෝෂ උත්තේජනය කළ හැකිය. ආහාර, ජීවන රටාව සහ බඩවැල්වල සෞඛ්‍යය මෙහිදී වැදගත් වේ.",
+      
+      treat_pill_title: "හෝමෝන උපත් පාලන ක්‍රම",
+      treat_pill_desc: "සංයුක්ත මුඛ උපත් පාලන පෙති ඔසප් චක්‍ර නියාමනය කිරීමට, ඇන්ඩ්‍රොජන් මට්ටම අඩු කිරීමට, කුරුලෑ ඉවත් කිරීමට සහ අනවශ්‍ය රෝම වර්ධනය අඩු කිරීමට උපකාරී වේ.",
+      treat_metformin_title: "මෙට්ෆෝමින්",
+      treat_metformin_desc: "ඉන්සියුලින් ප්‍රතිරෝධය වැඩි දියුණු කළ හැකි, ඔසප් චක්‍ර නියාමනය කිරීමට උපකාරී වන සහ දිගුකාලීන දියවැඩියා අවදානම අඩු කරන ඖෂධයකි.",
+      treat_lifestyle_title: "ජීවන රටා ප්‍රතිකාරය",
+      treat_lifestyle_desc: "5-10% බර අඩු කර ගැනීමෙන් පවා PCOS රෝග ලක්ෂණ සැලකිය යුතු ලෙස වැඩි දියුණු කළ හැකිය. නිතිපතා ව්‍යායාම සහ සමබර ආහාර වේලක් මූලික ප්‍රතිකාර වේ.",
+      treat_fertility_title: "සරුභාවය සඳහා ප්‍රතිකාර",
+      treat_fertility_desc: "දරුවන් අපේක්ෂා කරන කාන්තාවන් සඳහා ඩිම්බ මෝරන උත්තේජක (Clomifene, Letrozole) සහ ඇතැම් අවස්ථාවලදී ශල්‍යකර්ම භාවිතා කළ හැකිය.",
+      
+      diet_gi_title: "අඩු ග්ලයිසීමික් ආහාර වේල",
+      diet_gi_desc: "රුධිරයේ සීනි මට්ටම ඉක්මනින් ඉහළ නොදමන ආහාර (නිවුඩ්ඩ සහිත ධාන්‍ය, පියලි වර්ග, එළවළු සහ පළතුරු) ඉන්සියුලින් ප්‍රතිරෝධය පාලනය කිරීමට උපකාරී වේ.",
+      diet_anti_title: "ප්‍රදාහ නාශක ආහාර",
+      diet_anti_desc: "තෙල් සහිත මාළු, කොළ පැහැති එළවළු, බෙරි වර්ග සහ ඔලිව් තෙල් ඇතුළත් කරන්න. ඔමේගා-3 මේද අම්ල ඇන්ඩ්‍රොජන් මට්ටම අඩු කිරීමට උපකාරී වේ.",
+      diet_exercise_title: "නිතිපතා ව්‍යායාම",
+      diet_exercise_desc: "සතියකට මිනිත්තු 150 කට වඩා මධ්‍යස්ථ ව්‍යායාම කරන්න. බර එසවීම ඉන්සියුලින් සංවේදීතාව වැඩි දියුණු කරන අතර ඇවිදීම පවා වෙනසක් ඇති කරයි.",
+      diet_sleep_title: "නින්ද සහ ආතතිය කළමනාකරණය",
+      diet_sleep_desc: "අඩු නින්ද ඉන්සියුලින් ප්‍රතිරෝධය සහ හෝමෝන සමතුලිතතාවය නරක අතට හැරේ. පැය 7-9 ක් නිදාගන්න. යෝග සහ භාවනා ආතතිය අඩු කිරීමට උපකාරී වේ.",
+      
+      mental_anxiety_title: "මානසික අවපීඩනය සහ කනස්සල්ල",
+      mental_anxiety_desc: "PCOS සහිත කාන්තාවන් මානසික අවපීඩනයට සහ කනස්සල්ලට ගොදුරු වීමේ වැඩි ඉඩක් ඇත. හෝමෝන වෙනස්කම් සහ සිරුරේ පෙනුම පිළිබඳ ගැටළු මෙයට බලපායි.",
+      mental_image_title: "ශරීර ප්‍රතිරූපය සහ ආත්ම අභිමානය",
+      mental_image_desc: "කුරුලෑ සහ බර වැඩිවීම වැනි රෝග ලක්ෂණ ආත්ම විශ්වාසයට බලපෑ හැකිය. PCOS Care Hub ඔබට සහාය දක්වන ප්‍රජාවන් සමඟ සම්බන්ධ වීමට මග පෙන්වයි.",
+      mental_support_title: "සහායක ජාල",
+      mental_support_desc: "PCOS සහිත අනෙකුත් අය සමඟ සම්බන්ධ වීම තනිකම අඩු කරන අතර මානසික සුවතාවය වැඩි දියුණු කරයි. සබැඳි ප්‍රජාවන් සහ චිකිත්සාව මේ සඳහා උපකාරී වේ.",
+      mental_cbt_title: "ප්‍රජානන චර්යා චිකිත්සාව",
+      mental_cbt_desc: "PCOS හි මානසික අවපීඩනය සහ කනස්සල්ල වැඩි දියුණු කිරීම සඳහා CBT චිකිත්සාව සාර්ථක බව පෙනී ගොස් ඇත. වෘත්තීය සහාය ලබා ගැනීමට පසුබට නොවන්න.",
+      
+      stat_women_global: "ලොව පුරා පීඩාවට පත් කාන්තාවන්",
+      stat_prev_sl: "ශ්‍රී ලංකාවේ ව්‍යාප්තිය",
+      stat_partner_hosp: "හවුල්කාර රෝහල්",
+      stat_sat_rate: "රෝගී තෘප්තිමත් අනුපාතය",
+      
+      how_works_title: "සරල පියවර 4 කින් ආරම්භ කරන්න",
+      how_works_subtitle: "දැනටමත් තම PCOS තත්ත්වය බුද්ධිමත්ව කළමනාකරණය කරන ශ්‍රී ලාංකික කාන්තාවන් දහස් ගණනක් සමඟ එක්වන්න.",
+      step_1_title: "ගිණුමක් සාදන්න",
+      step_1_desc: "ආරක්ෂිත ඊමේල් තහවුරු කිරීමක් සමඟ මිනිත්තු කිහිපයකින් රෝගියෙකු හෝ රෝහලක් ලෙස ලියාපදිංචි වන්න.",
+      step_2_title: "පැතිකඩ ගොඩනගන්න",
+      step_2_desc: "ඔබේ සෞඛ්‍ය ඉතිහාසය ඇතුළත් කරන්න, ඔබේ රෝහල සමඟ සම්බන්ධ වන්න, සහ පවතින වෛද්‍ය වාර්තා උඩුගත කරන්න.",
+      step_3_title: "නිරීක්ෂණය කරන්න",
+      step_3_desc: "දෛනික රෝග ලක්ෂණ, ඔසප් චක්‍ර, ආහාර සහ ක්‍රියාකාරකම් සටහන් කරන්න.",
+      step_4_title: "වෛද්‍ය සේවාව සමඟ සම්බන්ධ වන්න",
+      step_4_desc: "ඔබේ රෝහල සමඟ වාර්තා බෙදා ගන්න, ලැබ් වාර්තා ලබා ගන්න, සහ සම්පූර්ණ දත්ත සමඟ වෛද්‍ය උපදෙස් ලබා ගන්න.",
+      
+      roles_title: "PCOS ගමනේ සෑම කෙනෙකුම සඳහා නිර්මාණය කර ඇත",
+      role_patient_title: "රෝගී පිවිසුම",
+      role_patient_subtitle: "ප්‍රබල ස්වයං-කළමනාකරණ මෙවලම් සමඟ ඔබේ සෞඛ්‍ය ගමන පාලනය කරන්න.",
+      role_patient_feat_1: "රෝග ලක්ෂණ සහ ඔසප් චක්‍ර නිරීක්ෂණය",
+      role_patient_feat_2: "වාර්තා උඩුගත කිරීම සහ කළමනාකරණය",
+      role_patient_feat_3: "ජීවන රටාව සහ ආහාර සටහන් කිරීම",
+      role_patient_feat_4: "ලැබ් වාර්තා බැලීම",
+      role_patient_feat_5: "වෛද්‍ය හමුවීම් මතක් කිරීම්",
+      role_patient_btn: "රෝගියෙකු ලෙස පිවිසෙන්න",
+      role_hospital_title: "රෝහල් පිවිසුම",
+      role_hospital_subtitle: "රෝගී කළමනාකරණය විධිමත් කර සායනික තීරණ ගැනීම වැඩි දියුණු කරන්න.",
+      role_hospital_feat_1: "රෝගී වාර්තා කළමනාකරණය",
+      role_hospital_feat_2: "ලැබ් වාර්තා උඩුගත කිරීම",
+      role_hospital_feat_3: "උපදේශන කළමනාකරණය",
+      role_hospital_feat_4: "රෝගී ඉතිහාසය සෙවීම",
+      role_hospital_feat_5: "ආරක්ෂිත ප්‍රවේශ පාලනය",
+      role_hospital_btn: "රෝහලක් ලෙස පිවිසෙන්න",
+      
+      cta_journey_title: "අදම ඔබේ PCOS ගමන ආරම්භ කරන්න",
+      cta_journey_desc: "තම PCOS තත්ත්වය වඩාත් බුද්ධිමත්ව, ආරක්ෂිතව සහ විශ්වාසයෙන් කළමනාකරණය කරන ශ්‍රී ලාංකික කාන්තාවන් දහස් ගණනක් සමඟ එක්වන්න.",
+      cta_create_btn: "නොමිලේ ගිණුමක් සාදන්න",
+      cta_login_text: "දැනටමත් සාමාජිකයෙක්ද? පිවිසෙන්න",
+      
+      footer_resources_title: "PCOS සම්පත්",
+      res_understanding: "PCOS තේරුම් ගැනීම",
+      res_symptom_checker: "රෝග ලක්ෂණ පරීක්ෂකය",
+      res_diet: "ආහාර සහ පෝෂණය",
+      res_exercise: "ව්‍යායාම මාර්ගෝපදේශය",
+      res_mental: "මානසික සුවතාවය",
+      res_faqs: "නිතර අසන ප්‍රශ්න",
+      footer_stay_updated: "යාවත්කාලීනව සිටින්න",
+      footer_newsletter_desc: "නවතම PCOS පුවත්, පර්යේෂණ සහ සුවතා උපදෙස් ඔබේ විද්‍යුත් තැපෑලට ලබා ගන්න.",
+      footer_email_placeholder: "ඔබේ විද්‍යුත් තැපැල් ලිපිනය",
+      footer_subscribe_btn: "දායක වන්න",
+      footer_no_spam: "අනවශ්‍ය පණිවිඩ එවනු නොලැබේ",
     },
     ta: {
       dashboard: "டாஷ்போர்டு",
@@ -1913,7 +2284,190 @@ const L10n = {
       email_placeholder: "info@hosp.com",
       special_care: "சிறப்பு சிகிச்சை",
       contact_10_digits_error: "தொடர்பு எண் சரியாக 10 இலக்கங்களைக் கொண்டிருக்க வேண்டும்.",
-      clinic: "கிளினிக்"
+      clinic: "கிளினிக்",
+
+      // Public Pages
+      nav_home: "முகப்பு",
+      nav_about: "எங்களைப் பற்றி",
+      nav_features: "அம்சங்கள்",
+      nav_pcos_info: "பி.சி.ஓ.எஸ் தகவல்",
+      nav_hospitals: "மருத்துவமனைகள்",
+      nav_blog: "வலைப்பதிவு",
+      nav_contact: "தொடர்பு",
+      nav_login: "உள்நுழை",
+      nav_signup: "இணையுங்கள்",
+      
+      hero_badge_text: "இலங்கையின் #1 பி.சி.ஓ.எஸ் தளம்",
+      hero_title_main: "பி.சி.ஓ.எஸ் மேலாண்மை",
+      hero_title_highlight: "புத்திசாலித்தனம் & பாதுகாப்பு",
+      hero_desc_text: "இலங்கை பெண்கள் பி.சி.ஓ.எஸ்-ஐ புத்திசாலித்தனமாகவும் பாதுகாப்பாகவும் நிர்வகிப்பதற்கான ஒரு விரிவான தளம் — அறிகுறிகளைக் கண்காணிக்கவும், மருத்துவமனைகளுடன் இணையவும் மற்றும் உங்கள் சுகாதார பதிவுகளை எப்போது வேண்டுமானாலும் அணுகவும்.",
+      btn_get_started: "இலவசமாகத் தொடங்குங்கள்",
+      btn_learn_more: "மேலும் அறிய",
+      trust_free: "இணைய இலவசம்",
+      trust_secure: "பாதுகாப்பானது & தனிப்பட்டது",
+      trust_hospital: "மருத்துவமனையுடன் ஒருங்கிணைக்கப்பட்டது",
+      
+      choose_language: "மொழியைத் தேர்ந்தெடுக்கவும்:",
+      
+      footer_about_title: "பி.சி.ஓ.எஸ் கேர் ஹப் பற்றி",
+      footer_about_desc: "பி.சி.ஓ.எஸ் மேலாண்மைக்கான இலங்கையின் முதல் பிரத்யேக டிஜிட்டல் சுகாதார தளம். தொழில்நுட்பம் மற்றும் பாதுகாப்பான சுகாதார தரவு மூலம் பெண்களை மேம்படுத்துதல்.",
+      footer_links_title: "விரைவான இணைப்புகள்",
+      footer_legal_title: "சட்டம் & தனியுரிமை",
+      footer_contact_title: "எங்களைத் தொடர்பு கொள்ளுங்கள்",
+      footer_copyright: "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
+      
+      feature_section_title: "பி.சி.ஓ.எஸ் நிர்வகிக்க உங்களுக்குத் தேவையான அனைத்தும்",
+      feature_section_subtitle: "நோயாளிகள், சுகாதார வழங்குநர்கள் மற்றும் கிளினிக்குகள் இணைந்து செயல்பட வடிவமைக்கப்பட்ட சக்திவாய்ந்த அம்சங்கள்.",
+      feature_1_title: "அறிகுறி கண்காணிப்பு",
+      feature_1_desc: "நீண்ட கால வடிவங்கள் மற்றும் தூண்டுதல்களைக் காண உங்கள் தினசரி அறிகுறிகள், சுழற்சி மாற்றங்கள் மற்றும் மனநிலையைப் பதிவுசெய்க.",
+      feature_2_title: "பாதுகாப்பான சுகாதார பெட்டகம்",
+      feature_2_desc: "உங்கள் அனைத்து மருத்துவ அறிக்கைகள், ஸ்கேன் மற்றும் ஆய்வக முடிவுகளை ஒரே குறியாக்கம் செய்யப்பட்ட இடத்தில் பதிவேற்றி ஒழுங்கமைக்கவும்.",
+      feature_3_title: "மருத்துவமனை ஒருங்கிணைப்பு",
+      feature_3_desc: "தடையற்ற தரவு பகிர்வுக்காக இலங்கையின் முன்னணி கிளினிக்குகள் மற்றும் மருத்துவமனைகளுடன் நேரடியாக இணையுங்கள்.",
+      feature_4_title: "வாழ்க்கை முறை பதிவுகள்",
+      feature_4_desc: "ஹார்மோன் சமநிலையை மேம்படுத்த உங்கள் ஊட்டச்சத்து, உடற்பயிற்சி, நீர் உட்கொள்ளல் மற்றும் தூக்கத்தின் தரத்தை கண்காணிக்கவும்.",
+      
+      stat_patients_reg: "பதிவு செய்யப்பட்ட நோயாளிகள்",
+      stat_sat_rate_short: "நோயாளி திருப்தி",
+      how_works_title_small: "செயல்முறை",
+      roles_title_small: "பயனர் பங்குகள்",
+      // Home Page Sections
+      about_hub_title: "பி.சி.ஓ.எஸ் கேர் ஹப் பற்றி",
+      about_hub_text_1: "பாலிசிஸ்டிக் ஓவரி ಸಿண்ட்ரோம் (பி.சி.ஓ.எஸ்) என்பது இனப்பெருக்க வயதுடைய 8-13% பெண்களைப் பாதிக்கும் ஒரு நாள்பட்ட ஹார்மோன் நிலையாகும். இலங்கையில், பல பெண்கள் துண்டு துண்டான காகித பதிவுகள், வரையறுக்கப்பட்ட மருத்துவர்-நோயாளி தொடர்பு மற்றும் ஒரு மையப்படுத்தப்பட்ட மேலாண்மை அமைப்பு இல்லாமை ஆகியவற்றால் போராடுகிறார்கள்.",
+      about_hub_text_2: "பி.சி.ஓ.எஸ் கேர் ஹப் குறிப்பாக இந்த இடைவெளிகளை நிவர்த்தி செய்வதற்காக உருவாக்கப்பட்டது — நோயாளிகள், மருத்துவமனைகள் மற்றும் நிர்வாகிகள் அனைவரும் ஒரு ஒருங்கிணைந்த சுற்றுச்சூழல் அமைப்பில் இணைந்து செயல்படும் பாதுகாப்பான, இணைய அடிப்படையிலான தளத்தை வழங்குகிறது.",
+      portal_title: "நோயாளி போர்டல்",
+      portal_desc: "அறிகுறிகள், மாதவிடாய் சுழற்சிகள், வாழ்க்கை முறை தரவுகளைக் கண்காணிக்கவும், அறிக்கைகளைப் பதிவேற்றவும் மற்றும் உங்கள் சுகாதார காலவரிசையைப் பார்க்கவும்.",
+      interface_title: "மருத்துவமனை இடைமுகம்",
+      interface_desc: "கட்டுப்படுத்தப்பட்ட அணுகலின் கீழ் ஆய்வக முடிவுகள், ஆலோசனைகள் மற்றும் நோயாளி பதிவுகளை நிர்வகிக்கவும்.",
+      admin_title: "நிர்வாகி டாஷ்போர்டு",
+      admin_desc: "முழு පද්ධதி மேற்பார்வை, மருத்துவமனை அனுமதிகள், பயனர் மேலாண்மை மற்றும் தணிக்கை பதிவுகள்.",
+      btn_join: "பி.சி.ஓ.எஸ் கேர் ஹப்பில் இணையுங்கள்",
+      
+      platform_features_title: "தளத்தின் அம்சங்கள்",
+      features_main_title: "பி.சி.ஓ.எஸ் நிர்வகிக்க உங்களுக்குத் தேவையான அனைத்தும்",
+      features_main_subtitle: "நோயாளிகள், மருத்துவமனைகள் மற்றும் நிர்வாகிகள் தடையின்றி இணைந்து செயல்பட வடிவமைக்கப்பட்ட விரிவான கருவிகள்.",
+      feat_symptom_title: "அறிகுறி கண்காணிப்பு",
+      feat_symptom_desc: "ஒழுங்கற்ற மாதவிடாய், முகப்பரு, முடி உதிர்தல், சோர்வு மற்றும் மனநிலை மாற்றங்கள் போன்ற தினசரி அறிகுறிகளைப் பதிவுசெய்க. காலப்போக்கில் ஏற்படும் மாற்றங்களை வரைபடங்கள் மூலம் கண்டறியவும்.",
+      feat_cycle_title: "மாதவிடாய் சுழற்சி கண்காணிப்பு",
+      feat_cycle_desc: "சுழற்சி நீளம், ஓட்டத்தின் செறிவைக் கண்காணித்து, கருமுட்டை வெளியேற்ற காலங்கள் மற்றும் சந்திப்புகளுக்கான நினைவூட்டல்களைப் பெறுங்கள்.",
+      feat_records_title: "பாதுகாப்பான மருத்துவ பதிவுகள்",
+      feat_records_desc: "ஆய்வக அறிக்கைகள், ஸ்கேன் அறிக்கைகள் மற்றும் மருந்துச் சீட்டுகளைப் பாதுகாப்பாகப் பதிவேற்றி சேமிக்கவும். காகித அறிக்கைகள் தொலைந்துவிடும் என்ற பயம் இனி தேவையில்லை.",
+      feat_hosp_title: "மருத்துவமனை ஒருங்கிணைப்பு",
+      feat_hosp_desc: "மருத்துவமனைகள் நேரடியாக நோயாளி சுயவிவரங்களில் ஆய்வக முடிவுகளை இடுகையிடலாம், இது துல்லியமான மருத்துவ வரலாற்றைப் பெற மருத்துவர்களுக்கு உதவுகிறது.",
+      feat_lifestyle_title: "வாழ்க்கை முறை பதிவு",
+      feat_lifestyle_desc: "உங்கள் தினசரி உணவு, நீர் உட்கொள்ளல், உடற்பயிற்சி மற்றும் தூக்கத்தின் தரத்தை கண்காணிக்கவும். பி.சி.ஓ.எஸ் மேலாண்மைக்கான தனிப்பயனாக்கப்பட்ட நுண்ணறிவுகளைப் பெறுங்கள்.",
+      feat_role_title: "பங்கு அடிப்படையிலான அணுகல் கட்டுப்பாடு",
+      feat_role_desc: "நோயாளி, மருத்துவமனை, நிர்வாகி என மூன்று தனித்தனி பயனர் பங்குகள் உள்ளன — தரவு தனியුரிமை மற்றும் பாதுகாப்பை உறுதிப்படுத்த அணுகல்கள் கட்டுப்படுத்தப்பட்டுள்ளன.",
+      
+      knowledge_center: "பி.சி.ஓ.எஸ் அறிவு மையம்",
+      knowledge_title: "பி.சி.ஓ.எஸ் பற்றி நீங்கள் தெரிந்து கொள்ள வேண்டிய அனைத்தும்",
+      knowledge_subtitle: "பி.சி.ஓ.எஸ்-ஐப் புரிந்துகொள்ளவும், நிர்வகிக்கவும் மற்றும் செழிக்கவும் உதவும் சான்றுகள் அடிப்படையிலான தகவல்கள்.",
+      know_symptoms: "அறிகுறிகள்",
+      know_causes: "காரணங்கள்",
+      know_treatment: "சிகிச்சை",
+      know_diet: "உணவு & வாழ்க்கை முறை",
+      know_mental: "மன நலம்",
+      
+      symp_periods_title: "ஒழுங்கற்ற மாதவிடாய்",
+      symp_periods_desc: "ஆண்டுக்கு 8-க்கும் குறைவான மாதவிடாய் சுழற்சிகள், 35 நாட்களுக்கு மேலான சுழற்சிகள் அல்லது மாதவிடாய் முற்றிலும் இல்லாதிருத்தல். இது மிகவும் பொதுவான பி.சி.ஓ.எஸ் அறிகுறியாகும்.",
+      symp_androgen_title: "அதிகப்படியான ஆண்ட்ரோஜன்",
+      symp_androgen_desc: "ஆண் ஹார்மோன்களின் அளவு அதிகரிப்பதால் முகம்/உடலில் தேவையற்ற முடி வளர்ச்சி, கடுமையான முகப்பரு மற்றும் முடி மெலிதல் போன்றவை ஏற்படும்.",
+      symp_ovaries_title: "பாலிசிஸ்டிக் கருப்பைகள்",
+      symp_ovaries_desc: "அல்ட்ராசவுண்ட் ஸ்கேனில் கருப்பைகள் பெரியதாக இருப்பதையும், முட்டைகளைச் சுற்றி சிறிய திரவம் நிறைந்த பைகள் (follicles) இருப்பதையும் காணலாம்.",
+      symp_weight_title: "எடை மாற்றங்கள்",
+      symp_weight_desc: "விவரிக்க முடியாத எடை அதிகரிப்பு, குறிப்பாக வயிற்றைச் சுற்றி, அல்லது உணவு மற்றும் உடற்பயிற்சி செய்தாலும் எடையைக் குறைக்க சிரமப்படுதல்.",
+      symp_fatigue_title: "சோர்வு & தூக்க பிரச்சினைகள்",
+      symp_fatigue_desc: "தொடர்ச்சியான சோர்வு, குறைந்த ஆற்றல் மற்றும் தூங்குவதில் சிரமம் ஆகியவை பி.சி.ஓ.எஸ்-இல் பொதுவானவை.",
+      symp_mood_title: "மனநிலை மாற்றங்கள்",
+      symp_mood_desc: "ஹார்மோன் ஏற்ற இறக்கங்கள் மற்றும் நாள்பட்ட நோயின் மன ரீதியான தாக்கம் காரணமாக மனச்சோர்வு மற்றும் கவலை ஏற்படலாம்.",
+      
+      cause_insulin_title: "இன்சுலின் எதிர்ப்பு",
+      cause_insulin_desc: "பி.சி.ஓ.எஸ் கொண்ட பெண்களில் 70% வரை இன்சுலின் எதிர்ப்பு உள்ளது. செல்கள் இன்சுலினுக்கு சரியாக பதிலளிக்காதபோது, கணையம் அதிகமாக உற்பத்தி செய்கிறது, இது ஆண்ட்ரோஜன் உற்பத்தியைத் தூண்டும்.",
+      cause_genetics_title: "மரபியல்",
+      cause_genetics_desc: "பி.சி.ஓ.எஸ் குடும்பங்களில் பரவும் தன்மை கொண்டது. உங்கள் தாய் அல்லது சகோதரிக்கு பி.சி.ஓ.எஸ் இருந்தால், உங்களுக்கு அதிக ஆபத்து உள்ளது. இது ஒரு சிக்கலான மரபணு நிலை.",
+      cause_hormone_title: "ஹார்மோன் ஏற்றத்தாழ்வு",
+      cause_hormone_desc: "ஆண்ட்ரோஜன்களின் (ஆண் ஹார்மோன்கள்) அதிகப்படியான உற்பத்தி கருமுட்டை வளர்ச்சியைத் தடுக்கிறது. LH மற்றும் FSH ஏற்றத்தாழ்வுகளும் சுழற்சி முறைகேடுகளுக்கு காரணமாகின்றன.",
+      cause_inflammation_title: "வீக்கம்",
+      cause_inflammation_desc: "பி.சி.ஓ.எஸ்-இல் நாள்பட்ட வீக்கம் பொதுவானது மற்றும் இது ஆண்ட்ரோஜன்களை உற்பத்தி செய்ய கருப்பைகளைத் தூண்டும். உணவு, வாழ்க்கை முறை மற்றும் குடல் ஆரோக்கியம் இதில் முக்கிய பங்கு வகிக்கின்றன.",
+      
+      treat_pill_title: "ஹார்மோன் கருத்தடை முறைகள்",
+      treat_pill_desc: "கூட்டு வாய்வழி கருத்தடை மாத்திரைகள் மாதவிடாய் சுழற்சியை ஒழுங்குபடுத்தவும், ஆண்ட்ரோஜன் அளவைக் குறைக்கவும், முகப்பருவை நீக்கவும் மற்றும் முடி வளர்ச்சியைக் குறைக்கவும் உதவுகின்றன.",
+      treat_metformin_title: "மெட்ஃபார்மின்",
+      treat_metformin_desc: "இன்சுலின் எதிர்ப்பை மேம்படுத்தக்கூடிய, மாதவிடாய் சுழற்சியை ஒழுங்குபடுத்த உதவும் மற்றும் நீண்ட கால நீரிழிவு அபாயத்தைக் குறைக்கும் ஒரு மருந்தாகும்.",
+      treat_lifestyle_title: "வாழ்க்கை முறை சிகிச்சை",
+      treat_lifestyle_desc: "5-10% எடையைக் குறைப்பது கூட பி.சி.ஓ.எஸ் அறிகுறிகளை கணிசமாக மேம்படுத்தும். வழக்கமான உடற்பயிற்சி மற்றும் சமநிலையான உணவு ஆகியவை அடிப்படை சிகிச்சைகள்.",
+      treat_fertility_title: "கருவுறுதல் சிகிச்சைகள்",
+      treat_fertility_desc: "கருத்தரிக்க முயற்சிக்கும் பெண்களுக்கு, கருமுட்டை தூண்டுதல் (Clomifene, Letrozole) மற்றும் சில சந்தர்ப்பங்களில் அறுவை சிகிச்சை முறைகள் பயன்படுத்தப்படலாம்.",
+      
+      diet_gi_title: "குறைந்த கிளைசெமிக் உணவு",
+      diet_gi_desc: "இரத்த சர்க்கரையை விரைவாக அதிகரிக்காத உணவுகள் (முழு தானியங்கள், பருப்பு வகைகள், காய்கறிகள்) இன்சுலின் எதிர்ப்பை நிர்வகிக்க உதவுகின்றன.",
+      diet_anti_title: "அழற்சி எதிர்ப்பு உணவுகள்",
+      diet_anti_desc: "கொழுப்பு நிறைந்த மீன், கீரைகள், பெர்ரி மற்றும் ஆலிவ் எண்ணெய் ஆகியவற்றைச் சேர்க்கவும். ஒமேகா-3 கொழுப்பு அமிலங்கள் ஆண்ட்ரோஜன் அளவைக் குறைக்க உதவும்.",
+      diet_exercise_title: "வழக்கமான உடற்பயிற்சி",
+      diet_exercise_desc: "வாரத்திற்கு 150+ நிமிடங்கள் மிதமான உடற்பயிற்சி செய்யுங்கள். வலிமை பயிற்சி இன்சுலின் உணர்திறனை மேம்படுத்துகிறது மற்றும் நடைப்பயிற்சி கூட மாற்றத்தை ஏற்படுத்தும்.",
+      diet_sleep_title: "தூக்கம் & மன அழுத்த மேலாண்மை",
+      diet_sleep_desc: "குறைந்த தூக்கம் இன்சுலின் எதிர்ப்பு மற்றும் ஹார்மோன் சமநிலையை மோசமாக்குகிறது. 7-9 மணிநேரம் தூங்குங்கள். யோகா மற்றும் தியானம் மன அழுத்தத்தைக் குறைக்க உதவும்.",
+      
+      mental_anxiety_title: "மனச்சோர்வு & கவலை",
+      mental_anxiety_desc: "பி.சி.ஓ.எஸ் கொண்ட பெண்களுக்கு மனச்சோர்வு மற்றும் கவலை ஏற்பட அதிக வாய்ப்பு உள்ளது. ஹார்மோன் மாற்றங்கள் மற்றும் உடல் உருவம் குறித்த கவலைகள் இதற்கு காரணமாகின்றன.",
+      mental_image_title: "உடல் உருவம் & சுயமரியாதை",
+      mental_image_desc: "முகப்பரு மற்றும் எடை அதிகரிப்பு போன்ற அறிகுறிகள் சுயநம்பிக்கையைப் பாதிக்கலாம். பி.சி.ஓ.எஸ் கேர் ஹப் ஆதரவான சமூகங்களுடன் இணைய உங்களுக்கு உதவுகிறது.",
+      mental_support_title: "ஆதரவு நெட்வொர்க்குகள்",
+      mental_support_desc: "பி.சி.ஓ.எஸ் கொண்ட மற்றவர்களுடன் இணைவது தனிமையைக் குறைக்கிறது மற்றும் மன நலத்தை மேம்படுத்துகிறது. ஆன்லைன் சமூகங்கள் மற்றும் சிகிச்சை இதற்கு உதவுகின்றன.",
+      mental_cbt_title: "அறிவாற்றல் நடத்தை சிகிச்சை",
+      mental_cbt_desc: "பி.சி.ஓ.எஸ்-இல் மனச்சோர்வு மற்றும் கவலையை மேம்படுத்த CBT சிகிச்சை பயனுள்ளதாக இருப்பது கண்டறியப்பட்டுள்ளது. தொழில்முறை உதவியை நாட தயங்க வேண்டாம்.",
+      
+      stat_women_global: "உலகளவில் பாதிக்கப்பட்ட பெண்கள்",
+      stat_prev_sl: "இலங்கையில் பரவல்",
+      stat_partner_hosp: "கூட்டு மருத்துவமனைகள்",
+      stat_sat_rate: "நோயாளி திருப்தி விகிதம்",
+      
+      how_works_title: "4 எளிய படிகளில் தொடங்கவும்",
+      how_works_subtitle: "ஏற்கனவே தங்கள் பி.சி.ஓ.எஸ்-ஐ புத்திசாலித்தனமாக நிர்வகிக்கும் ஆயிரக்கணக்கான இலங்கை பெண்களுடன் இணையுங்கள்.",
+      step_1_title: "கணக்கை உருவாக்கவும்",
+      step_1_desc: "பாதுகாப்பான மின்னஞ்சல் சரிபார்ப்புடன் சில நிமிடங்களில் ஒரு நோயாளி அல்லது மருத்துவமனையாக பதிவு செய்யுங்கள்.",
+      step_2_title: "சுயவிவரத்தை உருவாக்கவும்",
+      step_2_desc: "உங்கள் சுகாதார வரலாற்றை உள்ளிடவும், உங்கள் மருத்துவமனையுடன் இணையவும் மற்றும் இருக்கும் மருத்துவ பதிவுகளைப் பதிவேற்றவும்.",
+      step_3_title: "கண்காணிக்கவும்",
+      step_3_desc: "தினசரி அறிகுறிகள், சுழற்சிகள், உணவுகள் மற்றும் செயல்பாடுகளைப் பதிவுசெய்க. உங்கள் சுகாதார வடிவங்கள் உருவாவதைப் பாருங்கள்.",
+      step_4_title: "சிகிச்சையுடன் இணையுங்கள்",
+      step_4_desc: "உங்கள் மருத்துவமனையுடன் பதிவுகளைப் பகிரவும், ஆய்வக முடிவுகளைப் பெறவும் மற்றும் முழுமையான தரவுகளுடன் ஆலோசனை பெறவும்.",
+      
+      roles_title: "பி.சி.ஓ.எஸ் பயணத்தில் உள்ள அனைவருக்கும் உருவாக்கப்பட்டது",
+      role_patient_title: "நோயாளி உள்நுழைவு",
+      role_patient_subtitle: "சக்திவாய்ந்த சுய மேலாண்மைக் கருவிகள் மூலம் உங்கள் சுகாதாரப் பயணத்தைக் கட்டுப்படுத்துங்கள்.",
+      role_patient_feat_1: "அறிகுறி மற்றும் சுழற்சி கண்காணிப்பு",
+      role_patient_feat_2: "அறிக்கைகளைப் பதிவேற்றுதல் மற்றும் நிர்வகித்தல்",
+      role_patient_feat_3: "வாழ்க்கை முறை மற்றும் உணவுப் பதிவு",
+      role_patient_feat_4: "ஆய்வக முடிவுகளைப் பார்த்தல்",
+      role_patient_feat_5: "சந்திப்பு நினைவූட்டல்கள்",
+      role_patient_btn: "நோயாளியாக உள்நுழையவும்",
+      role_hospital_title: "மருத்துவமனை உள்நுழைவு",
+      role_hospital_subtitle: "நோயாளி மேலாண்மையை நெறிப்படுத்தி மருத்துவ முடிவெடுப்பதை மேம்படுத்துங்கள்.",
+      role_hospital_feat_1: "நோயாளி பதிவுகளை நிர்வகித்தல்",
+      role_hospital_feat_2: "ஆய்வக முடிவுகளைப் பதிவேற்றுதல்",
+      role_hospital_feat_3: "ஆலோசனை மேலாண்மை",
+      role_hospital_feat_4: "நோயாளி வரலாற்றைத் தேடுதல்",
+      role_hospital_feat_5: "பாதுகாப்பான அணுகல் கட்டுப்பாடு",
+      role_hospital_btn: "மருத்துவமனையாக உள்நுழையவும்",
+      
+      cta_journey_title: "இன்று உங்கள் பி.சி.ஓ.எஸ் பயணத்தைத் தொடங்குங்கள்",
+      cta_journey_desc: "தங்கள் பி.சி.ஓ.எஸ்-ஐ புத்திசாலித்தனமாகவும், பாதுகாப்பாகவும், நம்பிக்கையுடனும் நிர்வகிக்கும் ஆயிரக்கணக்கான இலங்கை பெண்களுடன் இணையுங்கள்.",
+      cta_create_btn: "இலவச கணக்கை உருவாக்கவும்",
+      cta_login_text: "ஏற்கனவே உறுப்பினரா? உள்நுழையவும்",
+      
+      footer_resources_title: "பி.சி.ஓ.எஸ் ஆதாரங்கள்",
+      res_understanding: "பி.சி.ஓ.எஸ்-ஐப் புரிந்துகொள்ளுதல்",
+      res_symptom_checker: "அறிகுறி சரிபார்ப்பு",
+      res_diet: "உணவு & ஊட்டச்சத்து",
+      res_exercise: "உடற்பயிற்சி வழிகாட்டி",
+      res_mental: "மன நலம்",
+      res_faqs: "அடிக்கடி கேட்கப்படும் கேள்விகள்",
+      footer_stay_updated: "தொடர்ந்து புதுப்பிப்புகளைப் பெறுங்கள்",
+      footer_newsletter_desc: "சமீபத்திய பி.சி.ஓ.எஸ் செய்திகள், ஆராய்ச்சி மற்றும் ஆரோக்கிய குறிப்புகளை உங்கள் மின்னஞ்சலில் பெறுங்கள்.",
+      footer_email_placeholder: "உங்கள் மின்னஞ்சல் முகவரி",
+      footer_subscribe_btn: "சந்தாதாரராகுங்கள்",
+      footer_no_spam: "தேவையற்ற செய்திகள் அனுப்பப்படாது",
     }
   },
   init() {
@@ -2056,19 +2610,88 @@ function countUp(el, target, duration = 1800, suffix = '') {
   requestAnimationFrame(step);
 }
 
+// ── Statistics Management ──
+const Stats = {
+  async fetch() {
+    try {
+      // Find the correct path to get_stats.php
+      const path = window.location.pathname;
+      const root = path.includes('/src/pages/') 
+        ? '../../' 
+        : (path.includes('/admin/') ? '../' : './');
+      
+      const res = await fetch(root + 'src/php/get_stats.php');
+      const data = await res.json();
+      
+      if (data.status === 'success') {
+        return data.data;
+      }
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
+    }
+    return null;
+  },
+  async update() {
+    const data = await this.fetch();
+    if (!data) return;
+
+    // Mapping of data-stat keys to database results
+    const mapping = {
+      'patients': data.patients,
+      'hospitals': data.hospitals,
+      'reports': data.reports
+    };
+
+    document.querySelectorAll('[data-stat]').forEach(el => {
+      const statKey = el.getAttribute('data-stat');
+      if (mapping[statKey] !== undefined) {
+        const newValue = mapping[statKey];
+        const oldValue = parseFloat(el.dataset.count);
+        
+        // Update the data-count attribute
+        el.setAttribute('data-count', newValue);
+        
+        // If it was already observed/animated, we might need to re-trigger
+        // but typically Stats.update runs fast enough on DOMContentLoaded.
+        // If we want to be sure, we can clear data-observed and re-init.
+        el.removeAttribute('data-observed');
+      }
+    });
+    
+    // Re-initialize countups to catch updated data-count attributes
+    initCountUps();
+  }
+};
+
+// Global observer for count-ups
+let countUpObserver = null;
+
 function initCountUps() {
-  const observer = new IntersectionObserver((entries) => {
+  if (countUpObserver) {
+    // If already exists, just observe any new elements
+    document.querySelectorAll('[data-count]:not([data-observed])').forEach(el => {
+      el.setAttribute('data-observed', 'true');
+      countUpObserver.observe(el);
+    });
+    return;
+  }
+
+  countUpObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target;
         const target = parseFloat(el.dataset.count);
         const suffix = el.dataset.suffix || '';
         countUp(el, target, 1600, suffix);
-        observer.unobserve(el);
+        countUpObserver.unobserve(el);
       }
     });
   }, { threshold: 0.4 });
-  document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+  
+  document.querySelectorAll('[data-count]').forEach(el => {
+    el.setAttribute('data-observed', 'true');
+    countUpObserver.observe(el);
+  });
 }
 
 // ── Tab switcher ──
@@ -2272,7 +2895,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   setActiveNav();
   initSmoothScroll();
-  initCountUps();
+  // initCountUps(); // Moved inside Stats.update() or after it
   initTabs();
   initSidebar();
   setSidebarActive();
@@ -2285,5 +2908,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ColorTheme.init();
   FontSize.init();
   L10n.init();
+  
+  // Fetch stats and then init countups
+  Stats.update().then(() => {
+    initCountUps();
+  });
 });
 

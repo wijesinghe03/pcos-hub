@@ -48,28 +48,91 @@
       <div class="hero-content">
         <div class="hero-badge">
           <div class="hero-badge-dot"></div>
-          Sri Lanka's #1 PCOS Platform
+          <span data-i18n="hero_badge_text">Sri Lanka's #1 PCOS Platform</span>
         </div>
         <h1 class="hero-title">
-          Manage PCOS<br>
-          <span class="highlight">Smarter &amp; Safer</span>
+          <span data-i18n="hero_title_main">Manage PCOS</span><br>
+          <span class="highlight" data-i18n="hero_title_highlight">Smarter &amp; Safer</span>
         </h1>
-        <p class="hero-desc">
+        <p class="hero-desc" data-i18n="hero_desc_text">
           A comprehensive platform for Sri Lankan women to manage PCOS smartly and securely — track symptoms, connect
           with hospitals, and access your health records anytime.
         </p>
+
+        <!-- Language Switcher in Hero -->
+        <div class="hero-lang-picker reveal">
+          <div class="hero-lang-btns">
+            <button onclick="L10n.set('en')" class="lang-pill" id="lang-en">English</button>
+            <button onclick="L10n.set('si')" class="lang-pill" id="lang-si">සිංහල</button>
+            <button onclick="L10n.set('ta')" class="lang-pill" id="lang-ta">தமிழ்</button>
+          </div>
+        </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            if (typeof L10n !== 'undefined') {
+              const currentLang = L10n.get();
+              document.querySelectorAll('.lang-pill').forEach(btn => {
+                if (btn.id === 'lang-' + currentLang) btn.classList.add('active');
+              });
+            }
+          });
+        </script>
+
+        <style>
+          .hero-lang-picker {
+            margin-bottom: 30px;
+          }
+          .hero-lang-btns {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 6px;
+            border-radius: var(--radius-full);
+            width: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-sm);
+          }
+          [data-theme="dark"] .hero-lang-btns {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+          .lang-pill {
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: transparent;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+          }
+          .lang-pill:hover {
+            background: rgba(255, 255, 255, 0.6);
+          }
+          [data-theme="dark"] .lang-pill:hover {
+            background: rgba(255, 255, 255, 0.1);
+          }
+          .lang-pill.active {
+            background: var(--purple-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+          }
+        </style>
         <div class="hero-actions">
-          <a href="signup-choice.html" class="btn btn-primary btn-lg">
+          <a href="signup-choice.html" class="btn btn-primary btn-lg" data-i18n="btn_get_started">
             <span>♥</span> Get Started Free
           </a>
-          <a href="learn-more.html" class="btn btn-outline btn-lg">
+          <a href="learn-more.html" class="btn btn-outline btn-lg" data-i18n="btn_learn_more">
             Learn More
           </a>
         </div>
         <div class="hero-trust">
-          <div class="hero-trust-item"> Free to join</div>
-          <div class="hero-trust-item"> Secure & Private</div>
-          <div class="hero-trust-item"> Hospital Integrated</div>
+          <div class="hero-trust-item" data-i18n="trust_free"> Free to join</div>
+          <div class="hero-trust-item" data-i18n="trust_secure"> Secure & Private</div>
+          <div class="hero-trust-item" data-i18n="trust_hospital"> Hospital Integrated</div>
         </div>
       </div>
 
@@ -86,21 +149,21 @@
           <div class="hero-card hero-card-1">
             <div class="hero-card-icon purple">📋</div>
               <div>
-                <div class="hero-card-num"><span data-count="8" data-suffix="">0</span></div>
+                <div class="hero-card-num"><span data-count="0" data-stat="reports" data-suffix="">0</span></div>
               <div class="hero-card-lbl">Reports Uploaded</div>
             </div>
           </div>
           <div class="hero-card hero-card-2">
             <div class="hero-card-icon pink">👩</div>
               <div>
-                <div class="hero-card-num"><span data-count="2" data-suffix="">0</span></div>
+                <div class="hero-card-num"><span data-count="0" data-stat="patients" data-suffix="">0</span></div>
               <div class="hero-card-lbl">Patients Supported</div>
             </div>
           </div>
           <div class="hero-card hero-card-3">
             <div class="hero-card-icon teal">🏥</div>
               <div>
-                <div class="hero-card-num"><span data-count="20" data-suffix="">0</span></div>
+                <div class="hero-card-num"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></div>
               <div class="hero-card-lbl">Partner Hospitals</div>
             </div>
           </div>
@@ -121,15 +184,15 @@
   <section class="feature-pills">
     <div class="container">
       <div class="pill-item reveal" onclick="window.location.href='login-redirect.html?for=symptoms'"
-        style="cursor:pointer"><i>📊</i> Symptom Tracking</div>
+        style="cursor:pointer" data-i18n="track_symptoms_opt"><i>📊</i> Symptom Tracking</div>
       <div class="pill-item reveal reveal-delay-1" onclick="window.location.href='login-redirect.html?for=cycle'"
-        style="cursor:pointer"><i>🩸</i> Menstrual Cycle</div>
+        style="cursor:pointer" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</div>
       <div class="pill-item reveal reveal-delay-2" onclick="window.location.href='login-redirect.html?for=records'"
-        style="cursor:pointer"><i>🔒</i> Secure Health Records</div>
+        style="cursor:pointer" data-i18n="nav_records"><i>🔒</i> Secure Health Records</div>
       <div class="pill-item reveal reveal-delay-3" onclick="window.location.href='hospital-loading.html'"
-        style="cursor:pointer"><i>🏥</i> Connect with Hospitals</div>
+        style="cursor:pointer" data-i18n="nav_hospitals"><i>🏥</i> Connect with Hospitals</div>
       <div class="pill-item reveal reveal-delay-4" onclick="window.location.href='login-redirect.html?for=lifestyle'"
-        style="cursor:pointer"><i>🥗</i> Lifestyle Tracking</div>
+        style="cursor:pointer" data-i18n="lifestyle"><i>🥗</i> Lifestyle Tracking</div>
     </div>
   </section>
 
@@ -150,36 +213,30 @@
 
         <!-- Text side -->
         <div class="about-content reveal reveal-delay-2">
-          <span class="section-label">About PCOS Care Hub</span>
-          <h2>Bridging the Gap in PCOS Healthcare in Sri Lanka</h2>
-          <p>
+          <span class="section-label" data-i18n="nav_about">About PCOS Care Hub</span>
+          <h2 data-i18n="footer_about_title">Bridging the Gap in PCOS Healthcare in Sri Lanka</h2>
+          <p data-i18n="about_hub_text_1">
             Polycystic Ovary Syndrome (PCOS) is a chronic hormonal condition affecting 8–13% of women of reproductive
             age. In Sri Lanka, many women struggle with fragmented paper-based records, limited doctor-patient
             communication, and lack of a centralized management system.
           </p>
-          <p>
+          <p data-i18n="about_hub_text_2">
             PCOS Care Hub was built specifically to address these gaps — offering a secure, web-based platform where
             patients, hospitals, and administrators all work together in one unified ecosystem.
           </p>
 
           <div class="about-checks">
             <div class="check-item">
-              
-              <div class="check-text"><strong>Patient Portal:</strong> Track symptoms, menstrual cycles, lifestyle data,
-                upload reports and view your health timeline.</div>
+              <div class="check-text"><strong><span data-i18n="portal_title">Patient Portal</span>:</strong> <span data-i18n="portal_desc">Track symptoms, menstrual cycles, lifestyle data, upload reports and view your health timeline.</span></div>
             </div>
             <div class="check-item">
-              
-              <div class="check-text"><strong>Hospital Interface:</strong> Manage lab results, consultations, and
-                patient records under controlled, role-based access.</div>
+              <div class="check-text"><strong><span data-i18n="interface_title">Hospital Interface</span>:</strong> <span data-i18n="interface_desc">Manage lab results, consultations, and patient records under controlled, role-based access.</span></div>
             </div>
             <div class="check-item">
-              
-              <div class="check-text"><strong>Admin Dashboard:</strong> Full system oversight, hospital approvals, user
-                management and audit logs.</div>
+              <div class="check-text"><strong><span data-i18n="admin_title">Admin Dashboard</span>:</strong> <span data-i18n="admin_desc">Full system oversight, hospital approvals, user management and audit logs.</span></div>
             </div>
           </div>
-          <a href="signup-choice.html" class="btn btn-primary">Join PCOS Care Hub</a>
+          <a href="signup-choice.html" class="btn btn-primary" data-i18n="btn_join">Join PCOS Care Hub</a>
         </div>
       </div>
     </div>
@@ -191,51 +248,51 @@
   <section class="features-section section-pad" id="features">
     <div class="container">
       <div class="features-header reveal">
-        <span class="section-label">Platform Features</span>
-        <h2>Everything You Need to Manage PCOS</h2>
-        <p>Comprehensive tools designed for patients, hospitals, and administrators to work together seamlessly.</p>
+        <span class="section-label" data-i18n="platform_features_title">Platform Features</span>
+        <h2 data-i18n="features_main_title">Everything You Need to Manage PCOS</h2>
+        <p data-i18n="features_main_subtitle">Comprehensive tools designed for patients, hospitals, and administrators to work together seamlessly.</p>
       </div>
 
       <div class="features-grid">
         <div class="feature-card reveal" onclick="window.location.href='login-redirect.html?for=symptoms'"
           style="cursor:pointer">
           <div class="feature-card-icon">📊</div>
-          <h4>Symptom Tracking</h4>
-          <p>Log daily symptoms like irregular periods, acne, hair loss, fatigue and mood changes. Visualize patterns
+          <h4 data-i18n="feat_symptom_title">Symptom Tracking</h4>
+          <p data-i18n="feat_symptom_desc">Log daily symptoms like irregular periods, acne, hair loss, fatigue and mood changes. Visualize patterns
             over time with intuitive charts and trend analysis.</p>
         </div>
         <div class="feature-card reveal reveal-delay-1" onclick="window.location.href='login-redirect.html?for=cycle'"
           style="cursor:pointer">
           <div class="feature-card-icon">🩸</div>
-          <h4>Menstrual Cycle Tracker</h4>
-          <p>Track cycle length, flow intensity, and predict ovulation windows. Log period dates and receive smart
+          <h4 data-i18n="feat_cycle_title">Menstrual Cycle Tracker</h4>
+          <p data-i18n="feat_cycle_desc">Track cycle length, flow intensity, and predict ovulation windows. Log period dates and receive smart
             reminders for upcoming cycles and appointments.</p>
         </div>
         <div class="feature-card reveal reveal-delay-2" onclick="window.location.href='login-redirect.html?for=records'"
           style="cursor:pointer">
           <div class="feature-card-icon">🔒</div>
-          <h4>Secure Medical Records</h4>
-          <p>Upload, store and share lab reports, ultrasound scans, and prescriptions securely. No more lost paper
+          <h4 data-i18n="feat_records_title">Secure Medical Records</h4>
+          <p data-i18n="feat_records_desc">Upload, store and share lab reports, ultrasound scans, and prescriptions securely. No more lost paper
             records — your history is always accessible.</p>
         </div>
         <div class="feature-card reveal reveal-delay-3" onclick="window.location.href='hospital-loading.html'"
           style="cursor:pointer">
           <div class="feature-card-icon">🏥</div>
-          <h4>Hospital Integration</h4>
-          <p>Hospitals can post lab results directly to patient profiles, manage consultations, and ensure physicians
+          <h4 data-i18n="feat_hosp_title">Hospital Integration</h4>
+          <p data-i18n="feat_hosp_desc">Hospitals can post lab results directly to patient profiles, manage consultations, and ensure physicians
             have complete, accurate medical histories.</p>
         </div>
         <div class="feature-card reveal reveal-delay-4"
           onclick="window.location.href='login-redirect.html?for=lifestyle'" style="cursor:pointer">
           <div class="feature-card-icon">🥗</div>
-          <h4>Lifestyle & Nutrition Log</h4>
-          <p>Track your daily meals, water intake, exercise routines and sleep quality. Get personalized lifestyle
+          <h4 data-i18n="feat_lifestyle_title">Lifestyle & Nutrition Log</h4>
+          <p data-i18n="feat_lifestyle_desc">Track your daily meals, water intake, exercise routines and sleep quality. Get personalized lifestyle
             insights based on PCOS management guidelines.</p>
         </div>
         <div class="feature-card reveal">
           <div class="feature-card-icon">🛡️</div>
-          <h4>Role-Based Access Control</h4>
-          <p>Three distinct user roles — Patient, Hospital, Administrator — with carefully controlled permissions
+          <h4 data-i18n="feat_role_title">Role-Based Access Control</h4>
+          <p data-i18n="feat_role_desc">Three distinct user roles — Patient, Hospital, Administrator — with carefully controlled permissions
             ensuring data privacy and HIPAA-compliant security.</p>
         </div>
       </div>
@@ -248,18 +305,18 @@
   <section class="pcos-info section-pad" id="pcos-info">
     <div class="container">
       <div class="pcos-info-header reveal">
-        <span class="section-label">PCOS Knowledge Center</span>
-        <h2>Everything You Need to Know About PCOS</h2>
-        <p style="max-width:560px;margin:14px auto 0">Evidence-based information to help you understand, manage, and
+        <span class="section-label" data-i18n="knowledge_center">PCOS Knowledge Center</span>
+        <h2 data-i18n="knowledge_title">Everything You Need to Know About PCOS</h2>
+        <p style="max-width:560px;margin:14px auto 0" data-i18n="knowledge_subtitle">Evidence-based information to help you understand, manage, and
           thrive with PCOS.</p>
       </div>
 
       <div class="info-tabs reveal">
-        <button class="info-tab active" data-tab="symptoms">Symptoms</button>
-        <button class="info-tab" data-tab="causes">Causes</button>
-        <button class="info-tab" data-tab="treatment">Treatment</button>
-        <button class="info-tab" data-tab="diet">Diet & Lifestyle</button>
-        <button class="info-tab" data-tab="mental">Mental Health</button>
+        <button class="info-tab active" data-tab="symptoms" data-i18n="know_symptoms">Symptoms</button>
+        <button class="info-tab" data-tab="causes" data-i18n="know_causes">Causes</button>
+        <button class="info-tab" data-tab="treatment" data-i18n="know_treatment">Treatment</button>
+        <button class="info-tab" data-tab="diet" data-i18n="know_diet">Diet & Lifestyle</button>
+        <button class="info-tab" data-tab="mental" data-i18n="know_mental">Mental Health</button>
       </div>
 
       <!-- Symptoms -->
@@ -268,49 +325,49 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🩸</div>
-              <h4>Irregular Periods</h4>
+              <h4 data-i18n="symp_periods_title">Irregular Periods</h4>
             </div>
-            <p>Having fewer than 8 menstrual cycles per year, cycles longer than 35 days, or complete absence of
+            <p data-i18n="symp_periods_desc">Having fewer than 8 menstrual cycles per year, cycles longer than 35 days, or complete absence of
               menstruation. This is one of the most common PCOS symptoms.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🌱</div>
-              <h4>Excess Androgen</h4>
+              <h4 data-i18n="symp_androgen_title">Excess Androgen</h4>
             </div>
-            <p>Elevated male hormones causing excess facial/body hair (hirsutism), severe acne, and male-pattern
+            <p data-i18n="symp_androgen_desc">Elevated male hormones causing excess facial/body hair (hirsutism), severe acne, and male-pattern
               baldness or thinning hair on the scalp.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🔬</div>
-              <h4>Polycystic Ovaries</h4>
+              <h4 data-i18n="symp_ovaries_title">Polycystic Ovaries</h4>
             </div>
-            <p>Enlarged ovaries containing many small fluid-filled sacs (follicles) that surround the eggs, visible on
+            <p data-i18n="symp_ovaries_desc">Enlarged ovaries containing many small fluid-filled sacs (follicles) that surround the eggs, visible on
               ultrasound. Despite the name, cysts may not always be present.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">⚖️</div>
-              <h4>Weight Changes</h4>
+              <h4 data-i18n="symp_weight_title">Weight Changes</h4>
             </div>
-            <p>Unexplained weight gain, especially around the abdomen, or difficulty losing weight despite diet and
+            <p data-i18n="symp_weight_desc">Unexplained weight gain, especially around the abdomen, or difficulty losing weight despite diet and
               exercise. Insulin resistance is often a contributing factor.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">😴</div>
-              <h4>Fatigue & Sleep Issues</h4>
+              <h4 data-i18n="symp_fatigue_title">Fatigue & Sleep Issues</h4>
             </div>
-            <p>Persistent tiredness, low energy, and difficulty sleeping are common in PCOS, often linked to hormonal
+            <p data-i18n="symp_fatigue_desc">Persistent tiredness, low energy, and difficulty sleeping are common in PCOS, often linked to hormonal
               imbalances and insulin resistance.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🧠</div>
-              <h4>Mood Changes</h4>
+              <h4 data-i18n="symp_mood_title">Mood Changes</h4>
             </div>
-            <p>Higher rates of depression, anxiety, and mood swings are associated with PCOS due to hormonal
+            <p data-i18n="symp_mood_desc">Higher rates of depression, anxiety, and mood swings are associated with PCOS due to hormonal
               fluctuations and the emotional impact of chronic illness.</p>
           </div>
         </div>
@@ -322,33 +379,33 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🧬</div>
-              <h4>Insulin Resistance</h4>
+              <h4 data-i18n="cause_insulin_title">Insulin Resistance</h4>
             </div>
-            <p>Up to 70% of women with PCOS have insulin resistance. When cells don't respond properly to insulin, the
+            <p data-i18n="cause_insulin_desc">Up to 70% of women with PCOS have insulin resistance. When cells don't respond properly to insulin, the
               pancreas produces more, which can stimulate excess androgen production.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🔬</div>
-              <h4>Genetics</h4>
+              <h4 data-i18n="cause_genetics_title">Genetics</h4>
             </div>
-            <p>PCOS tends to run in families. If your mother or sister has PCOS, you have a significantly higher risk.
+            <p data-i18n="cause_genetics_desc">PCOS tends to run in families. If your mother or sister has PCOS, you have a significantly higher risk.
               Multiple genes are likely involved, making it a complex genetic condition.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">⚡</div>
-              <h4>Hormonal Imbalance</h4>
+              <h4 data-i18n="cause_hormone_title">Hormonal Imbalance</h4>
             </div>
-            <p>Excess production of androgens (male hormones) disrupts follicle development, preventing regular
+            <p data-i18n="cause_hormone_desc">Excess production of androgens (male hormones) disrupts follicle development, preventing regular
               ovulation. LH and FSH imbalances also contribute to cycle irregularities.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🌿</div>
-              <h4>Inflammation</h4>
+              <h4 data-i18n="cause_inflammation_title">Inflammation</h4>
             </div>
-            <p>Low-grade chronic inflammation is common in PCOS and may stimulate polycystic ovaries to produce
+            <p data-i18n="cause_inflammation_desc">Low-grade chronic inflammation is common in PCOS and may stimulate polycystic ovaries to produce
               androgens. Diet, lifestyle, and gut health all play roles.</p>
           </div>
         </div>
@@ -360,33 +417,33 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">💊</div>
-              <h4>Hormonal Contraceptives</h4>
+              <h4 data-i18n="treat_pill_title">Hormonal Contraceptives</h4>
             </div>
-            <p>Combined oral contraceptives help regulate menstrual cycles, reduce androgen levels, clear acne, and
+            <p data-i18n="treat_pill_desc">Combined oral contraceptives help regulate menstrual cycles, reduce androgen levels, clear acne, and
               decrease hair growth. Often first-line treatment for cycle irregularities.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🩺</div>
-              <h4>Metformin</h4>
+              <h4 data-i18n="treat_metformin_title">Metformin</h4>
             </div>
-            <p>An insulin-sensitizing medication that can improve insulin resistance, help regulate menstrual cycles,
+            <p data-i18n="treat_metformin_desc">An insulin-sensitizing medication that can improve insulin resistance, help regulate menstrual cycles,
               support weight management, and reduce long-term diabetes risk.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🌱</div>
-              <h4>Lifestyle Therapy</h4>
+              <h4 data-i18n="treat_lifestyle_title">Lifestyle Therapy</h4>
             </div>
-            <p>Even 5–10% weight loss can significantly improve PCOS symptoms, restore ovulation, and reduce health
+            <p data-i18n="treat_lifestyle_desc">Even 5–10% weight loss can significantly improve PCOS symptoms, restore ovulation, and reduce health
               risks. Regular exercise and a balanced diet are foundational treatments.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🔬</div>
-              <h4>Fertility Treatments</h4>
+              <h4 data-i18n="treat_fertility_title">Fertility Treatments</h4>
             </div>
-            <p>For women trying to conceive, options include ovulation induction (Clomifene, Letrozole), Gonadotropins,
+            <p data-i18n="treat_fertility_desc">For women trying to conceive, options include ovulation induction (Clomifene, Letrozole), Gonadotropins,
               and in some cases, laparoscopic ovarian drilling.</p>
           </div>
         </div>
@@ -398,33 +455,33 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🥗</div>
-              <h4>Low Glycaemic Diet</h4>
+              <h4 data-i18n="diet_gi_title">Low Glycaemic Diet</h4>
             </div>
-            <p>Foods that don't spike blood sugar — whole grains, legumes, vegetables, and fruits — help manage insulin
+            <p data-i18n="diet_gi_desc">Foods that don't spike blood sugar — whole grains, legumes, vegetables, and fruits — help manage insulin
               resistance. Avoid white rice, refined flour, and sugary drinks.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🐟</div>
-              <h4>Anti-Inflammatory Foods</h4>
+              <h4 data-i18n="diet_anti_title">Anti-Inflammatory Foods</h4>
             </div>
-            <p>Include fatty fish (salmon, mackerel), leafy greens, berries, nuts, and olive oil. Omega-3 fatty acids
+            <p data-i18n="diet_anti_desc">Include fatty fish (salmon, mackerel), leafy greens, berries, nuts, and olive oil. Omega-3 fatty acids
               can reduce androgen levels and improve insulin sensitivity.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🏃</div>
-              <h4>Regular Exercise</h4>
+              <h4 data-i18n="diet_exercise_title">Regular Exercise</h4>
             </div>
-            <p>Aim for 150+ minutes of moderate activity weekly. Strength training improves insulin sensitivity; cardio
+            <p data-i18n="diet_exercise_desc">Aim for 150+ minutes of moderate activity weekly. Strength training improves insulin sensitivity; cardio
               helps with weight management. Even brisk walking makes a difference.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">😴</div>
-              <h4>Sleep & Stress Management</h4>
+              <h4 data-i18n="diet_sleep_title">Sleep & Stress Management</h4>
             </div>
-            <p>Poor sleep worsens insulin resistance and hormonal balance. Aim for 7–9 hours. Stress-reduction
+            <p data-i18n="diet_sleep_desc">Poor sleep worsens insulin resistance and hormonal balance. Aim for 7–9 hours. Stress-reduction
               techniques like yoga, meditation, and mindfulness can help regulate cortisol.</p>
           </div>
         </div>
@@ -436,33 +493,33 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">💙</div>
-              <h4>Depression & Anxiety</h4>
+              <h4 data-i18n="mental_anxiety_title">Depression & Anxiety</h4>
             </div>
-            <p>Women with PCOS are significantly more likely to experience depression and anxiety. Hormonal
+            <p data-i18n="mental_anxiety_desc">Women with PCOS are significantly more likely to experience depression and anxiety. Hormonal
               fluctuations, body image concerns, and fertility worries all contribute. Seeking support is vital.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🧘</div>
-              <h4>Body Image & Self-Esteem</h4>
+              <h4 data-i18n="mental_image_title">Body Image & Self-Esteem</h4>
             </div>
-            <p>Visible symptoms like acne, hair changes, and weight gain can affect self-confidence. PCOS Care Hub
+            <p data-i18n="mental_image_desc">Visible symptoms like acne, hair changes, and weight gain can affect self-confidence. PCOS Care Hub
               connects you with supportive communities and resources to build resilience.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">👥</div>
-              <h4>Support Networks</h4>
+              <h4 data-i18n="mental_support_title">Support Networks</h4>
             </div>
-            <p>Connecting with others who have PCOS reduces isolation and improves mental wellbeing. Online communities,
+            <p data-i18n="mental_support_desc">Connecting with others who have PCOS reduces isolation and improves mental wellbeing. Online communities,
               local support groups, and therapy can all make a meaningful difference.</p>
           </div>
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🌟</div>
-              <h4>Cognitive Behavioral Therapy</h4>
+              <h4 data-i18n="mental_cbt_title">Cognitive Behavioral Therapy</h4>
             </div>
-            <p>CBT has shown evidence for improving depression, anxiety, and body image in PCOS. Don't hesitate to speak
+            <p data-i18n="mental_cbt_desc">CBT has shown evidence for improving depression, anxiety, and body image in PCOS. Don't hesitate to speak
               with a mental health professional who understands chronic conditions.</p>
           </div>
         </div>
@@ -479,22 +536,22 @@
         <div class="stat-block reveal">
           <div class="stat-icon">♀️</div>
           <div class="stat-num"><span data-count="190" data-suffix="M+">0M+</span></div>
-          <div class="stat-label">Women Affected Globally</div>
+          <div class="stat-label" data-i18n="stat_women_global">Women Affected Globally</div>
         </div>
         <div class="stat-block reveal reveal-delay-1">
           <div class="stat-icon">🇱🇰</div>
           <div class="stat-num"><span data-count="13" data-suffix="%">0%</span></div>
-          <div class="stat-label">Prevalence in Sri Lanka</div>
+          <div class="stat-label" data-i18n="stat_prev_sl">Prevalence in Sri Lanka</div>
         </div>
         <div class="stat-block reveal reveal-delay-2">
           <div class="stat-icon">🏥</div>
-          <div class="stat-num"><span data-count="20" data-suffix="">0</span></div>
-          <div class="stat-label">Partner Hospitals</div>
+          <div class="stat-num"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></div>
+          <div class="stat-label" data-i18n="stat_partner_hosp">Partner Hospitals</div>
         </div>
         <div class="stat-block reveal reveal-delay-3">
           <div class="stat-icon">⭐</div>
           <div class="stat-num"><span data-count="98" data-suffix="%">0%</span></div>
-          <div class="stat-label">Patient Satisfaction Rate</div>
+          <div class="stat-label" data-i18n="stat_sat_rate">Patient Satisfaction Rate</div>
         </div>
       </div>
     </div>
@@ -507,32 +564,32 @@
     <div class="container">
       <div class="howit-header reveal">
         <span
-          style="display:inline-block;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--purple-primary);background:var(--purple-pale);padding:5px 14px;border-radius:999px;margin-bottom:16px">How
+          style="display:inline-block;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--purple-primary);background:var(--purple-pale);padding:5px 14px;border-radius:999px;margin-bottom:16px" data-i18n="how_works_title_small">How
           It Works</span>
-        <h2>Get Started in 4 Simple Steps</h2>
-        <p style="max-width:500px;margin:14px auto 0">Join thousands of Sri Lankan women already managing their PCOS
+        <h2 data-i18n="how_works_title">Get Started in 4 Simple Steps</h2>
+        <p style="max-width:500px;margin:14px auto 0" data-i18n="how_works_subtitle">Join thousands of Sri Lankan women already managing their PCOS
           smarter.</p>
       </div>
       <div class="howit-steps">
         <div class="howit-step reveal" onclick="window.location.href='signup-choice.html'" style="cursor:pointer" title="Click to create an account">
           <div class="step-circle">👤<span class="step-num">1</span></div>
-          <h4>Create Account</h4>
-          <p>Sign up as a Patient or Hospital in minutes with secure email verification.</p>
+          <h4 data-i18n="step_1_title">Create Account</h4>
+          <p data-i18n="step_1_desc">Sign up as a Patient or Hospital in minutes with secure email verification.</p>
         </div>
         <div class="howit-step reveal reveal-delay-1">
           <div class="step-circle">📋<span class="step-num">2</span></div>
-          <h4>Build Your Profile</h4>
-          <p>Enter your health history, connect with your hospital, and upload existing medical records.</p>
+          <h4 data-i18n="step_2_title">Build Your Profile</h4>
+          <p data-i18n="step_2_desc">Enter your health history, connect with your hospital, and upload existing medical records.</p>
         </div>
         <div class="howit-step reveal reveal-delay-2">
           <div class="step-circle">📊<span class="step-num">3</span></div>
-          <h4>Track & Monitor</h4>
-          <p>Log daily symptoms, cycles, meals and activity. Watch your health patterns emerge.</p>
+          <h4 data-i18n="step_3_title">Track & Monitor</h4>
+          <p data-i18n="step_3_desc">Log daily symptoms, cycles, meals and activity. Watch your health patterns emerge.</p>
         </div>
         <div class="howit-step reveal reveal-delay-3">
           <div class="step-circle">🤝<span class="step-num">4</span></div>
-          <h4>Connect with Care</h4>
-          <p>Share records with your hospital, receive lab results, and attend consultations with complete data.</p>
+          <h4 data-i18n="step_4_title">Connect with Care</h4>
+          <p data-i18n="step_4_desc">Share records with your hospital, receive lab results, and attend consultations with complete data.</p>
         </div>
       </div>
     </div>
@@ -545,39 +602,39 @@
     <div class="container">
       <div class="roles-header reveal">
         <span
-          style="display:inline-block;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--purple-primary);background:var(--purple-pale);padding:5px 14px;border-radius:999px;margin-bottom:16px">User
+          style="display:inline-block;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--purple-primary);background:var(--purple-pale);padding:5px 14px;border-radius:999px;margin-bottom:16px" data-i18n="roles_title_small">User
           Roles</span>
-        <h2>Built for Everyone in the PCOS Journey</h2>
+        <h2 data-i18n="roles_title">Built for Everyone in the PCOS Journey</h2>
       </div>
       
       <div class="roles-grid">
         <!-- Patient -->
         <div class="role-card patient reveal">
           <div class="role-icon">👩‍⚕️</div>
-          <h3>Patient Login</h3>
-          <p>Take control of your health journey with powerful self-management tools.</p>
+          <h3 data-i18n="role_patient_title">Patient Login</h3>
+          <p data-i18n="role_patient_subtitle">Take control of your health journey with powerful self-management tools.</p>
           <div class="role-features">
-            <div class="role-feature"> Symptom &amp; cycle tracking</div>
-            <div class="role-feature"> Upload &amp; manage reports</div>
-            <div class="role-feature"> Lifestyle &amp; diet logging</div>
-            <div class="role-feature"> View lab results</div>
-            <div class="role-feature"> Appointment reminders</div>
+            <div class="role-feature" data-i18n="role_patient_feat_1"> Symptom &amp; cycle tracking</div>
+            <div class="role-feature" data-i18n="role_patient_feat_2"> Upload &amp; manage reports</div>
+            <div class="role-feature" data-i18n="role_patient_feat_3"> Lifestyle &amp; diet logging</div>
+            <div class="role-feature" data-i18n="role_patient_feat_4"> View lab results</div>
+            <div class="role-feature" data-i18n="role_patient_feat_5"> Appointment reminders</div>
           </div>
-          <a href="login.html?role=patient" class="btn btn-primary btn-sm" style="margin-top:20px">Sign In as Patient</a>
+          <a href="login.html?role=patient" class="btn btn-primary btn-sm" style="margin-top:20px" data-i18n="role_patient_btn">Sign In as Patient</a>
         </div>
         <!-- Hospital -->
         <div class="role-card hospital reveal reveal-delay-1">
           <div class="role-icon">🏥</div>
-          <h3>Hospital Login</h3>
-          <p>Streamline patient management and improve clinical decision-making.</p>
+          <h3 data-i18n="role_hospital_title">Hospital Login</h3>
+          <p data-i18n="role_hospital_subtitle">Streamline patient management and improve clinical decision-making.</p>
           <div class="role-features">
-            <div class="role-feature"> Manage patient records</div>
-            <div class="role-feature"> Upload lab results</div>
-            <div class="role-feature"> Consultation management</div>
-            <div class="role-feature"> Search patient history</div>
-            <div class="role-feature"> Secure role-based access</div>
+            <div class="role-feature" data-i18n="role_hospital_feat_1"> Manage patient records</div>
+            <div class="role-feature" data-i18n="role_hospital_feat_2"> Upload lab results</div>
+            <div class="role-feature" data-i18n="role_hospital_feat_3"> Consultation management</div>
+            <div class="role-feature" data-i18n="role_hospital_feat_4"> Search patient history</div>
+            <div class="role-feature" data-i18n="role_hospital_feat_5"> Secure role-based access</div>
           </div>
-          <a href="login.html?role=hospital" class="btn btn-blue btn-sm" style="margin-top:20px">Sign In as Hospital</a>
+          <a href="login.html?role=hospital" class="btn btn-blue btn-sm" style="margin-top:20px" data-i18n="role_hospital_btn">Sign In as Hospital</a>
         </div>
       </div>
     </div>
@@ -728,13 +785,13 @@
     <section class="cta-section" id="get-connected">
     <div class="container">
       <div class="cta-content">
-        <h2>Start Your PCOS Journey Today</h2>
-        <p>Join thousands of Sri Lankan women who are managing their PCOS smarter, safer, and with more confidence.</p>
+        <h2 data-i18n="cta_journey_title">Start Your PCOS Journey Today</h2>
+        <p data-i18n="cta_journey_desc">Join thousands of Sri Lankan women who are managing their PCOS smarter, safer, and with more confidence.</p>
         <div class="cta-actions">
-          <a href="signup-choice.html" class="btn-white">
+          <a href="signup-choice.html" class="btn-white" data-i18n="cta_create_btn">
             ♥ Create Free Account
           </a>
-          <a href="login.html" class="btn btn-ghost btn-lg">
+          <a href="login.html" class="btn btn-ghost btn-lg" data-i18n="cta_login_text">
             Already a member? Log In
           </a>
         </div>

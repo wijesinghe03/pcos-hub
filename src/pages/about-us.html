@@ -21,8 +21,7 @@
     <div id="navbar-placeholder" data-page="about"></div>
 
     <!-- Hero Section -->
-    <section class="about-hero"
-        style="min-height:60vh;background:linear-gradient(160deg,#f0e6ff 0%,#fce4f0 40%,#e8f4ff 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding-top:var(--nav-h)">
+    <section class="about-hero">
         <div class="hero-blob hero-blob-1"></div>
         <div class="hero-blob hero-blob-2"></div>
         <div class="hero-blob hero-blob-3"></div>
@@ -34,6 +33,60 @@
             </p>
         </div>
     </section>
+
+    <style>
+        .about-hero {
+            min-height: 60vh;
+            background: linear-gradient(160deg, #f0e6ff 0%, #fce4f0 40%, #e8f4ff 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding-top: var(--nav-h);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .about-hero {
+            background: linear-gradient(160deg, #1a0f2e 0%, #2d1326 40%, #111a2d 100%);
+        }
+
+        .hero-blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .hero-blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--purple-light);
+            top: -100px;
+            left: -100px;
+        }
+
+        .hero-blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--pink-light);
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .hero-blob-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--teal-accent);
+            top: 20%;
+            right: 15%;
+            opacity: 0.2;
+        }
+
+        [data-theme="dark"] .hero-blob {
+            opacity: 0.15;
+        }
+    </style>
 
     <!-- Mission & Vision -->
     <section class="section-pad" style="background:var(--bg-card)">
@@ -59,17 +112,17 @@
                     <div style="display:flex;gap:16px;margin-top:32px">
                         <div style="flex:1">
                             <div style="font-size:2.5rem;font-weight:800;color:var(--purple-primary);margin-bottom:8px">
-                                5,000+</div>
+                                <span data-count="0" data-stat="patients" data-suffix="">0</span></div>
                             <p style="font-size:0.9rem;color:var(--text-mid)">Women Using the Platform</p>
                         </div>
                         <div style="flex:1">
                             <div style="font-size:2.5rem;font-weight:800;color:var(--purple-primary);margin-bottom:8px">
-                                120+</div>
+                                <span data-count="0" data-stat="hospitals" data-suffix="">0</span></div>
                             <p style="font-size:0.9rem;color:var(--text-mid)">Partnered Hospitals & Clinics</p>
                         </div>
                         <div style="flex:1">
                             <div style="font-size:2.5rem;font-weight:800;color:var(--purple-primary);margin-bottom:8px">
-                                1,240+</div>
+                                <span data-count="0" data-stat="reports" data-suffix="">0</span></div>
                             <p style="font-size:0.9rem;color:var(--text-mid)">Medical Reports Secured</p>
                         </div>
                     </div>
@@ -298,7 +351,8 @@
                         and empowered by our platform.</p>
                 </div>
                 <div class="reveal reveal-delay-1" style="text-align:center">
-                    <div style="font-size:3rem;font-weight:800;color:var(--purple-primary);margin-bottom:12px">1,240+
+                    <div style="font-size:3rem;font-weight:800;color:var(--purple-primary);margin-bottom:12px">
+                        <span data-count="0" data-stat="reports" data-suffix="">0</span>
                     </div>
                     <p style="color:var(--text-mid)"><strong>Medical Reports Uploaded</strong><br>Women have securely
                         stored their health documents.</p>

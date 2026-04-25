@@ -45,7 +45,7 @@
     }
 
     .blog-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1.5px solid var(--border);
@@ -150,7 +150,7 @@
             <h4>The Best Anti-Inflammatory Diet for PCOS Management</h4>
             <p>Discover how a low-glycaemic, anti-inflammatory diet can help manage insulin resistance, reduce androgen
               levels, and improve hormonal balance in PCOS.</p>
-            <div class="blog-card-meta"><span>📅 Feb 20, 2026</span><span>⏱ 6 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Feb 20, 2026</span><span>⏱ 6 min read</span><a href="javascript:void(0)" onclick="openBlogModal('diet-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@
             <h4>Exercise Guide for Women with PCOS: What Works Best</h4>
             <p>A combination of strength training and cardio can significantly improve insulin sensitivity, support
               weight management, and reduce PCOS symptoms.</p>
-            <div class="blog-card-meta"><span>📅 Feb 15, 2026</span><span>⏱ 5 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Feb 15, 2026</span><span>⏱ 5 min read</span><a href="javascript:void(0)" onclick="openBlogModal('exercise-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@
             <h4>Managing Anxiety and Depression Linked to PCOS</h4>
             <p>PCOS significantly increases the risk of depression and anxiety. Learn practical strategies for mental
               wellness including CBT, mindfulness, and community support.</p>
-            <div class="blog-card-meta"><span>📅 Feb 10, 2026</span><span>⏱ 7 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Feb 10, 2026</span><span>⏱ 7 min read</span><a href="javascript:void(0)" onclick="openBlogModal('mental-health-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -190,7 +190,7 @@
             <h4>Understanding Insulin Resistance in PCOS</h4>
             <p>Up to 70% of women with PCOS have insulin resistance. Learn how it affects your body, why it matters, and
               what you can do about it through lifestyle and medical approaches.</p>
-            <div class="blog-card-meta"><span>📅 Feb 5, 2026</span><span>⏱ 8 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Feb 5, 2026</span><span>⏱ 8 min read</span><a href="javascript:void(0)" onclick="openBlogModal('hormones-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@
             <h4>PCOS and Fertility: What You Need to Know</h4>
             <p>PCOS is one of the leading causes of female infertility, but most women with PCOS can conceive with the
               right treatment. Understand your options from lifestyle to IVF.</p>
-            <div class="blog-card-meta"><span>📅 Jan 28, 2026</span><span>⏱ 9 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Jan 28, 2026</span><span>⏱ 9 min read</span><a href="javascript:void(0)" onclick="openBlogModal('fertility-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@
             <h4>Why Sleep Is Critical for PCOS Management</h4>
             <p>Poor sleep worsens insulin resistance, disrupts hormone balance, and increases cortisol in PCOS. Discover
               evidence-backed sleep hygiene strategies tailored for PCOS.</p>
-            <div class="blog-card-meta"><span>📅 Jan 22, 2026</span><span>⏱ 5 min read</span><a href="#">Read More →</a>
+            <div class="blog-card-meta"><span>📅 Jan 22, 2026</span><span>⏱ 5 min read</span><a href="javascript:void(0)" onclick="openBlogModal('sleep-article')">Read More →</a>
             </div>
           </div>
         </div>
@@ -225,11 +225,382 @@
     </div>
   </section>
 
+  <!-- Blog Article Modal -->
+  <div id="blog-modal" class="modal-backdrop" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; backdrop-filter: blur(12px);">
+    <div class="modal-content" style="background:var(--bg-card); border-radius:var(--radius-lg); width:95%; max-width:900px; max-height:90vh; overflow-y:auto; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); position:relative; animation: modalSlideUp 0.4s ease-out; border: 1px solid var(--border);">
+      <button style="position:sticky; top:20px; float:right; right:20px; background:var(--purple-primary); border:none; width:40px; height:40px; border-radius:50%; font-size:1.5rem; cursor:pointer; color:white; box-shadow:var(--shadow-md); z-index:10; display:flex; align-items:center; justify-content:center;" onclick="closeBlogModal()">&times;</button>
+      
+      <div id="modal-article-body" style="padding:0;">
+        <!-- Content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .article-content { padding: 40px; }
+    .article-content h2 { color: var(--purple-primary); margin: 30px 0 15px; font-size: 1.8rem; }
+    .article-content h3 { color: var(--purple-mid); margin: 25px 0 12px; font-size: 1.4rem; }
+    .article-content p { margin-bottom: 20px; color: var(--text-dark); font-size: 1.05rem; line-height: 1.8; }
+    .article-content ul { margin-bottom: 25px; padding-left: 20px; }
+    .article-content li { margin-bottom: 10px; color: var(--text-dark); line-height: 1.6; }
+    .article-content .meal-plan { background: var(--purple-pale); padding: 25px; border-radius: var(--radius-md); margin: 30px 0; border-left: 5px solid var(--purple-primary); }
+    .article-content .meal-item { margin-bottom: 15px; color: var(--text-dark); }
+    .article-content .meal-item strong { color: var(--purple-primary); display: block; margin-bottom: 4px; }
+    
+    [data-theme="dark"] .article-content h1 { color: var(--purple-light) !important; }
+    [data-theme="dark"] .article-content h2 { color: var(--purple-light) !important; }
+    [data-theme="dark"] .article-content h3 { color: var(--purple-mid) !important; }
+    [data-theme="dark"] .article-content .meal-plan { background: rgba(255,255,255,0.05); }
+  </style>
+
   <div id="footer-placeholder"></div>
   <div class="toast-container" id="toast-container"></div>
   <script src="../../assets/js/utils.js"></script>
   <script src="../../assets/js/components.js"></script>
   <script>
+    const blogArticles = {
+      'diet-article': {
+        title: 'The Best Anti-Inflammatory Diet for PCOS Management',
+        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80',
+        content: `
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">The Best Anti-Inflammatory Diet for PCOS Management</h1>
+            <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal conditions affecting women worldwide. It can cause symptoms such as irregular periods, weight gain, acne, excessive hair growth, fatigue, and difficulty getting pregnant. While there is no single cure for PCOS, research shows that lifestyle changes — especially diet — can play a major role in managing symptoms naturally.</p>
+            <p>One of the most effective approaches is following a low-glycaemic, anti-inflammatory diet. This way of eating helps control insulin resistance, reduce inflammation, balance hormones, and improve overall health.</p>
+            <p>In this article, we’ll explore how an anti-inflammatory diet works for PCOS and the best foods to include in your daily meals.</p>
+
+            <h2>Understanding PCOS and Inflammation</h2>
+            <p>Many women with PCOS experience chronic low-grade inflammation. This inflammation can increase androgen hormones (male hormones like testosterone), which may worsen symptoms such as acne, hair growth, and irregular menstrual cycles.</p>
+            <p>Another major issue linked to PCOS is insulin resistance. This happens when the body’s cells do not respond properly to insulin, causing blood sugar levels to rise. As a result, the body produces more insulin, which can trigger the ovaries to make more androgens.</p>
+            <p>The good news is that the right diet can help reduce both inflammation and insulin resistance.</p>
+
+            <h2>What Is an Anti-Inflammatory Diet?</h2>
+            <p>An anti-inflammatory diet focuses on whole, nutrient-rich foods that help calm inflammation in the body. It also limits processed foods, refined sugar, and unhealthy fats that can make symptoms worse.</p>
+            <p>This type of diet is not about starving yourself or following strict food rules. Instead, it encourages balanced eating habits that support long-term hormonal health.</p>
+            <p>Women with PCOS often benefit from combining anti-inflammatory foods with low-glycaemic index (GI) foods. Low-GI foods release sugar slowly into the bloodstream, helping to stabilize energy levels and insulin.</p>
+
+            <h2>Best Foods for PCOS Management</h2>
+            <h3>1. Leafy Green Vegetables</h3>
+            <p>Vegetables such as spinach, kale, broccoli, and lettuce are packed with antioxidants, vitamins, and fibre. They help reduce inflammation and improve digestion. These vegetables are also low in calories and carbohydrates, making them excellent for blood sugar control.</p>
+            <ul>
+              <li>Spinach to smoothies</li>
+              <li>Broccoli to stir-fries</li>
+              <li>Kale to salads</li>
+              <li>Cucumbers and lettuce to meals</li>
+            </ul>
+
+            <h3>2. Whole Grains</h3>
+            <p>Whole grains digest more slowly than refined carbohydrates, which helps prevent blood sugar spikes. Good options include brown rice, oats, quinoa, whole wheat bread, and millet.</p>
+
+            <h3>3. Healthy Fats</h3>
+            <p>Healthy fats are essential for hormone production and reducing inflammation. Include foods such as avocados, nuts and seeds, olive oil, chia seeds, flaxseeds, and fatty fish like salmon and sardines.</p>
+            <p>Omega-3 fatty acids found in fish and seeds may help lower testosterone levels and improve menstrual regularity.</p>
+
+            <h3>4. Lean Protein Sources</h3>
+            <p>Protein helps keep you full longer and supports balanced blood sugar levels. Healthy protein choices include eggs, chicken breast, fish, tofu, lentils, beans, and Greek yogurt.</p>
+
+            <h3>5. Low-Glycaemic Fruits</h3>
+            <p>Fruits contain important vitamins and antioxidants, but choosing lower-sugar options is helpful for PCOS. Best choices include berries, apples, pears, oranges, and kiwi.</p>
+
+            <h2>Foods to Limit with PCOS</h2>
+            <p>Certain foods may increase inflammation and worsen insulin resistance. Try to reduce sugary drinks, fast food, fried foods, white bread, pastries, and processed snacks.</p>
+
+            <h2>The Importance of Fibre</h2>
+            <p>Fibre is especially beneficial for women with PCOS because it helps slow digestion, improve insulin sensitivity, support weight management, and promote gut health.</p>
+
+            <h2>Hydration and PCOS</h2>
+            <p>Drinking enough water supports metabolism, digestion, and hormone function. Instead of sugary beverages, try water, herbal tea, or unsweetened green tea.</p>
+
+            <h2>Sample Anti-Inflammatory PCOS Meal Ideas</h2>
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Breakfast:</strong> Oats with chia seeds, berries, and Greek yogurt</div>
+              <div class="meal-item"><strong>Lunch:</strong> Grilled chicken salad with olive oil dressing and avocado</div>
+              <div class="meal-item"><strong>Snack:</strong> Apple slices with peanut butter</div>
+              <div class="meal-item"><strong>Dinner:</strong> Brown rice with salmon and steamed vegetables</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>Managing PCOS can feel overwhelming, but small lifestyle changes can make a big difference over time. An anti-inflammatory, low-glycaemic diet may help reduce insulin resistance, lower androgen levels, improve hormonal balance, and support overall wellbeing.</p>
+          </div>
+        `
+      },
+      'exercise-article': {
+        title: 'Exercise Guide for Women with PCOS: What Works Best',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80',
+        content: `
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Exercise Guide for Women with PCOS: What Works Best</h1>
+            <p>Living with PCOS (Polycystic Ovary Syndrome) can sometimes feel challenging, especially when dealing with symptoms like weight gain, fatigue, irregular periods, acne, and hormonal imbalances. While medication and medical support can help, one of the most effective natural ways to manage PCOS is regular exercise.</p>
+            <p>The good news is that you do not need extreme workouts or long hours at the gym to see results. Research shows that a balanced combination of strength training and cardio exercises can improve insulin sensitivity, support healthy weight management, reduce stress, and ease many PCOS symptoms.</p>
+            <p>In this guide, we’ll explore the best types of exercise for women with PCOS and how to create a realistic fitness routine that supports hormonal health.</p>
+
+            <h2>Why Exercise Is Important for PCOS</h2>
+            <p>Many women with PCOS experience insulin resistance, where the body struggles to use insulin effectively. This can lead to higher insulin levels, weight gain, and increased androgen hormones such as testosterone.</p>
+            <p>Regular physical activity helps the body use insulin more efficiently and supports hormone balance naturally. Exercise may help improve insulin sensitivity, regulate menstrual cycles, and reduce stress and anxiety.</p>
+
+            <h2>Best Types of Exercise for PCOS</h2>
+            <h3>1. Strength Training</h3>
+            <p>Strength training is one of the most effective exercises for women with PCOS. Building muscle helps the body burn more energy and improves insulin sensitivity. Workouts can include weight lifting, resistance bands, or bodyweight exercises like squats and lunges.</p>
+            <ul>
+              <li>Helps reduce insulin resistance</li>
+              <li>Supports healthy metabolism</li>
+              <li>Improves body composition</li>
+              <li>Increases strength and confidence</li>
+            </ul>
+
+            <h3>2. Cardio Exercise</h3>
+            <p>Cardio helps improve heart health, burn calories, and reduce stress. Good choices include walking, jogging, cycling, swimming, and dancing. Walking is one of the simplest and most effective choices for beginners.</p>
+
+            <h3>3. High-Intensity Interval Training (HIIT)</h3>
+            <p>HIIT involves short bursts of intense activity followed by brief rest. Studies suggest HIIT may improve insulin sensitivity and help reduce abdominal fat, but it's important not to overdo it if it causes exhaustion.</p>
+
+            <h3>4. Yoga and Stretching</h3>
+            <p>Yoga helps calm the nervous system and reduce cortisol (the stress hormone), which can worsen hormonal imbalances. It also supports better sleep and emotional wellbeing.</p>
+
+            <h2>How Often Should You Exercise?</h2>
+            <p>Consistency matters more than perfection. A balanced weekly routine may include 2-4 days of strength training, 3-5 days of cardio, and 1-2 days of yoga or stretching.</p>
+
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Example Beginner Routine:</strong></div>
+              <div class="meal-item">Monday: 30-minute walk + light stretching</div>
+              <div class="meal-item">Tuesday: Full-body strength workout</div>
+              <div class="meal-item">Wednesday: Yoga or stretching</div>
+              <div class="meal-item">Thursday: Cardio workout or cycling</div>
+              <div class="meal-item">Friday: Strength training</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>Exercise is one of the most powerful natural tools for managing PCOS symptoms. Small, consistent steps can lead to major improvements over time. Choose activities you enjoy, stay patient with yourself, and focus on building a healthy lifestyle.</p>
+          </div>
+        `
+      },
+      'mental-health-article': {
+        title: 'Managing Anxiety and Depression Linked to PCOS',
+        image: '../../images/photo13.jpg',
+        content: `
+          <img src="../../images/photo13.jpg" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Managing Anxiety and Depression Linked to PCOS</h1>
+            <p>Polycystic Ovary Syndrome (PCOS) is often discussed as a hormonal and physical health condition, but its impact on mental health is just as important. Many women with PCOS experience emotional struggles such as anxiety, depression, low self-esteem, stress, and mood swings.</p>
+            <p>Living with symptoms like weight gain, acne, hair thinning, irregular periods, and infertility concerns can affect confidence and emotional wellbeing. At the same time, hormonal changes and insulin resistance may also influence mood directly.</p>
+            
+            <h2>The Connection Between PCOS and Mental Health</h2>
+            <p>PCOS affects more than just the reproductive system. Hormonal imbalances, inflammation, insulin resistance, and stress can all impact the brain and emotional wellbeing. Women with PCOS may commonly experience anxiety, depression, mood swings, and body image struggles.</p>
+            
+            <h2>Signs of Anxiety and Depression in PCOS</h2>
+            <h3>Common Signs of Anxiety</h3>
+            <ul>
+              <li>Constant worrying</li>
+              <li>Feeling overwhelmed</li>
+              <li>Racing thoughts</li>
+              <li>Difficulty relaxing</li>
+              <li>Trouble sleeping</li>
+            </ul>
+            <h3>Common Signs of Depression</h3>
+            <ul>
+              <li>Persistent sadness</li>
+              <li>Loss of motivation</li>
+              <li>Fatigue and low energy</li>
+              <li>Feeling hopeless</li>
+              <li>Changes in appetite</li>
+            </ul>
+
+            <h2>Practical Strategies for Mental Wellness</h2>
+            <h3>1. Cognitive Behavioural Therapy (CBT)</h3>
+            <p>CBT is one of the most effective treatments for anxiety and depression. It helps people identify and change negative thought patterns and unhealthy behaviours, helping with stress management and self-esteem.</p>
+
+            <h3>2. Practice Mindfulness and Meditation</h3>
+            <p>Mindfulness helps reduce stress, calm the mind, and improve emotional balance. Simple practices include deep breathing, journaling, and gratitude exercises. Even 10–15 minutes daily can help.</p>
+
+            <h3>3. Exercise for Mental Health</h3>
+            <p>Physical activity releases endorphins, which are natural mood boosters. Regular exercise like walking, yoga, or swimming can reduce anxiety and improve sleep quality.</p>
+
+            <h3>4. Build a Support System</h3>
+            <p>PCOS can feel isolating. Talking with supportive people—family, friends, or online PCOS communities—can make a huge difference. Connecting with women who share similar experiences provides emotional strength.</p>
+
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Daily Wellness Habits:</strong></div>
+              <div class="meal-item">Drink enough water and eat balanced meals</div>
+              <div class="meal-item">Go for a short walk in nature</div>
+              <div class="meal-item">Practice 10 minutes of gratitude or journaling</div>
+              <div class="meal-item">Celebrate small wins and be kind to yourself</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>Mental health deserves just as much attention as physical symptoms. By combining healthy lifestyle habits, mindfulness, therapy, and community support, women with PCOS can improve their emotional wellbeing and regain confidence. Remember, you are not alone in this journey.</p>
+          </div>
+        `
+      },
+      'hormones-article': {
+        title: 'Understanding Insulin Resistance in PCOS',
+        image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&auto=format&fit=crop&q=80',
+        content: `
+          <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Understanding Insulin Resistance in PCOS</h1>
+            <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal disorders affecting women. While many associate it with irregular periods or acne, one of the biggest underlying issues is insulin resistance. Studies show that up to 70% of women with PCOS experience it, playing a major role in hormone imbalance and fertility issues.</p>
+            <p>Understanding insulin resistance is important because managing it can significantly improve PCOS symptoms and overall wellbeing.</p>
+
+            <h2>What Is Insulin Resistance?</h2>
+            <p>Insulin is a hormone that helps glucose (sugar) move from the bloodstream into the body’s cells for energy. When someone has insulin resistance, the cells stop responding properly. The pancreas produces more insulin to keep blood sugar levels normal, which can create health problems for women with PCOS.</p>
+
+            <h2>Link to PCOS Symptoms</h2>
+            <p>High insulin levels can stimulate the ovaries to produce excess androgen hormones like testosterone, leading to:</p>
+            <ul>
+              <li>Irregular periods & difficulty ovulating</li>
+              <li>Acne & hair thinning</li>
+              <li>Excess facial or body hair</li>
+              <li>Weight gain (especially around the abdomen)</li>
+            </ul>
+
+            <h2>Common Signs</h2>
+            <ul>
+              <li><strong>Cravings:</strong> Strong desire for sugary or high-carbohydrate foods.</li>
+              <li><strong>Fatigue:</strong> Feeling tired after meals or low energy during the day.</li>
+              <li><strong>Skin Changes:</strong> Darker patches of skin (acanthosis nigricans) around the neck or underarms.</li>
+              <li><strong>Brain Fog:</strong> Difficulty concentrating or feeling mentally tired.</li>
+            </ul>
+
+            <h2>Lifestyle Changes for Management</h2>
+            <h3>1. Low-Glycaemic Diet</h3>
+            <p>Choose foods that release sugar slowly: whole grains, vegetables, fibre-rich fruits, lean protein, and healthy fats. Limit sugary drinks, white bread, and processed snacks.</p>
+
+            <h3>2. Regular Exercise</h3>
+            <p>Physical activity helps the body use insulin more effectively. A mix of strength training, walking, and cardio supports metabolism and hormone balance.</p>
+
+            <h3>3. Quality Sleep & Stress Management</h3>
+            <p>Poor sleep and high cortisol can worsen insulin resistance. Aim for 7–9 hours of sleep and use techniques like meditation or deep breathing to manage stress.</p>
+
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Medical Options:</strong></div>
+              <div class="meal-item">Metformin: Often prescribed to improve insulin sensitivity.</div>
+              <div class="meal-item">Supplements: Inositol, Vitamin D, and Omega-3s may help.</div>
+              <div class="meal-item">Consult your healthcare provider before starting any medical treatment.</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>Insulin resistance is a key driver of PCOS, but it can be significantly improved through consistent healthy habits. Sustainable changes in diet, exercise, and stress management are more effective than extreme short-term diets. With the right approach, many women can restore hormonal balance and live healthier lives.</p>
+          </div>
+        `
+      },
+      'fertility-article': {
+        title: 'PCOS and Fertility: What You Need to Know',
+        image: '../../images/photo11.jpg',
+        content: `
+          <img src="../../images/photo11.jpg" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">PCOS and Fertility: What You Need to Know</h1>
+            <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal conditions affecting women of reproductive age and one of the leading causes of female infertility. Hearing this can feel overwhelming, but there is hope.</p>
+            <p>The majority of women with PCOS can successfully conceive with the right support, lifestyle changes, and medical treatments. Advances in fertility care have made pregnancy more possible than ever for women living with PCOS.</p>
+
+            <h2>How PCOS Affects Fertility</h2>
+            <p>The main fertility issue in PCOS is related to ovulation. Hormonal imbalances—high levels of insulin and androgens—can prevent eggs from maturing properly. This results in irregular ovulation or a complete lack of it, making conception more difficult.</p>
+
+            <h2>Can You Get Pregnant Naturally?</h2>
+            <p>Yes. Many women can conceive naturally by managing insulin resistance and maintaining a healthy lifestyle. Factors like balanced eating, regular exercise, reducing stress, and improving sleep quality can help restore regular ovulation cycles.</p>
+
+            <h2>Lifestyle Changes That Support Fertility</h2>
+            <ul>
+              <li><strong>Healthy Eating:</strong> Whole grains, lean proteins, and healthy fats help stabilize blood sugar.</li>
+              <li><strong>Regular Exercise:</strong> Improves insulin sensitivity and supports weight management.</li>
+              <li><strong>Weight Management:</strong> For those overweight, even a 5–10% loss can restore ovulation.</li>
+              <li><strong>Stress Reduction:</strong> Techniques like meditation and journaling support hormone balance.</li>
+            </ul>
+
+            <h2>Medical Treatments for PCOS Fertility</h2>
+            <h3>Ovulation Induction</h3>
+            <p><strong>Letrozole:</strong> Often the first-line treatment to stimulate ovulation. <strong>Clomiphene Citrate:</strong> Another common medication to encourage the release of eggs.</p>
+            
+            <h3>Metformin</h3>
+            <p>Used to improve insulin resistance, which can restore ovulation and enhance fertility treatment outcomes.</p>
+
+            <h3>IUI and IVF</h3>
+            <p><strong>Intrauterine Insemination (IUI):</strong> Sperm is placed directly into the uterus. <strong>In Vitro Fertilization (IVF):</strong> Eggs are collected, fertilized in a lab, and embryos are transferred. IVF is often highly successful for women with PCOS.</p>
+
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Tips for the Journey:</strong></div>
+              <div class="meal-item">Track your menstrual cycles carefully</div>
+              <div class="meal-item">Seek emotional support via communities or counseling</div>
+              <div class="meal-item">Speak with a fertility specialist if cycles are absent or irregular</div>
+              <div class="meal-item">Every fertility journey is unique—stay patient and positive</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>PCOS does not mean pregnancy is impossible. From lifestyle changes to IVF, there are many options available. With proper medical care, healthy habits, and emotional support, many women with PCOS go on to build healthy families.</p>
+          </div>
+        `
+      },
+      'sleep-article': {
+        title: 'Why Sleep Is Critical for PCOS Management',
+        image: 'https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=1200&auto=format&fit=crop&q=80',
+        content: `
+          <img src="https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Why Sleep Is Critical for PCOS Management</h1>
+            <p>When managing Polycystic Ovary Syndrome (PCOS), many women focus on diet, exercise, and medication. While these are important, one powerful factor is often overlooked — sleep. Poor sleep can worsen symptoms by increasing insulin resistance, disrupting hormone balance, and raising stress hormones like cortisol.</p>
+            <p>For women with PCOS, improving sleep quality is an essential part of long-term hormonal health and symptom management.</p>
+
+            <h2>How Poor Sleep Affects PCOS</h2>
+            <ul>
+              <li><strong>Worsens Insulin Resistance:</strong> Lack of sleep reduces the body’s ability to use insulin, leading to higher blood sugar and androgen production.</li>
+              <li><strong>Disrupts Hormone Balance:</strong> Affects stress hormones (cortisol), hunger hormones (ghrelin/leptin), and reproductive hormones.</li>
+              <li><strong>Raises Cortisol:</strong> Elevated stress hormones promote fat storage and inflammation, making symptoms harder to manage.</li>
+              <li><strong>Increases Cravings:</strong> Sleep deprivation triggers hunger and cravings for sugary or processed foods.</li>
+            </ul>
+
+            <h2>Evidence-Based Sleep Hygiene Strategies</h2>
+            <h3>1. Consistent Schedule</h3>
+            <p>Maintain a regular sleep/wake cycle even on weekends. Aim for 7–9 hours of quality rest every night to support hormone balance.</p>
+
+            <h3>2. Digital Detox</h3>
+            <p>Avoid blue light from phones or laptops 1 hour before bed. Blue light interferes with melatonin, the hormone that regulates your sleep cycles.</p>
+
+            <h3>3. Relaxing Bedtime Routine</h3>
+            <p>Signal your body it's time to rest with deep breathing, journaling, gentle yoga, or a warm shower. These help lower cortisol levels before sleep.</p>
+
+            <h3>4. Optimized Environment</h3>
+            <p>Keep your bedroom cool, dark, and quiet. Your physical environment plays a huge role in the depth and quality of your sleep.</p>
+
+            <div class="meal-plan">
+              <div class="meal-item"><strong>Warning Signs:</strong></div>
+              <div class="meal-item">Feeling exhausted even after a full night's sleep</div>
+              <div class="meal-item">Loud snoring or morning headaches (possible sleep apnea)</div>
+              <div class="meal-item">Intense sugar cravings the morning after poor sleep</div>
+              <div class="meal-item">High irritability or difficulty concentrating during the day</div>
+            </div>
+
+            <h2>Final Thoughts</h2>
+            <p>Sleep is a powerful form of self-care for PCOS. By prioritizing rest and practicing healthy sleep hygiene, women can take a major step toward better metabolic and emotional health. Remember, managing PCOS is about building a foundation of wellness that includes quality sleep.</p>
+          </div>
+        `
+      }
+    };
+
+    function openBlogModal(id) {
+      const article = blogArticles[id];
+      if (!article) return;
+      document.getElementById('modal-article-body').innerHTML = article.content;
+      document.getElementById('blog-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBlogModal() {
+      document.getElementById('blog-modal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close on outside click
+    window.onclick = function(event) {
+      const modal = document.getElementById('blog-modal');
+      if (event.target == modal) closeBlogModal();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       PageLoader.hide();
       document.getElementById('navbar-placeholder').innerHTML = renderNavbar('blog');

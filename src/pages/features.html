@@ -21,8 +21,7 @@
     <div id="navbar-placeholder" data-page="features"></div>
 
     <!-- Hero Section -->
-    <section class="about-hero"
-        style="min-height:60vh;background:linear-gradient(160deg,#f0e6ff 0%,#fce4f0 40%,#e8f4ff 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding-top:var(--nav-h)">
+    <section class="about-hero">
         <div class="hero-blob hero-blob-1"></div>
         <div class="hero-blob hero-blob-2"></div>
         <div class="hero-blob hero-blob-3"></div>
@@ -34,6 +33,60 @@
             </p>
         </div>
     </section>
+
+    <style>
+        .about-hero {
+            min-height: 60vh;
+            background: linear-gradient(160deg, #f0e6ff 0%, #fce4f0 40%, #e8f4ff 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding-top: var(--nav-h);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .about-hero {
+            background: linear-gradient(160deg, #1a0f2e 0%, #2d1326 40%, #111a2d 100%);
+        }
+
+        .hero-blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .hero-blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--purple-light);
+            top: -100px;
+            left: -100px;
+        }
+
+        .hero-blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--pink-light);
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .hero-blob-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--teal-accent);
+            top: 20%;
+            right: 15%;
+            opacity: 0.2;
+        }
+
+        [data-theme="dark"] .hero-blob {
+            opacity: 0.15;
+        }
+    </style>
 
     <!-- Patient Features -->
     <section class="section-pad" style="background:var(--bg-card)">
@@ -371,69 +424,69 @@
                     <tbody>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Symptom Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Cycle Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Upload Medical Records</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Lifestyle Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">View Hospital Results</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Patient Search & Access</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Post Lab Results</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Manage Consultations</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">User Management</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                         </tr>
                         <tr style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px">Hospital Approvals</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                         </tr>
                         <tr>
                             <td style="padding:16px">Analytics & Audit Logs</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary)"></td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
                         </tr>
                     </tbody>
                 </table>
