@@ -32,8 +32,12 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.4fr;
-  gap: 48px;
+  grid-template-columns: 1.5fr 0.8fr 0.8fr 1.2fr;
+  gap: 40px;
+}
+
+.lang-ta .footer-grid, .lang-si .footer-grid {
+  grid-template-columns: 1.2fr 1fr 1fr 1.2fr; /* More balanced for longer text */
 }
 
 /* Brand column */

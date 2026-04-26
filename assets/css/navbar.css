@@ -71,6 +71,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-wrap: nowrap; /* Keep links in one line on desktop */
 }
 
 .nav-link {
@@ -136,6 +137,7 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(123, 63, 190, 0.45);
 }
+
 
 .theme-toggle-btn {
   width: 40px;

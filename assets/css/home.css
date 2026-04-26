@@ -1,8 +1,8 @@
-/* ============================================================
+﻿/* ============================================================
    HOME PAGE STYLES
    ============================================================ */
 
-/* ── HERO ── */
+/* â”€â”€ HERO â”€â”€ */
 .hero {
   min-height: 100vh;
   background: linear-gradient(160deg, #f0e6ff 0%, #fce4f0 40%, #e8f4ff 100%);
@@ -257,7 +257,7 @@
   width: 100%;
 }
 
-/* ── FEATURE PILLS ── */
+/* â”€â”€ FEATURE PILLS â”€â”€ */
 .feature-pills {
   padding: 40px 0;
   background: var(--bg-card);
@@ -297,7 +297,7 @@
   font-size: 1rem;
 }
 
-/* ── ABOUT ── */
+/* â”€â”€ ABOUT â”€â”€ */
 .about-section {
   background: var(--bg-light);
 }
@@ -405,7 +405,7 @@
   color: var(--text-dark);
 }
 
-/* ── FEATURES ── */
+/* â”€â”€ FEATURES â”€â”€ */
 .features-section {
   background: linear-gradient(170deg, var(--bg-light) 0%, var(--bg-card) 100%);
 }
@@ -499,7 +499,7 @@
   line-height: 1.65;
 }
 
-/* ── PCOS INFO SECTION ── */
+/* â”€â”€ PCOS INFO SECTION â”€â”€ */
 .pcos-info {
   background: var(--bg-light);
 }
@@ -589,7 +589,7 @@
   line-height: 1.65;
 }
 
-/* ── STATS SECTION ── */
+/* â”€â”€ STATS SECTION â”€â”€ */
 .stats-section {
   background: linear-gradient(135deg, var(--purple-deep) 0%, #3d1278 100%);
   padding: 70px 0;
@@ -641,7 +641,7 @@
   opacity: 0.8;
 }
 
-/* ── HOW IT WORKS ── */
+/* â”€â”€ HOW IT WORKS â”€â”€ */
 .howit-section {
   background: var(--bg-light);
 }
@@ -720,7 +720,7 @@
   font-size: 0.86rem;
 }
 
-/* ── ROLES SECTION ── */
+/* â”€â”€ ROLES SECTION â”€â”€ */
 .roles-section {
   background: var(--bg-card);
 }
@@ -840,7 +840,7 @@
   font-size: 0.75rem;
 }
 
-/* ── TESTIMONIALS ── */
+/* â”€â”€ TESTIMONIALS â”€â”€ */
 .testimonials-section {
   background: var(--bg-light);
 }
@@ -922,7 +922,7 @@
   color: var(--text-light);
 }
 
-/* ── CTA SECTION ── */
+/* â”€â”€ CTA SECTION â”€â”€ */
 .cta-section {
   background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-deep) 50%, #3d1278 100%);
   padding: 90px 0;
@@ -986,7 +986,7 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
 }
 
-/* ── Responsive ── */
+/* â”€â”€ Responsive â”€â”€ */
 @media (max-width: 1024px) {
   .hero .container {
     grid-template-columns: 1fr;
@@ -1072,7 +1072,7 @@
 }
 
 /* ----------------------------------------
-   DARK MODE � Public / Home Pages
+   DARK MODE — Public / Home Pages
    ---------------------------------------- */
 [data-theme="dark"] .hero-card,
 [data-theme="dark"] .feature-card,
@@ -1166,3 +1166,62 @@
 [data-theme="dark"] .hero-small {
   background: linear-gradient(160deg, var(--bg-light) 0%, var(--purple-deep) 40%, var(--bg-card) 100%);
 }
+
+/* -- Home Page Localization Fixes -- */
+.lang-si .hero-title, .lang-ta .hero-title {
+  font-size: clamp(1.4rem, 3.2vw, 2rem) !important;
+  line-height: 1.4 !important;
+  margin-bottom: 20px !important;
+}
+
+.lang-si .hero-title span, .lang-ta .hero-title span {
+  display: block; /* Stack on separate lines for elegance */
+}
+
+.lang-si .hero-desc, .lang-ta .hero-desc {
+  max-width: 620px;
+  line-height: 1.8;
+  font-size: 0.9rem;
+}
+
+.lang-si .hero-card, .lang-ta .hero-card {
+  padding: 12px 16px;
+  white-space: nowrap;
+  max-width: none;
+  min-width: 140px;
+}
+
+.lang-si .hero-card-lbl, .lang-ta .hero-card-lbl {
+  font-size: 0.6rem;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.lang-si .hero-actions, .lang-ta .hero-actions {
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.lang-si .hero-trust, .lang-ta .hero-trust {
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.lang-si .hero-trust-item, .lang-ta .hero-trust-item {
+  font-size: 0.75rem;
+  letter-spacing: 0;
+}
+
+.lang-si .hero-actions, .lang-ta .hero-actions {
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .lang-si .hero-title, .lang-ta .hero-title {
+    font-size: 1.8rem;
+  }
+}
+
+
+
+

@@ -86,6 +86,38 @@
         [data-theme="dark"] .hero-blob {
             opacity: 0.15;
         }
+
+        .table-row-hover {
+            transition: var(--transition);
+        }
+
+        .table-row-hover:hover {
+            background: var(--purple-ghost) !important;
+        }
+
+        [data-theme="dark"] .table-row-hover:hover {
+            background: rgba(107, 70, 193, 0.1) !important;
+        }
+
+        .feature-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: var(--purple-pale);
+            color: var(--purple-primary);
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .table-row-hover:hover .feature-check {
+            transform: scale(1.1);
+            background: var(--purple-primary);
+            color: white;
+        }
     </style>
 
     <!-- Patient Features -->
@@ -422,71 +454,71 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_symptom">Symptom Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_cycle">Cycle Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_records">Upload Medical Records</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_lifestyle">Lifestyle Tracking</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_results">View Hospital Results</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_search">Patient Search & Access</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_lab">Post Lab Results</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_consult">Manage Consultations</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_user">User Management</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                         </tr>
-                        <tr style="border-bottom:1px solid var(--border)">
+                        <tr class="table-row-hover" style="border-bottom:1px solid var(--border)">
                             <td style="padding:16px" data-i18n="features_comp_row_hosp_app">Hospital Approvals</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                         </tr>
-                        <tr>
+                        <tr class="table-row-hover">
                             <td style="padding:16px" data-i18n="features_comp_row_analytics">Analytics & Audit Logs</td>
                             <td style="padding:16px;text-align:center;color:var(--text-light)">—</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
-                            <td style="padding:16px;text-align:center;color:var(--purple-primary);font-weight:bold">✓</td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
+                            <td style="padding:16px;text-align:center"><span class="feature-check">✓</span></td>
                         </tr>
                     </tbody>
                 </table>

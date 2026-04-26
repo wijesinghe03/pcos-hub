@@ -1,0 +1,47 @@
+
+const fs = require('fs');
+const path = 'assets/js/utils.js';
+
+try {
+    let content = fs.readFileSync(path, 'utf8');
+
+    const startMarker = 'info_treat_metformin_desc: "ඉන්සියුලින් ප්‍රතිරෝධය අඩු කර ඔසප් චක්‍රය පාලනය කිරීමට උපකාරී වේ.",';
+    const endMarker = 'info_risk_metabolic_title: "සමස්ත පරිවෘත්තීය සින්ඩ්‍රෝමය",';
+
+    const startIndex = content.indexOf(startMarker);
+    if (startIndex === -1) {
+        console.error("Start marker not found");
+        process.exit(1);
+    }
+    const endIndex = content.indexOf(endMarker);
+    if (endIndex === -1) {
+        console.error("End marker not found");
+        process.exit(1);
+    }
+
+    const restoredContent = `
+      info_treat_lifestyle_title: "ජීවන රටා වෙනස්කම්",
+      info_treat_lifestyle_desc: "බර අඩු කර ගැනීම, ක්‍රමවත් ව්‍යායාම සහ සමබර ආහාර වේලක් අතිශයින් වැදගත් වේ.",
+      info_treat_anti_title: "ඇන්ටි-ඇන්ඩ්‍රොජන් ඖෂධ",
+      info_treat_anti_desc: "කුරුලෑ සහ අනවශ්‍ය රෝම වර්ධනය වැනි පුරුෂ හෝමෝනවල බලපෑම් අඩු කරයි.",
+      info_treat_nutri_title: "පෝෂණ කළමනාකරණය",
+      info_treat_nutri_desc: "අඩු ග්ලයිසමික් දර්ශකයක් සහිත ආහාර සහ ප්‍රදාහය අඩු කරන ආහාර.",
+      info_treat_fertility_title: "ප්‍රජනක ප්‍රතිකාර",
+      info_treat_fertility_desc: "දරුවන් බලාපොරොත්තු වන කාන්තාවන් සඳහා ඩිම්බ මෝචනය උත්තේජනය කරන ඖෂධ.",
+      cta_create_btn: "නොමිලේ ගිණුමක් සාදන්න",
+      cta_login_text: "දැනටමත් සාමාජිකයෙක්ද? පිවිසෙන්න",
+      info_risks_title: "PCOS සහ දිගුකාලීන සෞඛ්‍ය අවදානම්",
+      info_risk_diabetes_title: "2 වන වර්ගයේ දියවැඩියාව",
+      info_risk_diabetes_desc: "PCOS ඇති කාන්තාවන්ට දියවැඩියාව ඇතිවීමේ අවදානම වැඩිය. නිසි පරීක්ෂාව වැදගත් වේ.",
+      info_risk_cardio_title: "හෘද වාහිනී රෝග",
+      info_risk_cardio_desc: "කොලෙස්ටරෝල් සහ රුධිර පීඩනය වැඩිවීම හෘද රෝග අවදානම වැඩි කරයි.",
+      info_title: "PCOS තොරතුරු — PCOS Care Hub",`;
+
+    const newContent = content.substring(0, startIndex + startMarker.length) + restoredContent + "\n      " + content.substring(endIndex);
+
+    fs.writeFileSync(path, newContent, 'utf8');
+    console.log("Restoration complete.");
+} catch (err) {
+    console.error(err);
+    process.exit(1);
+}

@@ -51,7 +51,7 @@
           <span data-i18n="hero_badge_text">Sri Lanka's #1 PCOS Platform</span>
         </div>
         <h1 class="hero-title">
-          <span data-i18n="hero_title_main">Manage PCOS</span><br>
+          <span data-i18n="hero_title_main">Manage PCOS</span>
           <span class="highlight" data-i18n="hero_title_highlight">Smarter &amp; Safer</span>
         </h1>
         <p class="hero-desc" data-i18n="hero_desc_text">
@@ -150,21 +150,21 @@
             <div class="hero-card-icon purple">📋</div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="reports" data-suffix="">0</span></div>
-              <div class="hero-card-lbl">Reports Uploaded</div>
+              <div class="hero-card-lbl" data-i18n="hero_stat_reports">Reports Uploaded</div>
             </div>
           </div>
           <div class="hero-card hero-card-2">
             <div class="hero-card-icon pink">👩</div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="patients" data-suffix="">0</span></div>
-              <div class="hero-card-lbl">Patients Supported</div>
+              <div class="hero-card-lbl" data-i18n="hero_stat_patients">Patients Supported</div>
             </div>
           </div>
           <div class="hero-card hero-card-3">
             <div class="hero-card-icon teal">🏥</div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></div>
-              <div class="hero-card-lbl">Partner Hospitals</div>
+              <div class="hero-card-lbl" data-i18n="hero_stat_hospitals">Partner Hospitals</div>
             </div>
           </div>
         </div>
@@ -206,8 +206,8 @@
         <div class="about-img-wrap reveal">
           <img class="about-img-main" src="../../images/photo2.jpg" alt="Doctor consulting with patient">
           <div class="about-badge-float">
-            <span class="num">8–13%</span>
-            <span class="lbl">of women affected by PCOS worldwide</span>
+            <span class="num" data-i18n="about_badge_num">8–13%</span>
+            <span class="lbl" data-i18n="about_badge_lbl">of women affected by PCOS worldwide</span>
           </div>
         </div>
 
@@ -648,44 +648,44 @@
       <div class="testimonials-header reveal">
         <span
           style="display:inline-block;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--purple-primary);background:var(--purple-pale);padding:5px 14px;border-radius:999px;margin-bottom:16px">Testimonials</span>
-        <h2>What Our Users Say</h2>
+        <h2 data-i18n="testimonials_title">What Our Users Say</h2>
       </div>
       <div class="testimonials-grid">
         <div class="testimonial-card reveal">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"PCOS Care Hub has completely changed how I manage my condition. I no longer worry
+          <p class="testimonial-text" data-i18n="testimonial_1_text">"PCOS Care Hub has completely changed how I manage my condition. I no longer worry
             about losing reports — everything is safe and accessible. My doctor at the hospital can see my full history
             now."</p>
           <div class="testimonial-author">
             <div class="author-avatar" style="background:linear-gradient(135deg,#9B59D0,#E57FAF)">A</div>
             <div>
               <div class="author-name">Amanda Perera</div>
-              <div class="author-role">Patient, Colombo</div>
+              <div class="author-role" data-i18n="role_patient_colombo">Patient, Colombo</div>
             </div>
           </div>
         </div>
         <div class="testimonial-card reveal reveal-delay-1">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"As a gynaecologist, having patients' full symptom history and uploaded reports
+          <p class="testimonial-text" data-i18n="testimonial_2_text">"As a gynaecologist, having patients' full symptom history and uploaded reports
             through the hospital portal has dramatically improved my consultations. Clinical decisions are now
             data-driven."</p>
           <div class="testimonial-author">
             <div class="author-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">D</div>
             <div>
               <div class="author-name">Dr. Nimalka Fernando</div>
-              <div class="author-role">Gynaecologist, Kandy</div>
+              <div class="author-role" data-i18n="role_doctor_kandy">Gynaecologist, Kandy</div>
             </div>
           </div>
         </div>
         <div class="testimonial-card reveal reveal-delay-2">
           <div class="testimonial-stars">★★★★☆</div>
-          <p class="testimonial-text">"The cycle tracker and symptom logging features are excellent. I can see patterns
+          <p class="testimonial-text" data-i18n="testimonial_3_text">"The cycle tracker and symptom logging features are excellent. I can see patterns
             I never noticed before. The lifestyle tracking helps me stay on track with my diet and exercise goals."</p>
           <div class="testimonial-author">
             <div class="author-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">S</div>
             <div>
               <div class="author-name">Sachini Jayawardena</div>
-              <div class="author-role">Patient, Gampaha</div>
+              <div class="author-role" data-i18n="role_patient_gampaha">Patient, Gampaha</div>
             </div>
           </div>
         </div>
@@ -693,7 +693,7 @@
     </div>
   
       <div style="text-align: center; margin-top: 40px;" class="reveal">
-        <button class="btn btn-primary" style="padding: 12px 28px;" onclick="document.getElementById('review-modal').style.display='flex'">
+        <button class="btn btn-primary" style="padding: 12px 28px;" onclick="document.getElementById('review-modal').style.display='flex'" data-i18n="btn_add_review">
           &#9998; Add Your Review
         </button>
       </div>
@@ -702,31 +702,31 @@
       <div id="review-modal" class="modal-backdrop" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
         <div class="modal-content" style="background:var(--bg-card); padding:30px; border-radius:var(--radius-lg); width:90%; max-width:500px; box-shadow:0 10px 30px rgba(0,0,0,0.1); position:relative;">
           <button style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-mid)" onclick="document.getElementById('review-modal').style.display='none'">&times;</button>
-          <h3 style="margin-bottom:20px; font-size:1.5rem">Share Your Experience</h3>
+          <h3 style="margin-bottom:20px; font-size:1.5rem" data-i18n="review_modal_title">Share Your Experience</h3>
           <form id="review-form" onsubmit="submitReview(event)">
             <div style="margin-bottom:15px">
-              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem">Your Name</label>
+              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem" data-i18n="full_name_label">Your Name</label>
               <input type="text" id="rev-name" required placeholder="Ex: Amanda Perera" style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark)">
             </div>
             <div style="margin-bottom:15px">
-              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem">Role / Location</label>
-              <input type="text" id="rev-role" required placeholder="Ex: Patient, Colombo" style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark)">
+              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem" data-i18n="rev_role_label">Role / Location</label>
+              <input type="text" id="rev-role" required placeholder="Ex: Patient, Colombo" style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark)" data-i18n="rev_role_placeholder">
             </div>
             <div style="margin-bottom:15px">
-              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem">Rating</label>
+              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem" data-i18n="rating_label">Rating</label>
               <select id="rev-rating" style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark)">
-                <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; (5/5 Stars)</option>
-                <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734; (4/5 Stars)</option>
-                <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734; (3/5 Stars)</option>
-                <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734; (2/5 Stars)</option>
-                <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; (1/5 Star)</option>
+                <option value="5" data-i18n="rating_5">&#9733;&#9733;&#9733;&#9733;&#9733; (5/5 Stars)</option>
+                <option value="4" data-i18n="rating_4">&#9733;&#9733;&#9733;&#9733;&#9734; (4/5 Stars)</option>
+                <option value="3" data-i18n="rating_3">&#9733;&#9733;&#9733;&#9734;&#9734; (3/5 Stars)</option>
+                <option value="2" data-i18n="rating_2">&#9733;&#9733;&#9734;&#9734;&#9734; (2/5 Stars)</option>
+                <option value="1" data-i18n="rating_1">&#9733;&#9734;&#9734;&#9734;&#9734; (1/5 Star)</option>
               </select>
             </div>
             <div style="margin-bottom:20px">
-              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem">Your Honest Review</label>
-              <textarea id="rev-text" required rows="4" placeholder="Tell us how PCOS Care Hub helped you..." style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark); resize:vertical"></textarea>
+              <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem" data-i18n="rev_text_label">Your Honest Review</label>
+              <textarea id="rev-text" required rows="4" placeholder="Tell us how PCOS Care Hub helped you..." style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg-light); color:var(--text-dark); resize:vertical" data-i18n="rev_text_placeholder"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%">Submit Review</button>
+            <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="btn_submit_review">Submit Review</button>
           </form>
         </div>
       </div>
@@ -734,7 +734,7 @@
       <!-- Success Message Box -->
       <div id="success-message-box" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--purple-primary, #6b46c1); color:white; padding:25px 40px; border-radius:var(--radius-lg, 12px); box-shadow:0 10px 30px rgba(107, 70, 193, 0.3); z-index:10000; text-align:center; font-size:1.2rem; font-weight:500;">
         <div style="font-size:2.5rem; margin-bottom:10px;">🎉</div>
-        Thank you for adding review!
+        <span data-i18n="review_success_msg">Thank you for adding review!</span>
       </div>
 
       <script>

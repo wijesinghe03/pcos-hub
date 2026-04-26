@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us — PCOS Care Hub</title>
+    <title data-i18n="contact_title">Contact Us — PCOS Care Hub</title>
     <meta name="description"
         content="Get in touch with PCOS Care Hub. Whether you're a patient, healthcare provider, or have questions about PCOS management in Sri Lanka, we're here to help.">
     <link rel="stylesheet" href="../../assets/css/global.css">
@@ -217,8 +217,8 @@
         <div class="hero-blob hero-blob-1"></div>
         <div class="hero-blob hero-blob-2"></div>
         <div class="container">
-            <h1 class="reveal">Contact Our Team</h1>
-            <p class="reveal" style="color:var(--text-mid); max-width:600px; margin:20px auto 0">
+            <h1 class="reveal" data-i18n="contact_hero_title">Contact Our Team</h1>
+            <p class="reveal" style="color:var(--text-mid); max-width:600px; margin:20px auto 0" data-i18n="contact_hero_desc">
                 Have questions about the platform? Interested in partnering with us? Our team in Colombo is ready to
                 assist you.
             </p>
@@ -231,40 +231,40 @@
             <div class="contact-grid">
                 <!-- Form Side -->
                 <div class="contact-card reveal">
-                    <h3 style="margin-bottom: 10px;">Send Us a Message</h3>
-                    <p style="margin-bottom: 30px;">Fill out the form below and we'll get back to you within 24 hours.
+                    <h3 style="margin-bottom: 10px;" data-i18n="contact_form_title">Send Us a Message</h3>
+                    <p style="margin-bottom: 30px;" data-i18n="contact_form_subtitle">Fill out the form below and we'll get back to you within 24 hours.
                     </p>
 
                     <form class="contact-form" id="contactForm" onsubmit="handleContactSubmit(event)">
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" id="contactName" class="form-control" placeholder="Jane Doe" required>
+                                <label class="form-label" data-i18n="full_name_label">Full Name</label>
+                                <input type="text" id="contactName" class="form-control" data-i18n="contact_name_placeholder" placeholder="Jane Doe" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" id="contactEmail" class="form-control" placeholder="jane@example.com" required>
+                                <label class="form-label" data-i18n="contact_email_label">Email Address</label>
+                                <input type="email" id="contactEmail" class="form-control" data-i18n="contact_email_placeholder" placeholder="jane@example.com" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Subject</label>
+                            <label class="form-label" data-i18n="contact_subject_label">Subject</label>
                             <select id="contactSubject" class="form-control" required>
-                                <option value="">Select a topic</option>
-                                <option value="patient">Patient Support</option>
-                                <option value="hospital">Hospital Partnership</option>
-                                <option value="technical">Technical Issue</option>
-                                <option value="other">General Inquiry</option>
+                                <option value="" data-i18n="contact_subject_option_default">Select a topic</option>
+                                <option value="patient" data-i18n="contact_subject_option_patient">Patient Support</option>
+                                <option value="hospital" data-i18n="contact_subject_option_hospital">Hospital Partnership</option>
+                                <option value="technical" data-i18n="contact_subject_option_technical">Technical Issue</option>
+                                <option value="other" data-i18n="contact_subject_option_other">General Inquiry</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Your Message</label>
-                            <textarea id="contactMessage" class="form-control" placeholder="How can we help you today?" required></textarea>
+                            <label class="form-label" data-i18n="contact_message_label">Your Message</label>
+                            <textarea id="contactMessage" class="form-control" data-i18n="contact_message_placeholder" placeholder="How can we help you today?" required></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg"
-                            style="width:100%; justify-content:center;">
+                            style="width:100%; justify-content:center;" data-i18n="contact_btn_submit">
                             Send Message — We're Listening
                         </button>
                     </form>
@@ -273,20 +273,20 @@
                 <!-- Info Side -->
                 <div class="contact-info-card reveal reveal-delay-2">
                     <div class="info-top">
-                        <h3>Contact Information</h3>
+                        <h3 data-i18n="contact_info_title">Contact Information</h3>
 
                         <div class="info-item">
                             <div class="info-icon">📍</div>
                             <div class="info-text">
-                                <h4>Our Location</h4>
-                                <p>123 Healthcare Plaza, Colombo 07,<br>Sri Lanka</p>
+                                <h4 data-i18n="contact_loc_title">Our Location</h4>
+                                <p data-i18n="contact_loc_desc">123 Healthcare Plaza, Colombo 07,<br>Sri Lanka</p>
                             </div>
                         </div>
 
                         <div class="info-item">
                             <div class="info-icon">📞</div>
                             <div class="info-text">
-                                <h4>Call Us</h4>
+                                <h4 data-i18n="contact_call_title">Call Us</h4>
                                 <p>+94 11 234 5678</p>
                             </div>
                         </div>
@@ -294,14 +294,14 @@
                         <div class="info-item">
                             <div class="info-icon">✉</div>
                             <div class="info-text">
-                                <h4>Email Us</h4>
+                                <h4 data-i18n="contact_email_title">Email Us</h4>
                                 <p>support@pcoscarehub.lk</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="info-bottom">
-                        <h4 style="margin-bottom: 15px; font-family: var(--font-body);">Follow Our Journey</h4>
+                        <h4 style="margin-bottom: 15px; font-family: var(--font-body);" data-i18n="contact_follow_title">Follow Our Journey</h4>
                         <div class="social-row">
                             <a href="#" class="social-link-btn">f</a>
                             <a href="#" class="social-link-btn">𝕏</a>
@@ -317,8 +317,8 @@
                 <div class="map-overlay"></div>
                 <div style="text-align:center; z-index:5;">
                     <span style="font-size: 3rem; display:block; margin-bottom:15px;">🇱🇰</span>
-                    <h3 style="color:var(--purple-deep);">Proudly Based in Sri Lanka</h3>
-                    <p>Serving women across the island from our central hub in Colombo.</p>
+                    <h3 style="color:var(--purple-deep);" data-i18n="contact_map_title">Proudly Based in Sri Lanka</h3>
+                    <p data-i18n="contact_map_desc">Serving women across the island from our central hub in Colombo.</p>
                 </div>
             </div>
         </div>
@@ -333,8 +333,8 @@
     <!-- Success Message Box -->
     <div id="contact-success-box" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--purple-primary, #6b46c1); color:white; padding:30px 45px; border-radius:var(--radius-lg, 12px); box-shadow:0 10px 30px rgba(107, 70, 193, 0.3); z-index:10000; text-align:center; font-size:1.2rem; font-weight:500;">
         <div style="font-size:2.5rem; margin-bottom:10px;">📩</div>
-        Thank you for sending a message!<br>
-        <span style="font-size: 1rem; opacity: 0.9; font-weight: 400; margin-top: 5px; display: inline-block;">We will respond within 24 hours.</span>
+        <span data-i18n="contact_success_title">Thank you for sending a message!</span><br>
+        <span style="font-size: 1rem; opacity: 0.9; font-weight: 400; margin-top: 5px; display: inline-block;" data-i18n="contact_success_desc">We will respond within 24 hours.</span>
     </div>
 
     <script>
