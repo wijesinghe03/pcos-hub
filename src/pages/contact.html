@@ -338,6 +338,10 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof L10n !== "undefined") L10n.init();
+        });
+
         async function handleContactSubmit(e) {
             e.preventDefault();
             

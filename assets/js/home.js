@@ -6,9 +6,6 @@
 
 // Animated hero counter
 document.addEventListener('DOMContentLoaded', () => {
-  // Hide page loader
-  PageLoader.hide();
-
   // Parallax blobs on mouse move
   const blobs = document.querySelectorAll('.hero-blob');
   document.addEventListener('mousemove', (e) => {

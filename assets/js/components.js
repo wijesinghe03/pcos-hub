@@ -182,6 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof initNewsletter === 'function') initNewsletter();
       if (typeof initReveal === 'function') initReveal();
       if (typeof initCountUps === 'function') initCountUps();
+      // Ensure loader is hidden after all components are ready
+      if (typeof PageLoader !== 'undefined') PageLoader.hide();
+      // Re-apply localization AFTER all components are in the DOM
+      // This guarantees every page (including contact) is translated correctly
+      if (typeof L10n !== 'undefined') L10n.init();
     }, 0);
   }
 });

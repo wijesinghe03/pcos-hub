@@ -2359,7 +2359,41 @@ const L10n = {
       contact_map_title: "இலங்கையை அடிப்படையாகக் கொண்டது",
       contact_map_desc: "கொழும்பில் உள்ள எமது மையத்திலிருந்து தீவு முழுவதும் உள்ள பெண்களுக்கு சேவை செய்கிறோம்.",
       contact_success_title: "செய்தி அனுப்பியதற்கு நன்றி!",
-      contact_success_desc: "நாங்கள் 24 மணிநேரத்திற்குள் பதிலளிப்போம்."
+      contact_success_desc: "நாங்கள் 24 மணிநேரத்திற்குள் பதிலளிப்போம்.",
+      full_name_label: "உங்கள் பெயர்",
+      review_modal_title: "உங்கள் அனுபவத்தைப் பகிருங்கள்",
+      rev_role_label: "பங்கு / இடம்",
+      rev_role_placeholder: "எ.கா: நோயாளி, கொழும்பு",
+      rating_label: "மதிப்பீடு",
+      rating_5: "★★★★★ (5/5 நட்சத்திரம்)",
+      rating_4: "★★★★☆ (4/5 நட்சத்திரம்)",
+      rating_3: "★★★☆☆ (3/5 நட்சத்திரம்)",
+      rating_2: "★★☆☆☆ (2/5 நட்சத்திரம்)",
+      rating_1: "★☆☆☆☆ (1/5 நட்சத்திரம்)",
+      rev_text_label: "உங்கள் நேர்மையான கருத்து",
+      rev_text_placeholder: "PCOS Care Hub உங்களுக்கு எப்படி உதவியது என்று கூறுங்கள்...",
+      btn_submit_review: "கருத்தைச் சமர்ப்பிக்கவும்",
+      btn_add_review: "✍️ உங்கள் கருத்தை சேர்க்கவும்",
+      review_success_msg: "கருத்தைச் சேர்த்ததற்கு நன்றி!",
+      profile_title: "என் சுயவிவரம்",
+      profile_subtitle: "உங்கள் தனிப்பட்ட மற்றும் மருத்துவத் தகவல்களை நிர்வகிக்கவும்",
+      personal_info: "தனிப்பட்ட தகவல்",
+      email_address_label: "மின்னஞ்சல் முகவரி",
+      phone_number_label: "தொலைபேசி எண்",
+      dob_label: "பிறந்த தேதி",
+      gender_label: "பாலினம்",
+      blood_group_label: "இரத்த வகை",
+      edit_personal_info_btn: "தனிப்பட்ட தகவலைத் திருத்தவும்",
+      save_changes_btn: "மாற்றங்களைச் சேமிக்கவும்",
+      profile_address: "முகவரி",
+      not_provided: "வழங்கப்படவில்லை",
+      unknown_blood: "தெரியாத",
+      female: "பெண்",
+      male: "ஆண்",
+      other_gender: "மற்றவை",
+      profile_updated_success: "சுயவிவரம் புதுப்பிக்கப்பட்டது!",
+      password_changed_success: "கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது!",
+      account_deactivated_success: "உங்கள் கணக்கு வெற்றிகரமாக முடக்கப்பட்டது. வெளியேறுகிறது..."
     },
   },
   set(lang) {
@@ -2371,6 +2405,7 @@ const L10n = {
     setTimeout(() => location.reload(), 800);
   },
   apply(lang) {
+    if (!lang) lang = this.get();
     document.documentElement.setAttribute('lang', lang);
     document.body.classList.remove('lang-en', 'lang-si', 'lang-ta');
     document.body.classList.add('lang-' + lang);
@@ -2379,6 +2414,8 @@ const L10n = {
     
     // 1. Localize text content/placeholders
     document.querySelectorAll('[data-i18n]').forEach(el => {
+      // Keep navbar, footer, and mobile drawer in English as per user request
+      if (el.closest('.navbar') || el.closest('.footer') || el.closest('.nav-mobile-drawer')) return;
       const key = el.getAttribute('data-i18n');
       if (dict[key]) {
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
