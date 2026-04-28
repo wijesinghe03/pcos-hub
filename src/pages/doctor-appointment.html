@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <style>
+        .appointment-hero {
+            background: linear-gradient(135deg, #e8f0ff, #f0e6ff);
+            padding: calc(var(--nav-h) + 40px) 0 40px;
+            text-align: center;
+        }
+
+        .booking-container {
+            max-width: 900px;
+            margin: -30px auto 60px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            position: relative;
+            border: 1px solid var(--border);
+            z-index: 10;
+        }
+
+        .doctor-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doc-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--purple-pale);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 8px 20px rgba(138,43,226,0.15);
+        }
+
+        .doc-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .doc-spec {
+            font-size: 1.1rem;
+            color: var(--purple-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .doc-exp {
+            display: inline-block;
+            background: var(--bg-light);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            font-weight: 500;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+            .doctor-profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .availability-section {
+            background: var(--bg-light);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .time-slot {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: center;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .time-slot:hover {
+            border-color: var(--purple-light);
+            background: var(--purple-pale);
+        }
+
+        .time-slot.selected {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+            box-shadow: 0 4px 10px rgba(138,43,226,0.3);
+        }
+
+        .time-slot.booked {
+            background: #f1f3f5;
+            color: #adb5bd;
+            cursor: not-allowed;
+            border-color: #e9ecef;
+            text-decoration: line-through;
+        }
+
+        .weekly-schedule {
+            margin-top: 20px;
+        }
+        
+        .schedule-day {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+        .schedule-day:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <section class="appointment-hero">
+        <div class="container">
+            <h1>Book Your Appointment</h1>
+            <p style="color:var(--text-mid); max-width:600px; margin: 10px auto 0;" id="hospNameDisplay">Loading hospital details...</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="booking-container reveal">
+            <div class="doctor-profile-header">
+                <div class="doc-avatar" id="docImgDisplay">👩‍⚕️</div>
+                <div class="doc-info">
+                    <h2 id="docNameDisplay">Loading...</h2>
+                    <div class="doc-spec" id="docSpecDisplay">Specialization</div>
+                    <div class="doc-exp" id="docExpDisplay">Experience</div>
+                </div>
+            </div>
+
+            <div class="booking-grid">
+                <div>
+                    <h3 style="margin-bottom: 20px;">1. Select Appointment Date</h3>
+                    <input type="date" id="appointmentDate" class="form-control" style="width: 100%; margin-bottom: 24px;" min="" onchange="generateTimeSlots()">
+                    
+                    <div class="availability-section">
+                        <h4>Doctor's Weekly Schedule</h4>
+                        <div class="weekly-schedule">
+                            <div class="schedule-day"><span>Monday</span><span>09:00 AM - 05:00 PM</span></div>
+                            <div class="schedule-day"><span>Tuesday</span><span>09:00 AM - 05:00 PM</span></div>
+                            <div class="schedule-day"><span>Wednesday</span><span>09:00 AM - 01:00 PM</span></div>
+                            <div class="schedule-day"><span>Thursday</span><span>09:00 AM - 05:00 PM</span></div>
+                            <div class="schedule-day"><span>Friday</span><span>10:00 AM - 04:00 PM</span></div>
+                            <div class="schedule-day"><span>Saturday</span><span>09:00 AM - 01:00 PM</span></div>
+                            <div class="schedule-day"><span>Sunday</span><span style="color:#e74c3c;">Unavailable</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 20px;">2. Select Time Slot</h3>
+                    <p style="color:var(--text-mid); font-size:0.9rem;" id="timeSlotInstruction">Please select a date first to see available time slots.</p>
+                    
+                    <div class="time-slots" id="timeSlotsContainer">
+                        <!-- Slots generated via JS -->
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <label class="form-label">Reason for Visit (Optional)</label>
+                        <textarea id="appointmentReason" class="form-control" rows="3" style="width: 100%; resize: vertical;" placeholder="Briefly describe your reason for visit..."></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 24px; padding: 14px; font-size: 1.1rem;" onclick="bookAppointment()" id="bookBtn" disabled>
+                        Confirm Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script>
+        let selectedDoctor = null;
+        let selectedHospital = '';
+        let selectedTime = '';
+
+        // Ensure user is logged in
+        const user = checkSession();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavbar();
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').min = today;
+
+            // Parse URL params
+            const params = new URLSearchParams(window.location.search);
+            selectedHospital = params.get('hospital') || 'Selected Hospital';
+            
+            const docName = params.get('docName') || 'Doctor Name';
+            const docSpec = params.get('docSpec') || 'Specialist';
+            const docExp = params.get('docExp') || 'Experience';
+            const docImg = params.get('docImg') || '👩‍⚕️';
+
+            selectedDoctor = {
+                name: docName,
+                spec: docSpec,
+                exp: docExp,
+                img: docImg
+            };
+
+            document.getElementById('hospNameDisplay').textContent = "At " + selectedHospital;
+            document.getElementById('docNameDisplay').textContent = selectedDoctor.name;
+            document.getElementById('docSpecDisplay').textContent = selectedDoctor.spec;
+            document.getElementById('docExpDisplay').textContent = selectedDoctor.exp;
+            document.getElementById('docImgDisplay').textContent = selectedDoctor.img;
+            
+            initReveal();
+        });
+
+        // Mock taken slots for demonstration - in real app, fetch from backend
+        let takenSlotsCache = {};
+
+        async function fetchTakenSlots(date) {
+            // Ideally call API to check booked slots for this doctor on this date
+            // For now, let's randomly mock a few booked slots to demonstrate UI
+            if (takenSlotsCache[date]) return takenSlotsCache[date];
+            
+            // Just randomly selecting 2 slots to be "booked" for UI testing
+            const possible = ['09:30', '10:00', '11:30', '14:00', '15:30'];
+            const booked = [];
+            if(Math.random() > 0.3) booked.push(possible[Math.floor(Math.random() * possible.length)]);
+            if(Math.random() > 0.5) booked.push(possible[Math.floor(Math.random() * possible.length)]);
+            
+            takenSlotsCache[date] = booked;
+            return booked;
+        }
+
+        async function generateTimeSlots() {
+            const dateInput = document.getElementById('appointmentDate').value;
+            const container = document.getElementById('timeSlotsContainer');
+            const instruction = document.getElementById('timeSlotInstruction');
+            const bookBtn = document.getElementById('bookBtn');
+            
+            selectedTime = '';
+            bookBtn.disabled = true;
+
+            if (!dateInput) {
+                container.innerHTML = '';
+                instruction.style.display = 'block';
+                return;
+            }
+
+            const dateObj = new Date(dateInput);
+            const dayOfWeek = dateObj.getDay(); // 0 is Sunday
+
+            if (dayOfWeek === 0) {
+                container.innerHTML = '<div style="grid-column: 1 / -1; color: #e74c3c; font-weight: 600; text-align: center; padding: 20px;">Doctor is unavailable on Sundays. Please select another date.</div>';
+                instruction.style.display = 'none';
+                return;
+            }
+
+            instruction.style.display = 'none';
+            container.innerHTML = '<div style="grid-column: 1 / -1; text-align:center;">Loading slots...</div>';
+
+            const takenSlots = await fetchTakenSlots(dateInput);
+
+            // Generate slots
+            const slots = [
+                '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+                '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00'
+            ];
+
+            let html = '';
+            slots.forEach(time => {
+                const isBooked = takenSlots.includes(time);
+                // Convert 24h to 12h for display
+                const [h, m] = time.split(':');
+                const hour = parseInt(h);
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                const hour12 = hour % 12 || 12;
+                const displayTime = `${hour12}:${m} ${ampm}`;
+
+                if (isBooked) {
+                    html += `<div class="time-slot booked" title="Already booked">${displayTime}</div>`;
+                } else {
+                    html += `<div class="time-slot" onclick="selectTime(this, '${time}')">${displayTime}</div>`;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectTime(element, time24) {
+            document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTime = time24;
+            document.getElementById('bookBtn').disabled = false;
+        }
+
+        async function bookAppointment() {
+            if (!selectedTime) return;
+            const dateInput = document.getElementById('appointmentDate').value;
+            const reason = document.getElementById('appointmentReason').value;
+            const btn = document.getElementById('bookBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loader-ring" style="width: 20px; height: 20px; border-width: 2px;"></div> Booking...';
+
+            const payload = {
+                action: 'save',
+                patient_id: user.id,
+                hospital_name: selectedHospital,
+                doctor_name: selectedDoctor.name,
+                appointment_date: dateInput,
+                appointment_time: selectedTime,
+                appointment_type: 'consultation',
+                reason: reason
+            };
+
+            try {
+                const res = await API.call('components/appointment_handler.php', payload);
+                if (res.status === 'success') {
+                    Toast.success('Appointment booked successfully! Confirmation email sent.');
+                    setTimeout(() => {
+                        window.location.href = 'appointments.html';
+                    }, 2000);
+                } else {
+                    // Show error from backend (concurrency check or daily limit)
+                    Toast.error(res.message || 'Failed to book appointment.');
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm Booking';
+                    // Re-fetch slots to update UI if it was booked
+                    generateTimeSlots(); 
+                }
+            } catch (e) {
+                Toast.error('An error occurred while booking.');
+                btn.disabled = false;
+                btn.textContent = 'Confirm Booking';
+            }
+        }
+    </script>
+</body>
+</html>

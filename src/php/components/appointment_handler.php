@@ -134,6 +134,26 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
+        // 1. Check Daily Limit (Max 30 per doctor per day)
+        $limitStmt = $pdo->prepare("SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled'");
+        $limitStmt->execute([$doctor, $hosp, $date]);
+        $dailyCount = $limitStmt->fetchColumn();
+
+        if ($dailyCount >= 30) {
+            echo json_encode(['status' => 'error', 'message' => 'This doctor has reached the maximum of 30 appointments for this day. Please select another date.']);
+            exit;
+        }
+
+        // 2. Check Double Booking (Concurrency check)
+        $dupStmt = $pdo->prepare("SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled'");
+        $dupStmt->execute([$doctor, $hosp, $date, $time]);
+        $isBooked = $dupStmt->fetchColumn();
+
+        if ($isBooked > 0) {
+            echo json_encode(['status' => 'error', 'message' => 'This time slot is already booked by another patient. Please select a different appointment time.']);
+            exit;
+        }
+
         $stmt = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'upcoming')");
         $stmt->execute([$patient_id, $hosp, $doctor, $date, $time, $type, $reason]);
         

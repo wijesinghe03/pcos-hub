@@ -360,6 +360,12 @@
       border-radius: 20px;
       display: inline-block;
     }
+    .doctor-card.selected {
+      border-color: var(--purple-primary);
+      background: var(--purple-pale);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(138,43,226,0.15);
+    }
     [data-theme="dark"] .doctor-card:hover {
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
@@ -375,9 +381,11 @@
     ];
 
     let currentHospitalKey = '';
+    let selectedDoctorIndex = -1;
 
     function openHospitalModal(nameKey, descKey) {
       currentHospitalKey = nameKey;
+      selectedDoctorIndex = -1;
       const modal = document.getElementById('hospital-connect-modal');
       const nameEl = document.getElementById('modal-hospital-name');
       const descEl = document.getElementById('modal-hospital-desc');
@@ -392,7 +400,7 @@
       
       // Render doctors
       container.innerHTML = mockDoctors.map((doc, index) => `
-        <div class="doctor-card" style="animation: slideUp 0.3s ease-out ${index * 0.1}s forwards; opacity:0;">
+        <div class="doctor-card" id="doc-card-${index}" onclick="selectDoctor(${index})" style="animation: slideUp 0.3s ease-out ${index * 0.1}s forwards; opacity:0;">
           <div class="doctor-avatar">${doc.img}</div>
           <div class="doctor-name">${doc.name}</div>
           <div class="doctor-spec">${doc.spec}</div>
@@ -404,6 +412,12 @@
       document.body.style.overflow = 'hidden'; // Prevent scrolling
     }
     
+    function selectDoctor(index) {
+      selectedDoctorIndex = index;
+      document.querySelectorAll('.doctor-card').forEach(el => el.classList.remove('selected'));
+      document.getElementById('doc-card-' + index).classList.add('selected');
+    }
+
     function closeHospitalModal() {
       const modal = document.getElementById('hospital-connect-modal');
       modal.style.display = 'none';
@@ -411,9 +425,24 @@
     }
     
     function confirmConnection() {
+      if (selectedDoctorIndex === -1) {
+          Toast.warning('Please select a doctor to continue.');
+          return;
+      }
+      
       const hospitalName = L10n.t(currentHospitalKey) || 'the hospital';
-      closeHospitalModal();
-      Toast.success('Successfully connected to ' + hospitalName + '!');
+      const doc = mockDoctors[selectedDoctorIndex];
+      
+      // Navigate to booking interface
+      const params = new URLSearchParams({
+          hospital: hospitalName,
+          docName: doc.name,
+          docSpec: doc.spec,
+          docExp: doc.exp,
+          docImg: doc.img
+      });
+      
+      window.location.href = 'doctor-appointment.html?' + params.toString();
     }
     
     // Close on outside click
