@@ -86,11 +86,24 @@
       }
     }
 
-    @media(max-width:600px) {
+    @media(max-width:640px) {
       .hospitals-grid {
         grid-template-columns: 1fr;
       }
+      .modal-content {
+        padding: 24px 20px !important;
+      }
+      .modal-content h2 {
+        font-size: 1.5rem !important;
+      }
+      .doctors-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .specialty-tag {
+        font-size: 0.65rem;
+      }
     }
+
   
     [data-theme="dark"] .hospitals-hero {
       background: linear-gradient(135deg, var(--bg-light), var(--bg-card));
@@ -280,13 +293,13 @@
       
       <div style="text-align:center; margin-bottom:40px;">
         <div style="width:70px; height:70px; background:linear-gradient(135deg, var(--purple-light), var(--purple-primary)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 20px; color:white; box-shadow:0 10px 20px rgba(138, 43, 226, 0.2);">🏥</div>
-        <h2 id="modal-hospital-name" style="color:var(--text-main); font-size:2rem; font-weight:700; margin-bottom:12px; letter-spacing:-0.5px;">Welcome</h2>
+        <h2 id="modal-hospital-name" style="color:var(--text-main); font-size:2rem; font-weight:700; margin-bottom:12px; letter-spacing:-0.5px;" data-i18n="welcome">Welcome</h2>
         <p id="modal-hospital-desc" style="color:var(--text-mid); font-size:1.1rem; max-width:600px; margin:0 auto; line-height:1.6;">Excellent care awaits you. Connect with leading specialists.</p>
       </div>
 
       <div style="display:flex; align-items:center; margin-bottom:24px; gap:12px;">
-        <h3 style="font-size:1.3rem; color:var(--text-main); margin:0;">Available Gynaecologists</h3>
-        <span style="background:var(--purple-pale); color:var(--purple-primary); padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:600;">5 Doctors</span>
+        <h3 style="font-size:1.3rem; color:var(--text-main); margin:0;" data-i18n="available_gynaecologists">Available Gynaecologists</h3>
+        <span style="background:var(--purple-pale); color:var(--purple-primary); padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:600;"><span data-i18n="doctors_count">5 Doctors</span></span>
         <div style="flex-grow:1; height:1px; background:var(--border);"></div>
       </div>
       
@@ -297,14 +310,14 @@
       <div style="background:linear-gradient(145deg, var(--bg-light), var(--bg-card)); padding:28px; border-radius:var(--radius-lg); margin-top:40px; border:1px solid var(--border); display:flex; gap:24px; align-items:flex-start;">
         <div style="font-size:2.5rem;">🌟</div>
         <div>
-          <h4 style="color:var(--text-main); font-size:1.2rem; margin-bottom:12px;">About Our Specialized Care</h4>
-          <p style="font-size:0.95rem; color:var(--text-mid); margin-bottom:0; line-height:1.6;">By connecting with this hospital, you gain access to state-of-the-art diagnostic facilities and expert multidisciplinary care. Our gynaecologists provide comprehensive evaluations and personalized treatment plans for PCOS, fertility concerns, and overall reproductive health.</p>
+          <h4 style="color:var(--text-main); font-size:1.2rem; margin-bottom:12px;" data-i18n="about_specialized_care_title">About Our Specialized Care</h4>
+          <p style="font-size:0.95rem; color:var(--text-mid); margin-bottom:0; line-height:1.6;" data-i18n="about_specialized_care_desc">By connecting with this hospital, you gain access to state-of-the-art diagnostic facilities and expert multidisciplinary care. Our gynaecologists provide comprehensive evaluations and personalized treatment plans for PCOS, fertility concerns, and overall reproductive health.</p>
         </div>
       </div>
       
       <div style="text-align:center; margin-top:40px; display:flex; justify-content:center; gap:16px;">
-        <button class="btn" onclick="closeHospitalModal()" style="padding:12px 30px; background:var(--bg-light); color:var(--text-main); border:1px solid var(--border);">Cancel</button>
-        <button class="btn btn-primary" onclick="confirmConnection()" style="padding:12px 40px; box-shadow:0 8px 16px rgba(138,43,226,0.2);">Confirm Connection</button>
+        <button class="btn" onclick="closeHospitalModal()" style="padding:12px 30px; background:var(--bg-light); color:var(--text-main); border:1px solid var(--border);" data-i18n="cancel">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmConnection()" style="padding:12px 40px; box-shadow:0 8px 16px rgba(138,43,226,0.2);" data-i18n="confirm_connection">Confirm Connection</button>
       </div>
     </div>
   </div>
@@ -391,11 +404,15 @@
       const descEl = document.getElementById('modal-hospital-desc');
       const container = document.getElementById('doctors-container');
       
-      // Update text based on translations if available
-      const hospitalName = L10n.t(nameKey) || 'Selected Hospital';
-      const hospitalDesc = L10n.t(descKey) || 'Excellent care awaits you.';
+      // Update text based on DOM if translations are missing
+      const nameDOM = document.querySelector(`[data-i18n="${nameKey}"]`);
+      const descDOM = document.querySelector(`[data-i18n="${descKey}"]`);
       
-      nameEl.textContent = 'Welcome to ' + hospitalName;
+      const hospitalName = nameDOM ? nameDOM.innerText : (L10n.t(nameKey) !== nameKey ? L10n.t(nameKey) : 'Selected Hospital');
+      const hospitalDesc = descDOM ? descDOM.innerText : (L10n.t(descKey) !== descKey ? L10n.t(descKey) : 'Excellent care awaits you.');
+      
+      const welcomeTxt = (L10n.get() === 'en' ? "Welcome to " : (L10n.get() === 'si' ? "සාදරයෙන් පිළිගනිමු " : "வரவேற்கிறோம் "));
+      nameEl.textContent = welcomeTxt + hospitalName;
       descEl.textContent = hospitalDesc;
       
       // Render doctors
@@ -430,7 +447,8 @@
           return;
       }
       
-      const hospitalName = L10n.t(currentHospitalKey) || 'the hospital';
+      const hospitalNameEl = document.querySelector(`[data-i18n="${currentHospitalKey}"]`);
+      const hospitalName = hospitalNameEl ? hospitalNameEl.innerText : 'Selected Hospital';
       const doc = mockDoctors[selectedDoctorIndex];
       
       // Navigate to booking interface
@@ -458,6 +476,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       PageLoader.hide();
+      L10n.init();
 
       initNavbar();
       setActiveNav();

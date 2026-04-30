@@ -344,7 +344,7 @@
           <div class="panel-title" data-i18n="health_progress"><i>📈</i> Health Progress</div>
         </div>
         <div class="progress-item">
-          <div class="progress-header"><span>Symptom Logging</span><span style="color:var(--purple-primary)">78%</span>
+          <div class="progress-header"><span data-i18n="symptom_logging">Symptom Logging</span><span style="color:var(--purple-primary)">78%</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" data-width="78%" style="width:0"></div>
@@ -462,7 +462,7 @@
         <div style="padding:10px 0;border-bottom:1px solid var(--bg-light);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <span style="font-size:0.82rem;color:var(--text-light)">${dateStr}</span>
-            <span style="font-size:0.78rem;font-weight:700;color:${sevColor};text-transform:capitalize">${sevLabel}</span>
+            <span style="font-size:0.78rem;font-weight:700;color:${sevColor};text-transform:capitalize">${t(row.severity)}</span>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:4px">${badges}</div>
         </div>`;

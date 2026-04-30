@@ -86,6 +86,7 @@ function handleSignup($pdo) {
             'status' => 'success',
             'message' => 'Account created successfully!',
             'user' => [
+                'id' => $pdo->lastInsertId(),
                 'name' => $data['full_name'],
                 'role' => $role,
                 'email' => $data['email'],

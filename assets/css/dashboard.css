@@ -474,7 +474,11 @@
   border-radius: var(--radius-lg);
   padding: 22px;
   border: 1.5px solid var(--border);
+  height: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
+
 
 .panel-header {
   display: flex;
@@ -940,6 +944,7 @@
 
   .sidebar {
     transform: translateX(-100%);
+    width: 280px; /* Slightly wider for mobile readability */
   }
 
   .sidebar.open {
@@ -948,20 +953,29 @@
 
   .dash-main {
     grid-column: 1;
-    margin-left: 0;
-    padding: 16px;
+    margin-left: 0 !important;
+    padding: 20px 16px 80px; /* More bottom padding for mobile */
   }
 
   .sidebar-toggle {
     display: flex;
+    top: 20px; /* Move up for better visibility */
+    left: 20px;
+    background: var(--purple-primary);
+    box-shadow: 0 4px 12px rgba(123, 63, 190, 0.4);
+  }
+
+  .dash-topbar {
+    margin-top: 40px; /* Offset for the toggle button */
   }
 
   .dash-stats {
     grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   .dash-stats {
     grid-template-columns: 1fr;
   }
@@ -969,7 +983,29 @@
   .symptom-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .topbar-search {
+    width: 100%;
+  }
+  
+  .topbar-search input {
+    width: 100%;
+  }
+
+  .welcome-card { padding: 24px 20px; }
+  .welcome-stats { flex-direction: column; gap: 14px; align-items: flex-start; }
+  .welcome-stat { text-align: left; }
+  .welcome-stat-num { font-size: 1.4rem; }
+  .welcome-actions { flex-direction: column; width: 100%; }
+  .welcome-actions .btn { width: 100% !important; justify-content: center; }
 }
+
+
 
 /* ════════════════════════════════════════════════════════════
    COMPREHENSIVE DARK MODE — All Dashboard Pages
@@ -1268,4 +1304,102 @@
 [data-theme="dark"] .disclaimer-box {
   background: rgba(229, 127, 175, 0.08) !important;
   color: var(--text-mid) !important;
+}
+
+/* ============================================================
+   RESPONSIVENESS (MOBILE & TABLET)
+   ============================================================ */
+
+@media (max-width: 1024px) {
+    .dash-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dash-grid-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        box-shadow: none;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 10px 0 30px rgba(0,0,0,0.3);
+    }
+    
+    .dash-main {
+        grid-column: 1;
+        padding: 20px 16px;
+        margin-top: 60px; /* Space for top mobile bar if needed */
+    }
+    
+    .sidebar-toggle {
+        display: flex;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+    }
+    
+    .dash-stats {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .dash-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-card {
+        padding: 24px 20px;
+    }
+    
+    .welcome-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .dash-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding-left: 50px; /* Make room for toggle */
+    }
+    
+    .topbar-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .symptom-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hospital-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .symptom-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-stats {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+    .dash-stat-card {
+        padding: 16px;
+    }
+    
+    .stat-card-value {
+        font-size: 1.4rem;
+    }
 }

@@ -180,6 +180,13 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
+        // Parse URL params
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('email');
+        if (email) {
+            document.getElementById('email').value = email;
+        }
+
         async function handlePatientSignup(e) {
             e.preventDefault();
             const pw1 = document.getElementById('pw1').value;
@@ -209,7 +216,12 @@
                     Auth.login(response.user);
                     Toast.success('Account created! Welcome to PCOS Care Hub.');
                     setTimeout(() => {
-                        window.location.href = 'patient-dashboard.html';
+                        const redirect = params.get('redirect');
+                        if (redirect) {
+                            window.location.href = redirect;
+                        } else {
+                            window.location.href = 'patient-dashboard.html';
+                        }
                     }, 1500);
                 } else {
                     Toast.error(response.message);

@@ -12,20 +12,23 @@ function renderNavbar(activePage = '') {
         <span><span>PCOS</span> Care Hub</span>
       </a>
       <div class="nav-links">
-        <a href="index.html"         class="nav-link ${activePage === 'home' ? 'active' : ''}"      data-page="index.html">Home</a>
-        <a href="about-us.html"      class="nav-link ${activePage === 'about' ? 'active' : ''}"    data-page="about-us.html">About Us</a>
-        <a href="features.html"      class="nav-link ${activePage === 'features' ? 'active' : ''}" data-page="features.html">Features</a>
-        <a href="pcos-info.html"     class="nav-link ${activePage === 'pcos-info' ? 'active' : ''}" data-page="pcos-info.html">PCOS Info</a>
-        <a href="hospitals.html"     class="nav-link ${activePage === 'hospitals' ? 'active' : ''}" data-page="hospitals.html">Hospitals</a>
-        <a href="blog.html"          class="nav-link ${activePage === 'blog' ? 'active' : ''}"      data-page="blog.html">Blog</a>
-        <a href="contact.html"       class="nav-link ${activePage === 'contact' ? 'active' : ''}"   data-page="contact.html">Contact</a>
+        <a href="index.html"         class="nav-link ${activePage === 'home' ? 'active' : ''}"      data-page="index.html" data-i18n="nav_home">Home</a>
+        <a href="about-us.html"      class="nav-link ${activePage === 'about' ? 'active' : ''}"    data-page="about-us.html" data-i18n="nav_about">About Us</a>
+        <a href="features.html"      class="nav-link ${activePage === 'features' ? 'active' : ''}" data-page="features.html" data-i18n="nav_features">Features</a>
+        <a href="pcos-info.html"     class="nav-link ${activePage === 'pcos-info' ? 'active' : ''}" data-page="pcos-info.html" data-i18n="nav_pcos_info">PCOS Info</a>
+        <a href="hospitals.html"     class="nav-link ${activePage === 'hospitals' ? 'active' : ''}" data-page="hospitals.html" data-i18n="nav_hospitals">Hospitals</a>
+        <a href="blog.html"          class="nav-link ${activePage === 'blog' ? 'active' : ''}"      data-page="blog.html" data-i18n="nav_blog">Blog</a>
+        <a href="contact.html"       class="nav-link ${activePage === 'contact' ? 'active' : ''}"   data-page="contact.html" data-i18n="nav_contact">Contact</a>
       </div>
       <div class="nav-actions">
         <button id="globalThemeToggle" class="theme-toggle-btn" onclick="Theme.toggle()" title="Toggle Theme">
           ${typeof Theme !== 'undefined' ? Theme.getIcon() : '🌙'}
         </button>
-        <button class="nav-btn-login" onclick="window.location.href='login.html'">Log In</button>
-        <button class="nav-btn-cta"   onclick="window.location.href='signup-choice.html'">Get Connected</button>
+        ${(typeof Auth !== 'undefined' && Auth.isLoggedIn()) ? 
+          `<button class="nav-btn-cta" onclick="window.location.href='patient-dashboard.html'" data-i18n="view_in_dashboard">View in Dashboard</button>` : 
+          `<button class="nav-btn-login" onclick="window.location.href='login.html'" data-i18n="nav_login">Log In</button>
+           <button class="nav-btn-cta"   onclick="window.location.href='signup-choice.html'" data-i18n="nav_signup">Get Connected</button>`
+        }
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -33,22 +36,25 @@ function renderNavbar(activePage = '') {
     </div>
   </nav>
   <div class="nav-mobile-drawer" id="mobileDrawer">
-    <a href="index.html"       class="nav-link">Home</a>
-    <a href="about-us.html"    class="nav-link">About Us</a>
-    <a href="features.html"    class="nav-link">Features</a>
-    <a href="pcos-info.html"   class="nav-link">PCOS Info</a>
-    <a href="hospitals.html"   class="nav-link">Hospitals</a>
-    <a href="blog.html"        class="nav-link">Blog</a>
-    <a href="contact.html"     class="nav-link">Contact</a>
+    <a href="index.html"       class="nav-link" data-i18n="nav_home">Home</a>
+    <a href="about-us.html"    class="nav-link" data-i18n="nav_about">About Us</a>
+    <a href="features.html"    class="nav-link" data-i18n="nav_features">Features</a>
+    <a href="pcos-info.html"   class="nav-link" data-i18n="nav_pcos_info">PCOS Info</a>
+    <a href="hospitals.html"   class="nav-link" data-i18n="nav_hospitals">Hospitals</a>
+    <a href="blog.html"        class="nav-link" data-i18n="nav_blog">Blog</a>
+    <a href="contact.html"     class="nav-link" data-i18n="nav_contact">Contact</a>
     <div class="nav-actions" style="flex-direction:column;margin-top:16px;gap:10px">
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:10px;">
-        <span style="font-weight:600; color:var(--text-mid)">Appearance</span>
+        <span style="font-weight:600; color:var(--text-mid)" data-i18n="nav_appearance">Appearance</span>
         <button id="globalThemeToggleMobile" class="theme-toggle-btn" onclick="Theme.toggle()" title="Toggle Theme">
           ${typeof Theme !== 'undefined' ? Theme.getIcon() : '🌙'}
         </button>
       </div>
-      <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="window.location.href='login.html'">Log In</button>
-      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup-choice.html'">Get Connected</button>
+      ${(typeof Auth !== 'undefined' && Auth.isLoggedIn()) ? 
+        `<button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='patient-dashboard.html'" data-i18n="view_in_dashboard">View in Dashboard</button>` : 
+        `<button class="btn btn-outline" style="width:100%;justify-content:center" onclick="window.location.href='login.html'" data-i18n="nav_login">Log In</button>
+         <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup-choice.html'" data-i18n="nav_signup">Get Connected</button>`
+      }
     </div>
   </div>
   <button class="scroll-to-top" id="scrollToTop" title="Scroll to top" aria-label="Scroll to top">↑</button>`;
@@ -67,7 +73,7 @@ function renderFooter() {
               <div class="footer-logo-icon">♥</div>
               <div class="footer-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
-            <p class="footer-tagline">Sri Lanka's first dedicated digital platform for managing Polycystic Ovary Syndrome — empowering patients and healthcare providers with secure, connected care.</p>
+            <p class="footer-tagline" data-i18n="footer_tagline">Sri Lanka's first dedicated digital platform for managing Polycystic Ovary Syndrome — empowering patients and healthcare providers with secure, connected care.</p>
             <div class="footer-social">
               <a class="social-btn" href="#" aria-label="Facebook">f</a>
               <a class="social-btn" href="#" aria-label="Twitter">𝕏</a>
@@ -79,41 +85,41 @@ function renderFooter() {
 
           <!-- Quick Links -->
           <div class="footer-col">
-            <h4>Quick Links</h4>
+            <h4 data-i18n="footer_quick_links">Quick Links</h4>
             <ul class="footer-links">
-              <li><a href="index.html"      class="footer-link"><i class="arrow">›</i> Home</a></li>
-              <li><a href="about-us.html"   class="footer-link"><i class="arrow">›</i> About Us</a></li>
-              <li><a href="hospitals.html"  class="footer-link"><i class="arrow">›</i> Hospitals</a></li>
-              <li><a href="blog.html"       class="footer-link"><i class="arrow">›</i> PCOS Blog</a></li>
-              <li><a href="login.html"     class="footer-link"><i class="arrow">›</i> Login</a></li>
-              <li><a href="signup-choice.html"    class="footer-link"><i class="arrow">›</i> Register</a></li>
+              <li><a href="index.html"      class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_home">Home</span></a></li>
+              <li><a href="about-us.html"   class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_about">About Us</span></a></li>
+              <li><a href="hospitals.html"  class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_hospitals">Hospitals</span></a></li>
+              <li><a href="blog.html"       class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_blog">PCOS Blog</span></a></li>
+              <li><a href="login.html"     class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_login">Login</span></a></li>
+              <li><a href="signup-choice.html"    class="footer-link"><i class="arrow">›</i> <span data-i18n="nav_signup">Register</span></a></li>
             </ul>
           </div>
 
           <!-- Resources -->
           <div class="footer-col">
-            <h4>PCOS Resources</h4>
+            <h4 data-i18n="footer_resources">PCOS Resources</h4>
             <ul class="footer-links">
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>Understanding PCOS</span></a></li>
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>Symptom Checker</span></a></li>
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>Diet &amp; Nutrition</span></a></li>
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>Exercise Guide</span></a></li>
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>Mental Wellness</span></a></li>
-              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span>FAQs</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="know_pcos">Understanding PCOS</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="symptoms">Symptom Checker</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="know_diet">Diet &amp; Nutrition</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="know_treatment">Exercise Guide</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="know_mental">Mental Wellness</span></a></li>
+              <li><a href="blog.html" class="footer-link"><i class="arrow">›</i> <span data-i18n="faqs">FAQs</span></a></li>
             </ul>
           </div>
 
           <!-- Newsletter -->
           <div class="footer-col footer-newsletter">
-            <h4>Stay Updated</h4>
-            <p>Get the latest PCOS news, research, and wellness tips delivered to your inbox.</p>
+            <h4 data-i18n="footer_stay_updated">Stay Updated</h4>
+            <p data-i18n="footer_newsletter_desc">Get the latest PCOS news, research, and wellness tips delivered to your inbox.</p>
             <form class="newsletter-form" onsubmit="return false">
               <input type="email" class="newsletter-input" placeholder="Your email address">
-              <button type="submit" class="newsletter-btn">Subscribe</button>
+              <button type="submit" class="newsletter-btn" data-i18n="footer_subscribe">Subscribe</button>
             </form>
             <div style="margin-top:16px">
               <div class="trust-badge" style="display:inline-flex;margin-bottom:6px">
-                <span>No spam, unsubscribe anytime</span>
+                <span data-i18n="footer_no_spam">No spam, unsubscribe anytime</span>
               </div>
             </div>
           </div>
@@ -123,15 +129,15 @@ function renderFooter() {
         <div class="footer-stats reveal">
           <div class="footer-stat">
             <span class="footer-stat-num"><span data-count="2" data-suffix="">0</span></span>
-            <span class="footer-stat-label">Patients Registered</span>
+            <span class="footer-stat-label" data-i18n="footer_stat_patients">Patients Registered</span>
           </div>
           <div class="footer-stat">
             <span class="footer-stat-num"><span data-count="20" data-suffix="">0</span></span>
-            <span class="footer-stat-label">Partner Hospitals</span>
+            <span class="footer-stat-label" data-i18n="footer_stat_hospitals">Partner Hospitals</span>
           </div>
           <div class="footer-stat">
             <span class="footer-stat-num"><span data-count="98" data-suffix="%">0%</span></span>
-            <span class="footer-stat-label">Patient Satisfaction</span>
+            <span class="footer-stat-label" data-i18n="footer_stat_satisfaction">Patient Satisfaction</span>
           </div>
         </div>
       </div>
@@ -142,16 +148,16 @@ function renderFooter() {
     <div class="footer-bottom">
       <div class="container">
         <div class="footer-bottom-inner">
-          <p class="footer-copy">© 2025 <a href="index.html">PCOS Care Hub</a>. <span>Built with ♥ for Sri Lankan Women's Health.</span> <span>All rights reserved.</span></p>
+          <p class="footer-copy">© 2025 <a href="index.html">PCOS Care Hub</a>. <span data-i18n="footer_built_with">Built with ♥ for Sri Lankan Women's Health.</span> <span data-i18n="footer_all_rights">All rights reserved.</span></p>
           <div class="footer-trust">
-            <div class="trust-badge"><i>🔒</i> SSL Secured</div>
-            <div class="trust-badge"> HIPAA Compliant</div>
+            <div class="trust-badge"><i data-i18n="footer_ssl">🔒 SSL Secured</i></div>
+            <div class="trust-badge" data-i18n="footer_hipaa"> HIPAA Compliant</div>
           </div>
           <nav class="footer-legal">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms-of-service.html">Terms of Service</a>
-            <a href="cookie-policy.html">Cookie Policy</a>
-            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html" data-i18n="footer_privacy">Privacy Policy</a>
+            <a href="terms-of-service.html" data-i18n="footer_terms">Terms of Service</a>
+            <a href="cookie-policy.html" data-i18n="footer_cookie">Cookie Policy</a>
+            <a href="contact.html" data-i18n="footer_contact">Contact</a>
           </nav>
         </div>
       </div>

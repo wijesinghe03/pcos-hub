@@ -143,7 +143,14 @@
   <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/utils.js"></script>
   <script>
-    async function handleLogin(e) {
+        // Parse URL params
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('email');
+        if (email) {
+            document.getElementById('identity').value = email;
+        }
+
+        async function handleLogin(e) {
       e.preventDefault();
       const identity = document.getElementById('identity').value;
       const password = document.getElementById('password').value;
@@ -170,13 +177,22 @@
           Auth.login(response.user);
           Toast.success(response.message || 'Login successful! Redirecting...');
           setTimeout(() => {
-            const pages = {
-              patient: 'patient-dashboard.html',
-              hospital: 'hospital-dashboard.html',
-              admin: 'admin-dashboard.html',
-              superadmin: 'admin-dashboard.html'
-            };
-            window.location.href = pages[response.user.role];
+            const params = new URLSearchParams(window.location.search);
+            const redirectUrl = params.get('redirect');
+            if (redirectUrl) {
+                // If the redirect URL is relative, navigate directly to it
+                // We construct the relative URL including its search parameters
+                // e.g. "doctor-appointment.html?hospital=..."
+                window.location.href = redirectUrl;
+            } else {
+                const pages = {
+                  patient: 'patient-dashboard.html',
+                  hospital: 'hospital-dashboard.html',
+                  admin: 'admin-dashboard.html',
+                  superadmin: 'admin-dashboard.html'
+                };
+                window.location.href = pages[response.user.role];
+            }
           }, 1000);
         } else {
           Toast.error(response.message || 'Invalid credentials');
@@ -212,8 +228,14 @@
           Auth.login(response.user);
           Toast.success(`Welcome back, ${response.user.name}!`);
           setTimeout(() => {
-            const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html' };
-            window.location.href = pages[role];
+            const params = new URLSearchParams(window.location.search);
+            const redirectUrl = params.get('redirect');
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            } else {
+                const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html' };
+                window.location.href = pages[role];
+            }
           }, 1000);
         } else {
           Toast.error(response.message);

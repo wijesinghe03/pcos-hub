@@ -25,7 +25,13 @@
             margin-bottom: 24px;
             overflow-x: auto;
             padding-bottom: 5px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
 
         .category-tab {
             padding: 10px 20px;
@@ -168,11 +174,69 @@
         }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
+
+
         /* ── Mobile UI ── */
         @media (max-width: 768px) {
             .dash-main { padding: 20px 16px; }
             .appt-details { grid-template-columns: 1fr; }
+            .appt-footer { flex-wrap: wrap; gap: 8px; }
+            .appt-footer .btn { flex: 1; min-width: 100px; padding: 10px 8px; font-size: 0.8rem; }
         }
+
+        @media (max-width: 480px) {
+            .welcome-stats {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+            .welcome-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .welcome-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .appt-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .status-pill {
+                align-self: flex-start;
+            }
+            .appt-footer {
+                flex-direction: column;
+            }
+            .appt-footer .btn {
+                width: 100%;
+                flex: none;
+            }
+            .category-tab {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+        }
+
+
+        /* ── Dark Mode Overrides ── */
+        [data-theme="dark"] .modal-card,
+        [data-theme="dark"] .appt-card,
+        [data-theme="dark"] .category-tab {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-dark);
+        }
+        [data-theme="dark"] .appt-details {
+            background: var(--purple-ghost);
+        }
+        [data-theme="dark"] .appt-notes {
+            border-left-color: var(--border);
+            color: var(--text-mid);
+        }
+        [data-theme="dark"] .topbar-search input {
+            color: var(--text-dark);
+        }
+
     </style>
 </head>
 <body>
@@ -182,7 +246,40 @@
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
 
     <div class="dashboard-layout">
-        <!-- ── SIDEBAR ── -->
+        <!-- ── MODALS ── -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card" style="max-width: 480px;">
+            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 id="payModalTitle" style="color: var(--text-dark);">💳 Secure Payment</h3>
+                <button class="topbar-icon-btn" onclick="closePaymentModal()">✕</button>
+            </div>
+            <div style="display: grid; gap: 20px;">
+                <div style="background: var(--purple-ghost); padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+                    <div id="payModalInfo" style="font-size: 0.95rem; color: var(--text-dark); line-height: 1.6;">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="stat-card-label" style="color: var(--text-dark);">Card Details</label>
+                    <input type="tel" id="cardNum" class="topbar-search" style="width:100%; border-radius:10px; margin-top:5px; padding:12px; background: var(--input-bg); color: var(--text-dark); border: 1.5px solid var(--input-border);" placeholder="0000 0000 0000 0000" maxlength="19" oninput="this.value = formatCard(this.value)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <input type="tel" id="cardExpiry" class="topbar-search" style="width:100%; border-radius:10px; padding:12px; background: var(--input-bg); color: var(--text-dark); border: 1.5px solid var(--input-border);" placeholder="MM/YY" maxlength="5" oninput="this.value = formatExpiry(this.value)">
+                        <input type="tel" id="cardCvv" class="topbar-search" style="width:100%; border-radius:10px; padding:12px; background: var(--input-bg); color: var(--text-dark); border: 1.5px solid var(--input-border);" placeholder="CVV" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 10px;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--purple-primary); margin-bottom: 5px;">Rs. 2,500.00</div>
+                    <p style="font-size: 0.8rem; color: var(--text-mid);">Standard Consultation Fee</p>
+                </div>
+
+                <button class="btn btn-primary" id="payBtn" onclick="processPayment()">Complete Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── DASHBOARD LAYOUT ── -->
         <aside class="sidebar" id="sidebar">
             <a href="index.html" class="sidebar-logo">
                 <div class="sidebar-logo-icon">♥</div>
@@ -259,6 +356,9 @@
                 <div class="welcome-actions">
                     <button class="btn btn-sm" style="background:white; color:var(--purple-deep); font-weight:800;" onclick="scrollToBooking()" data-i18n="book_appointment">
                        ➕ Book Appointment
+                    </button>
+                    <button class="btn btn-sm" style="background:rgba(255,255,255,0.2); color:white; border: 1px solid rgba(255,255,255,0.4);" onclick="window.location.href='patient-dashboard.html'" data-i18n="view_in_dashboard">
+                       View in Dashboard
                     </button>
                 </div>
             </div>
@@ -420,6 +520,7 @@
             const searchVal = document.getElementById('apptSearch').value;
             const params = new URLSearchParams({
                 patient_id: user.id || '',
+                patient_email: user.email || '',
                 filter: CURRENT_FILTER,
                 search: searchVal
             });
@@ -483,6 +584,10 @@
 
                     ${(appt.status==='upcoming'||appt.status==='rescheduled') ? `
                     <div class="appt-footer">
+                        ${appt.payment_status === 'unpaid' ? 
+                            `<button class="btn btn-sm" style="background:var(--purple-primary); color:white; font-weight:800;" onclick="openPaymentModal(${appt.id}, '${appt.hospital_name}', '${appt.doctor_name}')">💳 Pay Now</button>` : 
+                            `<button class="btn btn-sm" style="background:var(--green-accent); color:white; pointer-events:none;">✅ Paid</button>`
+                        }
                         <button class="btn btn-sm" style="background:var(--purple-ghost); color:var(--purple-primary);" onclick="openResched(${appt.id},'${appt.appointment_date}','${appt.appointment_time}')">${t('reschedule')}</button>
                         <button class="btn btn-sm" style="background:#fef2f2; color:var(--red-accent);" onclick="handleCancel(${appt.id})">${t('cancel_visit')}</button>
                     </div>
@@ -573,6 +678,97 @@
         const so = document.getElementById('sidebar-overlay');
         st.onclick = () => { sb.classList.toggle('active'); so.style.display = sb.classList.contains('active')?'block':'none'; };
         so.onclick = () => { sb.classList.remove('active'); so.style.display = 'none'; };
+        function openPaymentModal(id, hospital, doctor) {
+            document.getElementById('payModalInfo').innerHTML = `
+                <strong>Hospital:</strong> ${hospital}<br>
+                <strong>Doctor:</strong> ${doctor}<br>
+                <strong>Service:</strong> Specialist Consultation
+            `;
+            window.activePayId = id;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        async function processPayment() {
+            const cardNum = document.getElementById('cardNum').value.replace(/\s+/g, '');
+            const expiry = document.getElementById('cardExpiry').value;
+            const cvv = document.getElementById('cardCvv').value;
+
+            // Basic Validation
+            if (!/^\d{13,19}$/.test(cardNum)) {
+                Toast.error('Please enter a valid card number.');
+                return;
+            }
+            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                Toast.error('Please enter a valid expiry (MM/YY).');
+                return;
+            }
+            if (!/^\d{3,4}$/.test(cvv)) {
+                Toast.error('Please enter a valid CVV.');
+                return;
+            }
+
+            // Luhn Algorithm for real card validation
+            if (!validateLuhn(cardNum)) {
+                Toast.error('Invalid card number. Please check and try again.');
+                return;
+            }
+
+            const btn = document.getElementById('payBtn');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<div class="loader-ring" style="width: 20px; height: 20px; border-width: 2px;"></div> Processing...';
+            btn.disabled = true;
+
+            try {
+                const res = await API.call('components/appointment_handler.php', {
+                    action: 'pay',
+                    id: window.activePayId,
+                    patient_id: user.id
+                });
+                
+                if (res.status === 'success') {
+                    Toast.success('Payment Received! Thank you.');
+                    closePaymentModal();
+                    loadAppointments();
+                } else {
+                    Toast.error(res.message);
+                }
+            } catch (e) {
+                Toast.error('Payment processing failed.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function validateLuhn(number) {
+            let sum = 0;
+            let isEven = false;
+            for (let n = number.length - 1; n >= 0; n--) {
+                let digit = parseInt(number.charAt(n), 10);
+                if (isEven) {
+                    if ((digit *= 2) > 9) digit -= 9;
+                }
+                sum += digit;
+                isEven = !isEven;
+            }
+            return (sum % 10) === 0;
+        }
+
+        function formatCard(v) {
+            v = v.replace(/\D/g, '');
+            let chunks = v.match(/.{1,4}/g);
+            return chunks ? chunks.join(' ') : v;
+        }
+
+        function formatExpiry(v) {
+            v = v.replace(/\D/g, '');
+            if (v.length > 2) return v.substring(0, 2) + '/' + v.substring(2, 4);
+            return v;
+        }
     </script>
 </body>
 </html>

@@ -877,3 +877,29 @@ select.form-control {
     padding: 40px 0;
   }
 }
+
+/* ── Mobile Responsive Utilities ── */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .flex-mobile-column {
+    flex-direction: column !important;
+  }
+  
+  .text-mobile-center {
+    text-align: center !important;
+  }
+  
+  .full-width-mobile {
+    width: 100% !important;
+  }
+  
+  .hidden-mobile {
+    display: none !important;
+  }
+}
