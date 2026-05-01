@@ -104,7 +104,7 @@ body {
 /* ── Localization UX Fixes ── */
 .lang-si {
   font-family: 'Noto Sans Sinhala', var(--font-body);
-  line-height: 1.8;
+  line-height: 1.6; /* Match English body line-height */
 }
 
 .lang-ta {
@@ -119,28 +119,88 @@ body {
   letter-spacing: 0;
 }
 
-/* Fix for long Tamil/Sinhala words in buttons and nav */
+/* Fix for long Tamil/Sinhala words in buttons and nav - matching English sizes exactly */
 .lang-si .btn, .lang-ta .btn {
-  padding: 12px 24px;
-  white-space: nowrap; /* Prevent wrapping in buttons */
+  padding: 12px 28px !important;
+  font-size: 0.95rem !important;
+  white-space: nowrap !important;
   text-align: center;
-  font-size: 0.85rem;
 }
 
-
-.lang-ta .sidebar-item, .lang-si .sidebar-item {
-  font-size: 0.85rem;
-  line-height: 1.4;
+.lang-si .btn-sm, .lang-ta .btn-sm,
+.lang-si select, .lang-ta select,
+.lang-si input, .lang-ta input {
+  padding: 8px 18px !important;
+  font-size: 0.875rem !important;
 }
 
-/* Keep Navbar and Footer in English Font even if page is localized */
-.lang-si .navbar, .lang-si .footer, .lang-si .nav-mobile-drawer,
-.lang-ta .navbar, .lang-ta .footer, .lang-ta .nav-mobile-drawer {
+/* Severity buttons in Track Symptoms */
+.lang-si .severity-btn, .lang-ta .severity-btn {
+  padding: 8px 16px !important;
+  font-size: 0.85rem !important;
+  white-space: nowrap !important;
+}
+
+/* Sidebar items in translated languages: enforce IDENTICAL size to English.
+   English item height = padding(11+11) + font(0.9rem * 1.6 line-height) = 22 + 23 = 45px */
+.lang-ta .sidebar-item,
+.lang-si .sidebar-item {
+  font-size: 0.8rem !important;      /* Increased from 0.72rem to match English 0.9rem visual weight */
+  line-height: 1 !important;         /* Override body 1.6/1.8 — stops glyph inflation */
+  height: 45px !important;           /* Exact English item height */
+  min-height: 45px !important;       /* Prevent flex shrink */
+  max-height: 45px !important;       /* Hard lock */
+  padding: 11px 12px !important;     /* Match English padding exactly */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-bottom: 2px !important;
+  border-radius: var(--radius-md) !important;
+  box-sizing: border-box !important;
+}
+
+/* Section labels: keep same height as English */
+.lang-ta .sidebar-section-label,
+.lang-si .sidebar-section-label {
+  font-size: 0.65rem !important;     /* Exact English match */
+  line-height: 1 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Profile role text: keep compact but match English weight */
+.lang-ta .sidebar-role,
+.lang-si .sidebar-role {
+  font-size: 0.7rem !important;      /* Match English 0.72rem */
+  line-height: 1.2 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Profile name: keep compact but match English weight */
+.lang-ta .sidebar-name,
+.lang-si .sidebar-name {
+  font-size: 0.85rem !important;     /* Match English 0.88rem */
+  line-height: 1.2 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Keep Navbar, Sidebar Logo and Footer in English Font even if page is localized */
+.lang-si .navbar, .lang-si .footer, .lang-si .nav-mobile-drawer, .lang-si .sidebar-logo-text,
+.lang-ta .navbar, .lang-ta .footer, .lang-ta .nav-mobile-drawer, .lang-ta .sidebar-logo-text {
   font-family: var(--font-body) !important;
   line-height: 1.5; /* Reset to standard line-height */
 }
 
 .lang-si .nav-logo, .lang-ta .nav-logo,
+.lang-si .sidebar-logo-text, .lang-ta .sidebar-logo-text,
 .lang-si .footer-logo-text, .lang-ta .footer-logo-text {
   font-family: var(--font-display) !important;
 }
@@ -175,10 +235,13 @@ body {
 }
 
 
-.lang-ta .sidebar-item, .lang-si .sidebar-item {
-  font-size: 0.78rem;
-  line-height: 1.2;
-  padding: 6px 10px;
+/* Section labels also need clipping in translated languages */
+.lang-ta .sidebar-section-label,
+.lang-si .sidebar-section-label {
+  font-size: 0.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 [data-theme="dark"] .settings-section,

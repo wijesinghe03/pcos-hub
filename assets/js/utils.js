@@ -1437,6 +1437,42 @@ const L10n = {
       latest_activity: "Latest Activity",
       upcoming_appts: "Upcoming Appointments",
       view_all_activity: "View All Activity",
+      patient_dashboard: "Patient Dashboard",
+      search_placeholder: "Search records\u2026",
+      messages: "Messages",
+      welcome: "Welcome back",
+      welcome_subtitle: "Here's a summary of your PCOS management this week. Keep up the great work!",
+      last_cycle: "Last Cycle",
+      lifestyle_score: "Lifestyle Score",
+      add_symptom: "Log Symptoms",
+      log_first_cycle: "Log Cycle",
+      recent_symptoms: "Recent Symptoms",
+      view_all: "View All \u2192",
+      health_progress: "Health Progress",
+      exercise_goals: "Exercise Goals",
+      diet_compliance: "Diet Compliance",
+      water_intake: "Water Intake",
+      quick_actions: "Quick Actions",
+      log_meal: "Log Meal",
+      log_exercise: "Log Exercise",
+      track_pill: "Medication",
+      log_sleep: "Log Sleep",
+      recent_activity: "Recent Activity",
+      cycle_length: "Cycle Length (days)",
+      symptoms_logged: "Symptoms Logged",
+      reports_total: "Reports Uploaded",
+      appt_days: "Days to Appointment",
+      water_goal: "\uD83D\uDCA7 Water Goal",
+      no_reports: "No reports yet \u2014",
+      upload_one: "upload one \u2192",
+      upload_new_report: "\uD83D\uDCE4 Upload New Report",
+      start_tracking: "start tracking \u2192",
+      regular_cycle: "Regular Cycle",
+      irregular_cycle: "Irregular Cycle",
+      no_cycle_logged: "No cycle logged yet",
+      cycle_logged_activity: "Menstrual cycle logged \u2014 {length}-day cycle, {flow} flow",
+      log_meal_hint: "Log your first meal",
+      no_meals_today_hint: "No meals logged today",
       track_symptoms_title: "Track Symptoms",
       log_your_symptoms: "Log Your Symptoms",
       physical_symptoms: "Physical Symptoms",
@@ -2609,12 +2645,48 @@ const L10n = {
       footer_contact: "අමතන්න",
 
       // Dashboard
-      health_overview: "සෞඛ්‍ය දළ විශ්ලේෂණය",
-      active_symptoms: "සක්‍රීය රෝග ලක්ෂණ",
-      cycle_tracker: "ඔසප් චක්‍රය නිරීක්ෂණය",
-      latest_activity: "නවතම ක්‍රියාකාරකම්",
-      upcoming_appts: "ඉදිරි හමුවීම්",
-      view_all_activity: "සියලු ක්‍රියාකාරකම් බලන්න",
+      health_overview: "\u0dc3\u0dca\u0dc0\u0dcf\u0dc3\u0dca\u0d90\u0dba \u0daf\u0dbb \u0dc5\u0dcf\u0dba\u0da7\u0dba\u0dcf\u0dbd\u0dba",
+      active_symptoms: "\u0dc3\u0d9a\u0dca\u0dbb\u0dd3\u0dba \u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab",
+      cycle_tracker: "\u0d94\u0dc3\u0db4\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba \u0db1\u0dd2\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dab\u0dba",
+      latest_activity: "\u0db1\u0dc0\u0dad\u0db8 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca",
+      upcoming_appts: "\u0d89\u0daf\u0dd2\u0dbb\u0dd2 \u0dc4\u0db8\u0dd4\u0dc0\u0dd3\u0db8\u0dca",
+      view_all_activity: "\u0dc3\u0dd2\u0dba\u0dbd\u0dd4 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca \u0db6\u0dbd\u0db1\u0dca\u0db1",
+      patient_dashboard: "\u0dbb\u0ddd\u0d9c\u0dd3 \u0d8b\u0db4\u0d9a\u0dbb\u0dab \u0db4\u0dd4\u0dc0\u0dbb\u0dd4\u0dc0",
+      search_placeholder: "\u0dc0\u0dcf\u0dbb\u0dca\u0dad\u0dcf \u0dc3\u0ddc\u0dba\u0db1\u0dca\u0db1\u2026",
+      messages: "\u0db4\u0dab\u0dd2\u0dc0\u0dd2\u0da9",
+      welcome: "\u0db1\u0dd0\u0dc0\u0dad\u0dad\u0dca \u0dc3\u0dcf\u0daf\u0dbb\u0dba\u0ddd\u0db1\u0dca \u0db4\u0dd2\u0dbd\u0dd2\u0d9c\u0db1\u0dd2\u0db8\u0dd4",
+      welcome_subtitle: "\u0db8\u0db1 \u0dc3\u0dad\u0dd2\u0dba \u0d85\u0db6\u0dda \u0dc0\u0dd2\u0dc3\u0dd2\u0db1\u0dca\u0daf\u0dbb\u0dba\u0dca \u0dc3\u0dd8\u0dbd\u0dd2\u0dba\u0dd0 PCOS \u0d9a\u0dbd\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0db4\u0dd2\u0dbd\u0dd2\u0db6\u0da9\u0dc0 \u0dc3\u0dcf\u0dbb\u0dcf\u0d82\u0dc1\u0dba\u0dba\u0dd2.",
+      last_cycle: "\u0d85\u0dc0\u0dc3\u0db1 \u0d94\u0dc3\u0db4\u0dca \u0dc0\u0dd3\u0db8",
+      lifestyle_score: "\u0da2\u0dd3\u0dc0\u0db1 \u0dbb\u0da7\u0dcf\u0dc0 \u0dbd\u0d9a\u0dd4\u0dab\u0dd4",
+      add_symptom: "\u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      log_first_cycle: "\u0d94\u0dc3\u0db4\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      recent_symptoms: "\u0db8\u0dd0\u0dad \u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab",
+      view_all: "\u0dc3\u0dd2\u0dba\u0dbd\u0dca\u0dbd \u0db6\u0dbd\u0db1\u0dca\u0db1 \u2192",
+      health_progress: "\u0dc3\u0dca\u0dc0\u0dcf\u0dc3\u0dca\u0d90\u0dba \u0db4\u0dca\u200d\u0dbb\u0d9c\u0dad\u0dd2\u0dba",
+      exercise_goals: "\u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0d89\u0dbd\u0d9a\u0dca\u0d9a",
+      diet_compliance: "\u0d86\u0dc4\u0dcf\u0dbb \u0dbb\u0da7\u0dcf\u0dc0",
+      water_intake: "\u0da2\u0dbd \u0db4\u0dcf\u0db1\u0dba",
+      quick_actions: "\u0d89\u0d9a\u0dca\u0db8\u0db1 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dc0",
+      log_meal: "\u0d86\u0dc4\u0dcf\u0dbb\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      log_exercise: "\u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      track_pill: "\u0d94\u0dc2\u0db8",
+      log_sleep: "\u0db1\u0dd2\u0db1\u0dca\u0daf \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      recent_activity: "\u0db8\u0dd0\u0dad \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca",
+      cycle_length: "\u0da0\u0d9a\u0dca\u200d\u0dbb \u0d9a\u0dcf\u0dbd\u0dba (\u0daf\u0dd2\u0db1)",
+      symptoms_logged: "\u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1 \u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab",
+      reports_total: "\u0d91\u0d9a\u0dca \u0d9a\u0dbb\u0db1 \u0dc5\u0dcf\u0dbb\u0dca\u0dad\u0dcf",
+      appt_days: "\u0dc4\u0db8\u0dd4\u0dc0\u0dd3\u0db8\u0da7 \u0d89\u0dad\u0dd2\u0dbb\u0dd2 \u0daf\u0dd2\u0db1",
+      water_goal: "\uD83D\uDCA7 \u0da2\u0dbd \u0d89\u0dbd\u0d9a\u0dca\u0d9a\u0dba",
+      no_reports: "\u0dad\u0dc5\u0db8 \u0dc5\u0dcf\u0dbb\u0dca\u0dad\u0dcf \u0db1\u0dd0\u0dad \u2014",
+      upload_one: "\u0d91\u0d9a\u0d9a\u0dca \u0d91\u0d9a\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1 \u2192",
+      upload_new_report: "\uD83D\uDCE4 \u0db1\u0dc0 \u0dc5\u0dcf\u0dbb\u0dca\u0dad\u0dcf\u0dc0\u0d9a\u0dca \u0d91\u0d9a\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      start_tracking: "\u0dbd\u0dd4\u0dc4\u0dd4\u0db6\u0dd0\u0daf\u0dd3\u0db8 \u0d86\u0dbb\u0db8\u0dca\u0db4\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1 \u2192",
+      regular_cycle: "\u0dc5\u0dd2\u0daf\u0dd2\u0db8\u0dad\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba",
+      irregular_cycle: "\u0d85\u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dad\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba",
+      no_cycle_logged: "\u0dad\u0dc5\u0db8 \u0d94\u0dc3\u0db4\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb \u0db1\u0dd0\u0dad",
+      cycle_logged_activity: "\u0d94\u0dc3\u0db4\u0dca \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1 \u0dbd\u0daf\u0dd3 \u2014 {length}-\u0daf\u0dd2\u0db1 \u0da0\u0d9a\u0dca\u200d\u0dbb\u0dba, {flow} \u0db4\u0dca\u200d\u0dbb\u0dc0\u0dcf\u0dc4\u0dba",
+      log_meal_hint: "\u0d94\u0db6\u0dda \u0db4\u0dbb\u0dca\u0db8\u0dd4\u0dc5\u0dca \u0d86\u0dc4\u0dcf\u0dbb\u0dba \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1",
+      no_meals_today_hint: "\u0d86\u0dc4\u0dcf\u0dbb \u0d9a\u0dd2\u0dc3\u0dd2\u0dc0\u0d9a\u0dca \u0dc3\u0da7\u0dc4\u0db1\u0dca \u0d9a\u0dbb \u0db1\u0dd0\u0dad",
       track_symptoms_title: "රෝග ලක්ෂණ නිරීක්ෂණය",
       log_your_symptoms: "ඔබේ රෝග ලක්ෂණ ඇතුළත් කරන්න",
       physical_symptoms: "ශාරීරික රෝග ලක්ෂණ",
@@ -3437,12 +3509,48 @@ const L10n = {
       footer_contact: "தொடர்பு",
 
       // Dashboard
-      health_overview: "ஆரோக்கிய மேலோட்டம்",
-      active_symptoms: "செயலில் உள்ள அறிகுறிகள்",
-      cycle_tracker: "சுழற்சி கண்காணிப்பு",
-      latest_activity: "சமீபத்திய செயல்பாடு",
-      upcoming_appts: "வரவிருக்கும் சந்திப்புகள்",
-      view_all_activity: "அனைத்து செயல்பாடுகளையும் காண்க",
+      health_overview: "\u0b86\u0bb0\u0bcb\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0bae\u0bc7\u0bb2\u0bcb\u0b9f\u0bcd\u0b9f\u0bae\u0bcd",
+      active_symptoms: "\u0b9a\u0bc6\u0baf\u0bb2\u0bbf\u0bb2\u0bcd \u0b89\u0bb3\u0bcd\u0bb3 \u0b85\u0bb1\u0bbf\u0b95\u0bc1\u0bb1\u0bbf\u0b95\u0bb3\u0bcd",
+      cycle_tracker: "\u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0b95\u0ba3\u0bcd\u0b95\u0bbe\u0ba3\u0bbf\u0baa\u0bcd\u0baa\u0bc1",
+      latest_activity: "\u0b9a\u0bae\u0bc0\u0baa\u0ba4\u0bcd\u0ba4\u0bbf\u0baf \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0baa\u0bbe\u0b9f\u0bc1",
+      upcoming_appts: "\u0bb5\u0bb0\u0bb5\u0bbf\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0b9a\u0ba8\u0bcd\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bcd",
+      view_all_activity: "\u0b85\u0ba9\u0bc8\u0ba4\u0bcd\u0ba4\u0bc1 \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0baa\u0bbe\u0b9f\u0bc1\u0b95\u0bb3\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0ba3\u0bcd\u0b95",
+      patient_dashboard: "\u0ba8\u0bcb\u0baf\u0bbe\u0bb3\u0bbf \u0ba4\u0bb5\u0ba3\u0bc8\u0baa\u0bcd \u0baa\u0bb2\u0b95\u0bc8",
+      search_placeholder: "\u0baa\u0ba4\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8\u0ba4\u0bcd \u0ba4\u0bc7\u0b9f\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd\u2026",
+      messages: "\u0b9a\u0bc6\u0baf\u0bcd\u0ba4\u0bbf\u0b95\u0bb3\u0bcd",
+      welcome: "\u0bae\u0bc0\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd \u0bb5\u0bb0\u0bb5\u0bc7\u0bb1\u0bcd\u0b95\u0bbf\u0bb1\u0bcb\u0bae\u0bcd",
+      welcome_subtitle: "\u0b87\u0ba8\u0bcd\u0ba4 \u0bb5\u0bbe\u0bb0\u0bae\u0bcd \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd PCOS \u0bae\u0bc7\u0bb2\u0bbe\u0ba3\u0bcd\u0bae\u0bc8\u0baf\u0bbf\u0ba9\u0bcd \u0b9a\u0bc1\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bae\u0bcd.",
+      last_cycle: "\u0b95\u0b9f\u0bc8\u0b9a\u0bbf \u0bae\u0bbe\u0ba4\u0bb5\u0bbf\u0b9f\u0bbe\u0baf\u0bcd",
+      lifestyle_score: "\u0bb5\u0bbe\u0bb4\u0bcd\u0b95\u0bcd\u0b95\u0bc8 \u0bae\u0bc1\u0bb1\u0bc8 \u0bae\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc6\u0ba3\u0bcd",
+      add_symptom: "\u0b85\u0bb1\u0bbf\u0b95\u0bc1\u0bb1\u0bbf\u0b95\u0bb3\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd",
+      log_first_cycle: "\u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf\u0baf\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd",
+      recent_symptoms: "\u0b9a\u0bae\u0bc0\u0baa\u0ba4\u0bcd\u0ba4\u0bbf\u0baf \u0b85\u0bb1\u0bbf\u0b95\u0bc1\u0bb1\u0bbf\u0b95\u0bb3\u0bcd",
+      view_all: "\u0b85\u0ba9\u0bc8\u0ba4\u0bcd\u0ba4\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0ba3\u0bcd\u0b95 \u2192",
+      health_progress: "\u0b86\u0bb0\u0bcb\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bc7\u0bb1\u0bcd\u0bb1\u0bae\u0bcd",
+      exercise_goals: "\u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0b87\u0bb2\u0b95\u0bcd\u0b95\u0bc1\u0b95\u0bb3\u0bcd",
+      diet_compliance: "\u0b89\u0ba3\u0bb5\u0bc1 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1\u0bc1\u0ba4\u0bb2\u0bcd",
+      water_intake: "\u0ba8\u0bc0\u0bb0\u0bcd \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb2\u0bcd",
+      quick_actions: "\u0bb5\u0bbf\u0bb0\u0bc8\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd",
+      log_meal: "\u0b89\u0ba3\u0bb5\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd",
+      log_exercise: "\u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf\u0baf\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd",
+      track_pill: "\u0bae\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1",
+      log_sleep: "\u0ba4\u0bc2\u0b95\u0bcd\u0b95\u0ba4\u0bcd\u0ba4\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd",
+      recent_activity: "\u0b9a\u0bae\u0bc0\u0baa\u0ba4\u0bcd\u0ba4\u0bbf\u0baf \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0baa\u0bbe\u0b9f\u0bc1",
+      cycle_length: "\u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0ba8\u0bc0\u0bb3\u0bae\u0bcd (\u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd)",
+      symptoms_logged: "\u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0ba4 \u0b85\u0bb1\u0bbf\u0b95\u0bc1\u0bb1\u0bbf\u0b95\u0bb3\u0bcd",
+      reports_total: "\u0baa\u0ba4\u0bbf\u0bb5\u0bc7\u0bb1\u0bcd\u0bb1\u0baa\u0bcd\u0baa\u0b9f\u0bcd\u0b9f \u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bcd",
+      appt_days: "\u0b9a\u0ba8\u0bcd\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc1 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+      water_goal: "\uD83D\uDCA7 \u0ba8\u0bc0\u0bb0\u0bcd \u0b87\u0bb2\u0b95\u0bcd\u0b95\u0bc1",
+      no_reports: "\u0b87\u0ba9\u0bcd\u0ba9\u0bc1\u0bae\u0bcd \u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bcd \u0b87\u0bb2\u0bcd\u0bb2\u0bc8 \u2014",
+      upload_one: "\u0b92\u0ba9\u0bcd\u0bb1\u0bc8 \u0baa\u0ba4\u0bbf\u0bb5\u0bc7\u0bb1\u0bcd\u0bb1\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u2192",
+      upload_new_report: "\uD83D\uDCE4 \u0baa\u0bc1\u0ba4\u0bbf\u0baf \u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0baf\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc7\u0bb1\u0bcd\u0bb1\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd",
+      start_tracking: "\u0b95\u0ba3\u0bcd\u0b95\u0bbe\u0ba3\u0bbf\u0baa\u0bcd\u0baa\u0bc8\u0ba4\u0bcd \u0ba4\u0bca\u0b9f\u0b99\u0bcd\u0b95\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u2192",
+      regular_cycle: "\u0b9a\u0bc0\u0bb0\u0bbe\u0ba9 \u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf",
+      irregular_cycle: "\u0b9a\u0bc0\u0bb0\u0bb1\u0bcd\u0bb1 \u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf",
+      no_cycle_logged: "\u0b87\u0ba9\u0bcd\u0ba9\u0bc1\u0bae\u0bcd \u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bbf\u0bb2\u0bcd\u0bb2\u0bc8",
+      cycle_logged_activity: "\u0bae\u0bbe\u0ba4\u0bb5\u0bbf\u0b9f\u0bbe\u0baf\u0bcd \u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u2014 {length}-\u0ba8\u0bbe\u0bb3\u0bcd \u0b9a\u0bc1\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf, {flow} \u0b87\u0bb0\u0ba4\u0bcd\u0ba4\u0baa\u0bcd\u0baa\u0bcb\u0b95\u0bcd\u0b95\u0bc1",
+      log_meal_hint: "\u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bc1\u0ba4\u0bb2\u0bcd \u0b89\u0ba3\u0bb5\u0bc8\u0baa\u0bcd \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd",
+      no_meals_today_hint: "\u0b87\u0ba9\u0bcd\u0bb1\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1 \u0baa\u0ba4\u0bbf\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bbf\u0bb2\u0bcd\u0bb2\u0bc8",
       track_symptoms_title: "அறிகுறிகளைக் கண்காணியுங்கள்",
       log_your_symptoms: "உங்கள் அறிகுறிகளைப் பதிவு செய்யுங்கள்",
       physical_symptoms: "உடல் அறிகுறிகள்",
@@ -3798,9 +3906,15 @@ const L10n = {
     document.body.classList.add('lang-' + lang);
     
     const dict = this.translations[lang] || this.translations.en;
+
+    // Elements inside navbar or footer are ALWAYS kept in English.
+    // We determine if an element is part of the global chrome.
+    const isNavOrFooter = (el) => !!el.closest('nav.navbar, .nav-mobile-drawer, footer.footer, #navbar-placeholder, #footer-placeholder');
     
-    // 1. Localize text content/placeholders
+    // 1. Localize text content/placeholders (skip nav & footer)
     document.querySelectorAll('[data-i18n]').forEach(el => {
+      if (isNavOrFooter(el)) return; // keep header/footer in English
+
       const key = el.getAttribute('data-i18n').trim();
       const content = dict[key] || (this.translations.en ? this.translations.en[key] : null);
 
@@ -3837,8 +3951,9 @@ const L10n = {
       }
     });
 
-    // 2. Localize titles/tooltips
+    // 2. Localize titles/tooltips (skip nav & footer)
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      if (isNavOrFooter(el)) return;
       const key = el.getAttribute('data-i18n-title');
       if (dict[key]) {
         el.setAttribute('title', dict[key]);
@@ -3852,13 +3967,12 @@ const L10n = {
     const lang = this.get();
     this.apply(lang);
 
-    // Sync language select dropdowns if they exist (dashboard settings)
+    // Sync the language dropdown to the current language (settings page).
+    // NOTE: The change/save listeners are managed by settings.html initPage()
+    // to avoid double-firing. We only sync the value here.
     const langSelect = document.getElementById('language');
     if (langSelect) {
       langSelect.value = lang;
-      langSelect.addEventListener('change', (e) => {
-        this.set(e.target.value);
-      });
     }
   },
 

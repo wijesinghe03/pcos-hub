@@ -640,7 +640,13 @@
         }
 
         function saveLanguageSettings() {
-            Toast.success('Language and region settings saved!');
+            const langSelect = document.getElementById('language');
+            const selectedLang = langSelect ? langSelect.value : 'en';
+            // Persist timezone if needed
+            const tzSelect = document.getElementById('timezone');
+            if (tzSelect) localStorage.setItem('setting_timezone', tzSelect.value);
+            // Apply language — L10n.set() saves to localStorage & reloads
+            L10n.set(selectedLang);
         }
 
         function clearAllData() {
@@ -711,6 +717,10 @@
             const langSelect = document.getElementById('language');
             if (langSelect) {
                 langSelect.value = L10n.get();
+                // Preview language live when user changes the dropdown
+                langSelect.addEventListener('change', () => {
+                    L10n.apply(langSelect.value);
+                });
             }
 
             // Setup other select dropdowns (excluding specialized ones)
