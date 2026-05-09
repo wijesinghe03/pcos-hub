@@ -5,10 +5,12 @@
 // ============================================================
 
 require_once 'db_connect.php';
+require_once __DIR__ . '/utils/Logger.php';
 
 header('Content-Type: application/json');
 
 try {
+    Logger::log('system', 'info', 'Real-time system statistics fetched', 'StatsEngine');
     // 1. Count Patients
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patients");
     $patient_count = $stmt->fetch()['count'];
@@ -27,12 +29,22 @@ try {
 
     $total_reports = $report_count + $lab_count;
 
+    // 4. Count Admins
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM admin_users");
+    $admin_count = $stmt->fetch()['count'];
+
+    // 5. Count Pending Hospitals
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals WHERE approval_status = 'pending'");
+    $pending_count = $stmt->fetch()['count'];
+
     echo json_encode([
         'status' => 'success',
         'data' => [
             'patients' => (int)$patient_count,
             'hospitals' => (int)$hospital_count,
-            'reports' => (int)$total_reports
+            'reports' => (int)$total_reports,
+            'admins' => (int)$admin_count,
+            'pending_hospitals' => (int)$pending_count
         ]
     ]);
 } catch (Exception $e) {

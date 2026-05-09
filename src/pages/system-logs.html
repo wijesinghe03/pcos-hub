@@ -45,11 +45,12 @@
             gap: 16px;
             margin-bottom: 22px;
             flex-wrap: wrap;
-            background: white;
+            background: var(--bg-card);
             padding: 18px;
             border-radius: var(--radius-lg);
             border: 1.5px solid var(--border);
             align-items: flex-end;
+            transition: var(--transition);
         }
 
         .filter-group {
@@ -77,18 +78,21 @@
         }
 
         .severity-info {
-            background: #e0f2fe;
-            color: #0369a1;
+            background: rgba(3, 105, 161, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(3, 105, 161, 0.2);
         }
 
         .severity-warning {
-            background: #fef3c7;
-            color: #92400e;
+            background: rgba(146, 64, 14, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(146, 64, 14, 0.2);
         }
 
         .severity-error {
-            background: #fee2e2;
-            color: #b91c1c;
+            background: rgba(185, 28, 28, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(185, 28, 28, 0.2);
         }
 
         .severity-critical {
@@ -100,7 +104,7 @@
             font-size: 0.8rem;
             color: var(--text-mid);
             font-weight: 600;
-            background: var(--bg-light);
+            background: var(--purple-ghost);
             padding: 2px 8px;
             border-radius: 4px;
         }
@@ -242,8 +246,7 @@
                     </select>
                 </div>
                 <div class="filter-group" style="flex: 0 0 auto;">
-                    <button class="btn btn-ghost btn-sm"
-                        style="background: var(--bg-light); color: var(--text-mid); border: 1.5px solid var(--border);"
+                    <button class="btn btn-outline btn-sm"
                         onclick="resetFilters()">Reset</button>
                 </div>
             </div>
@@ -290,35 +293,57 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/dashboard.js"></script>
     <script>
-        // Mock Log Data
-        const logsData = [
-            { id: 'LOG-4502', time: '2026-03-03 23:15:22', category: 'auth', severity: 'info', message: 'Admin user logged in successfully', user: 'Admin' },
-            { id: 'LOG-4501', time: '2026-03-03 22:45:10', category: 'hospital', severity: 'warning', message: 'Hospital "Nawaloka" updated profile details', user: 'HospitalStaff' },
-            { id: 'LOG-4500', time: '2026-03-03 21:30:05', category: 'system', severity: 'error', message: 'Failed to sync background backup to cloud storage', user: 'System' },
-            { id: 'LOG-4499', time: '2026-03-03 20:12:44', category: 'patient', severity: 'info', message: 'New patient registration completed: P-0092', user: 'System' },
-            { id: 'LOG-4498', time: '2026-03-03 19:55:30', category: 'database', severity: 'critical', message: 'SQL Injection attempt detected and blocked', user: 'IP: 192.168.1.45' },
-            { id: 'LOG-4497', time: '2026-03-03 18:20:15', category: 'auth', severity: 'warning', message: 'Multiple failed login attempts for user: amanda@email.com', user: 'AuthGuard' },
-            { id: 'LOG-4496', time: '2026-03-03 17:40:00', category: 'hospital', severity: 'info', message: 'Premier Hospital application approved', user: 'Admin' },
-            { id: 'LOG-4495', time: '2026-03-03 16:15:22', category: 'system', severity: 'info', message: 'System maintenance window scheduled for Mar 05', user: 'Admin' },
-            { id: 'LOG-4494', time: '2026-03-03 15:30:10', category: 'patient', severity: 'info', message: 'Laboratory results uploaded for Patient ID: P-0035', user: 'LabStaff' },
-            { id: 'LOG-4493', time: '2026-03-03 14:45:05', category: 'auth', severity: 'error', message: 'Expired session token used by IP: 10.0.0.5', user: 'AuthGuard' }
-        ];
+        let logsData = [];
+
+        async function fetchLogs() {
+            const severity = document.getElementById('severityFilter').value;
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('logSearch').value;
+
+            try {
+                const url = `../../src/php/get_system_logs.php?severity=${severity}&category=${category}&search=${encodeURIComponent(search)}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Network response was not ok');
+                const json = await res.json();
+                if (json.status === 'success') {
+                    logsData = json.data;
+                    renderLogs(logsData);
+                } else {
+                    throw new Error(json.message);
+                }
+            } catch (err) {
+                console.error('Logs fetch error:', err);
+                const tableBody = document.getElementById('logsTableBody');
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--red-accent)">Error loading logs: ${err.message}. Please check database connection.</td></tr>`;
+            }
+        }
 
         function renderLogs(data) {
             const tableBody = document.getElementById('logsTableBody');
             tableBody.innerHTML = '';
 
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-light)">No log entries found</td></tr>';
+                document.getElementById('logCount').textContent = '0';
+                return;
+            }
+
             data.forEach(log => {
                 const row = document.createElement('tr');
+                const timeStr = new Date(log.timestamp).toLocaleString('en-GB', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                });
+                
                 row.innerHTML = `
-        <td class="td-light">${log.time}</td>
-        <td><strong>${log.id}</strong></td>
-        <td><span class="log-category">${log.category}</span></td>
-        <td><span class="log-severity severity-${log.severity}">${log.severity}</span></td>
-        <td><div class="log-message" title="${log.message}">${log.message}</div></td>
-        <td class="td-light">${log.user}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="viewLogDetail('${log.id}')">Details</button></td>
-      `;
+                    <td class="td-light">${timeStr}</td>
+                    <td><strong>${log.log_id}</strong></td>
+                    <td><span class="log-category">${log.category}</span></td>
+                    <td><span class="log-severity severity-${log.severity}">${log.severity}</span></td>
+                    <td><div class="log-message" title="${log.message}">${log.message}</div></td>
+                    <td class="td-light">${log.user_identifier}</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="viewLogDetail('${log.log_id}')">Details</button></td>
+                `;
                 tableBody.appendChild(row);
             });
 
@@ -326,35 +351,25 @@
         }
 
         function filterLogs() {
-            const searchTerm = document.getElementById('logSearch').value.toLowerCase();
-            const severity = document.getElementById('severityFilter').value;
-            const category = document.getElementById('categoryFilter').value;
-
-            const filtered = logsData.filter(log => {
-                const matchesSearch = log.message.toLowerCase().includes(searchTerm) || log.id.toLowerCase().includes(searchTerm);
-                const matchesSeverity = severity === 'all' || log.severity === severity;
-                const matchesCategory = category === 'all' || log.category === category;
-                return matchesSearch && matchesSeverity && matchesCategory;
-            });
-
-            renderLogs(filtered);
+            fetchLogs();
         }
 
         function resetFilters() {
             document.getElementById('logSearch').value = '';
             document.getElementById('severityFilter').value = 'all';
             document.getElementById('categoryFilter').value = 'all';
-            renderLogs(logsData);
+            fetchLogs();
         }
 
         function viewLogDetail(id) {
-            const log = logsData.find(l => l.id === id);
-            Toast.show(`Viewing details for ${id}: ${log.message}`, 'info');
+            const log = logsData.find(l => l.log_id === id);
+            Toast.show(`Log ${id}: ${log.message} (IP: ${log.ip_address})`, 'info');
         }
 
         function clearLogs() {
             if (confirm('Are you sure you want to clear all system logs? This action cannot be undone.')) {
-                Toast.error('System logs cleared (Simulated)');
+                // To be implemented: backend clear endpoint
+                Toast.error('Clear logs action requires Super Admin elevated permissions.');
             }
         }
 
@@ -363,7 +378,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderLogs(logsData);
+            fetchLogs();
+            // Optional: Live feed refresh every 10 seconds
+            setInterval(fetchLogs, 10000);
         });
     </script>
 </body>

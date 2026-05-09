@@ -61,8 +61,10 @@ function handleLogin($pdo)
                 }
             }
 
-            // Name field varies by table (hosp_name vs full_name)
-            $displayName = $user['full_name'] ?? $user['hosp_name'] ?? 'Authorized User';
+            // Log Success
+            require_once __DIR__ . '/../utils/Logger.php';
+            Logger::log('auth', 'info', ucfirst($role) . " logged in: " . $identity, $displayName);
+
             echo json_encode([
                 'status' => 'success',
                 'message' => ($role === 'patient' && isset($diff) && $diff < 30) ? 'Welcome back! Your account has been reactivated.' : 'Login successful',
@@ -86,9 +88,16 @@ function handleLogin($pdo)
             ]);
         } else {
             $reason = !$user ? 'User not found' : 'Password mismatch';
+            
+            // Log Failure
+            require_once __DIR__ . '/../utils/Logger.php';
+            Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
+            
             echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal. (Reason: ' . $reason . ')']);
         }
     } catch (PDOException $e) {
+        require_once __DIR__ . '/../utils/Logger.php';
+        Logger::log('database', 'error', 'Login system error: ' . $e->getMessage(), 'System');
         echo json_encode(['status' => 'error', 'message' => 'System error: ' . $e->getMessage()]);
     }
 }

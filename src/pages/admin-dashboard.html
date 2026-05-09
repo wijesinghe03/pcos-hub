@@ -385,24 +385,106 @@
       Toast.success('User activated successfully!');
     }
 
-    /* Load live pending approval count into sidebar badge */
-    async function loadPendingCount() {
+    async function loadDashboardRealTimeData() {
       try {
-        var res  = await fetch('../../src/php/components/get_pending_hospitals.php');
-        var data = await res.json();
-        if (data.status === 'success') {
-          var badge = document.getElementById('approvalBadge');
-          if (data.count > 0) {
-            badge.textContent = data.count;
-            badge.style.display = 'inline-block';
+        // 1. Fetch Stats
+        const statsRes = await fetch('../../src/php/get_stats.php');
+        const stats = await statsRes.json();
+        if (stats.status === 'success') {
+          const s = stats.data;
+          document.querySelectorAll('.stat-card-value')[0].textContent = s.patients;
+          document.querySelectorAll('.stat-card-value')[1].textContent = s.hospitals;
+          document.querySelectorAll('.stat-card-value')[2].textContent = s.admins;
+          document.querySelectorAll('.stat-card-value')[3].textContent = s.pending_hospitals;
+        }
+
+        // 2. Fetch Detailed Data
+        const dataRes = await fetch('../../src/php/get_admin_dashboard_data.php');
+        const d = await dataRes.json();
+        if (d.status === 'success') {
+          const data = d.data;
+
+          // Pending Hospitals Table
+          const pendingTbody = document.querySelector('.dash-panel:nth-of-type(1) .dash-table tbody');
+          if (data.pending_hospitals.length > 0) {
+            pendingTbody.innerHTML = data.pending_hospitals.map(h => `
+              <tr>
+                <td><strong>${h.hosp_name}</strong></td>
+                <td class="td-light">${h.location || 'N/A'}</td>
+                <td><span class="badge badge-orange">Pending</span></td>
+                <td style="display:flex;gap:6px">
+                  <button class="btn btn-primary btn-sm" onclick="approveHospital(this, '${h.hosp_name}')">Approve</button>
+                  <button class="btn btn-outline btn-sm" style="color:var(--red-accent);border-color:var(--red-accent)" onclick="rejectHospital(this)">Reject</button>
+                </td>
+              </tr>
+            `).join('');
           } else {
-            badge.style.display = 'none';
+            pendingTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">No pending approvals</td></tr>';
+          }
+
+          // Recent Users Table
+          const usersTbody = document.querySelector('.dash-panel:nth-of-type(3) .dash-table tbody');
+          usersTbody.innerHTML = data.recent_users.map(u => `
+            <tr>
+              <td><strong>${u.name}</strong><div class="td-light">${u.email}</div></td>
+              <td><span class="badge ${u.role === 'Patient' ? 'badge-purple' : 'badge-blue'}">${u.role}</span></td>
+              <td class="td-light">${new Date(u.created_at).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})}</td>
+              <td><span class="badge ${u.status === 'active' || u.status === 'approved' ? 'badge-green' : 'badge-orange'}">${u.status}</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="Toast.info('Viewing profile...')">View</button></td>
+            </tr>
+          `).join('');
+
+          // Registered Hospitals Table
+          const hospitalsTbody = document.querySelector('.dash-panel:nth-of-type(5) .dash-table tbody');
+          hospitalsTbody.innerHTML = data.all_hospitals.map(h => `
+            <tr>
+              <td><strong>${h.hosp_name}</strong></td>
+              <td class="td-light">${h.location || 'N/A'}</td>
+              <td>-</td>
+              <td class="td-light">${new Date(h.created_at).toLocaleDateString('en-GB', {month:'short', year:'numeric'})}</td>
+              <td><span class="badge badge-green">Active</span></td>
+              <td><button class="btn btn-outline btn-sm">Manage</button></td>
+            </tr>
+          `).join('');
+
+          // Recent Activities Feed
+          const activityFeed = document.querySelector('.activity-feed');
+          if (data.recent_logs.length > 0) {
+            activityFeed.innerHTML = data.recent_logs.map((log, index) => {
+              const colors = { info: 'var(--green-accent)', warning: 'var(--orange-accent)', error: 'var(--red-accent)', critical: '#000' };
+              const color = colors[log.severity] || 'var(--purple-primary)';
+              const timeStr = new Date(log.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+              const dateStr = new Date(log.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+              
+              return `
+                <div class="activity-item">
+                  <div class="activity-dot-wrap">
+                    <div class="activity-dot" style="background:${color}"></div>
+                    ${index < data.recent_logs.length - 1 ? '<div class="activity-line"></div>' : ''}
+                  </div>
+                  <div>
+                    <div class="activity-text">${log.message}</div>
+                    <div class="activity-time">${dateStr}, ${timeStr}</div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          } else {
+            activityFeed.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">No recent activities recorded</div>';
           }
         }
-      } catch (e) { /* non-critical */ }
+      } catch (err) {
+        console.error('Real-time data error:', err);
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', function() { loadPendingCount(); });
+    document.addEventListener('DOMContentLoaded', function() { 
+      loadPendingCount(); 
+      loadDashboardRealTimeData();
+      
+      // Auto-refresh every 30 seconds for "real-time" feel
+      setInterval(loadDashboardRealTimeData, 30000);
+    });
   </script>
 </body>
 

@@ -104,9 +104,53 @@
       }
     }
 
-  
-    [data-theme="dark"] .hospitals-hero {
-      background: linear-gradient(135deg, var(--bg-light), var(--bg-card));
+    /* Review Styles */
+    .rating-stars {
+      color: #f1c40f;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    .rating-count {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-left: 6px;
+    }
+    .btn-review {
+      background: var(--bg-light);
+      color: var(--text-mid);
+      border: 1px solid var(--border);
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-review:hover {
+      background: var(--purple-pale);
+      color: var(--purple-primary);
+      border-color: var(--purple-light);
+    }
+    .star-input {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .star-input input { display: none; }
+    .star-input label {
+      font-size: 2.5rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .star-input input:checked ~ label,
+    .star-input label:hover,
+    .star-input label:hover ~ label {
+      color: #f1c40f;
     }
   </style>
 </head>
@@ -127,169 +171,42 @@
   </section>
   <section class="section-pad">
     <div class="container">
-      <div class="hospitals-grid">
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_castle_name">Castle Street Hospital for Women</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_fertility">Fertility</span><span class="specialty-tag" data-i18n="hosp_spec_endo">Endocrinology</span></div>
-          <p data-i18n="hosp_castle_desc" style="font-size:.875rem;margin-bottom:auto">Premier women’s hospital offering comprehensive care for hormonal disorders, infertility, and reproductive health.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_castle_name', 'hosp_castle_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_desoysa_name">De Soysa Hospital for Women</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_subfertility">Subfertility Clinics</span></div>
-          <p data-i18n="hosp_desoysa_desc" style="font-size:.875rem;margin-bottom:auto">One of the largest maternity hospitals with specialized clinics for hormonal imbalance and fertility issues.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_desoysa_name', 'hosp_desoysa_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_national_name">National Hospital of Sri Lanka</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_endo">Endocrinology</span></div>
-          <p data-i18n="hosp_national_desc" style="font-size:.875rem;margin-bottom:auto">Largest tertiary hospital providing multidisciplinary treatment for complex PCOS cases.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_national_name', 'hosp_national_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_kandy_name">Teaching Hospital Kandy</h4>
-          <div class="location" data-i18n="hosp_loc_kandy">📍 Kandy</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_research">Research</span></div>
-          <p data-i18n="hosp_kandy_desc" style="font-size:.875rem;margin-bottom:auto">Leading academic medical centre with strong women’s health and hormonal research facilities.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_kandy_name', 'hosp_kandy_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_karapitiya_name">Teaching Hospital Karapitiya</h4>
-          <div class="location" data-i18n="hosp_loc_galle">📍 Galle</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_endo">Endocrine Care</span></div>
-          <p data-i18n="hosp_karapitiya_desc" style="font-size:.875rem;margin-bottom:auto">Major teaching hospital with advanced reproductive and hormonal disorder management.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_karapitiya_name', 'hosp_karapitiya_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_mahamodara_name">Teaching Hospital Mahamodara</h4>
-          <div class="location" data-i18n="hosp_loc_galle">📍 Galle</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_maternity">Maternity</span></div>
-          <p data-i18n="hosp_mahamodara_desc" style="font-size:.875rem;margin-bottom:auto">Specialized maternity hospital with services for menstrual and fertility-related conditions.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_mahamodara_name', 'hosp_mahamodara_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_ragama_name">Teaching Hospital Ragama (Colombo North)</h4>
-          <div class="location" data-i18n="hosp_loc_ragama">📍 Ragama</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_endo">Endocrinology</span></div>
-          <p data-i18n="hosp_ragama_desc" style="font-size:.875rem;margin-bottom:auto">Academic hospital with specialist clinics for hormonal imbalance and reproductive health.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_ragama_name', 'hosp_ragama_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_kalubowila_name">Teaching Hospital Kalubowila (Colombo South)</h4>
-          <div class="location" data-i18n="hosp_loc_kalubowila">📍 Kalubowila</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_general">General Medicine</span></div>
-          <p data-i18n="hosp_kalubowila_desc" style="font-size:.875rem;margin-bottom:auto">Provides accessible PCOS diagnosis and treatment with specialist clinics.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_kalubowila_name', 'hosp_kalubowila_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_anuradhapura_name">Teaching Hospital Anuradhapura</h4>
-          <div class="location" data-i18n="hosp_loc_anuradhapura">📍 Anuradhapura</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_rural">Rural Health</span></div>
-          <p data-i18n="hosp_anuradhapura_desc" style="font-size:.875rem;margin-bottom:auto">Major regional hospital supporting women’s hormonal and reproductive care.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_anuradhapura_name', 'hosp_anuradhapura_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_jaffna_name">Teaching Hospital Jaffna</h4>
-          <div class="location" data-i18n="hosp_loc_jaffna">📍 Jaffna</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_fertility">Fertility</span></div>
-          <p data-i18n="hosp_jaffna_desc" style="font-size:.875rem;margin-bottom:auto">Northern province’s main teaching hospital with advanced women’s health services.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_jaffna_name', 'hosp_jaffna_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_batticaloa_name">Teaching Hospital Batticaloa</h4>
-          <div class="location" data-i18n="hosp_loc_batticaloa">📍 Batticaloa</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_community">Community Care</span></div>
-          <p data-i18n="hosp_batticaloa_desc" style="font-size:.875rem;margin-bottom:auto">Provides reproductive and hormonal disorder management for eastern region patients.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_batticaloa_name', 'hosp_batticaloa_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_sjp_name">Sri Jayewardenepura General Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_nugegoda">📍 Nugegoda</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_multidisc">Multidisciplinary Clinics</span></div>
-          <p data-i18n="hosp_sjp_desc" style="font-size:.875rem;margin-bottom:auto">Offers specialized gynaecology clinics including hormonal and obesity-related conditions.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_sjp_name', 'hosp_sjp_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_lanka_name">Lanka Hospitals</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_wellness">Women’s Wellness</span><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span></div>
-          <p data-i18n="hosp_lanka_desc" style="font-size:.875rem;margin-bottom:auto">Private hospital with advanced diagnostics and comprehensive care for PCOS and hormonal disorders.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_lanka_name', 'hosp_lanka_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_nine_name">Ninewells Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_fertility">Fertility</span><span class="specialty-tag" data-i18n="hosp_spec_wellwoman">Well-woman clinics</span></div>
-          <p data-i18n="hosp_nine_desc" style="font-size:.875rem;margin-bottom:auto">Specialized private hospital focusing on women’s health, fertility, and hormonal conditions.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_nine_name', 'hosp_nine_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_asiri_name">Asiri Medical Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_surgical">Surgical Care</span></div>
-          <p data-i18n="hosp_asiri_desc" style="font-size:.875rem;margin-bottom:auto">Provides advanced treatment for ovarian cysts, hormonal disorders, and reproductive issues.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_asiri_name', 'hosp_asiri_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_durdans_name">Durdans Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_colombo">📍 Colombo</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_fertility">Fertility</span><span class="specialty-tag" data-i18n="hosp_spec_endo">Endocrine</span></div>
-          <p data-i18n="hosp_durdans_desc" style="font-size:.875rem;margin-bottom:auto">Well-established private hospital with expert specialists in reproductive health.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_durdans_name', 'hosp_durdans_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_hemas_w_name">Hemas Hospital Wattala</h4>
-          <div class="location" data-i18n="hosp_loc_wattala">📍 Wattala</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_maternity">Maternity</span></div>
-          <p data-i18n="hosp_hemas_w_desc" style="font-size:.875rem;margin-bottom:auto">Modern private hospital offering comprehensive women’s health and hormonal care.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_hemas_w_name', 'hosp_hemas_w_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-2">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_hemas_t_name">Hemas Hospital Thalawathugoda</h4>
-          <div class="location" data-i18n="hosp_loc_thalawathugoda">📍 Thalawathugoda</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_fertility">Fertility</span></div>
-          <p data-i18n="hosp_hemas_t_desc" style="font-size:.875rem;margin-bottom:auto">Well-equipped facility with specialist obstetric and gynaecological services.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_hemas_t_name', 'hosp_hemas_t_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_blue_name">Blue Cross Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_rajagiriya">📍 Rajagiriya</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_specialist">Specialist Clinics</span></div>
-          <p data-i18n="hosp_blue_desc" style="font-size:.875rem;margin-bottom:auto">Provides consultant-led care for PCOS, menstrual disorders, and reproductive issues.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_blue_name', 'hosp_blue_desc')">Connect</button>
-        </div>
-        <div class="hospital-card reveal reveal-delay-1">
-          <div class="hospital-icon">🏥</div>
-          <h4 data-i18n="hosp_neville_name">Neville Fernando Teaching Hospital</h4>
-          <div class="location" data-i18n="hosp_loc_malabe">📍 Malabe</div>
-          <div class="hospital-specialties"><span class="specialty-tag" data-i18n="hosp_spec_gynae">Gynaecology</span><span class="specialty-tag" data-i18n="hosp_spec_teaching_research">Teaching & Research</span></div>
-          <p data-i18n="hosp_neville_desc" style="font-size:.875rem;margin-bottom:auto">Modern teaching hospital with specialist obstetric and gynaecology services.</p>
-          <button class="btn btn-primary btn-sm" data-i18n="hosp_btn_connect" style="width:100%; margin-top:16px;" onclick="openHospitalModal('hosp_neville_name', 'hosp_neville_desc')">Connect</button>
-        </div>
+      <div class="hospitals-grid" id="hospitals-grid">
+        <!-- Hospitals injected by JS -->
       </div>
     </div>
+  </section>
+
+  <!-- Review Modal -->
+  <div id="review-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px);">
+    <div class="modal-content" style="background:var(--bg-card); border-radius:var(--radius-lg); width:100%; max-width:450px; padding:32px; position:relative; animation: slideUp 0.3s ease-out;">
+      <button onclick="closeReviewModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-light)">&times;</button>
+      
+      <div style="text-align:center; margin-bottom:24px;">
+        <h3 id="review-hosp-name">Rate Hospital</h3>
+        <p style="font-size:0.9rem; color:var(--text-mid)">How was your experience?</p>
+      </div>
+
+      <form id="reviewForm" onsubmit="submitReview(event)">
+        <input type="hidden" id="review-hosp-id">
+        
+        <div class="star-input">
+          <input type="radio" name="rating" id="star5" value="5" required><label for="star5">★</label>
+          <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+          <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+          <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+          <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tell us more (Optional)</label>
+          <textarea class="form-control" id="review-comment" rows="3" placeholder="Describe your visit..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px;">Submit Review</button>
+      </form>
+    </div>
+  </div>
   
   <!-- Hospital Connect Modal -->
   <div id="hospital-connect-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; padding: 20px; backdrop-filter: blur(4px);">
@@ -390,6 +307,80 @@
   </style>
 
   <script>
+    async function loadHospitals() {
+      try {
+        const res = await fetch('../../src/php/get_hospitals_list.php');
+        const json = await res.json();
+        if (json.status === 'success') {
+          const grid = document.getElementById('hospitals-grid');
+          const hospitals = json.data;
+          
+          grid.innerHTML = hospitals.map((h, i) => {
+            const stars = Math.round(h.avg_rating || 0);
+            const starHtml = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+            
+            return `
+              <div class="hospital-card reveal" style="animation-delay: ${i * 0.1}s">
+                <div class="hospital-icon">🏥</div>
+                <h4>${h.hosp_name}</h4>
+                <div class="location">📍 ${h.location || 'Sri Lanka'}</div>
+                
+                <div class="rating-stars">
+                  ${starHtml}
+                  <span class="rating-count">(${h.review_count} reviews)</span>
+                </div>
+
+                <div class="hospital-specialties">
+                  <span class="specialty-tag">Gynaecology</span>
+                  <span class="specialty-tag">PCOS Care</span>
+                </div>
+                <p style="font-size:.875rem;margin-bottom:auto">${h.contact_person || 'Leading healthcare provider dedicated to excellence.'}</p>
+                
+                <button class="btn btn-review" onclick="openReviewModal(${h.id}, '${h.hosp_name.replace(/'/g, "\\'")}')">Give Review</button>
+                <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openHospitalModal('${h.id}', '${h.hosp_name.replace(/'/g, "\\'")}')">Connect</button>
+              </div>
+            `;
+          }).join('');
+          
+          initReveal(); // Re-trigger reveal animations
+        }
+      } catch (err) { console.error('Hospitals load failed', err); }
+    }
+
+    function openReviewModal(id, name) {
+      document.getElementById('review-hosp-id').value = id;
+      document.getElementById('review-hosp-name').textContent = 'Rate ' + name;
+      document.getElementById('review-modal').style.display = 'flex';
+    }
+
+    function closeReviewModal() {
+      document.getElementById('review-modal').style.display = 'none';
+      document.getElementById('reviewForm').reset();
+    }
+
+    async function submitReview(e) {
+      e.preventDefault();
+      const id = document.getElementById('review-hosp-id').value;
+      const rating = document.querySelector('input[name="rating"]:checked').value;
+      const comment = document.getElementById('review-comment').value;
+
+      try {
+        const res = await fetch('../../src/php/submit_review.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hospital_id: id, rating, comment })
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          Toast.success('Thank you for your review!');
+          closeReviewModal();
+          loadHospitals(); // Refresh to show new rating
+        } else {
+          Toast.error(json.message);
+        }
+      } catch (err) { Toast.error('Submission failed.'); }
+    }
+
     const mockDoctors = [
       { name: "Dr. Sarah Perera", spec: "Senior Consultant Gynaecologist", exp: "15+ Years Exp", img: "👩‍⚕️" },
       { name: "Dr. Kamal Fernando", spec: "Obstetrician & Gynaecologist", exp: "12+ Years Exp", img: "👨‍⚕️" },
@@ -401,24 +392,15 @@
     let currentHospitalKey = '';
     let selectedDoctorIndex = -1;
 
-    function openHospitalModal(nameKey, descKey) {
-      currentHospitalKey = nameKey;
+    function openHospitalModal(id, name) {
+      currentHospitalKey = id;
       selectedDoctorIndex = -1;
       const modal = document.getElementById('hospital-connect-modal');
       const nameEl = document.getElementById('modal-hospital-name');
-      const descEl = document.getElementById('modal-hospital-desc');
       const container = document.getElementById('doctors-container');
       
-      // Update text based on DOM if translations are missing
-      const nameDOM = document.querySelector(`[data-i18n="${nameKey}"]`);
-      const descDOM = document.querySelector(`[data-i18n="${descKey}"]`);
-      
-      const hospitalName = nameDOM ? nameDOM.innerText : (L10n.t(nameKey) !== nameKey ? L10n.t(nameKey) : 'Selected Hospital');
-      const hospitalDesc = descDOM ? descDOM.innerText : (L10n.t(descKey) !== descKey ? L10n.t(descKey) : 'Excellent care awaits you.');
-      
       const welcomeTxt = (L10n.get() === 'en' ? "Welcome to " : (L10n.get() === 'si' ? "සාදරයෙන් පිළිගනිමු " : "வரவேற்கிறோம் "));
-      nameEl.textContent = welcomeTxt + hospitalName;
-      descEl.textContent = hospitalDesc;
+      nameEl.textContent = welcomeTxt + name;
       
       // Render doctors
       container.innerHTML = mockDoctors.map((doc, index) => `
@@ -431,7 +413,7 @@
       `).join('');
       
       modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Prevent scrolling
+      document.body.style.overflow = 'hidden'; 
     }
     
     function selectDoctor(index) {
@@ -443,7 +425,7 @@
     function closeHospitalModal() {
       const modal = document.getElementById('hospital-connect-modal');
       modal.style.display = 'none';
-      document.body.style.overflow = 'auto'; // Restore scrolling
+      document.body.style.overflow = 'auto'; 
     }
     
     function confirmConnection() {
@@ -452,23 +434,10 @@
           return;
       }
       
-      const hospitalNameEl = document.querySelector(`[data-i18n="${currentHospitalKey}"]`);
-      const hospitalName = hospitalNameEl ? hospitalNameEl.innerText : 'Selected Hospital';
       const doc = mockDoctors[selectedDoctorIndex];
-      
-      // Navigate to booking interface
-      const params = new URLSearchParams({
-          hospital: hospitalName,
-          docName: doc.name,
-          docSpec: doc.spec,
-          docExp: doc.exp,
-          docImg: doc.img
-      });
-      
-      window.location.href = 'doctor-appointment.html?' + params.toString();
+      window.location.href = 'doctor-appointment.html';
     }
     
-    // Close on outside click
     document.getElementById('hospital-connect-modal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeHospitalModal();
@@ -482,12 +451,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       PageLoader.hide();
       L10n.init();
-
       initNavbar();
       setActiveNav();
-
       initReveal();
       initSmoothScroll();
+      loadHospitals();
     });
   </script>
 </body>

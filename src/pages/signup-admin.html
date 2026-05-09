@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    <style>
+        .auth-panel-left {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .auth-submit {
+            background: #2c3e50;
+        }
+
+        .auth-submit:hover {
+            background: #1a252f;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <div class="auth-page">
+        <!-- LEFT PANEL -->
+        <div class="auth-panel-left">
+            <div class="auth-left-content">
+                <a href="index.html" class="auth-left-logo">
+                    <div class="logo-icon">⚙️</div>
+                    <div class="logo-text"><span>PCOS</span> Admin Panel</div>
+                </a>
+                <h2>System Expansion</h2>
+                <p>Register as a new system administrator to oversee platform growth and hospital verification.</p>
+                <div class="auth-features">
+                    <div class="auth-feature">
+                        <div class="auth-feature-icon">🛡️</div>
+                        <div>
+                            <div class="auth-feature-text">High Privilege Access</div>
+                            <div class="auth-feature-sub">Full system management capabilities</div>
+                        </div>
+                    </div>
+                    <div class="auth-feature">
+                        <div class="auth-feature-icon">📊</div>
+                        <div>
+                            <div class="auth-feature-text">Analytics Oversight</div>
+                            <div class="auth-feature-sub">Monitor platform health and engagement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="auth-panel-right">
+            <div class="auth-form-wrap">
+                <div class="auth-header">
+                    <h3>Administrator Signup</h3>
+                    <p>Create your secure administrative account</p>
+                </div>
+
+                <form class="auth-form" id="adminSignupForm" onsubmit="handleAdminSignup(event)">
+                    <!-- Role (Hidden but fixed) -->
+                    <input type="hidden" id="role" value="admin">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">👤</span>
+                            <input class="form-control" type="text" id="full_name" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🆔</span>
+                            <input class="form-control" type="text" id="username" placeholder="Pick a secure username" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">✉</span>
+                            <input class="form-control" type="email" id="email" placeholder="admin@pcoshub.lk" required>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" type="password" id="pw1" placeholder="Minimum 8 characters" required minlength="8">
+                            <button type="button" class="toggle-pw" onclick="togglePw('pw1',this)">👁</button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-icon-wrap">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" type="password" id="pw2" placeholder="Re-enter password" required>
+                            <button type="button" class="toggle-pw" onclick="togglePw('pw2',this)">👁</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-submit">Create Admin Account</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="admin-login.html">Sign in here</a></p>
+                    <p style="margin-top:10px"><a href="index.html">← Back to Site</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        async function handleAdminSignup(e) {
+            e.preventDefault();
+            const pw1 = document.getElementById('pw1').value;
+            const pw2 = document.getElementById('pw2').value;
+            if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
+
+            const submitBtn = e.target.querySelector('.auth-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Registering...';
+            submitBtn.disabled = true;
+
+            const data = {
+                role: 'admin',
+                full_name: document.getElementById('full_name').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: pw1
+            };
+
+            try {
+                const response = await API.call('components/signup_handler.php', data);
+                if (response.status === 'success') {
+                    Auth.login('admin', response.user.name);
+                    Toast.success('Admin account created! Accessing dashboard...');
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1500);
+                } else {
+                    Toast.error(response.message);
+                }
+            } catch (err) {
+                Toast.error('Signup failed. Database connection error.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function togglePw(id, btn) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+            btn.textContent = input.type === 'password' ? '👁' : '🙈';
+        }
+    </script>
+</body>
+
+</html>

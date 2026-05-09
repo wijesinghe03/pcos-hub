@@ -49,6 +49,9 @@ try {
         $hosp = $hStmt->fetch();
 
         if ($hosp) {
+            require_once __DIR__ . '/../utils/Logger.php';
+            Logger::log('hospital', 'info', "Hospital approved: " . $hosp['hosp_name'], 'Admin');
+            
             try {
                 require_once '../utils/Mailer.php';
                 $emailBody = "
@@ -83,6 +86,9 @@ try {
         $hosp = $hStmt->fetch();
 
         if ($hosp) {
+            require_once __DIR__ . '/../utils/Logger.php';
+            Logger::log('hospital', 'warning', "Hospital rejected: " . $hosp['hosp_name'] . " (Reason: $rejectionReason)", 'Admin');
+
             try {
                 require_once '../utils/Mailer.php';
                 $emailBody = "
@@ -103,5 +109,7 @@ try {
         ]);
     }
 } catch (PDOException $e) {
+    require_once __DIR__ . '/../utils/Logger.php';
+    Logger::log('database', 'error', "Hospital approval operation failed: " . $e->getMessage(), 'System');
     echo json_encode(['status' => 'error', 'message' => 'Operation failed: ' . $e->getMessage()]);
 }
