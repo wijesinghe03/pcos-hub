@@ -16,6 +16,6 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests/Unit/PHP",
-        "lint": "vendor/bin/phpcs --standard=PSR12 src/php"
+        "lint": "vendor/bin/phpcs --standard=phpcs.xml"
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="PCOS-Hub">
+    <description>PCOS Hub PSR-12 Standard with project-specific exclusions</description>
+
+    <!-- Use PSR-12 as base standard -->
+    <rule ref="PSR12">
+        <!-- Allow long lines — HTML in PHP strings makes strict 120 limit impractical -->
+        <exclude name="Generic.Files.LineLength"/>
+        <!-- Allow files to have both symbols and side effects — standard PHP handler pattern -->
+        <exclude name="PSR1.Files.SideEffects"/>
+    </rule>
+
+    <!-- Exclude third-party PHPMailer library from linting -->
+    <exclude-pattern>src/php/libs/*</exclude-pattern>
+    <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- Only lint our own source files -->
+    <file>src/php</file>
+</ruleset>
