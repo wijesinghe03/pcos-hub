@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Test Connection (test_connection.php)
  * Checks if the database connection is working.
@@ -21,4 +22,3 @@ if (isset($pdo)) {
         'message' => 'PDO instance not found.'
     ]);
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Lab Results Handler (lab_handler.php)
  * POST (multipart)  → upload a new lab result + metadata + sync to reports
@@ -12,7 +13,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
 // ── Resolve patient_id ──────────────────────────────────────────────
-function resolvePatient($pdo, $data) {
+function resolvePatient($pdo, $data)
+{
     $id    = $data['patient_id']    ?? null;
     $email = $data['patient_email'] ?? null;
 
@@ -46,7 +48,7 @@ if ($method === 'POST') {
     $hospital_name = trim($_POST['hospital_name'] ?? '');
     $doctor_name   = trim($_POST['doctor_name']   ?? '');
     $report_date   = trim($_POST['report_date']   ?? date('Y-m-d'));
-    $results_data  = $_POST['results_data']       ?? null; 
+    $results_data  = $_POST['results_data']       ?? null;
 
     if (!$test_name) {
         echo json_encode(['status' => 'error', 'message' => 'Test name is required.']);
@@ -71,7 +73,9 @@ if ($method === 'POST') {
 
         $safe_name  = $patient_id . '_lab_' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $orig_name);
         $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
-        if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
 
         if (move_uploaded_file($file['tmp_name'], $upload_dir . $safe_name)) {
             $file_path = 'uploads/reports/' . $safe_name;
@@ -91,7 +95,7 @@ if ($method === 'POST') {
         );
         $rptStmt->execute([
             $patient_id, $test_name, $test_type, $hospital_name, $doctor_name,
-            basename($file_path ?: 'No file'), $file_path, 
+            basename($file_path ?: 'No file'), $file_path,
             ($status === 'pending' ? 'pending' : 'uploaded'), $report_date
         ]);
         $report_id = $pdo->lastInsertId();
@@ -103,7 +107,7 @@ if ($method === 'POST') {
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $labStmt->execute([
-            $patient_id, $report_id, $test_name, $test_type, 
+            $patient_id, $report_id, $test_name, $test_type,
             $hospital_name, $doctor_name, $report_date, $file_path, $status, $results_data
         ]);
 
@@ -185,7 +189,9 @@ if ($method === 'POST') {
         // 4. Remove file
         if ($row['file_path']) {
             $full_path = dirname(__FILE__, 3) . '/' . $row['file_path'];
-            if (file_exists($full_path)) @unlink($full_path);
+            if (file_exists($full_path)) {
+                @unlink($full_path);
+            }
         }
 
         $pdo->commit();
@@ -231,8 +237,6 @@ if ($method === 'POST') {
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
     }
-
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid method.']);
 }
-?>

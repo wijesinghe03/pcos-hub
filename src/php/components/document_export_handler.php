@@ -1,4 +1,5 @@
 <?php
+
 // PCOS CARE HUB — Personalized Health Report Generator
 header('Content-Type: text/plain');
 
@@ -102,8 +103,6 @@ try {
     echo "  This document is for information purposes. Consult a MD. \n";
     echo "          Generated securely via PCOS Care Hub ©           \n";
     echo "===========================================================\n";
-
 } catch (PDOException $e) {
     echo "Error generating report: " . $e->getMessage();
 }
-?>

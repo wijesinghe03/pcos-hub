@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test script for Email Functionality
  * Run this in your browser: http://localhost/pcos-hub/src/php/test_email.php
@@ -27,6 +28,6 @@ if (Mailer::send($testEmail, $subject, $body)) {
             <li>Your SMTP credentials (host, user, password) are incorrect.</li>
             <li>Your firewall is blocking port 465.</li>
           </ul>";
-    
+
     echo "<p><em>Check your PHP error log or look below if I can capture the error...</em></p>";
 }

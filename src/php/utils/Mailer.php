@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Mailer Utility Class
  * Handles sending emails using PHPMailer and SMTP.
- * 
+ *
  * To use this, you need to download PHPMailer:
  * 1. Create a directory: src/php/libs/PHPMailer
  * 2. Download from: https://github.com/PHPMailer/PHPMailer
@@ -21,9 +22,10 @@ if (file_exists($phpMailerPath . 'PHPMailer.php')) {
     require $phpMailerPath . 'SMTP.php';
 }
 
-class Mailer {
+class Mailer
+{
     // Replace these with your actual Namecheap/cPanel SMTP credentials
-    private static $host = 'smtp.gmail.com'; 
+    private static $host = 'smtp.gmail.com';
     private static $username = 'dulaj.dulsith@gmail.com';
     private static $password = 'oihm edkg hdae jpxb';
     private static $port = 465; // 465 for SSL
@@ -32,7 +34,8 @@ class Mailer {
     /**
      * Sends a beautiful HTML email
      */
-    public static function send($to, $subject, $body, $altBody = '') {
+    public static function send($to, $subject, $body, $altBody = '')
+    {
         if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
             // If library is missing, log error or return false
             error_log("PHPMailer library not found at: " . __DIR__ . '/../libs/PHPMailer/');
@@ -74,7 +77,8 @@ class Mailer {
     /**
      * Wraps the content in a beautiful HTML template
      */
-    private static function getTemplate($title, $content) {
+    private static function getTemplate($title, $content)
+    {
         $year = date('Y');
         return "
         <!DOCTYPE html>

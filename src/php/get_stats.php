@@ -1,4 +1,5 @@
 <?php
+
 // ============================================================
 // PCOS CARE HUB — Fetch Global Statistics (get_stats.php)
 // ============================================================
@@ -20,10 +21,10 @@ try {
     // We use separate queries to be safe
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patient_reports");
     $report_count = $stmt->fetch()['count'];
-    
+
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patient_labresults");
     $lab_count = $stmt->fetch()['count'];
-    
+
     $total_reports = $report_count + $lab_count;
 
     echo json_encode([
@@ -34,11 +35,9 @@ try {
             'reports' => (int)$total_reports
         ]
     ]);
-
 } catch (Exception $e) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Failed to fetch statistics: ' . $e->getMessage()
     ]);
 }
-?>

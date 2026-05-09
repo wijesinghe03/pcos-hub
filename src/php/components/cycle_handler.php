@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Menstrual Cycle Log Handler (cycle_handler.php)
  * POST  → save a new cycle entry
@@ -10,7 +11,8 @@ require_once '../db_connect.php';
 header('Content-Type: application/json');
 
 // ── Resolve patient_id from id or email ────────────────────────────
-function resolvePatient($pdo, $data) {
+function resolvePatient($pdo, $data)
+{
     $id    = $data['patient_id']    ?? null;
     $email = $data['patient_email'] ?? null;
 
@@ -34,10 +36,16 @@ $method = $_SERVER['REQUEST_METHOD'];
 // ── POST: Save cycle entry ─────────────────────────────────────────
 if ($method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    if (!$data) { echo json_encode(['status'=>'error','message'=>'Invalid data.']); exit; }
+    if (!$data) {
+        echo json_encode(['status' => 'error','message' => 'Invalid data.']);
+        exit;
+    }
 
     $patient_id = resolvePatient($pdo, $data);
-    if (!$patient_id) { echo json_encode(['status'=>'error','message'=>'Patient not found. Please log in again.']); exit; }
+    if (!$patient_id) {
+        echo json_encode(['status' => 'error','message' => 'Patient not found. Please log in again.']);
+        exit;
+    }
 
     $start_date   = $data['start_date']   ?? null;
     $end_date     = $data['end_date']     ?? null;
@@ -46,20 +54,20 @@ if ($method === 'POST') {
     $notes        = $data['notes']        ?? '';
 
     if (!$start_date || !$end_date || !$flow) {
-        echo json_encode(['status'=>'error','message'=>'Start date, end date and flow are required.']);
+        echo json_encode(['status' => 'error','message' => 'Start date, end date and flow are required.']);
         exit;
     }
 
     $valid_flows = ['light','normal','heavy'];
     if (!in_array($flow, $valid_flows)) {
-        echo json_encode(['status'=>'error','message'=>'Invalid flow value.']);
+        echo json_encode(['status' => 'error','message' => 'Invalid flow value.']);
         exit;
     }
 
     // Calculate duration
     $duration = (int)((strtotime($end_date) - strtotime($start_date)) / 86400) + 1;
     if ($duration < 1) {
-        echo json_encode(['status'=>'error','message'=>'End date must be on or after start date.']);
+        echo json_encode(['status' => 'error','message' => 'End date must be on or after start date.']);
         exit;
     }
 
@@ -82,7 +90,7 @@ if ($method === 'POST') {
             'next_period'  => $next_period
         ]);
     } catch (PDOException $e) {
-        echo json_encode(['status'=>'error','message'=>'DB error: '.$e->getMessage()]);
+        echo json_encode(['status' => 'error','message' => 'DB error: ' . $e->getMessage()]);
     }
 
 // ── GET: Fetch cycle history ───────────────────────────────────────
@@ -92,7 +100,7 @@ if ($method === 'POST') {
     $limit      = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
 
     if (!$patient_id) {
-        echo json_encode(['status'=>'error','message'=>'patient_id or patient_email is required.']);
+        echo json_encode(['status' => 'error','message' => 'patient_id or patient_email is required.']);
         exit;
     }
 
@@ -108,12 +116,10 @@ if ($method === 'POST') {
         $stmt->execute([$patient_id]);
         $rows = $stmt->fetchAll();
 
-        echo json_encode(['status'=>'success', 'data'=>$rows]);
+        echo json_encode(['status' => 'success', 'data' => $rows]);
     } catch (PDOException $e) {
-        echo json_encode(['status'=>'error','message'=>'DB error: '.$e->getMessage()]);
+        echo json_encode(['status' => 'error','message' => 'DB error: ' . $e->getMessage()]);
     }
-
 } else {
-    echo json_encode(['status'=>'error','message'=>'Invalid method.']);
+    echo json_encode(['status' => 'error','message' => 'Invalid method.']);
 }
-?>

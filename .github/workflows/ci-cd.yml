@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   frontend-lint-test:
     name: Frontend - Lint & Test (${{ matrix.node-version }})
@@ -53,7 +57,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
       - run: echo "Running Admin Panel specific checks..."
       # Add admin specific commands here
 
@@ -65,7 +69,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: 'javascript, php'
+          languages: 'javascript-typescript, php'
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 

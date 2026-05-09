@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Patient Reports Handler (report_handler.php)
  * POST (multipart)  → upload a new report file + metadata
@@ -12,7 +13,8 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
 // ── Resolve patient_id ──────────────────────────────────────────────
-function resolvePatient($pdo, $data) {
+function resolvePatient($pdo, $data)
+{
     $id    = $data['patient_id']    ?? null;
     $email = $data['patient_email'] ?? null;
 
@@ -35,7 +37,6 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // ── POST: Upload report ─────────────────────────────────────────────
 if ($method === 'POST') {
-
     $patient_id = resolvePatient($pdo, $_POST);
     if (!$patient_id) {
         echo json_encode(['status' => 'error', 'message' => 'Patient not found. Please log in again.']);
@@ -57,7 +58,9 @@ if ($method === 'POST') {
     }
 
     $valid_types = ['lab', 'scan', 'prescription', 'imaging', 'other'];
-    if (!in_array($report_type, $valid_types)) $report_type = 'other';
+    if (!in_array($report_type, $valid_types)) {
+        $report_type = 'other';
+    }
 
     // ── File upload ──────────────────────────────────────────────────
     $file_name = '';
@@ -86,7 +89,9 @@ if ($method === 'POST') {
         $safe_name  = $patient_id . '_' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $orig_name);
         $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
 
-        if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
 
         if (!move_uploaded_file($file['tmp_name'], $upload_dir . $safe_name)) {
             echo json_encode(['status' => 'error', 'message' => 'Failed to save file. Check server permissions.']);
@@ -126,8 +131,8 @@ if ($method === 'POST') {
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
             $labStmt->execute([
-                $patient_id, $report_id, $report_name, 'General Lab Test', 
-                $hospital_name, $report_date, $file_path, 
+                $patient_id, $report_id, $report_name, 'General Lab Test',
+                $hospital_name, $report_date, $file_path,
                 ($status === 'pending' ? 'pending' : 'received')
             ]);
         }
@@ -179,7 +184,6 @@ if ($method === 'POST') {
 
 // ── GET: Fetch reports ─────────────────────────────────────────────
 } elseif ($method === 'GET') {
-
     $patient_id = resolvePatient($pdo, $_GET);
     if (!$patient_id) {
         echo json_encode(['status' => 'error', 'message' => 'patient_id or patient_email is required.']);
@@ -202,12 +206,12 @@ if ($method === 'POST') {
     } elseif ($filter === 'lab') {
         // Broad list of lab-type tests
         $lab_types = [
-            'LH (Luteinizing Hormone) Test', 
+            'LH (Luteinizing Hormone) Test',
             'FSH (Follicle Stimulating Hormone) Test',
-            'Testosterone Level Test', 
+            'Testosterone Level Test',
             'Prolactin Test',
             'Thyroid Function Test (TSH, T3, T4)',
-            'Fasting Blood Sugar (FBS)', 
+            'Fasting Blood Sugar (FBS)',
             'Oral Glucose Tolerance Test (OGTT)',
             'HbA1c Test',
             'Lipid Profile (Cholesterol Test)',
@@ -220,7 +224,7 @@ if ($method === 'POST') {
         $where .= " AND report_type IN (" . implode(',', array_fill(0, count($scan_types), '?')) . ")";
         $params = array_merge($params, $scan_types);
     } elseif ($filter !== 'all') {
-        // Fallback for specific categories like 'prescription', 'other' 
+        // Fallback for specific categories like 'prescription', 'other'
         // or specific test names like 'LH (Luteinizing Hormone) Test'
         $where .= " AND report_type = ?";
         $params[] = $filter;
@@ -299,15 +303,15 @@ if ($method === 'POST') {
         // Remove physical file if it exists
         if ($row['file_path']) {
             $full_path = dirname(__FILE__, 3) . '/' . $row['file_path'];
-            if (file_exists($full_path)) @unlink($full_path);
+            if (file_exists($full_path)) {
+                @unlink($full_path);
+            }
         }
 
         echo json_encode(['status' => 'success', 'message' => 'Report deleted.']);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
     }
-
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid method.']);
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 require_once '../db_connect.php';
 
 header('Content-Type: application/json');
@@ -23,4 +24,3 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['exists' => false, 'error' => $e->getMessage()]);
 }
-?>

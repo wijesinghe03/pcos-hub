@@ -97,6 +97,7 @@ function buildCycleCalendar() {
   }
 }
 
+/*
 function showSection(section) {
   const titles = {
     symptoms: 'Track Symptoms',
@@ -109,3 +110,4 @@ function showSection(section) {
   Toast.success(`Navigating to ${titles[section] || section}...`);
   // In a real app, this would show/hide sections or navigate
 }
+*/

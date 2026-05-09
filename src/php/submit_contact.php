@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: application/json');
 require_once 'db_connect.php';
 
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><strong>Subject:</strong> $subject</p>
             <p><strong>Message:</strong><br>$message</p>
         ";
-        
+
         Mailer::send($adminEmail, "New Contact Message: $subject", $emailBody);
 
         echo json_encode(['status' => 'success', 'message' => 'Message sent successfully.']);
@@ -37,4 +38,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>

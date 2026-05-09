@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: application/json');
 require_once 'db_connect.php';
 
@@ -13,7 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if ($rating < 1 || $rating > 5) $rating = 5;
+    if ($rating < 1 || $rating > 5) {
+        $rating = 5;
+    }
 
     try {
         $stmt = $pdo->prepare("INSERT INTO reviews (name, role_location, rating, review_text) VALUES (?, ?, ?, ?)");
@@ -25,4 +28,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>

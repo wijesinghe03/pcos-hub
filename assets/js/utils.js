@@ -57,8 +57,7 @@ const Theme = {
     this.injectToggle();
 
     // Listen for system theme changes if in auto mode
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (localStorage.getItem('pcos_theme') === 'auto') {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (localStorage.getItem('pcos_theme') === 'auto') {
         this.apply('auto');
       }
     });
@@ -178,8 +177,7 @@ const FontSize = {
     const fontSelect = document.getElementById('fontSizeSelect');
     if (fontSelect) {
       fontSelect.value = savedSize;
-      fontSelect.addEventListener('change', (e) => {
-        this.set(e.target.value);
+      fontSelect.addEventListener('change', (e) => { this.set(e.target.value);
       });
     }
   },
@@ -3350,7 +3348,7 @@ const Stats = {
       const statKey = el.getAttribute('data-stat');
       if (mapping[statKey] !== undefined) {
         const newValue = mapping[statKey];
-        const oldValue = parseFloat(el.dataset.count);
+        // const oldValue = parseFloat(el.dataset.count);
         
         // Update the data-count attribute
         el.setAttribute('data-count', newValue);
@@ -3570,6 +3568,7 @@ function initNewsletter() {
 }
 
 // ── HTML Escaping ──
+/*
 function escHtml(str) {
   if (!str) return '';
   return String(str)
@@ -3579,11 +3578,13 @@ function escHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+*/
 
 // ── Session quality guard ──
 // Returns the user object if the session is valid and complete.
 // Returns null if there is no session or it lacks identifying fields.
 // Does NOT redirect — let the callers decide what to do.
+/*
 function checkSession() {
   const user = Auth.getUser();
   if (!user || !user.loggedIn) return null;
@@ -3591,6 +3592,7 @@ function checkSession() {
   if (!user.id && !user.email) return null;
   return user;
 }
+*/
 
 // ── Global init ──
 document.addEventListener('DOMContentLoaded', () => {

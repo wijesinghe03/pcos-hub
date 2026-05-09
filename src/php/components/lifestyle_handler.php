@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Lifestyle Log Handler (lifestyle_handler.php)
  * Handles: meals, exercises, water, sleep
@@ -19,10 +20,13 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
 
 // ── Resolve patient_id from session, id or email ────────────────────
-function resolvePatient($pdo, $data) {
+function resolvePatient($pdo, $data)
+{
     // Session already started at top of file
     if (isset($_SESSION['patient_id'])) {
         return (int)$_SESSION['patient_id'];
@@ -69,11 +73,19 @@ $table = $table_map[$type];
 // ── POST: Save entry ────────────────────────────────────────────────
 if ($method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    if (!$data) { echo json_encode(['status' => 'error', 'message' => 'Invalid JSON data.']); exit; }
+    if (!$data) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid JSON data.']);
+        exit;
+    }
 
-    if (!isset($data['type'])) $data['type'] = $type;
+    if (!isset($data['type'])) {
+        $data['type'] = $type;
+    }
     $patient_id = resolvePatient($pdo, $data);
-    if (!$patient_id) { echo json_encode(['status' => 'error', 'message' => 'Patient not found. Please log in again.']); exit; }
+    if (!$patient_id) {
+        echo json_encode(['status' => 'error', 'message' => 'Patient not found. Please log in again.']);
+        exit;
+    }
 
     try {
         if ($type === 'meals') {
@@ -89,7 +101,8 @@ if ($method === 'POST') {
             $log_date   = $data['log_date']   ?? date('Y-m-d');
 
             if (!$meal_type || !$meal_name) {
-                echo json_encode(['status' => 'error', 'message' => 'Meal type and name are required.']); exit;
+                echo json_encode(['status' => 'error', 'message' => 'Meal type and name are required.']);
+                exit;
             }
 
             $stmt = $pdo->prepare(
@@ -104,7 +117,6 @@ if ($method === 'POST') {
                 'message' => 'Meal logged successfully!',
                 'id'      => $pdo->lastInsertId()
             ]);
-
         } elseif ($type === 'exercises') {
             $exercise_type = $data['exercise_type'] ?? null;
             $exercise_name = trim($data['exercise_name'] ?? '');
@@ -116,7 +128,8 @@ if ($method === 'POST') {
             $log_date      = $data['log_date']      ?? date('Y-m-d');
 
             if (!$exercise_type || !$exercise_name || !$duration) {
-                echo json_encode(['status' => 'error', 'message' => 'Exercise type, name, and duration are required.']); exit;
+                echo json_encode(['status' => 'error', 'message' => 'Exercise type, name, and duration are required.']);
+                exit;
             }
 
             $stmt = $pdo->prepare(
@@ -131,13 +144,13 @@ if ($method === 'POST') {
                 'message' => 'Exercise logged successfully!',
                 'id'      => $pdo->lastInsertId()
             ]);
-
         } elseif ($type === 'water') {
             $amount_ml = is_numeric($data['amount_ml'] ?? null) ? (int)$data['amount_ml'] : null;
             $log_date  = $data['log_date'] ?? date('Y-m-d');
 
             if (!$amount_ml || $amount_ml <= 0) {
-                echo json_encode(['status' => 'error', 'message' => 'Valid water amount in ml is required.']); exit;
+                echo json_encode(['status' => 'error', 'message' => 'Valid water amount in ml is required.']);
+                exit;
             }
 
             $stmt = $pdo->prepare(
@@ -159,9 +172,8 @@ if ($method === 'POST') {
                 'status'     => 'success',
                 'message'    => 'Water intake logged!',
                 'id'         => $pdo->lastInsertId(),
-                'today_total'=> (int)$total_row['total']
+                'today_total' => (int)$total_row['total']
             ]);
-
         } elseif ($type === 'sleep') {
             $sleep_date  = $data['sleep_date']    ?? null;
             $bedtime     = $data['bedtime']        ?? null;
@@ -170,13 +182,16 @@ if ($method === 'POST') {
             $notes       = $data['notes']          ?? '';
 
             if (!$sleep_date || !$bedtime || !$wake_time) {
-                echo json_encode(['status' => 'error', 'message' => 'Sleep date, bedtime, and wake time are required.']); exit;
+                echo json_encode(['status' => 'error', 'message' => 'Sleep date, bedtime, and wake time are required.']);
+                exit;
             }
 
             // Calculate duration in hours
             $bed  = strtotime($sleep_date . ' ' . $bedtime);
             $wake = strtotime($sleep_date . ' ' . $wake_time);
-            if ($wake <= $bed) $wake = strtotime('+1 day', $wake); // overnight
+            if ($wake <= $bed) {
+                $wake = strtotime('+1 day', $wake); // overnight
+            }
             $duration_hrs = round(($wake - $bed) / 3600, 2);
 
             $stmt = $pdo->prepare(
@@ -190,10 +205,9 @@ if ($method === 'POST') {
                 'status'        => 'success',
                 'message'       => 'Sleep logged successfully!',
                 'id'            => $pdo->lastInsertId(),
-                'duration_hours'=> $duration_hrs
+                'duration_hours' => $duration_hrs
             ]);
         }
-
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
     }
@@ -221,7 +235,6 @@ if ($method === 'POST') {
                  LIMIT " . (int)$limit
             );
             $stmt->execute($params);
-
         } elseif ($type === 'exercises') {
             $where = $log_date ? "AND log_date = ?" : "";
             $params = $log_date ? [$patient_id, $log_date] : [$patient_id];
@@ -232,7 +245,6 @@ if ($method === 'POST') {
                  LIMIT " . (int)$limit
             );
             $stmt->execute($params);
-
         } elseif ($type === 'water') {
             $where = $log_date ? "AND log_date = ?" : "";
             $params = $log_date ? [$patient_id, $patient_id, $log_date] : [$patient_id, $patient_id];
@@ -245,7 +257,6 @@ if ($method === 'POST') {
                  LIMIT " . (int)$limit
             );
             $stmt->execute($params);
-
         } elseif ($type === 'sleep') {
             $where = $log_date ? "AND sleep_date = ?" : "";
             $params = $log_date ? [$patient_id, $log_date] : [$patient_id];
@@ -260,7 +271,6 @@ if ($method === 'POST') {
 
         $rows = $stmt->fetchAll();
         echo json_encode(['status' => 'success', 'data' => $rows]);
-
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
     }
@@ -268,7 +278,10 @@ if ($method === 'POST') {
 // ── DELETE: Remove an entry ─────────────────────────────────────────
 } elseif ($method === 'DELETE') {
     $data = json_decode(file_get_contents('php://input'), true);
-    if (!$data) { echo json_encode(['status' => 'error', 'message' => 'Invalid JSON.']); exit; }
+    if (!$data) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid JSON.']);
+        exit;
+    }
 
     $patient_id = resolvePatient($pdo, $data);
     $entry_id   = isset($data['id']) ? (int)$data['id'] : null;
@@ -290,8 +303,6 @@ if ($method === 'POST') {
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'DB error: ' . $e->getMessage()]);
     }
-
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>

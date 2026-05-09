@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Appointment Handler (appointment_handler.php)
  * Manages patient appointments (CRUD, filtering, rescheduling).
@@ -9,7 +10,8 @@ session_start();
 
 header('Content-Type: application/json');
 
-function resolvePatient($pdo, $data) {
+function resolvePatient($pdo, $data)
+{
     if (isset($_SESSION['patient_id'])) {
         return (int)$_SESSION['patient_id'];
     }
@@ -55,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $sql .= " ORDER BY appointment_date DESC, appointment_time DESC LIMIT :limit";
-    
+
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':pid', $params[':pid'], PDO::PARAM_INT);
@@ -69,12 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
-}
-
-elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    
+
     $action = $data['action'] ?? 'save';
 
     if ($action !== 'save_hospital_appointment') {
@@ -93,7 +93,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $appt_id = $data['id'] ?? null;
         $newDate = $data['appointment_date'] ?? null;
         $newTime = $data['appointment_time'] ?? null;
-        
+
         if (!$appt_id || !$newDate || !$newTime) {
             echo json_encode(['status' => 'error', 'message' => 'Missing ID or schedule details.']);
             exit;
@@ -217,7 +217,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'upcoming')");
             $stmt->execute([$patient_id, $hosp, $doctor, $date, $time, $type, $reason]);
-            
+
             $appt_id = $pdo->lastInsertId();
 
             // Send Confirmation Email
@@ -256,60 +256,60 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'save_hospital_appointment') {
         $patient_name = $data['patient_name'] ?? '';
         $email = $data['patient_email'] ?? '';
-    $contact = $data['contact_number'] ?? '';
-    $hosp = $data['hospital_name'] ?? '';
-    $doctor = $data['doctor_name'] ?? '';
-    $date = $data['appointment_date'] ?? '';
-    $time = $data['appointment_time'] ?? '';
+        $contact = $data['contact_number'] ?? '';
+        $hosp = $data['hospital_name'] ?? '';
+        $doctor = $data['doctor_name'] ?? '';
+        $date = $data['appointment_date'] ?? '';
+        $time = $data['appointment_time'] ?? '';
 
-    if (!$hosp || !$doctor || !$patient_name || !$email || !$contact || !$date || !$time) {
-        echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
-        exit;
-    }
-
-    try {
-        // 1. Check Daily Limit
-        $limitStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
-        $limitStmt->execute([$doctor, $hosp, $date]);
-        $dailyCount = $limitStmt->fetchColumn();
-
-        if ($dailyCount >= 30) {
-            echo json_encode(['status' => 'error', 'message' => 'This doctor has reached the maximum of 30 appointments for this day. Please select another date.']);
+        if (!$hosp || !$doctor || !$patient_name || !$email || !$contact || !$date || !$time) {
+            echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
             exit;
         }
 
-        // 2. Double booking
-        $dupStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ?");
-        $dupStmt->execute([$doctor, $hosp, $date, $time]);
-        $isBooked = $dupStmt->fetchColumn();
-
-        if ($isBooked > 0) {
-            echo json_encode(['status' => 'error', 'message' => 'This time slot is already booked. Please select a different time.']);
-            exit;
-        }
-        
-        // 3. Get next appointment number for the day
-        $nextApptNum = $dailyCount + 1;
-
-        $stmt = $pdo->prepare("INSERT INTO hospital_appointments (hospital_name, doctor_name, patient_name, email, contact_number, appointment_number, appointment_date, appointment_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$hosp, $doctor, $patient_name, $email, $contact, $nextApptNum, $date, $time]);
-        $appt_id = $pdo->lastInsertId();
-
-        // Also add to patient dashboard if patient_id is present
-        if ($patient_id) {
-            try {
-                $stmt2 = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, 'consultation', ?, 'upcoming')");
-                $stmt2->execute([$patient_id, $hosp, $doctor, $date, $time, $data['reason'] ?? '']);
-            } catch (PDOException $e) {
-                error_log("Dashboard sync failed: " . $e->getMessage());
-            }
-        }
-
-        // Send Email
         try {
-            require_once '../utils/Mailer.php';
-            $subject = "Your Appointment Number: #$nextApptNum at $hosp";
-            $emailBody = "
+            // 1. Check Daily Limit
+            $limitStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
+            $limitStmt->execute([$doctor, $hosp, $date]);
+            $dailyCount = $limitStmt->fetchColumn();
+
+            if ($dailyCount >= 30) {
+                echo json_encode(['status' => 'error', 'message' => 'This doctor has reached the maximum of 30 appointments for this day. Please select another date.']);
+                exit;
+            }
+
+            // 2. Double booking
+            $dupStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ?");
+            $dupStmt->execute([$doctor, $hosp, $date, $time]);
+            $isBooked = $dupStmt->fetchColumn();
+
+            if ($isBooked > 0) {
+                echo json_encode(['status' => 'error', 'message' => 'This time slot is already booked. Please select a different time.']);
+                exit;
+            }
+
+            // 3. Get next appointment number for the day
+            $nextApptNum = $dailyCount + 1;
+
+            $stmt = $pdo->prepare("INSERT INTO hospital_appointments (hospital_name, doctor_name, patient_name, email, contact_number, appointment_number, appointment_date, appointment_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$hosp, $doctor, $patient_name, $email, $contact, $nextApptNum, $date, $time]);
+            $appt_id = $pdo->lastInsertId();
+
+            // Also add to patient dashboard if patient_id is present
+            if ($patient_id) {
+                try {
+                    $stmt2 = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, 'consultation', ?, 'upcoming')");
+                    $stmt2->execute([$patient_id, $hosp, $doctor, $date, $time, $data['reason'] ?? '']);
+                } catch (PDOException $e) {
+                    error_log("Dashboard sync failed: " . $e->getMessage());
+                }
+            }
+
+            // Send Email
+            try {
+                require_once '../utils/Mailer.php';
+                $subject = "Your Appointment Number: #$nextApptNum at $hosp";
+                $emailBody = "
                 <p>Hi <strong>$patient_name</strong>,</p>
                 <p>Your appointment has been successfully scheduled.</p>
                 <div style='background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6a11cb;'>
@@ -321,16 +321,15 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <p>Please present your appointment number at the hospital reception.</p>
             ";
-            Mailer::send($email, $subject, $emailBody);
-        } catch (Exception $e) {
-            error_log("Hospital Appointment email failed: " . $e->getMessage());
-        }
+                Mailer::send($email, $subject, $emailBody);
+            } catch (Exception $e) {
+                error_log("Hospital Appointment email failed: " . $e->getMessage());
+            }
 
-        echo json_encode(['status' => 'success', 'message' => 'Appointment booked! Confirmation email sent.', 'id' => $appt_id]);
-    } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            echo json_encode(['status' => 'success', 'message' => 'Appointment booked! Confirmation email sent.', 'id' => $appt_id]);
+        } catch (PDOException $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
-}
     exit;
 }
-?>

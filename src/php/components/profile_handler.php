@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Profile Handler (profile_handler.php)
  * CRUD for Patient Profile, Password, and Avatar.
@@ -16,7 +17,7 @@ $user_id = $jsonInput['patient_id'] ?? ($_POST['patient_id'] ?? ($_GET['patient_
 
 if (!$user_id) {
     echo json_encode([
-        'status' => 'error', 
+        'status' => 'error',
         'message' => 'User identity missing (patient_id)',
         'debug' => ['json' => $jsonInput, 'post' => $_POST, 'get' => $_GET]
     ]);
@@ -31,7 +32,7 @@ if ($method === 'GET') {
         $stmt = $pdo->prepare("SELECT id, full_name, email, username, dob, gender, phone, address, blood_group, avatar, status FROM patients WHERE id = ?");
         $stmt->execute([$user_id]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($user) {
             echo json_encode(['status' => 'success', 'data' => $user]);
         } else {
@@ -43,7 +44,7 @@ if ($method === 'GET') {
 }
 
 // Handle POST
-else if ($method === 'POST') {
+elseif ($method === 'POST') {
     $data = $jsonInput ?? $_POST;
     $action = $data['action'] ?? 'update_profile';
 
@@ -71,7 +72,7 @@ else if ($method === 'POST') {
     }
 
     // 2. Update Password
-    else if ($action === 'update_password') {
+    elseif ($action === 'update_password') {
         $cur_pass = $data['current_password'] ?? '';
         $new_pass = $data['new_password'] ?? '';
 
@@ -94,9 +95,9 @@ else if ($method === 'POST') {
     }
 
     // 3. Deactivate Account
-    else if ($action === 'deactivate') {
+    elseif ($action === 'deactivate') {
         $password = $jsonInput['password'] ?? ($_POST['password'] ?? '');
-        
+
         try {
             // Verify password first
             $stmt = $pdo->prepare("SELECT password FROM patients WHERE id = ?");
@@ -115,14 +116,14 @@ else if ($method === 'POST') {
     }
 
     // 4. Update Avatar
-    else if ($action === 'update_avatar') {
+    elseif ($action === 'update_avatar') {
         if (!isset($_FILES['avatar'])) {
             echo json_encode(['status' => 'error', 'message' => 'No avatar file provided (CHECK FILES ARRAY)']);
             exit;
         }
 
         $file = $_FILES['avatar'];
-        
+
         // Handle upload errors
         if ($file['error'] !== UPLOAD_ERR_OK) {
             echo json_encode(['status' => 'error', 'message' => 'PHP Upload Error: ' . $file['error']]);
@@ -137,11 +138,11 @@ else if ($method === 'POST') {
         }
 
         $fileName = 'profile_' . $user_id . '_' . time() . '.' . $ext;
-        
+
         // Robust absolute path calculation
         $baseDir = dirname(dirname(dirname(__DIR__))); // Up 3: src/php/components -> src/php -> src -> root
         $targetDir = $baseDir . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'profiles' . DIRECTORY_SEPARATOR;
-        
+
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
@@ -161,10 +162,9 @@ else if ($method === 'POST') {
             echo json_encode(['status' => 'error', 'message' => 'Filesystem error: ' . ($err['message'] ?? 'Unknown Move Error') . ' Target: ' . $targetPath]);
         }
     }
-    
+
     // Unknown action
     else {
         echo json_encode(['status' => 'error', 'message' => 'Action unrecognized: ' . $action]);
     }
 }
-?>

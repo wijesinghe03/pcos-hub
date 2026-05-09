@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Symptom Log Handler (symptom_handler.php)
  * Handles saving and fetching symptom logs for the logged-in patient.
@@ -10,7 +11,8 @@ session_start();
 header('Content-Type: application/json');
 
 // Resolve patient_id from either a numeric id or an email
-function resolvePatientId($pdo, $data, $source = 'body') {
+function resolvePatientId($pdo, $data, $source = 'body')
+{
     if ($source === 'body') {
         $id    = $data['patient_id']    ?? null;
         $email = $data['patient_email'] ?? null;
@@ -125,8 +127,6 @@ if ($method === 'POST') {
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
-
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>

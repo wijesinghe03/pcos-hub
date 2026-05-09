@@ -1,4 +1,5 @@
 <?php
+
 // PCOS CARE HUB — Patient Data Export Handler (v2 - Full Integrity)
 header('Content-Type: application/json');
 
@@ -54,7 +55,7 @@ try {
     $exportData['lifestyle'] = [
         'meals'    => [],
         'activity' => [],
-        'hydration'=> [],
+        'hydration' => [],
         'sleep'    => []
     ];
 
@@ -83,8 +84,6 @@ try {
     $filename = "PCOS_FullArchive_" . (isset($exportData['profile']['username']) ? $exportData['profile']['username'] : 'User') . "_" . date('Ymd_His') . ".json";
     header('Content-Disposition: attachment; filename="' . $filename . '"');
     echo json_encode($exportData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
 } catch (PDOException $e) {
     echo json_encode(['status' => 'error', 'message' => 'Full Export failed: ' . $e->getMessage()]);
 }
-?>

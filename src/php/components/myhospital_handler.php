@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — My Hospital Handler (Unified Authentication)
  * Updated 2026-04-06: Added robust ID detection & set-primary action.
@@ -7,7 +8,7 @@
 header('Content-Type: application/json');
 require_once '../db_connect.php';
 
-// Auth: We rely on the frontend sending patient_id since sessions aren't persistent 
+// Auth: We rely on the frontend sending patient_id since sessions aren't persistent
 // in this environment across different handler requests if not explicitly managed.
 $jsonInput = json_decode(file_get_contents('php://input'), true);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -33,7 +34,7 @@ if ($method === 'GET') {
 }
 
 // Handle POST
-else if ($method === 'POST') {
+elseif ($method === 'POST') {
     $data = $jsonInput ?? $_POST;
     $action = $data['action'] ?? 'save';
 
@@ -62,11 +63,11 @@ else if ($method === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
-    }
-
-    else if ($action === 'set-primary') {
+    } elseif ($action === 'set-primary') {
         $id = $data['id'] ?? null;
-        if (!$id) exit;
+        if (!$id) {
+            exit;
+        }
         try {
             $pdo->prepare("UPDATE patient_hospitals SET is_primary = 0 WHERE patient_id = ?")->execute([$user_id]);
             $pdo->prepare("UPDATE patient_hospitals SET is_primary = 1 WHERE id = ? AND patient_id = ?")->execute([$id, $user_id]);
@@ -74,9 +75,7 @@ else if ($method === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
-    }
-
-    else if ($action === 'delete') {
+    } elseif ($action === 'delete') {
         $id = $data['id'] ?? null;
         if (!$id) {
             echo json_encode(['status' => 'error', 'message' => 'ID missing for deletion']);
@@ -95,4 +94,3 @@ else if ($method === 'POST') {
         }
     }
 }
-?>

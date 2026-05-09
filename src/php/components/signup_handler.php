@@ -1,27 +1,28 @@
 <?php
+
 /**
  * PCOS CARE HUB — Isolated Signup Handler (signup_handler.php)
  * Handles registration for Patients and Hospitals into separate tables.
  */
 
 require_once '../db_connect.php';
-
 header('Content-Type: application/json');
 
-function handleSignup($pdo) {
+function handleSignup($pdo)
+{
+
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
-    
     if (!$data || !isset($data['role'])) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid data provided.']);
         return;
     }
 
-    $role = $data['role']; // patient or hospital
+    $role = $data['role'];
+// patient or hospital
     $username = $data['username'];
     $email = $data['email'];
     $password = password_hash($data['password'], PASSWORD_BCRYPT);
-
     try {
         if ($role === 'patient') {
             $stmt = $pdo->prepare("INSERT INTO patients (full_name, username, email, password, dob, phone, address, blood_group, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -36,7 +37,7 @@ function handleSignup($pdo) {
                 $data['blood_group'] ?? null,
                 $data['gender'] ?? null
             ]);
-        } else if ($role === 'hospital') {
+        } elseif ($role === 'hospital') {
             $stmt = $pdo->prepare("INSERT INTO hospitals (hosp_name, username, email, password, reg_number, location, contact_person) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([
                 $data['full_name'], // Used as hosp_name
@@ -57,7 +58,6 @@ function handleSignup($pdo) {
             require_once '../utils/Mailer.php';
             $subject = "Welcome to PCOS Care Hub!";
             $name = $data['full_name'];
-            
             if ($role === 'patient') {
                 $emailBody = "
                     <p>Hi <strong>$name</strong>,</p>
@@ -75,10 +75,10 @@ function handleSignup($pdo) {
                     <a href='#' class='button'>Go to Hospital Dashboard</a>
                 ";
             }
-            
+
             Mailer::send($email, $subject, $emailBody);
         } catch (Exception $e) {
-            // Log error but don't stop the signup response
+        // Log error but don't stop the signup response
             error_log("Welcome email failed: " . $e->getMessage());
         }
 
@@ -100,7 +100,6 @@ function handleSignup($pdo) {
                 'location' => $data['location'] ?? null
             ]
         ]);
-
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
             echo json_encode(['status' => 'error', 'message' => 'Username, Email, or Registration Number already exists.']);
@@ -115,4 +114,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Newsletter Subscription Handler
  * Processes subscription requests and sends a confirmation email.
