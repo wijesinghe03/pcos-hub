@@ -41,7 +41,7 @@ jobs:
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress
       - name: Run Linting
-        run: npm run lint # Assuming script exists or use vendor/bin/phpcs
+        run: composer run lint
       - name: Run Tests
         run: composer test
 
@@ -65,7 +65,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript, php
+          languages: 'javascript, php'
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
