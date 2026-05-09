@@ -77,7 +77,7 @@ function handleSignup($pdo)
                 ";
             }
 
-            Mailer::send($email, $subject, $emailBody);
+            \App\Utils\Mailer::send($email, $subject, $emailBody);
         } catch (Throwable $e) {
             error_log("Welcome email failed: " . $e->getMessage());
         }

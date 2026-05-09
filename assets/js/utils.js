@@ -3648,4 +3648,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function checkSession() { return Auth.checkSession(); }
+/* eslint-disable no-unused-vars */ function checkSession() { return Auth.checkSession(); }

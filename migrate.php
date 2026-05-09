@@ -1,7 +1,9 @@
 <?php
+
 /**
  * PCOS Hub — Migration: Create cycle_logs table
  */
+
 require_once 'src/php/db_connect.php';
 
 $migrations = [];
@@ -138,6 +140,7 @@ try {
 }
 
 echo "\n=== Migration Results ===\n";
-foreach ($migrations as $msg) echo $msg . "\n";
+foreach ($migrations as $msg) {
+    echo $msg . "\n";
+}
 echo "========================\n\n";
-?>

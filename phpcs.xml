@@ -14,6 +14,10 @@
     <exclude-pattern>src/php/libs/*</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
 
-    <!-- Only lint our own source files -->
+    <!-- Only lint our own source files and tests -->
     <file>src/php</file>
+    <file>tests</file>
+    <file>migrate.php</file>
+
+    <arg name="extensions" value="php"/>
 </ruleset>

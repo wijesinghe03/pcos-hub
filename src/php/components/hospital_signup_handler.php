@@ -111,7 +111,7 @@ try {
                You will receive a confirmation email once your account is approved.</p>
             <p>Documents submitted: " . (count($uploadedFiles) > 0 ? implode(', ', $uploadedFiles) : 'None') . "</p>
         ";
-        Mailer::send($email, 'Hospital Registration — Pending Approval | PCOS Care Hub', $emailBody);
+        \App\Utils\Mailer::send($email, 'Hospital Registration — Pending Approval | PCOS Care Hub', $emailBody);
     } catch (Throwable $mailEx) {
         error_log('Hospital welcome email failed: ' . $mailEx->getMessage());
     }

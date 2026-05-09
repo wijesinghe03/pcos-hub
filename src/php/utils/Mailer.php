@@ -5,7 +5,7 @@
  * Handles sending emails using PHPMailer and SMTP.
  */
 
-
+namespace App\Utils;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

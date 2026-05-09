@@ -1,4 +1,7 @@
 <?php
+
+namespace Tests\Unit\PHP;
+
 use PHPUnit\Framework\TestCase;
 
 class AppointmentTest extends TestCase
@@ -11,7 +14,7 @@ class AppointmentTest extends TestCase
         // In a real test, we would mock the PDO and check if the count logic works
         $dailyCount = 30; // Simulated result from DB
         $limit = 30;
-        
+
         $this->assertTrue($dailyCount >= $limit, "Should block if count is 30 or more");
     }
 
