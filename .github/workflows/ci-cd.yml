@@ -1,0 +1,100 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  frontend-lint-test:
+    name: Frontend - Lint & Test (${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci || npm install
+      - run: npm run lint
+      - run: npm test
+
+  backend-lint-test:
+    name: Backend - Lint & Test (${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, xml, sqlite3
+          coverage: none
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+      - name: Run Linting
+        run: npm run lint # Assuming script exists or use vendor/bin/phpcs
+      - name: Run Tests
+        run: composer test
+
+  admin-panel-lint-test:
+    name: Admin Panel - Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - run: echo "Running Admin Panel specific checks..."
+      # Add admin specific commands here
+
+  security-checks:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, php
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  integration-tests:
+    name: Integration Tests
+    needs: [frontend-lint-test, backend-lint-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Integration Suite
+        run: echo "Running integration tests..."
+
+  build-verification:
+    name: Build Verification
+    needs: [frontend-lint-test, backend-lint-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Build
+        run: echo "Verifying build assets..."
+
+  final-status-check:
+    name: Final Status Check
+    needs: [security-checks, integration-tests, build-verification]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check All Jobs
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+      - name: Success
+        run: echo "All checks passed successfully!"

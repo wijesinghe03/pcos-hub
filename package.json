@@ -1,0 +1,16 @@
+{
+  "name": "pcos-hub",
+  "version": "1.0.0",
+  "description": "PCOS Management Hub",
+  "main": "index.html",
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint assets/js/**/*.js",
+    "lint:fix": "eslint assets/js/**/*.js --fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "vitest": "^1.2.1",
+    "jsdom": "^24.0.0"
+  }
+}
