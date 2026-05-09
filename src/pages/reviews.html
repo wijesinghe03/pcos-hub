@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews — PCOS Care Hub</title>
+  <meta name="description" content="Read honest reviews from patients and healthcare professionals using PCOS Care Hub.">
+  <link rel="stylesheet" href="../../assets/css/global.css">
+  <link rel="stylesheet" href="../../assets/css/navbar.css">
+  <link rel="stylesheet" href="../../assets/css/footer.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+  <style>
+    .reviews-hero {
+      background: linear-gradient(160deg, #fef9e7 0%, #fce4f0 40%, #f0e6ff 100%);
+      padding: calc(var(--nav-h) + 60px) 0 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .reviews-hero {
+      background: linear-gradient(160deg, #1f1a0e 0%, #2d1326 40%, #1a0f2e 100%);
+    }
+
+    .reviews-hero .hero-blob {
+      position: absolute;
+      filter: blur(80px);
+      opacity: 0.35;
+      border-radius: 50%;
+    }
+
+    .reviews-hero .blob-1 {
+      width: 350px;
+      height: 350px;
+      background: #f9d423;
+      top: -80px;
+      left: -80px;
+    }
+
+    .reviews-hero .blob-2 {
+      width: 280px;
+      height: 280px;
+      background: var(--pink-light);
+      bottom: -60px;
+      right: -60px;
+    }
+
+    .hero-stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    [data-theme="dark"] .hero-stat-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-stat-pill .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--purple-primary);
+    }
+
+    .hero-stat-pill .lbl {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-mid);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--purple-light);
+      color: var(--purple-primary);
+    }
+
+    .filter-pill.active {
+      background: var(--purple-primary);
+      color: white;
+      border-color: var(--purple-primary);
+    }
+
+    /* Reviews grid */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .review-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .review-card::before {
+      content: '"';
+      position: absolute;
+      top: -8px;
+      right: 16px;
+      font-size: 7rem;
+      font-family: Georgia, serif;
+      color: var(--purple-pale);
+      line-height: 1;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .review-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+      border-color: var(--purple-light);
+    }
+
+    .review-stars {
+      font-size: 1.1rem;
+      color: #f59e0b;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+      flex-grow: 1;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .review-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .review-author-name {
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .review-author-role {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .review-date {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* Empty state */
+    .reviews-empty {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-light);
+    }
+
+    .reviews-empty .icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+
+    /* Loading skeleton */
+    .skeleton-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .skeleton-line.w60 { width: 60%; }
+    .skeleton-line.w80 { width: 80%; }
+    .skeleton-line.w40 { width: 40%; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Summary stats */
+    .rating-summary {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 36px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .rating-big {
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .rating-big .num {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--purple-primary);
+      line-height: 1;
+    }
+
+    .rating-big .stars {
+      font-size: 1.3rem;
+      color: #f59e0b;
+      margin: 8px 0 4px;
+    }
+
+    .rating-big .count {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .rating-bars {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .rating-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .rating-bar-row .label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      min-width: 50px;
+    }
+
+    .rating-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-light);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rating-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #f59e0b, #f97316);
+      transition: width 0.8s ease;
+    }
+
+    .rating-bar-row .pct {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    @media(max-width:640px) {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+      .rating-summary {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-placeholder" data-page="reviews"></div>
+
+  <!-- Hero -->
+  <section class="reviews-hero">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="container" style="position:relative;z-index:1">
+      <h1 class="reveal" style="margin-bottom:14px">⭐ Community Reviews</h1>
+      <p class="reveal" style="font-size:1.1rem;max-width:600px;margin:0 auto;color:var(--text-mid)">
+        Honest feedback from patients and healthcare professionals using PCOS Care Hub
+      </p>
+      <div class="hero-stats-row reveal">
+        <div class="hero-stat-pill">
+          <span class="num" id="totalReviews">—</span>
+          <span class="lbl">Total Reviews</span>
+        </div>
+        <div class="hero-stat-pill">
+          <span class="num" id="avgRating">—</span>
+          <span class="lbl">Avg Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="section-pad">
+    <div class="container">
+
+      <!-- Rating Summary -->
+      <div class="rating-summary reveal" id="ratingSummary" style="display:none">
+        <div class="rating-big">
+          <div class="num" id="summaryAvg">0</div>
+          <div class="stars" id="summaryStars">★★★★★</div>
+          <div class="count"><span id="summaryCount">0</span> reviews</div>
+        </div>
+        <div class="rating-bars" id="ratingBars">
+          <!-- Populated by JS -->
+        </div>
+        <div style="text-align:center">
+          <button class="btn btn-primary" style="padding:12px 28px"
+            onclick="window.location.href='index.html#get-connected'">
+            ✏️ Write a Review
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar reveal">
+        <button class="filter-pill active" onclick="filterReviews('all', this)">All</button>
+        <button class="filter-pill" onclick="filterReviews(5, this)">★★★★★</button>
+        <button class="filter-pill" onclick="filterReviews(4, this)">★★★★☆</button>
+        <button class="filter-pill" onclick="filterReviews(3, this)">★★★☆☆</button>
+        <button class="filter-pill" onclick="filterReviews('low', this)">★★ & below</button>
+      </div>
+
+      <!-- Reviews Grid -->
+      <div class="reviews-grid" id="reviewsGrid">
+        <!-- Skeleton loaders -->
+        <div class="skeleton-card"><div class="skeleton-line w60"></div><div class="skeleton-line w80"></div><div class="skeleton-line w80"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card"><div class="skeleton-line w60"></div><div class="skeleton-line w80"></div><div class="skeleton-line w80"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card"><div class="skeleton-line w60"></div><div class="skeleton-line w80"></div><div class="skeleton-line w80"></div><div class="skeleton-line w40"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/components.js"></script>
+  <script>
+    let allReviews = [];
+
+    const avatarColors = [
+      'linear-gradient(135deg,#9B59D0,#E57FAF)',
+      'linear-gradient(135deg,#3498db,#2980b9)',
+      'linear-gradient(135deg,#27ae60,#1a7a42)',
+      'linear-gradient(135deg,#e67e22,#d35400)',
+      'linear-gradient(135deg,#e74c3c,#c0392b)',
+      'linear-gradient(135deg,#1abc9c,#16a085)',
+      'linear-gradient(135deg,#8e44ad,#6c3483)'
+    ];
+
+    function getStars(rating) {
+      return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function renderReviews(reviews) {
+      const grid = document.getElementById('reviewsGrid');
+      if (!reviews || reviews.length === 0) {
+        grid.innerHTML = `
+          <div class="reviews-empty" style="grid-column:1/-1">
+            <div class="icon">📝</div>
+            <h3 style="margin-bottom:8px;color:var(--text-dark)">No reviews yet</h3>
+            <p>Be the first to share your experience with PCOS Care Hub!</p>
+            <a href="index.html#get-connected" class="btn btn-primary" style="margin-top:20px">Write a Review</a>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = reviews.map((r, i) => {
+        const initials = r.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        const bg = avatarColors[i % avatarColors.length];
+        return `
+        <div class="review-card reveal">
+          <div class="review-stars">${getStars(r.rating)}</div>
+          <div class="review-text">"${escapeHtml(r.review_text)}"</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:${bg}">${initials}</div>
+            <div>
+              <div class="review-author-name">${escapeHtml(r.name)}</div>
+              <div class="review-author-role">${escapeHtml(r.role_location || 'User')}</div>
+              <div class="review-date">${formatDate(r.created_at)}</div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Re-init reveal animations for new cards
+      if (typeof initReveal === 'function') initReveal();
+    }
+
+    function buildRatingSummary(reviews) {
+      if (!reviews.length) return;
+
+      const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      let sum = 0;
+      reviews.forEach(r => {
+        counts[r.rating] = (counts[r.rating] || 0) + 1;
+        sum += r.rating;
+      });
+
+      const avg = (sum / reviews.length).toFixed(1);
+      const total = reviews.length;
+
+      document.getElementById('totalReviews').textContent = total;
+      document.getElementById('avgRating').textContent = avg + ' ★';
+      document.getElementById('summaryAvg').textContent = avg;
+      document.getElementById('summaryStars').textContent = getStars(Math.round(avg));
+      document.getElementById('summaryCount').textContent = total;
+
+      const barsHtml = [5, 4, 3, 2, 1].map(star => {
+        const pct = total > 0 ? Math.round((counts[star] / total) * 100) : 0;
+        return `
+          <div class="rating-bar-row">
+            <span class="label">${star} ★</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+            <span class="pct">${pct}%</span>
+          </div>`;
+      }).join('');
+      document.getElementById('ratingBars').innerHTML = barsHtml;
+      document.getElementById('ratingSummary').style.display = 'flex';
+    }
+
+    function filterReviews(filter, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+
+      let filtered;
+      if (filter === 'all') {
+        filtered = allReviews;
+      } else if (filter === 'low') {
+        filtered = allReviews.filter(r => r.rating <= 2);
+      } else {
+        filtered = allReviews.filter(r => r.rating === filter);
+      }
+      renderReviews(filtered);
+    }
+
+    async function loadReviews() {
+      try {
+        const res = await fetch('../php/get_reviews.php');
+        const data = await res.json();
+        if (data.status === 'success') {
+          allReviews = data.data.map(r => ({...r, rating: parseInt(r.rating)}));
+          renderReviews(allReviews);
+          buildRatingSummary(allReviews);
+        } else {
+          document.getElementById('reviewsGrid').innerHTML = `
+            <div class="reviews-empty" style="grid-column:1/-1">
+              <div class="icon">⚠️</div>
+              <p>Failed to load reviews. Please try again later.</p>
+            </div>`;
+        }
+      } catch (err) {
+        console.error('Error loading reviews:', err);
+        document.getElementById('reviewsGrid').innerHTML = `
+          <div class="reviews-empty" style="grid-column:1/-1">
+            <div class="icon">⚠️</div>
+            <p>Could not connect to the server.</p>
+          </div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadReviews);
+  </script>
+</body>
+
+</html>

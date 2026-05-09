@@ -414,11 +414,11 @@ const L10n = {
         log_exercise_title: "Log an Exercise",
         exercise_type_label: "Exercise Type",
         exercise_type_placeholder: "Select type...",
-        cardio: "ðŸ ƒ Cardio (Running, Cycling...)",
+        cardio: "🏃 Cardio (Running, Cycling...)",
         strength: "💪 Strength Training",
         yoga: "🧘 Yoga",
         walking: "🚶 Walking",
-        swimming: "ðŸ Š Swimming",
+        swimming: "🏊 Swimming",
         stretching: "🤸 Stretching",
         exercise_name_label: "Exercise Name",
         exercise_name_placeholder: "e.g. Morning jog",
@@ -783,6 +783,7 @@ const L10n = {
         testimonial_3_text: "\"The cycle tracker and symptom logging features are excellent. I can see patterns I never noticed before. The lifestyle tracking helps me stay on track with my diet and exercise goals.\"",
         role_patient_gampaha: "Patient, Gampaha",
         btn_add_review: "✍️ Add Your Review",
+        btn_view_reviews: "⭐ Reviews",
         review_modal_title: "Share Your Experience",
         full_name_placeholder: "Ex: Amanda Perera",
         rev_role_label: "Role / Location",
@@ -1741,6 +1742,7 @@ const L10n = {
         testimonial_3_text: "\"චක්‍ර නිරීක්ෂකය සහ රෝග ලක්ෂණ සටහන් කිරීමේ විශේෂාංග විශිෂ්ටයි. මට මීට පෙර කිසිදා නොදැක්ක රටාවන් දැන් දැක ගත හැකිය. ජීවන රටා ලුහුබැඳීම මගේ ආහාර සහ ව්‍යායාම ඉලක්ක කරා යාමට මට උපකාරී වේ.\"",
         role_patient_gampaha: "රෝගියා, ගම්පහ",
         btn_add_review: "✍️ ඔබේ අදහස එක් කරන්න",
+        btn_view_reviews: "⭐ සමාලෝචන",
         review_modal_title: "ඔබේ අත්දැකීම් බෙදා ගන්න",
         full_name_label: "ඔබේ නම",
         rev_role_label: "භූමිකාව / ස්ථානය",
@@ -2004,7 +2006,7 @@ const L10n = {
         logout: "ඉවත් වන්න",
         appointments: "හමුවීම්",
         manage_visits: "ඔබේ සායනික චාරිකා සහ උපදේශන කළමනාකරණය කරන්න",
-        health_schedule_title: "ඔබේ සෞඛ්‍ය කාලසටහන ðŸ“…",
+        health_schedule_title: "ඔබේ සෞඛ්‍ය කාලසටහන 📅",
         health_schedule_subtitle: "ඔබේ වෛද්‍ය චාරිකා පිළිබඳ අවධානයෙන් සිටින්න. නිසි කළමනාකරණය සඳහා නිතිපතා පරීක්ෂණ අත්‍යවශ්‍ය වේ.",
         upcoming: "ඉදිරි හමුවීම්",
         total_visits: "මුළු හමුවීම්",
@@ -2185,7 +2187,7 @@ const L10n = {
         at: "වේලාව",
         reschedule: "දිනය වෙනස් කරන්න",
         cancel_visit: "හමුවීම අවලංගු කරන්න",
-        track_lifestyle_title: "ඔබේ ජීවන රටාව නිරීක්ෂණය කරන්න ðŸŒ±",
+        track_lifestyle_title: "ඔබේ ජීවන රටාව නිරීක්ෂණය කරන්න 🌱",
         track_lifestyle_desc: "ඔබේ ආහාර, ව්‍යායාම, ජලය සහ නින්ද නිරීක්ෂණය කරන්න.",
         meals_today: "අද ලබාගත් ආහාර",
         exercises: "අද කළ ව්‍යායාම",
@@ -2233,7 +2235,7 @@ const L10n = {
         custom_water_label: "අවශ්‍ය ප්‍රමාණය ඇතුළත් කරන්න (ml)",
         custom_water_placeholder: "ප්‍රමාණය ml වලින් ඇතුළත් කරන්න",
         add: "එක් කරන්න",
-        today_intake_goal: "අද පානය කළ ප්‍රමාණය Â· ඉලක්කය: 2,500 ml",
+        today_intake_goal: "අද පානය කළ ප්‍රමාණය · ඉලක්කය: 2,500 ml",
         water_goal_reached: "දෛනික ඉලක්කයෙන්",
         water_history: "ජල සටහන් ඉතිහාසය",
         log_sleep_title: "නින්ද පිළිබඳ සටහන් කරන්න",
@@ -2712,6 +2714,7 @@ const L10n = {
         rev_text_placeholder: "PCOS Care Hub உங்களுக்கு எப்படி உதவியது என்று கூறுங்கள்...",
         btn_submit_review: "கருத்தைச் சமர்ப்பிக்கவும்",
         btn_add_review: "✍️ உங்கள் கருத்தை சேர்க்கவும்",
+        btn_view_reviews: "⭐ மதிப்புரைகள்",
         review_success_msg: "கருத்தைச் சேர்த்ததற்கு நன்றி!",
         profile_title: "எனது சுயவிவரம்",
         profile_subtitle: "உங்கள் தனிப்பட்ட மற்றும் மருத்துவத் தகவல்களை நிர்வகிக்கவும்",
@@ -2784,7 +2787,7 @@ const L10n = {
         logout: "வெளியேறு",
         appointments: "முன்பதிவுகள்",
         manage_visits: "உங்கள் கிளினிக் வருகைகள் மற்றும் ஆலோசனைகளை நிர்வகிக்கவும்",
-        health_schedule_title: "உங்கள் ஆரோக்கிய கால அட்டவணை ðŸ“…",
+        health_schedule_title: "உங்கள் ஆரோக்கிய கால அட்டவணை 📅",
         health_schedule_subtitle: "உங்கள் மருத்துவ வருகைகளைக் கண்காணித்துக் கொள்ளுங்கள். முறையான மேலாண்மைக்கு வழக்கமான பரிசோதனைகள் அவசியம்.",
         upcoming: "வரவிருக்கும் முன்பதிவுகள்",
         total_visits: "மொத்த முன்பதிவுகள்",
@@ -2957,7 +2960,7 @@ const L10n = {
         at: "மணிக்கு",
         reschedule: "மாற்றியமைக்கவும்",
         cancel_visit: "வருகையை ரத்துசெய்",
-        track_lifestyle_title: "உங்கள் வாழ்க்கை முறையைக் கண்காணியுங்கள் ðŸŒ±",
+        track_lifestyle_title: "உங்கள் வாழ்க்கை முறையைக் கண்காணியுங்கள் 🌱",
         track_lifestyle_desc: "உங்கள் உணவு, உடற்பயிற்சி, நீரேற்றம் மற்றும் தூக்கத்தைக் கண்காணியுங்கள்.",
         meals_today: "இன்றைய உணவுகள்",
         exercises: "இன்றைய உடற்பயிற்சிகள்",
@@ -3005,7 +3008,7 @@ const L10n = {
         custom_water_label: "தனிப்பயன் அளவை உள்ளிடவும் (மிலி)",
         custom_water_placeholder: "அளவை மிலி இல் உள்ளிடவும்",
         add: "சேர்",
-        today_intake_goal: "இன்றைய உட்கொள்ளல் Â· இலக்கு: 2,500 மிலி",
+        today_intake_goal: "இன்றைய உட்கொள்ளல் · இலக்கு: 2,500 மிலி",
         water_goal_reached: "தினசரி இலக்கில்",
         water_history: "நீரேற்ற பதிவு வரலாறு",
         log_sleep_title: "தூக்கத்தைப் பதிவு செய்யுங்கள்",
@@ -3215,6 +3218,20 @@ const L10n = {
   },
   get() {
     return localStorage.getItem('pcos_lang') || 'en';
+  },
+  set(lang) {
+    localStorage.setItem('pcos_lang', lang);
+    this.apply(lang);
+    Toast.success(this.t('lang_changed_toast'));
+    
+    // Sync settings dropdown if on settings page
+    const langSelect = document.getElementById('language');
+    if (langSelect) langSelect.value = lang;
+
+    // Update active state of lang pills in hero if they exist
+    document.querySelectorAll('.lang-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.id === 'lang-' + lang);
+    });
   },
   init() {
     const lang = this.get();
@@ -3458,7 +3475,17 @@ const Auth = {
   isLoggedIn() {
     const u = this.getUser();
     return u && u.loggedIn;
+  },
+  checkSession() {
+    const u = this.getUser();
+    if (!u || !u.loggedIn) {
+      sessionStorage.setItem('pcos_notice', 'Please log in to access this page.');
+      window.location.href = 'login.html';
+      return null;
+    }
+    return u;
   }
+
 };
 
 // ── Progress bar animation ──
@@ -3621,3 +3648,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+function checkSession() { return Auth.checkSession(); }

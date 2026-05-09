@@ -288,7 +288,14 @@
     <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script>
-        let selectedDoctor = null;
+        function checkSession() {
+    const userStr = sessionStorage.getItem('user');
+    if (userStr) {
+        try { return JSON.parse(userStr); } catch (e) { return null; }
+    }
+    return null;
+}
+let selectedDoctor = null;
         let selectedHospital = '';
         let selectedTime = '';
 
@@ -299,7 +306,14 @@
             
             // Set min date to today
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('appointmentDate').min = today;
+            const dateInputEl = document.getElementById('appointmentDate');
+            dateInputEl.min = today;
+            dateInputEl.value = today; // default to today
+            // Ensure slots generate on date change or input
+            dateInputEl.addEventListener('change', generateTimeSlots);
+            dateInputEl.addEventListener('input', generateTimeSlots);
+            // Generate slots for default date
+            generateTimeSlots();
 
             // Parse URL params
             const params = new URLSearchParams(window.location.search);

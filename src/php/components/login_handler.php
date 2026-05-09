@@ -18,8 +18,8 @@ function handleLogin($pdo)
         return;
     }
 
-    $identity = $data['identity'];
-    $password = $data['password'];
+    $identity = trim($data['identity']);
+    $password = trim($data['password']);
     $role = $data['role'];
 // patient, hospital, or admin
 
@@ -85,7 +85,8 @@ function handleLogin($pdo)
                 ]
             ]);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal.']);
+            $reason = !$user ? 'User not found' : 'Password mismatch';
+            echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal. (Reason: ' . $reason . ')']);
         }
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'System error: ' . $e->getMessage()]);

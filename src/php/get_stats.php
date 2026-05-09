@@ -13,8 +13,8 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patients");
     $patient_count = $stmt->fetch()['count'];
 
-    // 2. Count Hospitals
-    $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals");
+    // 2. Count Approved Hospitals (is_verified = 1 / approval_status = 'approved')
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals WHERE is_verified = 1 AND approval_status = 'approved'");
     $hospital_count = $stmt->fetch()['count'];
 
     // 3. Count Reports (sum of patient_reports and patient_labresults)

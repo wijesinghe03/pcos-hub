@@ -20,8 +20,9 @@ function handleSignup($pdo)
 
     $role = $data['role'];
 // patient or hospital
-    $username = $data['username'];
-    $email = $data['email'];
+    $username = trim($data['username']);
+    $email = trim($data['email']);
+    $regNumber = isset($data['reg_number']) ? trim($data['reg_number']) : null;
     $password = password_hash($data['password'], PASSWORD_BCRYPT);
     try {
         if ($role === 'patient') {
@@ -77,8 +78,7 @@ function handleSignup($pdo)
             }
 
             Mailer::send($email, $subject, $emailBody);
-        } catch (Exception $e) {
-        // Log error but don't stop the signup response
+        } catch (Throwable $e) {
             error_log("Welcome email failed: " . $e->getMessage());
         }
 
@@ -102,7 +102,7 @@ function handleSignup($pdo)
         ]);
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
-            echo json_encode(['status' => 'error', 'message' => 'Username, Email, or Registration Number already exists.']);
+            echo json_encode(['status' => 'error', 'message' => 'An account with this username or email already exists. Try signing in instead.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Registration failed: ' . $e->getMessage()]);
         }

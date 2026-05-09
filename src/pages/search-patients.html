@@ -384,172 +384,108 @@
 
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Patient database (mock data)
-        const patientsDatabase = [
-            {
-                id: 'P-0001',
-                name: 'Amanda Perera',
-                nic: '960341256V',
-                status: 'active',
-                lastVisit: '20 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 3,
-                email: 'amanda@example.com',
-                phone: '+94 71 234 5678'
-            },
-            {
-                id: 'P-0009',
-                name: 'Amanda P.',
-                nic: '960341256V',
-                status: 'active',
-                lastVisit: '20 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 3,
-                email: 'amanda.p@example.com',
-                phone: '+94 71 234 5679'
-            },
-            {
-                id: 'P-0021',
-                name: 'Nimesha Rathnayake',
-                nic: '010234567V',
-                status: 'pending',
-                lastVisit: '15 Feb 2026',
-                diagnosis: 'Under Review',
-                reports: 2,
-                email: 'nimesha@example.com',
-                phone: '+94 71 234 5680'
-            },
-            {
-                id: 'P-0035',
-                name: 'Sachini Jayawardena',
-                nic: '980123456V',
-                status: 'active',
-                lastVisit: '18 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 1,
-                email: 'sachini@example.com',
-                phone: '+94 71 234 5681'
-            },
-            {
-                id: 'P-0042',
-                name: 'Lakshmi Silva',
-                nic: '950456789V',
-                status: 'active',
-                lastVisit: '22 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 4,
-                email: 'lakshmi@example.com',
-                phone: '+94 71 234 5682'
-            },
-            {
-                id: 'P-0055',
-                name: 'Deepa Kumari',
-                nic: '970789123V',
-                status: 'archived',
-                lastVisit: '10 Jan 2026',
-                diagnosis: 'PCOS',
-                reports: 5,
-                email: 'deepa@example.com',
-                phone: '+94 71 234 5683'
-            },
-            {
-                id: 'P-0068',
-                name: 'Priya Sharma',
-                nic: '920567890V',
-                status: 'active',
-                lastVisit: '25 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 2,
-                email: 'priya@example.com',
-                phone: '+94 71 234 5684'
-            }
-        ];
-
-        function performSearch() {
+        async function performSearch() {
             const searchId = document.getElementById('searchPatientInput').value.toLowerCase().trim();
             const searchName = document.getElementById('searchNameInput').value.toLowerCase().trim();
             const statusFilter = document.getElementById('searchStatusFilter').value;
 
+            const resultsContainer = document.getElementById('searchResultsContainer');
+            const statsContainer = document.getElementById('resultsStats');
+
             if (!searchId && !searchName && !statusFilter) {
-                document.getElementById('searchResultsContainer').innerHTML = `
-          <div style="text-align:center;padding:40px 20px;color:#6b7280">
-            <div style="font-size:3rem;margin-bottom:10px">🔍</div>
-            <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
-            <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
-          </div>
-        `;
-                document.getElementById('resultsStats').style.display = 'none';
+                resultsContainer.innerHTML = `
+                  <div style="text-align:center;padding:40px 20px;color:#6b7280">
+                    <div style="font-size:3rem;margin-bottom:10px">🔍</div>
+                    <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
+                    <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
+                  </div>
+                `;
+                statsContainer.style.display = 'none';
                 return;
             }
 
-            const filtered = patientsDatabase.filter(patient => {
-                const matchesId = searchId === '' || patient.id.toLowerCase().includes(searchId);
-                const matchesName = searchName === '' || patient.name.toLowerCase().includes(searchName);
-                const matchesStatus = statusFilter === '' || patient.status === statusFilter;
-                return matchesId && matchesName && matchesStatus;
-            });
+            resultsContainer.innerHTML = `
+              <div style="text-align:center;padding:40px">
+                <div class="loader-ring" style="margin:0 auto;transform:scale(0.7)"></div>
+                <p style="margin-top:10px;color:#6b7280">Searching records...</p>
+              </div>
+            `;
 
-            if (filtered.length === 0) {
-                document.getElementById('searchResultsContainer').innerHTML = `
-          <div style="text-align:center;padding:40px 20px;color:#6b7280">
-            <div style="font-size:3rem;margin-bottom:10px">😔</div>
-            <p style="font-size:1.1rem;margin:0">No patients found</p>
-            <p style="font-size:0.9rem;margin:5px 0 0 0">Try different search criteria</p>
-          </div>
-        `;
-                document.getElementById('resultsStats').style.display = 'none';
-                return;
+            try {
+                const res = await fetch(`../php/search_patients.php?id=${searchId}&name=${searchName}&status=${statusFilter}`);
+                const response = await res.json();
+
+                if (response.status === 'success') {
+                    const filtered = response.data;
+
+                    if (filtered.length === 0) {
+                        resultsContainer.innerHTML = `
+                          <div style="text-align:center;padding:40px 20px;color:#6b7280">
+                            <div style="font-size:3rem;margin-bottom:10px">😔</div>
+                            <p style="font-size:1.1rem;margin:0">No patients found</p>
+                            <p style="font-size:0.9rem;margin:5px 0 0 0">Try different search criteria</p>
+                          </div>
+                        `;
+                        statsContainer.style.display = 'none';
+                        return;
+                    }
+
+                    statsContainer.style.display = 'block';
+                    document.getElementById('resultsCount').textContent = filtered.length;
+
+                    resultsContainer.innerHTML = filtered.map(patient => `
+                <div 
+                  style="
+                    padding:16px;
+                    border:1px solid #e5e7eb;
+                    border-radius:8px;
+                    margin-bottom:12px;
+                    background:white;
+                    transition:all 0.2s;
+                    cursor:pointer;
+                  "
+                  onmouseover="this.style.background='#f9fafb';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+                  onmouseout="this.style.background='white';this.style.boxShadow=''"
+                  onclick="openPatientDetail('${patient.raw_id}')"
+                >
+                  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+                    <div>
+                      <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+                      <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id} | NIC: ${patient.nic}</div>
+                    </div>
+                    <span style="padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:500;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                            patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                                '#e5e7eb;color:#374151'
+                        }">
+                      ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+                    </span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:0.9rem;margin:10px 0">
+                    <div>
+                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Diagnosis</div>
+                      <div style="font-weight:500;color:#1f2937">${patient.diagnosis}</div>
+                    </div>
+                    <div>
+                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Last Visit</div>
+                      <div style="font-weight:500;color:#1f2937">${patient.lastVisit}</div>
+                    </div>
+                    <div>
+                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Reports</div>
+                      <div style="font-weight:500;color:#1f2937">${patient.reports}</div>
+                    </div>
+                  </div>
+                  <div style="margin-top:10px;text-align:right">
+                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientDetail('${patient.raw_id}')">View Profile →</button>
+                  </div>
+                </div>
+              `).join('');
+                } else {
+                    Toast.error(response.message || 'Failed to fetch patients');
+                }
+            } catch (err) {
+                console.error(err);
+                Toast.error('An error occurred during search');
             }
-
-            document.getElementById('resultsStats').style.display = 'block';
-            document.getElementById('resultsCount').textContent = filtered.length;
-
-            document.getElementById('searchResultsContainer').innerHTML = filtered.map(patient => `
-        <div 
-          style="
-            padding:16px;
-            border:1px solid #e5e7eb;
-            border-radius:8px;
-            margin-bottom:12px;
-            background:white;
-            transition:all 0.2s;
-            cursor:pointer;
-          "
-          onmouseover="this.style.background='#f9fafb';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
-          onmouseout="this.style.background='white';this.style.boxShadow=''"
-          onclick="openPatientDetail('${patient.id}')"
-        >
-          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
-            <div>
-              <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
-              <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id} | NIC: ${patient.nic}</div>
-            </div>
-            <span style="padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:500;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
-                    patient.status === 'pending' ? '#fef3c7;color:#92400e' :
-                        '#e5e7eb;color:#374151'
-                }">
-              ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-            </span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:0.9rem;margin:10px 0">
-            <div>
-              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Diagnosis</div>
-              <div style="font-weight:500;color:#1f2937">${patient.diagnosis}</div>
-            </div>
-            <div>
-              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Last Visit</div>
-              <div style="font-weight:500;color:#1f2937">${patient.lastVisit}</div>
-            </div>
-            <div>
-              <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Reports</div>
-              <div style="font-weight:500;color:#1f2937">${patient.reports}</div>
-            </div>
-          </div>
-          <div style="margin-top:10px;text-align:right">
-            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientDetail('${patient.id}')">View Profile →</button>
-          </div>
-        </div>
-      `).join('');
         }
 
         function setFilterAndSearch(status) {
@@ -572,12 +508,8 @@
         }
 
         function openPatientDetail(patientId) {
-            const patient = patientsDatabase.find(p => p.id === patientId);
-            if (patient) {
-                Toast.success(`Opening profile for ${patient.name}...`);
-                // In production, redirect to patient profile page
-                // window.location.href = `patient-profile.html?id=${patientId}`;
-            }
+            Toast.info(`Redirecting to patient profile (ID: ${patientId})...`);
+            // window.location.href = `hospital-patient-profile.html?id=${patientId}`;
         }
 
         // Modal functions for Account search
@@ -594,104 +526,116 @@
             document.getElementById('noResultsMessage').style.display = 'block';
         }
 
-        function filterPatients() {
+        async function filterPatients() {
             const searchValue = document.getElementById('modalPatientSearch').value.toLowerCase().trim();
             const statusFilter = document.getElementById('patientStatusFilter').value;
 
+            const resultsList = document.getElementById('patientResultsList');
+            const noResultsMsg = document.getElementById('noResultsMessage');
+            const loadingState = document.getElementById('searchLoadingState');
+
             if (!searchValue && !statusFilter) {
-                document.getElementById('patientResultsList').style.display = 'none';
-                document.getElementById('noResultsMessage').style.display = 'block';
+                resultsList.style.display = 'none';
+                noResultsMsg.style.display = 'block';
                 return;
             }
 
-            document.getElementById('searchLoadingState').style.display = 'block';
+            loadingState.style.display = 'block';
+            noResultsMsg.style.display = 'none';
+            resultsList.style.display = 'none';
 
-            setTimeout(() => {
-                document.getElementById('searchLoadingState').style.display = 'none';
+            try {
+                const res = await fetch(`../php/search_patients.php?id=${searchValue}&name=${searchValue}&status=${statusFilter}`);
+                const response = await res.json();
+                
+                loadingState.style.display = 'none';
 
-                const filtered = patientsDatabase.filter(patient => {
-                    const matchesSearch = searchValue === '' ||
-                        patient.id.toLowerCase().includes(searchValue) ||
-                        patient.nic.toLowerCase().includes(searchValue) ||
-                        patient.name.toLowerCase().includes(searchValue);
-                    const matchesStatus = statusFilter === '' || patient.status === statusFilter;
-                    return matchesSearch && matchesStatus;
-                });
+                if (response.status === 'success') {
+                    const filtered = response.data;
 
-                const resultsList = document.getElementById('patientResultsList');
-                if (filtered.length === 0) {
-                    document.getElementById('noResultsMessage').style.display = 'block';
-                    resultsList.style.display = 'none';
-                    return;
+                    if (filtered.length === 0) {
+                        noResultsMsg.style.display = 'block';
+                        resultsList.style.display = 'none';
+                        return;
+                    }
+
+                    noResultsMsg.style.display = 'none';
+                    resultsList.style.display = 'block';
+                    resultsList.innerHTML = filtered.map(patient => `
+              <div 
+                onclick="openPatientProfile('${patient.raw_id}')" 
+                style="
+                  padding:15px;
+                  border:1px solid #e5e7eb;
+                  border-radius:8px;
+                  margin-bottom:10px;
+                  cursor:pointer;
+                  transition:all 0.2s;
+                  background:#f9fafb;
+                "
+                onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
+                onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
+              >
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+                  <div>
+                    <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
+                    <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
+                  </div>
+                  <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                            patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                                '#e5e7eb;color:#374151'
+                        }">
+                    ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+                  </span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
+                  <div>
+                    <div style="color:#4b5563;font-weight:500">NIC</div>
+                    <div>${patient.nic}</div>
+                  </div>
+                  <div>
+                    <div style="color:#4b5563;font-weight:500">Diagnosis</div>
+                    <div>${patient.diagnosis}</div>
+                  </div>
+                  <div>
+                    <div style="color:#4b5563;font-weight:500">Last Visit</div>
+                    <div>${patient.lastVisit}</div>
+                  </div>
+                </div>
+                <div style="margin-top:10px;text-align:right">
+                  <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.raw_id}')">View Profile →</button>
+                </div>
+              </div>
+            `).join('');
                 }
-
-                document.getElementById('noResultsMessage').style.display = 'none';
-                resultsList.style.display = 'block';
-                resultsList.innerHTML = filtered.map(patient => `
-          <div 
-            onclick="openPatientProfile('${patient.id}')" 
-            style="
-              padding:15px;
-              border:1px solid #e5e7eb;
-              border-radius:8px;
-              margin-bottom:10px;
-              cursor:pointer;
-              transition:all 0.2s;
-              background:#f9fafb;
-            "
-            onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
-            onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
-          >
-            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
-              <div>
-                <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
-                <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
-              </div>
-              <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
-                        patient.status === 'pending' ? '#fef3c7;color:#92400e' :
-                            '#e5e7eb;color:#374151'
-                    }">
-                ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-              </span>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
-              <div>
-                <div style="color:#4b5563;font-weight:500">NIC</div>
-                <div>${patient.nic}</div>
-              </div>
-              <div>
-                <div style="color:#4b5563;font-weight:500">Diagnosis</div>
-                <div>${patient.diagnosis}</div>
-              </div>
-              <div>
-                <div style="color:#4b5563;font-weight:500">Last Visit</div>
-                <div>${patient.lastVisit}</div>
-              </div>
-            </div>
-            <div style="margin-top:10px;text-align:right">
-              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.id}')">View Profile →</button>
-            </div>
-          </div>
-        `).join('');
-            }, 300);
+            } catch (err) {
+                console.error(err);
+                loadingState.style.display = 'none';
+            }
         }
 
         function openPatientProfile(patientId) {
-            const patient = patientsDatabase.find(p => p.id === patientId);
-            if (patient) {
-                Toast.success(`Opening profile for ${patient.name}...`);
-                closeSearchPatientModal();
-            }
+            Toast.info(`Opening profile (ID: ${patientId})...`);
+            closeSearchPatientModal();
         }
 
         // Close modal when clicking overlay
         document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('searchPatientModal');
-            modal.addEventListener('click', function (e) {
-                if (e.target === modal) {
-                    closeSearchPatientModal();
-                }
-            });
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) {
+                        closeSearchPatientModal();
+                    }
+                });
+            }
+
+            // Sync dates
+            const dateDisplay = document.getElementById('dateDisplay');
+            if (dateDisplay) {
+                const now = new Date();
+                dateDisplay.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            }
         });
     </script>
 </body>
