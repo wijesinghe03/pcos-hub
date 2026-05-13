@@ -966,3 +966,207 @@ select.form-control {
     display: none !important;
   }
 }
+
+/* ============================================================
+   GLOBAL IMAGE ANIMATION SYSTEM
+   Applies to ALL <img> tags site-wide automatically.
+   ============================================================ */
+
+/* ── New keyframes for images ── */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes imgShimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+@keyframes imgSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Skeleton shimmer while image loads ── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  /* Smooth load transition */
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease, filter 0.4s ease;
+}
+
+/* Show shimmer background before the image loads */
+img:not([src=""]):not([src]) {
+  background: linear-gradient(90deg, #f0e6ff 25%, #e2cfff 50%, #f0e6ff 75%);
+  background-size: 600px 100%;
+  animation: imgShimmer 1.4s infinite linear;
+}
+
+/* ── Scroll-Reveal for images ── */
+/* Applied automatically via JS to all <img> tags */
+img.img-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+img.img-reveal.img-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger delays for sibling images */
+img.img-reveal:nth-child(2) { transition-delay: 0.1s; }
+img.img-reveal:nth-child(3) { transition-delay: 0.2s; }
+img.img-reveal:nth-child(4) { transition-delay: 0.3s; }
+img.img-reveal:nth-child(5) { transition-delay: 0.4s; }
+
+/* ── General hover effect for all content images ── */
+/* Excludes avatars, logos, and UI icons */
+main img:not(.no-anim),
+.card img:not(.no-anim),
+article img:not(.no-anim),
+.blog-img:not(.no-anim),
+.feature-img:not(.no-anim),
+.hospital-img:not(.no-anim) {
+  cursor: pointer;
+  will-change: transform;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+main img:not(.no-anim):hover,
+.card img:not(.no-anim):hover,
+article img:not(.no-anim):hover,
+.blog-img:not(.no-anim):hover,
+.feature-img:not(.no-anim):hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: 0 16px 40px rgba(91, 45, 142, 0.25);
+  filter: brightness(1.05) saturate(1.1);
+}
+
+/* ── Hero / section large images ── */
+.hero-img,
+.section-img,
+.about-img {
+  animation: zoomIn 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
+  border-radius: var(--radius-xl);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s ease,
+              filter 0.5s ease;
+}
+
+.hero-img:hover,
+.section-img:hover,
+.about-img:hover {
+  transform: scale(1.03) translateY(-6px);
+  box-shadow: 0 24px 60px rgba(91, 45, 142, 0.28);
+  filter: brightness(1.05);
+}
+
+/* ── Card images (e.g., blog thumbnails, hospital cards) ── */
+.card-img,
+.blog-thumb,
+.hospital-card img,
+.feature-card img {
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.4s ease;
+  overflow: hidden;
+}
+
+.card:hover .card-img,
+.card:hover .blog-thumb,
+.hospital-card:hover img,
+.feature-card:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.06) saturate(1.08);
+}
+
+/* ── Avatar images ── */
+.avatar,
+.sidebar-avatar img,
+.user-avatar,
+img[class*="avatar"] {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s ease;
+  border-radius: 50%;
+}
+
+.avatar:hover,
+.user-avatar:hover,
+img[class*="avatar"]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 24px rgba(123, 63, 190, 0.35);
+}
+
+/* ── Logo images — gentle pulse on hover ── */
+.nav-logo img,
+.footer-logo img,
+.sidebar-logo img {
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+.nav-logo img:hover,
+.footer-logo img:hover,
+.sidebar-logo img:hover {
+  transform: scale(1.08);
+  filter: brightness(1.1);
+}
+
+/* ── Floating animation for decorative images ── */
+.img-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.img-float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+
+.img-float-fast {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ── Zoom-in entry animation class ── */
+.img-zoom-in {
+  animation: zoomIn 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ── Slide-up entry animation class ── */
+.img-slide-up {
+  animation: imgSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ── Disable all animations for accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  img,
+  img.img-reveal,
+  .hero-img,
+  .section-img,
+  .card-img,
+  .img-float,
+  .img-float-slow,
+  .img-float-fast,
+  .img-zoom-in,
+  .img-slide-up {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

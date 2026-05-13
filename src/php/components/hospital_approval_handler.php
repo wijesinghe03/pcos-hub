@@ -49,8 +49,7 @@ try {
         $hosp = $hStmt->fetch();
 
         if ($hosp) {
-            require_once __DIR__ . '/../utils/Logger.php';
-            Logger::log('hospital', 'info', "Hospital approved: " . $hosp['hosp_name'], 'Admin');
+            \App\Utils\Logger::log('hospital', 'info', "Hospital approved: " . $hosp['hosp_name'], 'Admin');
             
             try {
                 require_once '../utils/Mailer.php';
@@ -60,7 +59,7 @@ try {
                     <p>You can now log in to your hospital dashboard and start managing patient records.</p>
                     <a href='http://localhost/pcos-hub/src/pages/login.html' style='background:#7B3FBE;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;margin-top:10px;'>Go to Hospital Login</a>
                 ";
-                Mailer::send($hosp['email'], 'Hospital Approved — PCOS Care Hub', $emailBody);
+                \App\Utils\Mailer::send($hosp['email'], 'Hospital Approved — PCOS Care Hub', $emailBody);
             } catch (Exception $mailEx) {
                 error_log('Approval email failed: ' . $mailEx->getMessage());
             }
@@ -86,8 +85,7 @@ try {
         $hosp = $hStmt->fetch();
 
         if ($hosp) {
-            require_once __DIR__ . '/../utils/Logger.php';
-            Logger::log('hospital', 'warning', "Hospital rejected: " . $hosp['hosp_name'] . " (Reason: $rejectionReason)", 'Admin');
+            \App\Utils\Logger::log('hospital', 'warning', "Hospital rejected: " . $hosp['hosp_name'] . " (Reason: $rejectionReason)", 'Admin');
 
             try {
                 require_once '../utils/Mailer.php';
@@ -97,7 +95,7 @@ try {
                     <p><strong>Reason:</strong> {$rejectionReason}</p>
                     <p>You may re-apply with the correct documentation. If you have questions, contact support.</p>
                 ";
-                Mailer::send($hosp['email'], 'Hospital Application Update — PCOS Care Hub', $emailBody);
+                \App\Utils\Mailer::send($hosp['email'], 'Hospital Application Update — PCOS Care Hub', $emailBody);
             } catch (Exception $mailEx) {
                 error_log('Rejection email failed: ' . $mailEx->getMessage());
             }
@@ -109,7 +107,6 @@ try {
         ]);
     }
 } catch (PDOException $e) {
-    require_once __DIR__ . '/../utils/Logger.php';
-    Logger::log('database', 'error', "Hospital approval operation failed: " . $e->getMessage(), 'System');
+    \App\Utils\Logger::log('database', 'error', "Hospital approval operation failed: " . $e->getMessage(), 'System');
     echo json_encode(['status' => 'error', 'message' => 'Operation failed: ' . $e->getMessage()]);
 }

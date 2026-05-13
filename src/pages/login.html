@@ -21,34 +21,46 @@
   <div class="auth-page">
     <!-- LEFT PANEL -->
     <div class="auth-panel-left">
+      <!-- Floating Shapes -->
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+
       <div class="auth-left-content">
         <a href="index.html" class="auth-left-logo">
           <div class="logo-icon">♥</div>
           <div class="logo-text"><span>PCOS</span> Care Hub</div>
         </a>
-        <h2>Welcome Back to Your Health Journey</h2>
-        <p>Access your personalized PCOS management dashboard, track your health, and connect with your healthcare
+        <h2 data-i18n="login_welcome_title">Welcome Back to Your Health Journey</h2>
+        <p data-i18n="login_welcome_desc">Access your personalized PCOS management dashboard, track your health, and connect with your healthcare
           providers.</p>
         <div class="auth-features">
           <div class="auth-feature">
             <div class="auth-feature-icon">📊</div>
             <div>
-              <div class="auth-feature-text">Symptom & Cycle Tracking</div>
-              <div class="auth-feature-sub">Monitor your health patterns daily</div>
+              <div class="auth-feature-text" data-i18n="login_feat_1_title">Symptom & Cycle Tracking</div>
+              <div class="auth-feature-sub" data-i18n="login_feat_1_sub">Monitor your health patterns daily</div>
             </div>
           </div>
           <div class="auth-feature">
             <div class="auth-feature-icon">🔒</div>
             <div>
-              <div class="auth-feature-text">Secure Medical Records</div>
-              <div class="auth-feature-sub">Your data is encrypted and private</div>
+              <div class="auth-feature-text" data-i18n="login_feat_2_title">Secure Medical Records</div>
+              <div class="auth-feature-sub" data-i18n="login_feat_2_sub">Your data is encrypted and private</div>
             </div>
           </div>
           <div class="auth-feature">
             <div class="auth-feature-icon">🏥</div>
             <div>
-              <div class="auth-feature-text">Hospital Integration</div>
-              <div class="auth-feature-sub">Connect seamlessly with your care team</div>
+              <div class="auth-feature-text" data-i18n="login_feat_3_title">Hospital Integration</div>
+              <div class="auth-feature-sub" data-i18n="login_feat_3_sub">Connect seamlessly with your care team</div>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🥗</div>
+            <div>
+              <div class="auth-feature-text" data-i18n="login_feat_4_title">Lifestyle & Nutrition</div>
+              <div class="auth-feature-sub" data-i18n="login_feat_4_sub">Log meals and activity for tailored advice</div>
             </div>
           </div>
         </div>
@@ -107,24 +119,17 @@
           </div>
 
           <div class="forgot-link">
-            <a href="#">Forgot Password?</a>
+            <a href="forgot-password.html" data-i18n="forgot_password_link">Forgot Password?</a>
           </div>
 
           <button type="submit" class="auth-submit">Sign In to PCOS Care Hub</button>
 
-          <div class="auth-divider">Or continue with</div>
-
-          <button type="button" onclick="demoLogin('patient')"
-            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
-            onmouseover="this.style.borderColor='var(--purple-primary)'"
-            onmouseout="this.style.borderColor='var(--border)'">
-            👩‍⚕️ Demo as Patient (Amanda)
-          </button>
-          <button type="button" onclick="demoLogin('hospital')"
-            style="width:100%;padding:12px;border-radius:999px;border:1.5px solid var(--border);background:white;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all .2s;color:var(--text-dark)"
-            onmouseover="this.style.borderColor='#3498db'" onmouseout="this.style.borderColor='var(--border)'">
-            🏥 Demo as Hospital
-          </button>
+          <!-- Premium Healthcare Illustration -->
+          <div class="auth-featured-illustration" style="margin-top: 32px; text-align: center; opacity: 0.9; animation: fadeInUp 0.8s ease-out;">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/female-doctor-with-patient-report-illustration-download-in-svg-png-gif-file-formats--medical-consultation-checking-pack-healthcare-illustrations-4712061.png" 
+                 alt="" 
+                 style="width: 100%; max-width: 280px; height: auto; border-radius: 12px;">
+          </div>
 
         </form>
 
@@ -205,45 +210,6 @@
       }
     }
 
-    async function demoLogin(role) {
-      // Demo credentials matching actual database records
-      const demoAccounts = {
-        patient: { id: 'amanda', pass: 'patient123' },
-        hospital: { id: 'test_hospital', pass: 'hospital123' }
-      };
-
-      const account = demoAccounts[role];
-      if (!account) return;
-
-      Toast.info(`Attempting demo login for ${role}...`);
-
-      try {
-        const response = await API.call('components/login_handler.php', {
-          identity: account.id,
-          password: account.pass,
-          role: role
-        });
-
-        if (response.status === 'success') {
-          Auth.login(response.user);
-          Toast.success(`Welcome back, ${response.user.name}!`);
-          setTimeout(() => {
-            const params = new URLSearchParams(window.location.search);
-            const redirectUrl = params.get('redirect');
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
-            } else {
-                const pages = { patient: 'patient-dashboard.html', hospital: 'hospital-dashboard.html' };
-                window.location.href = pages[role];
-            }
-          }, 1000);
-        } else {
-          Toast.error(response.message);
-        }
-      } catch (err) {
-        Toast.error('Demo login failed. Check database connection.');
-      }
-    }
     // Role selection based on URL parameter + session notice
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);

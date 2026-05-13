@@ -4,7 +4,7 @@ require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
 
 try {
-    Logger::log('system', 'info', 'System activity logs viewed by administrator', 'LogViewer');
+    \App\Utils\Logger::log('system', 'info', 'System activity logs viewed by administrator', 'LogViewer');
     $severity = $_GET['severity'] ?? 'all';
     $category = $_GET['category'] ?? 'all';
     $search = $_GET['search'] ?? '';

@@ -5,46 +5,83 @@
  * Processes subscription requests and sends a confirmation email.
  */
 
-header('Content-Type: application/json');
+// Suppress errors to avoid breaking JSON response
 error_reporting(0);
 ini_set('display_errors', 0);
+
+header('Content-Type: application/json');
+
+require_once __DIR__ . '/db_connect.php';
 require_once __DIR__ . '/utils/Mailer.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
-    exit;
-}
+use App\Utils\Mailer;
 
-$email = $_POST['email'] ?? '';
+try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+        exit;
+    }
 
-if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['status' => 'error', 'message' => 'Please provide a valid email address.']);
-    exit;
-}
+    $email = $_POST['email'] ?? '';
 
-// In a real application, you would save this email to a database table like `newsletter_subscribers`
-// For this task, we will focus on sending the confirmation email as requested.
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['status' => 'error', 'message' => 'Please provide a valid email address.']);
+        exit;
+    }
 
-$subject = "Welcome to PCOS Care Hub Newsletter! 🌸";
-$message = "
-    <p>Hello,</p>
-    <p>Thank you for subscribing to the <strong>PCOS Care Hub Newsletter</strong>! We are excited to have you with us.</p>
-    <p>From now on, you'll be the first to receive:</p>
-    <ul>
-        <li>Latest PCOS research and news</li>
-        <li>Wellness and nutrition tips</li>
-        <li>Success stories and community updates</li>
-        <li>Platform feature announcements</li>
-    </ul>
-    <p>We are dedicated to supporting your health journey every step of the way.</p>
-    <p>If you didn't mean to subscribe, you can ignore this email or contact our support team.</p>
-    <p>Stay healthy,<br>The PCOS Care Hub Team</p>
-";
+    // 1. Check if the user has an account (must be a registered patient)
+    // We check the patients table
+    $stmt = $pdo->prepare("SELECT id FROM patients WHERE email = ?");
+    $stmt->execute([$email]);
+    $patient = $stmt->fetch();
 
-$sent = Mailer::send($email, $subject, $message);
+    if (!$patient) {
+        echo json_encode(['status' => 'error', 'message' => 'Please create an account first with this email address to subscribe.']);
+        exit;
+    }
 
-if ($sent) {
-    echo json_encode(['status' => 'success', 'message' => 'Subscribed successfully!']);
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Failed to send confirmation email. Please try again later.']);
+    $patientId = $patient['id'];
+
+    // 2. Check if already subscribed
+    $stmt = $pdo->prepare("SELECT id FROM newsletter_subscribers WHERE email = ?");
+    $stmt->execute([$email]);
+    if ($stmt->fetch()) {
+        echo json_encode(['status' => 'error', 'message' => 'You are already subscribed to our newsletter!']);
+        exit;
+    }
+
+    // 3. Save to database
+    $stmt = $pdo->prepare("INSERT INTO newsletter_subscribers (email, patient_id) VALUES (?, ?)");
+    $stmt->execute([$email, $patientId]);
+
+    // 4. Send confirmation email
+    $subject = "Welcome to PCOS Care Hub Newsletter! 🌸";
+    $message = "
+        <p>Hello,</p>
+        <p>Thank you for subscribing to the <strong>PCOS Care Hub Newsletter</strong>! We are excited to have you with us.</p>
+        <p>From now on, you'll be the first to receive:</p>
+        <ul>
+            <li>Latest PCOS research and news</li>
+            <li>Wellness and nutrition tips</li>
+            <li>Success stories and community updates</li>
+            <li>Platform feature announcements</li>
+        </ul>
+        <p>We are dedicated to supporting your health journey every step of the way.</p>
+        <p>Stay healthy,<br>The PCOS Care Hub Team</p>
+    ";
+
+    $sent = Mailer::send($email, $subject, $message);
+
+    if ($sent) {
+        echo json_encode(['status' => 'success', 'message' => 'Subscribed successfully! Check your inbox for a welcome email.']);
+    } else {
+        // Even if email fails, they are saved in the DB now. 
+        echo json_encode(['status' => 'success', 'message' => 'Subscribed successfully! (Note: Welcome email could not be sent)']);
+    }
+
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+} catch (Error $e) {
+    // Catch fatal errors too
+    echo json_encode(['status' => 'error', 'message' => 'System error: ' . $e->getMessage()]);
 }

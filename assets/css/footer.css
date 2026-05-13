@@ -164,11 +164,15 @@
 
 /* Bottom bar */
 .footer-bottom {
-  padding: 20px 0;
+  padding: 24px 0;
   position: relative; z-index: 1;
 }
 .footer-bottom-inner {
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  flex-wrap: wrap; 
+  gap: 16px;
 }
 .footer-copy {
   font-size: 0.85rem; color: rgba(255,255,255,0.45);
@@ -176,7 +180,7 @@
 .footer-copy a { color: var(--purple-light); transition: var(--transition); }
 .footer-copy a:hover { color: white; }
 
-.footer-legal { display: flex; gap: 20px; }
+.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; }
 .footer-legal a {
   font-size: 0.8rem; color: rgba(255,255,255,0.45);
   text-decoration: none; transition: var(--transition);
@@ -184,15 +188,41 @@
 .footer-legal a:hover { color: rgba(255,255,255,0.8); }
 
 /* Trust badges */
-.footer-trust { display: flex; gap: 10px; align-items: center; }
-.trust-badge {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 0.75rem; color: rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.06);
-  padding: 5px 10px; border-radius: var(--radius-full);
-  border: 1px solid rgba(255,255,255,0.08);
+.footer-trust { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  flex-wrap: wrap;
 }
-.trust-badge i { color: var(--green-accent); }
+.trust-badge {
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+  font-size: 0.75rem; 
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.08);
+  padding: 6px 14px; 
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none; /* Remove underline when used as <a> tag */
+}
+.trust-badge:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: var(--purple-light);
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(123,63,190,0.25);
+  text-decoration: none;
+}
+.badge-icon {
+  font-size: 1rem;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+  line-height: 1;
+}
 
 /* ── Responsive ── */
 @media (max-width: 960px) {

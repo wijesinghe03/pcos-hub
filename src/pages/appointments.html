@@ -245,8 +245,7 @@
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
 
-    <div class="dashboard-layout">
-        <!-- ── MODALS ── -->
+    <!-- ── MODALS ── -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-card" style="max-width: 480px;">
             <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -279,6 +278,7 @@
         </div>
     </div>
 
+    <div class="dashboard-layout">
     <!-- ── DASHBOARD LAYOUT ── -->
         <aside class="sidebar" id="sidebar">
             <a href="index.html" class="sidebar-logo">
@@ -290,9 +290,8 @@
                 <div class="sidebar-avatar" id="sidebarAvatar">A</div>
                 <div>
                     <div class="sidebar-name" id="sidebarName">Loading...</div>
-                    <div class="sidebar-role">Patient</div>
+                    <div class="sidebar-role" data-i18n="role_patient">Patient</div>
                 </div>
-                <i>›</i>
             </div>
 
             <div class="sidebar-section">
@@ -300,7 +299,10 @@
                 <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>📊</i> Dashboard</a>
                 <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>🌡️</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
-                <a class="sidebar-item" href="reports.html" data-i18n="reports"><i>📁</i> My Reports</a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> <span data-i18n="reports">My Reports</span>
+                    <span class="sidebar-badge" id="sidebarReportBadge" style="display:none">0</span>
+                </a>
                 <a class="sidebar-item" href="lifestyle-log.html" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</a>
             </div>
 
@@ -462,23 +464,14 @@
     <script src="../../assets/js/utils.js"></script>
     <script>
         // ── Navigation & Session ──
-        const user = checkSession();
+        const user = Auth.checkSession();
         if (!user) window.location.href = 'login.html';
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Localization
+            // Initialize Localization & Sidebar
             if (typeof L10n !== 'undefined') L10n.init();
+            if (typeof initSidebarProfile === 'function') initSidebarProfile();
 
-            // Sidebar UI
-            document.getElementById('sidebarName').textContent = user.name;
-            const sidebarAvatar = document.getElementById('sidebarAvatar');
-            if (user.avatar) {
-                sidebarAvatar.innerHTML = `<img src="../../${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-                sidebarAvatar.textContent = '';
-            } else {
-                sidebarAvatar.textContent = user.name.charAt(0).toUpperCase();
-            }
-            
             // Dates
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('bookDateInput').min = today;

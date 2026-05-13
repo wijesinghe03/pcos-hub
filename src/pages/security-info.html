@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Trust — PCOS Care Hub</title>
+    <meta name="description"
+        content="Learn how PCOS Care Hub protects your health data with SSL encryption, HIPAA-compliant protocols, and secure data handling practices.">
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/navbar.css">
+    <link rel="stylesheet" href="../../assets/css/home.css">
+    <link rel="stylesheet" href="../../assets/css/footer.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+    <style>
+        .trust-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1557 100%);
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            margin-top: -40px;
+            z-index: 10;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .trust-card {
+            padding: 30px;
+            background: var(--purple-ghost);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            text-align: left;
+            transition: var(--transition);
+        }
+
+        .trust-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--purple-light);
+        }
+
+        .trust-card i {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .trust-card h3 {
+            color: var(--purple-deep);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .trust-card p {
+            color: var(--text-mid);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .security-badge-large {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .trust-container {
+                padding: 30px 20px;
+                margin-top: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar-placeholder" data-page="security"></div>
+
+    <!-- Hero -->
+    <section class="trust-hero">
+        <div class="container">
+            <h1 class="reveal" style="color:white">Security & Trust</h1>
+            <p class="reveal" style="color:rgba(255,255,255,0.7); max-width:600px; margin:20px auto 0">
+                We use industry-leading security protocols to ensure your health data remains private, secure, and always under your control.
+            </p>
+            <div class="security-badge-large reveal">
+                <span>🛡️</span> Military-Grade 256-bit Encryption
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="section-pad" style="background:var(--bg-light); padding-top:0">
+        <div class="container">
+            <div class="trust-container reveal">
+                
+                <div class="trust-grid">
+                    <div class="trust-card">
+                        <i>🔒</i>
+                        <h3>SSL Encryption</h3>
+                        <p>All data transmitted between your device and our servers is protected by 256-bit SSL (Secure Sockets Layer) encryption, preventing unauthorized access during transit.</p>
+                    </div>
+                    <div class="trust-card">
+                        <i>⚕️</i>
+                        <h3>HIPAA Compliant</h3>
+                        <p>We follow HIPAA-compliant data handling protocols, ensuring that your Protected Health Information (PHI) is managed with the highest level of confidentiality.</p>
+                    </div>
+                    <div class="trust-card">
+                        <i>🇪🇺</i>
+                        <h3>GDPR Ready</h3>
+                        <p>We respect your "Right to be Forgotten" and "Right to Access." You have full control over your data, with the ability to download or delete it at any time.</p>
+                    </div>
+                    <div class="trust-card">
+                        <i>🚪</i>
+                        <h3>Auto-Logout</h3>
+                        <p>To protect your privacy in shared environments, the PCOS Care Hub automatically logs you out after 15 minutes of inactivity.</p>
+                    </div>
+                    <div class="trust-card">
+                        <i>🛡️</i>
+                        <h3>Data at Rest</h3>
+                        <p>Your health records and uploaded documents are encrypted while stored on our servers, ensuring they cannot be read even if physical storage is compromised.</p>
+                    </div>
+                    <div class="trust-card">
+                        <i>👥</i>
+                        <h3>Access Control</h3>
+                        <p>No one can see your health data unless you explicitly connect with a hospital. You can revoke access to any provider instantly with one click.</p>
+                    </div>
+                </div>
+
+                <div style="text-align:center; padding:40px; background:var(--purple-ghost); border-radius:var(--radius-lg)">
+                    <h2 style="color:var(--purple-primary); margin-bottom:16px">Your Privacy is Our Priority</h2>
+                    <p style="color:var(--text-mid); line-height:1.8; max-width:700px; margin:0 auto">
+                        PCOS Care Hub is built on a foundation of trust. We never sell your data to third parties, and we use local Sri Lankan servers to ensure compliance with national healthcare regulations.
+                    </p>
+                    <div style="margin-top:30px">
+                        <a href="signup-patient.html" class="btn btn-primary">Start Secure Journey</a>
+                        <a href="contact.html" class="btn btn-outline" style="margin-left:10px">Speak to Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/home.js"></script>
+</body>
+
+</html>

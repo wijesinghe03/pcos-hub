@@ -6,7 +6,10 @@
  */
 
 require_once '../db_connect.php';
+require_once __DIR__ . '/../utils/Logger.php';
 header('Content-Type: application/json');
+
+use App\Utils\Logger;
 
 function handleLogin($pdo)
 {
@@ -40,8 +43,17 @@ function handleLogin($pdo)
         $stmt = $pdo->prepare("SELECT * FROM $targetTable WHERE (email = ? OR username = ?)");
         $stmt->execute([$identity, $identity]);
         $user = $stmt->fetch();
+
         if ($user && password_verify($password, $user['password'])) {
-        // NEW: 30-Day Deactivation / Reactivation Logic for Patients
+            // Determine display name based on role
+            $displayName = '';
+            if ($role === 'hospital') {
+                $displayName = $user['hosp_name'] ?? 'Hospital User';
+            } else {
+                $displayName = $user['full_name'] ?? ($user['username'] ?? 'User');
+            }
+
+            // NEW: 30-Day Deactivation / Reactivation Logic for Patients
             if ($role === 'patient' && $user['status'] === 'deactivated') {
                 $deactivatedAt = new DateTime($user['deactivated_at']);
                 $now = new DateTime();
@@ -62,8 +74,7 @@ function handleLogin($pdo)
             }
 
             // Log Success
-            require_once __DIR__ . '/../utils/Logger.php';
-            Logger::log('auth', 'info', ucfirst($role) . " logged in: " . $identity, $displayName);
+            \App\Utils\Logger::log('auth', 'info', ucfirst($role) . " logged in: " . $identity, $displayName);
 
             echo json_encode([
                 'status' => 'success',
@@ -90,14 +101,12 @@ function handleLogin($pdo)
             $reason = !$user ? 'User not found' : 'Password mismatch';
             
             // Log Failure
-            require_once __DIR__ . '/../utils/Logger.php';
-            Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
+            \App\Utils\Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
             
             echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal. (Reason: ' . $reason . ')']);
         }
     } catch (PDOException $e) {
-        require_once __DIR__ . '/../utils/Logger.php';
-        Logger::log('database', 'error', 'Login system error: ' . $e->getMessage(), 'System');
+        \App\Utils\Logger::log('database', 'error', 'Login system error: ' . $e->getMessage(), 'System');
         echo json_encode(['status' => 'error', 'message' => 'System error: ' . $e->getMessage()]);
     }
 }

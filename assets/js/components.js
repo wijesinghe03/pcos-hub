@@ -114,13 +114,19 @@ function renderFooter() {
             <h4 data-i18n="footer_stay_updated">Stay Updated</h4>
             <p data-i18n="footer_newsletter_desc">Get the latest PCOS news, research, and wellness tips delivered to your inbox.</p>
             <form class="newsletter-form" onsubmit="return false">
-              <input type="email" class="newsletter-input" placeholder="Your email address">
+              <input type="email" id="newsletter-email-input" class="newsletter-input" placeholder="Your email address">
               <button type="submit" class="newsletter-btn" data-i18n="footer_subscribe">Subscribe</button>
             </form>
-            <div style="margin-top:16px">
-              <div class="trust-badge" style="display:inline-flex;margin-bottom:6px">
-                <span data-i18n="footer_no_spam">No spam, unsubscribe anytime</span>
-              </div>
+            <div style="margin-top:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+              <div class="trust-badge" style="display:inline-flex; cursor:default;"><span>✅ No spam, ever</span></div>
+              <button onclick="toggleUnsubForm()" style="background:none;border:none;color:rgba(255,255,255,0.45);font-size:0.78rem;cursor:pointer;text-decoration:underline;padding:0;font-family:inherit">Unsubscribe</button>
+            </div>
+            <div id="footer-unsub-form" style="display:none; margin-top:12px;">
+              <form class="newsletter-form" onsubmit="return false">
+                <input type="email" id="unsub-email-input" class="newsletter-input" placeholder="Your subscribed email">
+                <button type="button" class="newsletter-btn" style="background:linear-gradient(135deg,#ef4444,#dc2626)" onclick="handleUnsubscribe()">Unsubscribe</button>
+              </form>
+              <p style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:8px">Enter the email you subscribed with.</p>
             </div>
           </div>
         </div>
@@ -150,13 +156,16 @@ function renderFooter() {
         <div class="footer-bottom-inner">
           <p class="footer-copy">© 2025 <a href="index.html">PCOS Care Hub</a>. <span data-i18n="footer_built_with">Built with ♥ for Sri Lankan Women's Health.</span> <span data-i18n="footer_all_rights">All rights reserved.</span></p>
           <div class="footer-trust">
-            <div class="trust-badge"><i data-i18n="footer_ssl">🔒 SSL Secured</i></div>
-            <div class="trust-badge" data-i18n="footer_hipaa"> HIPAA Compliant</div>
+            <a href="security-info.html" class="trust-badge" title="SSL Secured — All data encrypted in transit"><span class="badge-icon">🔒</span> SSL Secured</a>
+            <a href="security-info.html" class="trust-badge" title="HIPAA Compliant — Health data protection standards"><span class="badge-icon">⚕️</span> HIPAA Compliant</a>
+            <a href="security-info.html" class="trust-badge" title="GDPR Ready — You control your data"><span class="badge-icon">🇪🇺</span> GDPR Ready</a>
+            <a href="security-info.html" class="trust-badge" title="256-bit AES encryption for all stored data"><span class="badge-icon">🛡️</span> 256-bit AES</a>
           </div>
           <nav class="footer-legal">
             <a href="privacy-policy.html" data-i18n="footer_privacy">Privacy Policy</a>
             <a href="terms-of-service.html" data-i18n="footer_terms">Terms of Service</a>
             <a href="cookie-policy.html" data-i18n="footer_cookie">Cookie Policy</a>
+            <a href="security-info.html">Security</a>
             <a href="contact.html" data-i18n="footer_contact">Contact</a>
           </nav>
         </div>

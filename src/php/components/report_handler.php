@@ -87,7 +87,7 @@ if ($method === 'POST') {
         // Build safe filename: patientId_timestamp_originalname
         $ext        = pathinfo($orig_name, PATHINFO_EXTENSION);
         $safe_name  = $patient_id . '_' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $orig_name);
-        $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
+        $upload_dir = dirname(__FILE__, 4) . '/uploads/reports/';
 
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0755, true);
@@ -154,7 +154,7 @@ if ($method === 'POST') {
                         <p><strong>Hospital:</strong> $hospital_name</p>
                     </div>
                     <p>You can view and download this report from your medical history dashboard.</p>
-                    <a href='#' class='button'>View My Reports</a>
+                    <a href='reports.html' class='button'>View My Reports</a>
                 ";
                 Mailer::send($patient['email'], $subject, $emailBody);
             }

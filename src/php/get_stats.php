@@ -10,7 +10,7 @@ require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
 
 try {
-    Logger::log('system', 'info', 'Real-time system statistics fetched', 'StatsEngine');
+    \App\Utils\Logger::log('system', 'info', 'Real-time system statistics fetched', 'StatsEngine');
     // 1. Count Patients
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patients");
     $patient_count = $stmt->fetch()['count'];

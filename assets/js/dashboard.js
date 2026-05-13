@@ -23,11 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // User name from auth
+  // Welcome name from auth
   const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
   if (user) {
-    const sn = document.getElementById('sidebarName');
-    if (sn) sn.textContent = user.name || 'User';
     const wn = document.getElementById('welcomeName');
     if (wn) wn.textContent = (user.name || 'User').split(' ')[0];
   }

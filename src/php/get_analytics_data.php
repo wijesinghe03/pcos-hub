@@ -4,7 +4,7 @@ require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
 
 try {
-    Logger::log('system', 'info', 'Analytics data engine queried for dashboard metrics', 'AnalyticsEngine');
+    \App\Utils\Logger::log('system', 'info', 'Analytics data engine queried for dashboard metrics', 'AnalyticsEngine');
     // 1. User Growth (Last 6 Months)
     $growth_data = [];
     for ($i = 5; $i >= 0; $i--) {

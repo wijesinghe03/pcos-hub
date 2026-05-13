@@ -282,9 +282,9 @@
             </a>
 
             <div class="sidebar-profile">
-                <div class="sidebar-avatar" id="sideAvatar" onclick="document.getElementById('avatarInput').click()" style="cursor:pointer;">A</div>
+                <div class="sidebar-avatar" id="sidebarAvatar" onclick="document.getElementById('avatarInput').click()" style="cursor:pointer;">A</div>
                 <div>
-                    <div class="sidebar-name" id="sideName">Loading...</div>
+                    <div class="sidebar-name" id="sidebarName">Loading...</div>
                     <div class="sidebar-role" data-i18n="profile">Patient</div>
                 </div>
             </div>
@@ -294,7 +294,10 @@
                 <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>📊</i> Dashboard</a>
                 <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>🌡️</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
-                <a class="sidebar-item" href="reports.html" data-i18n="reports"><i>📁</i> My Reports</a>
+                <a class="sidebar-item" href="reports.html">
+                    <i>📁</i> <span data-i18n="reports">My Reports</span>
+                    <span class="sidebar-badge" id="sidebarReportBadge" style="display:none">0</span>
+                </a>
                 <a class="sidebar-item" href="lifestyle-log.html" data-i18n="lifestyle"><i>🥗</i> Lifestyle Log</a>
             </div>
 
@@ -350,7 +353,7 @@
                             <div class="info-row"><div class="info-label" data-i18n="dob_label">Date of Birth</div><div class="info-value" id="valDob">—</div></div>
                             <div class="info-row"><div class="info-label" data-i18n="gender_label">Gender</div><div class="info-value" id="valGender">—</div></div>
                             <div class="info-row"><div class="info-label" data-i18n="blood_group_label">Blood Group</div><div class="info-value" id="valBlood">—</div></div>
-                            <button class="btn btn-sm btn-ghost" style="margin-top:20px;" onclick="switchMode('personal', 'edit')" data-i18n="edit_personal_info_btn">✏️ Edit Personal Info</button>
+                            <button class="btn btn-sm btn-ghost" style="margin-top:20px; color: var(--purple-primary); font-weight: 700;" onclick="switchMode('personal', 'edit')" data-i18n="edit_personal_info_btn">✏️ Edit Personal Info</button>
                         </div>
 
                         <div id="personalEdit" class="hidden">
@@ -469,7 +472,7 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        const user = checkSession();
+        const user = Auth.checkSession();
         if (!user) window.location.href = 'login.html';
 
         let fullProfile = null;
@@ -484,7 +487,6 @@
             // Pre-populate with session data to avoid empty look
             document.getElementById('profileNameDisplay').textContent = user.name || 'PCOS Patient';
             document.getElementById('profileEmailDisplay').textContent = user.email || '';
-            document.getElementById('sideName').textContent = user.name || 'PCOS Patient';
             document.getElementById('valName').textContent = user.name || 'PCOS Patient';
             document.getElementById('valEmail').textContent = user.email || '';
             document.getElementById('valPhone').textContent = user.phone || 'Not provided';
@@ -492,20 +494,17 @@
             document.getElementById('valGender').textContent = user.gender || 'Not specified';
             document.getElementById('valBlood').textContent = user.blood_group || 'Unknown';
             
-            const initials = (user.name || 'P').charAt(0).toUpperCase();
             const avatarEl = document.getElementById('profileAvatar');
-            const sideAv = document.getElementById('sideAvatar');
-            
+            const initials = (user.name || 'P').charAt(0).toUpperCase();
             const displayAvatar = user.avatar_base64 || user.avatar;
 
             if (displayAvatar) {
                 const prefix = user.avatar_base64 ? '' : '../../';
                 avatarEl.innerHTML = `<img src="${prefix}${displayAvatar}" alt="Profile">`;
-                sideAv.innerHTML = `<img src="${prefix}${displayAvatar}" alt="P" style="width:100%;height:100%;border-radius:50%;">`;
             } else {
                 avatarEl.textContent = initials;
-                sideAv.textContent = initials;
             }
+
 
             // Sync placeholders
             document.getElementById('deactivatePassword').placeholder = t('current_password');
@@ -563,25 +562,23 @@
         function renderProfile() {
             const p = fullProfile;
             // Header
-            document.getElementById('profileNameDisplay').textContent = p.full_name;
             document.getElementById('profileEmailDisplay').textContent = p.email;
-            document.getElementById('sideName').textContent = p.full_name;
             
-            // Avatar
+            // Header
             const avatarEl = document.getElementById('profileAvatar');
-            const sideAv   = document.getElementById('sideAvatar');
             
             const displayAvatar = user.avatar_base64 || p.avatar;
 
             if (displayAvatar) {
                 const prefix = user.avatar_base64 ? '' : '../../';
                 avatarEl.innerHTML = `<img src="${prefix}${displayAvatar}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
-                sideAv.innerHTML   = `<img src="${prefix}${displayAvatar}" alt="P" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
             } else {
                 const initial = p.full_name.charAt(0).toUpperCase();
                 avatarEl.textContent = initial;
-                sideAv.textContent   = initial;
             }
+            
+            // Sidebar is now handled globally by utils.js
+            initSidebarProfile();
 
             // Status
             if (p.status === 'deactivated') {
@@ -642,42 +639,66 @@
             location.reload(); 
         }
 
-        function uploadAvatar(e) {
+        async function uploadAvatar(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Check file size (limit to 2MB for localStorage safety)
+            // 1. Basic validation
+            const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+            if (!allowed.includes(file.type)) {
+                Toast.error('Invalid file type. Please upload an image (JPG, PNG, WEBP).');
+                return;
+            }
             if (file.size > 2 * 1024 * 1024) {
                 Toast.error('Image too large. Please select an image under 2MB.');
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64Image = event.target.result;
+            // 2. Visual Feedback (Loading state)
+            const avatarEl = document.getElementById('profileAvatar');
+            const originalAvatar = avatarEl.innerHTML;
+            avatarEl.innerHTML = '<div class="loader-ring" style="width:30px;height:30px;border-width:3px;"></div>';
+
+            // 3. Prepare Server Upload
+            const formData = new FormData();
+            formData.append('action', 'update_avatar');
+            formData.append('patient_id', user.id);
+            formData.append('avatar', file);
+
+            try {
+                const res = await fetch(API.getPHPPath('components/profile_handler.php'), {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
                 
-                // Update Local Session
-                const updatedUser = { ...user, avatar_base64: base64Image };
-                localStorage.setItem('pcos_user', JSON.stringify(updatedUser));
-                
-                // Update UI immediately
-                const avatarEl = document.getElementById('profileAvatar');
-                const sideAv   = document.getElementById('sideAvatar');
-                
-                const imgHtml = `<img src="${base64Image}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
-                avatarEl.innerHTML = imgHtml;
-                if (sideAv) {
-                    sideAv.innerHTML = `<img src="${base64Image}" alt="P" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                if (json.status === 'success') {
+                    const newAvatarPath = json.avatar; // e.g. "uploads/profiles/profile_1_123.jpg"
+                    
+                    // 4. Update Local Session
+                    const updatedUser = { ...user, avatar: newAvatarPath, avatar_base64: null };
+                    localStorage.setItem('pcos_user', JSON.stringify(updatedUser));
+                    
+                    // 5. Update UI
+                    const imgUrl = '../../' + newAvatarPath;
+                    const imgHtml = `<img src="${imgUrl}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+                    avatarEl.innerHTML = imgHtml;
+                    
+                    // Sidebar is updated globally
+                    initSidebarProfile();
+                    
+                    Toast.success('Profile picture updated successfully!');
+                    // Also refresh the fullProfile object
+                    loadProfile();
+                } else {
+                    avatarEl.innerHTML = originalAvatar;
+                    Toast.error(json.message || 'Upload failed');
                 }
-                
-                toggleSuccessModal(true, 'Your profile picture has been updated locally and is now visible across your dashboard!');
-            };
-            
-            reader.onerror = function() {
-                Toast.error('Failed to process image.');
-            };
-            
-            reader.readAsDataURL(file);
+            } catch (err) {
+                console.error('Upload Error:', err);
+                avatarEl.innerHTML = originalAvatar;
+                Toast.error('Connection error. Could not upload image.');
+            }
         }
 
         async function updatePassword(e) {

@@ -15,6 +15,26 @@
       text-align: center;
     }
 
+    /* ── Dark mode hero fix ── */
+    [data-theme="dark"] .hospitals-hero {
+      background: linear-gradient(135deg, #0d0620 0%, #1a0a2e 50%, #0d0620 100%);
+    }
+
+    /* ── Stat chip — dark mode ── */
+    [data-theme="dark"] .hospitals-hero .stat-chip {
+      background: rgba(255, 255, 255, 0.07) !important;
+      border-color: rgba(123, 63, 190, 0.35) !important;
+      backdrop-filter: blur(12px) !important;
+    }
+
+    [data-theme="dark"] .hospitals-hero h1 {
+      color: var(--text-dark);
+    }
+
+    [data-theme="dark"] .hospitals-hero p {
+      color: var(--text-mid);
+    }
+
     .hospitals-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -40,6 +60,29 @@
       box-shadow: var(--shadow-lg);
       transform: translateY(-4px);
       border-color: var(--purple-light);
+    }
+
+    /* Dark mode hospital card improvements */
+    [data-theme="dark"] .hospital-card {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .hospital-card:hover {
+      border-color: var(--purple-mid);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="dark"] .hospital-card p {
+      color: var(--text-mid);
+    }
+
+    [data-theme="dark"] .hospital-card h4 {
+      color: var(--text-dark);
+    }
+
+    [data-theme="dark"] .hospital-card .location {
+      color: var(--text-light);
     }
 
     .hospital-icon {
@@ -133,6 +176,15 @@
       color: var(--purple-primary);
       border-color: var(--purple-light);
     }
+    [data-theme="dark"] .btn-review {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-mid);
+      border-color: var(--border);
+    }
+    [data-theme="dark"] .btn-review:hover {
+      background: var(--purple-pale);
+      color: var(--purple-primary);
+    }
     .star-input {
       display: flex;
       flex-direction: row-reverse;
@@ -162,7 +214,7 @@
       <h1 data-i18n="hosp_hero_title">Partner Hospitals</h1>
       <p data-i18n="hosp_hero_subtitle" style="color:var(--text-mid);max-width:520px;margin:14px auto 0">PCOS Care Hub partners with leading hospitals
         across Sri Lanka to provide seamless, integrated healthcare for women with PCOS.</p>
-      <div style="margin-top:24px;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);padding:10px 24px;border-radius:999px;border:1px solid rgba(138,43,226,0.15);box-shadow:0 4px 12px rgba(0,0,0,0.06)">
+      <div class="stat-chip" style="margin-top:24px;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);padding:10px 24px;border-radius:999px;border:1px solid rgba(138,43,226,0.15);box-shadow:0 4px 12px rgba(0,0,0,0.06)">
         <span style="font-size:1.6rem">🏥</span>
         <span style="font-size:1.8rem;font-weight:800;color:var(--purple-primary)"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></span>
         <span style="font-size:0.95rem;font-weight:600;color:var(--text-mid)" data-i18n="stat_partner_hosp">Partner Hospitals</span>

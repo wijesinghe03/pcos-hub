@@ -18,7 +18,7 @@ const Toast = {
   },
   show(message, type = 'info', duration = 3500) {
     if (!this.container) this.init();
-    const icons = { success: '', error: '✖', warning: '⚠', info: 'ℹ' };
+    const icons = { success: '✓', error: '✖', warning: '⚠', info: 'ℹ' };
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `<span style="margin-right:8px">${icons[type] || 'ℹ'}</span>${message}`;
@@ -36,6 +36,65 @@ const Toast = {
   info(msg, d) { this.show(msg, 'info', d); },
 };
 
+// ── Sidebar Utility ──
+const Sidebar = {
+  async updateBadges() {
+    const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+    if (!user || !user.id) return;
+    
+    const reportBadge = document.getElementById('sidebarReportBadge');
+    if (reportBadge && typeof API !== 'undefined') {
+      try {
+        const res = await API.call('components/report_handler.php', { patient_id: user.id, patient_email: user.email }, 'GET');
+        if (res.status === 'success' && res.stats) {
+          const count = res.stats.total;
+          if (count > 0) {
+            reportBadge.textContent = count;
+            reportBadge.style.display = 'flex'; // Use flex to center text in badge
+          } else {
+            reportBadge.style.display = 'none';
+          }
+        }
+      } catch (e) {
+        console.warn('Sidebar badge update failed:', e);
+      }
+    }
+  },
+  
+  initSearch() {
+    const searchInput = document.querySelector('.topbar-search input');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      // 1. Filter Sidebar Items
+      const sidebarItems = document.querySelectorAll('.sidebar-item');
+      sidebarItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const isMatch = query === '' || text.includes(query);
+        item.style.display = isMatch ? 'flex' : 'none';
+      });
+
+      // 2. Filter Sections Labels
+      const sections = document.querySelectorAll('.sidebar-section');
+      sections.forEach(section => {
+        const items = section.querySelectorAll('.sidebar-item');
+        const hasVisibleItem = Array.from(items).some(i => i.style.display !== 'none');
+        section.style.display = hasVisibleItem ? 'block' : 'none';
+      });
+
+      // 3. Filter Dashboard Panels (if any)
+      const panels = document.querySelectorAll('.dash-panel, .dash-stat-card, .welcome-card');
+      panels.forEach(panel => {
+        const text = panel.textContent.toLowerCase();
+        const isMatch = query === '' || text.includes(query);
+        panel.style.display = isMatch ? '' : 'none';
+      });
+    });
+  }
+};
+
 // ── Page Loader ──
 const PageLoader = {
   hide() {
@@ -44,6 +103,9 @@ const PageLoader = {
       loader.style.opacity = '0';
       setTimeout(() => loader.remove(), 500);
     }
+    // Initialize global features
+    Sidebar.updateBadges();
+    Sidebar.initSearch();
   }
 };
 
@@ -221,6 +283,16 @@ const L10n = {
         display_appearance: "Display & Appearance",
         language_region: "Language & Region",
         search_placeholder: "Search records\u2026",
+        "LH (Luteinizing Hormone) Test": "LH (Luteinizing Hormone) Test",
+        "FSH (Follicle Stimulating Hormone) Test": "FSH (Follicle Stimulating Hormone) Test",
+        "Testosterone Level Test": "Testosterone Level Test",
+        "Prolactin Test": "Prolactin Test",
+        "Thyroid Function Test (TSH, T3, T4)": "Thyroid Function Test (TSH, T3, T4)",
+        "Pelvic Ultrasound Scan": "Pelvic Ultrasound Scan",
+        "Fasting Blood Sugar (FBS)": "Fasting Blood Sugar (FBS)",
+        "Oral Glucose Tolerance Test (OGTT)": "Oral Glucose Tolerance Test (OGTT)",
+        "HbA1c Test": "HbA1c Test",
+        "Lipid Profile (Cholesterol Test)": "Lipid Profile (Cholesterol Test)",
         last_cycle: "Last Cycle",
         next_period: "Next Period",
         lifestyle_score: "Lifestyle Score",
@@ -798,6 +870,9 @@ const L10n = {
         rev_text_placeholder: "Tell us how PCOS Care Hub helped you...",
         btn_submit_review: "Submit Review",
         review_success_msg: "Thank you for adding review!",
+        no_new_notifications: "No new notifications",
+        upcoming_appointments: "Upcoming Appointments",
+        upcoming_period: "Upcoming Menstrual Period",
         footer_tagline: "Sri Lanka's first dedicated digital platform for managing Polycystic Ovary Syndrome — empowering patients and healthcare providers with secure, connected care.",
         footer_resources_title: "PCOS Resources",
         footer_stay_updated: "Stay Updated",
@@ -1322,10 +1397,12 @@ const L10n = {
         contact_hero_title: "Contact Our Team",
         contact_hero_desc: "Have questions about the platform? Interested in partnering with us? Our team in Colombo is ready to assist you.",
         contact_form_title: "Send Us a Message",
-        contact_form_subtitle: "Fill out the form below and we'll get back to you within 24 hours.",
+        contact_form_subtitle: "Fill out the form below and we'll get back to you within 34 hours.",
         contact_name_placeholder: "Jane Doe",
         contact_email_label: "Email Address",
         contact_email_placeholder: "jane@example.com",
+        contact_phone_label: "Contact Number",
+        contact_phone_placeholder: "e.g. +94 77 123 4567",
         contact_subject_label: "Subject",
         contact_subject_option_default: "Select a topic",
         contact_subject_option_patient: "Patient Support",
@@ -1344,7 +1421,39 @@ const L10n = {
         contact_map_title: "Proudly Based in Sri Lanka",
         contact_map_desc: "Serving women across the island from our central hub in Colombo.",
         contact_success_title: "Thank you for sending a message!",
-        contact_success_desc: "We will respond within 24 hours.",
+        contact_success_desc: "We will respond within 34 hours.",
+        login_welcome_title: "Welcome Back to Your Health Journey",
+        login_welcome_desc: "Access your personalized PCOS management dashboard, track your health, and connect with your healthcare providers.",
+        login_feat_1_title: "Symptom & Cycle Tracking",
+        login_feat_1_sub: "Monitor your health patterns daily",
+        login_feat_2_title: "Secure Medical Records",
+        login_feat_2_sub: "Your data is encrypted and private",
+        login_feat_3_title: "Hospital Integration",
+        login_feat_3_sub: "Connect seamlessly with your care team",
+        login_feat_4_title: "Lifestyle & Nutrition",
+        login_feat_4_sub: "Log meals and activity for tailored advice",
+        forgot_password_link: "Forgot Password?",
+        forgot_pw_hero_title: "Secure Your Account",
+        forgot_pw_hero_desc: "Don't worry, it happens to the best of us. Enter your details below and we'll help you get back on track.",
+        forgot_pw_feat_1: "Identity Verification",
+        forgot_pw_feat_1_sub: "We verify your email or username for security.",
+        forgot_pw_feat_2: "Secure Reset Link",
+        forgot_pw_feat_2_sub: "A one-time secure link sent to your inbox.",
+        forgot_pw_form_title: "Recover Password",
+        forgot_pw_form_desc: "Enter your registered email or username to receive a reset link.",
+        forgot_pw_role_label: "I am a",
+        forgot_pw_identity_label: "Email or Username",
+        forgot_pw_btn: "Send Reset Link",
+        reset_pw_hero_title: "Create a New Password",
+        reset_pw_hero_desc: "Your security is our priority. Please choose a strong password that you haven't used before.",
+        reset_pw_feat_1: "Password Strength",
+        reset_pw_feat_1_sub: "Use a mix of letters, numbers, and symbols.",
+        reset_pw_form_title: "Set New Password",
+        reset_pw_form_desc: "Please enter your new password below.",
+        new_password_label: "New Password",
+        confirm_password_label: "Confirm Password",
+        reset_pw_btn: "Update Password",
+        back_to_login: "← Back to Login",
         account_required: "Account Required",
         account_required_msg: "You need to log in or sign up to confirm this appointment. Don't worry, your selected date and time will be saved!",
         login_signup: "Login / Signup",
@@ -1757,6 +1866,9 @@ const L10n = {
         rev_text_placeholder: "PCOS Care Hub ඔබට උපකාරී වූ ආකාරය අපට කියන්න...",
         btn_submit_review: "අදහස ඉදිරිපත් කරන්න",
         review_success_msg: "අදහස එක් කිරීම ගැන ස්තූතියි!",
+        no_new_notifications: "නව දැනුම්දීම් නොමැත",
+        upcoming_appointments: "ඉදිරි හමුවීම්",
+        upcoming_period: "ඉදිරි ඔසප් කාලය",
         cta_journey_title: "අදම ඔබේ PCOS ගමන ආරම්භ කරන්න",
         cta_journey_desc: "තම PCOS තත්ත්වය බුද්ධිමත්ව සහ විශ්වාසයෙන් යුතුව කළමනාකරණය කරන දහස් ගණන් ශ්‍රී ලාංකික කාන්තාවන් සමඟ සම්බන්ධ වන්න.",
         hosp_title: "හවුල්කාර රෝහල් — PCOS Care Hub",
@@ -1944,10 +2056,12 @@ const L10n = {
         contact_hero_title: "අපගේ කණ්ඩායම අමතන්න",
         contact_hero_desc: "වේදිකාව පිළිබඳ ගැටළු තිබේද? අප සමඟ හවුල් වීමට කැමතිද? කොළඹ සිටින අපගේ කණ්ඩායම ඔබට සහාය වීමට සූදානම්.",
         contact_form_title: "අපට පණිවිඩයක් එවන්න",
-        contact_form_subtitle: "පහත පෝරමය පුරවන්න, අපි පැය 24ක් ඇතුළත ඔබ හා සම්බන්ධ වන්නෙමු.",
+        contact_form_subtitle: "පහත පෝරමය පුරවන්න, අපි පැය 34ක් ඇතුළත ඔබ හා සම්බන්ධ වන්නෙමු.",
         contact_name_placeholder: "ඔබේ නම",
         contact_email_label: "විද්‍යුත් තැපැල් ලිපිනය",
         contact_email_placeholder: "jane@example.com",
+        contact_phone_label: "සම්බන්ධතා අංකය",
+        contact_phone_placeholder: "උදා: +94 77 123 4567",
         contact_subject_label: "විෂය",
         contact_subject_option_default: "මාතෘකාවක් තෝරන්න",
         contact_subject_option_patient: "රෝගී සහාය",
@@ -1966,7 +2080,39 @@ const L10n = {
         contact_map_title: "ශ්‍රී ලංකාව පදනම් කරගත් සේවාවක්",
         contact_map_desc: "කොළඹ පිහිටි අපගේ මධ්‍යස්ථානයේ සිට දිවයින පුරා සිටින කාන්තාවන්ට සේවය සලසයි.",
         contact_success_title: "පණිවිඩය එවීමට ස්තූතියි!",
-        contact_success_desc: "අපි පැය 24ක් ඇතුළත ප්‍රතිචාර දක්වන්නෙමු.",
+        contact_success_desc: "අපි පැය 34ක් ඇතුළත ප්‍රතිචාර දක්වන්නෙමු.",
+        login_welcome_title: "ඔබේ සෞඛ්‍ය ගමනට නැවත සාදරයෙන් පිළිගනිමු",
+        login_welcome_desc: "ඔබේ පුද්ගලීකරණය කළ PCOS කළමනාකරණ පුවරුවට පිවිසෙන්න, ඔබේ සෞඛ්‍යය නිරීක්ෂණය කරන්න, සහ ඔබේ සෞඛ්‍ය සේවා සපයන්නන් සමඟ සම්බන්ධ වන්න.",
+        login_feat_1_title: "රෝග ලක්ෂණ සහ චක්‍ර නිරීක්ෂණය",
+        login_feat_1_sub: "ඔබේ සෞඛ්‍ය රටාවන් දිනපතා නිරීක්ෂණය කරන්න",
+        login_feat_2_title: "ආරක්ෂිත වෛද්‍ය වාර්තා",
+        login_feat_2_sub: "ඔබේ දත්ත සංකේතනය කර ඇති අතර පෞද්ගලිකයි",
+        login_feat_3_title: "රෝහල් ඒකාබද්ධතාවය",
+        login_feat_3_sub: "ඔබේ වෛද්‍ය කණ්ඩායම සමඟ බාධාවකින් තොරව සම්බන්ධ වන්න",
+        login_feat_4_title: "ජීවන රටාව සහ පෝෂණය",
+        login_feat_4_sub: "පුද්ගලීකරණය කළ උපදෙස් සඳහා ආහාර සහ ක්‍රියාකාරකම් සටහන් කරන්න",
+        forgot_password_link: "මුරපදය අමතකද?",
+        forgot_pw_hero_title: "ඔබේ ගිණුම සුරක්ෂිත කරන්න",
+        forgot_pw_hero_desc: "කණගාටු වෙන්න එපා, මෙය ඕනෑම කෙනෙකුට විය හැක. ඔබේ විස්තර පහතින් ඇතුළත් කරන්න, අපි ඔබට උදව් කරන්නෙමු.",
+        forgot_pw_feat_1: "අන්‍යතාවය තහවුරු කිරීම",
+        forgot_pw_feat_1_sub: "ආරක්ෂාව සඳහා අපි ඔබේ විද්‍යුත් තැපෑල හෝ පරිශීලක නාමය පරීක්ෂා කරන්නෙමු.",
+        forgot_pw_feat_2: "ආරක්ෂිත සබැඳිය",
+        forgot_pw_feat_2_sub: "ඔබේ විද්‍යුත් තැපෑලට එවන ලද එක් වරක් පමණක් භාවිතා කළ හැකි සබැඳියක්.",
+        forgot_pw_form_title: "මුරපදය නැවත ලබා ගන්න",
+        forgot_pw_form_desc: "මුරපදය නැවත සැකසීමේ සබැඳියක් ලබා ගැනීමට ඔබේ ලියාපදිංචි විද්‍යුත් තැපෑල හෝ පරිශීලක නාමය ඇතුළත් කරන්න.",
+        forgot_pw_role_label: "මම",
+        forgot_pw_identity_label: "විද්‍යුත් තැපෑල හෝ පරිශීලක නාමය",
+        forgot_pw_btn: "සබැඳිය එවන්න",
+        reset_pw_hero_title: "නව මුරපදයක් සාදන්න",
+        reset_pw_hero_desc: "ඔබේ ආරක්ෂාව අපගේ ප්‍රමුඛතාවයයි. මීට පෙර භාවිතා නොකළ ශක්තිමත් මුරපදයක් තෝරාගන්න.",
+        reset_pw_feat_1: "මුරපදයේ ශක්තිය",
+        reset_pw_feat_1_sub: "අකුරු, අංක සහ සංකේත මිශ්‍රණයක් භාවිතා කරන්න.",
+        reset_pw_form_title: "නව මුරපදය සකසන්න",
+        reset_pw_form_desc: "කරුණාකර ඔබේ නව මුරපදය පහතින් ඇතුළත් කරන්න.",
+        new_password_label: "නව මුරපදය",
+        confirm_password_label: "මුරපදය තහවුරු කරන්න",
+        reset_pw_btn: "මුරපදය යාවත්කාලීන කරන්න",
+        back_to_login: "← නැවත පිවිසුමට",
         welcome: "\u0db1\u0dd0\u0dc0\u0dad\u0dad\u0dca \u0dc3\u0dcf\u0daf\u0dbb\u0dba\u0ddd\u0db1\u0dca \u0db4\u0dd2\u0dbd\u0dd2\u0d9c\u0db1\u0dd2\u0db8\u0dd4",
         loading: "පූරණය වෙමින්...",
         search_appts: "රෝහල හෝ වෛද්‍යවරයා අනුව සොයන්න...",
@@ -2677,10 +2823,12 @@ const L10n = {
         contact_hero_title: "எங்கள் குழுவைத் தொடர்பு கொள்ளுங்கள்",
         contact_hero_desc: "தளம் குறித்து கேள்விகள் உள்ளதா? எங்களுடன் இணைய விரும்புகிறீர்களா? கொழும்பில் உள்ள எமது குழு உங்களுக்கு உதவ தயாராக உள்ளது.",
         contact_form_title: "எங்களுக்கு ஒரு செய்தியை அனுப்புங்கள்",
-        contact_form_subtitle: "கீழே உள்ள படிவத்தைப் பூர்த்தி செய்யுங்கள், நாங்கள் 24 மணிநேரத்திற்குள் உங்களைத் தொடர்புகொள்கிறோம்.",
+        contact_form_subtitle: "கீழே உள்ள படிவத்தைப் பூர்த்தி செய்யுங்கள், நாங்கள் 34 மணிநேரத்திற்குள் உங்களைத் தொடர்புகொள்கிறோம்.",
         contact_name_placeholder: "ஜேன் டோ",
         contact_email_label: "மின்னஞ்சல் முகவரி",
         contact_email_placeholder: "jane@example.com",
+        contact_phone_label: "தொடர்பு எண்",
+        contact_phone_placeholder: "எ.கா: +94 77 123 4567",
         contact_subject_label: "பொருள்",
         contact_subject_option_default: "ஒரு தலைப்பைத் தேர்ந்தெடுக்கவும்",
         contact_subject_option_patient: "நோயாளி ஆதரவு",
@@ -2699,7 +2847,39 @@ const L10n = {
         contact_map_title: "இலங்கையை அடிப்படையாகக் கொண்டது",
         contact_map_desc: "கொழும்பில் உள்ள எமது மையத்திலிருந்து தீவு முழுவதும் உள்ள பெண்களுக்கு சேவை செய்கிறோம்.",
         contact_success_title: "செய்தி அனுப்பியதற்கு நன்றி!",
-        contact_success_desc: "நாங்கள் 24 மணிநேரத்திற்குள் பதிலளிப்போம்.",
+        contact_success_desc: "நாங்கள் 34 மணிநேரத்திற்குள் பதிலளிப்போம்.",
+        login_welcome_title: "உங்கள் ஆரோக்கிய பயணத்திற்கு மீண்டும் வரவேற்கிறோம்",
+        login_welcome_desc: "உங்கள் தனிப்பயனாக்கப்பட்ட PCOS மேலாண்மை டாஷ்போர்டை அணுகவும், உங்கள் ஆரோக்கியத்தை கண்காணிக்கவும் மற்றும் உங்கள் சுகாதார வழங்குநர்களுடன் இணையவும்.",
+        login_feat_1_title: "அறிகுறி மற்றும் சுழற்சி கண்காணிப்பு",
+        login_feat_1_sub: "உங்கள் சுகாதார வடிவங்களை தினமும் கண்காணிக்கவும்",
+        login_feat_2_title: "பாதுகாப்பான மருத்துவ பதிவுகள்",
+        login_feat_2_sub: "உங்கள் தரவு குறியாக்கம் செய்யப்பட்டு தனிப்பட்டது",
+        login_feat_3_title: "மருத்துவமனை ஒருங்கிணைப்பு",
+        login_feat_3_sub: "உங்கள் பராமரிப்பு குழுவுடன் தடையின்றி இணையுங்கள்",
+        login_feat_4_title: "வாழ்க்கை முறை மற்றும் ஊட்டச்சத்து",
+        login_feat_4_sub: "தனிப்பயனாக்கப்பட்ட ஆலோசனைக்கு உணவு மற்றும் செயல்பாட்டைப் பதிவு செய்யவும்",
+        forgot_password_link: "கடவுச்சொல் மறந்துவிட்டதா?",
+        forgot_pw_hero_title: "உங்கள் கணக்கைப் பாதுகாக்கவும்",
+        forgot_pw_hero_desc: "கவலைப்பட வேண்டாம், இது யாருக்கும் நடக்கலாம். உங்கள் விவரங்களை கீழே உள்ளிடவும், நாங்கள் உங்களுக்கு உதவுவோம்.",
+        forgot_pw_feat_1: "அடையாள சரிபார்ப்பு",
+        forgot_pw_feat_1_sub: "பாதுகாப்பிற்காக உங்கள் மின்னஞ்சல் அல்லது பயனர் பெயரை நாங்கள் சரிபார்க்கிறோம்.",
+        forgot_pw_feat_2: "பாதுகாப்பான இணைப்பு",
+        forgot_pw_feat_2_sub: "உங்கள் மின்னஞ்சலுக்கு அனுப்பப்பட்ட ஒரு முறை மட்டுமே பயன்படுத்தக்கூடிய இணைப்பு.",
+        forgot_pw_form_title: "கடவுச்சொல்லை மீட்டெடுக்கவும்",
+        forgot_pw_form_desc: "மீட்டமைப்பு இணைப்பைப் பெற உங்கள் பதிவு செய்யப்பட்ட மின்னஞ்சல் அல்லது பயனர் பெயரை உள்ளிடவும்.",
+        forgot_pw_role_label: "நான் ஒரு",
+        forgot_pw_identity_label: "மின்னஞ்சல் அல்லது பயனர் பெயர்",
+        forgot_pw_btn: "இணைப்பை அனுப்பு",
+        reset_pw_hero_title: "புதிய கடவுச்சொல்லை உருவாக்கவும்",
+        reset_pw_hero_desc: "உங்கள் பாதுகாப்பு எங்களது முன்னுரிமை. இதற்கு முன் பயன்படுத்தாத வலுவான கடவுச்சொல்லைத் தேர்ந்தெடுக்கவும்.",
+        reset_pw_feat_1: "கடவுச்சொல் வலிமை",
+        reset_pw_feat_1_sub: "எழுத்துக்கள், எண்கள் மற்றும் குறியீடுகளின் கலவையைப் பயன்படுத்தவும்.",
+        reset_pw_form_title: "புதிய கடவுச்சொல்லை அமைக்கவும்",
+        reset_pw_form_desc: "தயவுசெய்து உங்கள் புதிய கடவுச்சொல்லை கீழே உள்ளிடவும்.",
+        new_password_label: "புதிய கடவுச்சொல்",
+        confirm_password_label: "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
+        reset_pw_btn: "கடவுச்சொல்லைப் புதுப்பிக்கவும்",
+        back_to_login: "← மீண்டும் உள்நுழைய",
         full_name_label: "உங்கள் பெயர்",
         review_modal_title: "உங்கள் அனுபவத்தைப் பகிருங்கள்",
         rev_role_label: "பங்கு / இடம்",
@@ -2716,6 +2896,9 @@ const L10n = {
         btn_add_review: "✍️ உங்கள் கருத்தை சேர்க்கவும்",
         btn_view_reviews: "⭐ மதிப்புரைகள்",
         review_success_msg: "கருத்தைச் சேர்த்ததற்கு நன்றி!",
+        no_new_notifications: "புதிய அறிவிப்புகள் இல்லை",
+        upcoming_appointments: "வரவிருக்கும் சந்திப்புகள்",
+        upcoming_period: "வரவிருக்கும் மாதவிடாய் காலம்",
         profile_title: "எனது சுயவிவரம்",
         profile_subtitle: "உங்கள் தனிப்பட்ட மற்றும் மருத்துவத் தகவல்களை நிர்வகிக்கவும்",
         personal_info: "தனிப்பட்ட தகவல்",
@@ -3177,6 +3360,9 @@ const L10n = {
       if (content) {
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
           el.placeholder = content;
+          if (el.type === 'submit' || el.type === 'button') {
+            el.value = content;
+          }
         } else {
           // If the element contains an icon/emoji tag, preserve it
           const icon = el.querySelector('i, .icon, .emoji, span:first-child');
@@ -3194,7 +3380,9 @@ const L10n = {
               finalContent = emojiMatch[0] + finalContent;
             }
 
-            if (hasHtml) {
+            if (el.tagName === 'OPTGROUP') {
+              el.setAttribute('label', finalContent);
+            } else if (hasHtml) {
               el.innerHTML = finalContent;
             } else {
               el.textContent = finalContent;
@@ -3244,6 +3432,9 @@ const L10n = {
     if (langSelect) {
       langSelect.value = lang;
     }
+
+    // REDUNDANCY: Ensure sidebar profile is updated after localization
+    initSidebarProfile();
   },
 
   t(key) {
@@ -3264,6 +3455,42 @@ function initReveal() {
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Also initialise image animations
+  initImageAnimations();
+}
+
+// ── Global Image Scroll-Reveal Animations ──
+function initImageAnimations() {
+  // Elements to SKIP animation (UI chrome, icons, tiny images)
+  const skipSelectors = [
+    'nav', '.navbar', 'footer', '.footer',
+    '.sidebar', '.sidebar-avatar', '.page-loader',
+    '.toast-container', '.nav-logo', '.footer-logo',
+    '.badge-icon', '[class*="emoji"]'
+  ];
+
+  const isExcluded = (el) => skipSelectors.some(sel => el.closest(sel));
+
+  const imgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('img-visible');
+        imgObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('img').forEach(img => {
+    // Skip excluded zones and tiny images (icons, spacers)
+    if (isExcluded(img)) return;
+    if (img.classList.contains('no-anim')) return;
+    if ((img.naturalWidth && img.naturalWidth < 40) ||
+        (img.width && img.width < 40)) return;
+
+    img.classList.add('img-reveal');
+    imgObserver.observe(img);
+  });
 }
 
 // ── Navbar scroll effect ──
@@ -3333,14 +3560,21 @@ function countUp(el, target, duration = 1800, suffix = '') {
 const Stats = {
   async fetch() {
     try {
-      // Find the correct path to get_stats.php
+      // Use a more robust root detection
       const path = window.location.pathname;
-      const root = path.includes('/src/pages/') 
-        ? '../../' 
-        : (path.includes('/admin/') ? '../' : './');
+      const rootIndex = path.indexOf('/pcos-hub/');
+      if (rootIndex === -1) throw new Error("Project root not found");
+      const root = path.substring(0, rootIndex + 10);
       
       const res = await fetch(root + 'src/php/get_stats.php');
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error('Invalid JSON from get_stats.php:', text.substring(0, 200));
+        return null;
+      }
       
       if (data.status === 'success') {
         return data.data;
@@ -3451,6 +3685,48 @@ function setSidebarActive() {
   });
 }
 
+// ── Sidebar Profile Synchronization ──
+function initSidebarProfile(retryCount = 0) {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  const sn = document.getElementById('sidebarName');
+  const sa = document.getElementById('sidebarAvatar') || document.querySelector('.sidebar-avatar');
+
+  // If elements not found, retry up to 5 times (total 2.5 seconds)
+  if ((!sn || !sa) && retryCount < 5) {
+    setTimeout(() => initSidebarProfile(retryCount + 1), 500);
+    return;
+  }
+
+  if (sn && user.name) {
+    sn.textContent = user.name;
+  }
+
+  const sp = document.querySelector('.sidebar-profile');
+  if (sp) {
+    sp.style.cursor = 'pointer';
+    sp.title = 'View Profile';
+    sp.onclick = () => {
+      const target = user.role === 'hospital' ? 'hospital-profile.html' : 'profile.html';
+      window.location.href = target;
+    };
+  }
+  
+  if (sa) {
+    const displayAvatar = user.avatar_base64 || user.avatar;
+    const cleanName = (user.name || '').trim();
+    if (displayAvatar) {
+      const prefix = user.avatar_base64 ? '' : '../../';
+      sa.innerHTML = `<img src="${prefix}${displayAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='${cleanName.charAt(0).toUpperCase()}'">`;
+      sa.style.background = 'none';
+    } else if (cleanName) {
+      sa.innerHTML = cleanName.charAt(0).toUpperCase();
+      sa.style.background = ''; // reset to CSS default
+    }
+  }
+}
+
 // ── Fake auth helper (localStorage demo) ──
 const Auth = {
   login(user) {
@@ -3484,6 +3760,31 @@ const Auth = {
       return null;
     }
     return u;
+  },
+  
+  // ── HIPAA-Compliant Inactivity Timer ──
+  initInactivityTimer(timeoutMinutes = 15) {
+    if (!this.isLoggedIn()) return;
+    
+    let time;
+    const logout = () => {
+      Toast.info('You have been logged out due to inactivity for security.');
+      setTimeout(() => this.logout(), 2000);
+    };
+
+    const resetTimer = () => {
+      clearTimeout(time);
+      time = setTimeout(logout, timeoutMinutes * 60 * 1000);
+    };
+
+    // Events that reset the timer
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.ontouchstart = resetTimer;
+    document.onclick = resetTimer;
+    
+    resetTimer();
   }
 
 };
@@ -3577,7 +3878,7 @@ function initNewsletter() {
           }
           
           if (data.status === 'success') {
-            Toast.success('Thank you for subscribing to PCOS Care Hub! Check your email.');
+            Toast.success(data.message || 'Thank you for subscribing to PCOS Care Hub!');
             input.value = '';
           } else {
             Toast.error(data.message || 'Failed to subscribe.');
@@ -3594,10 +3895,70 @@ function initNewsletter() {
   });
 }
 
-// ── HTML Escaping ──
-/*
-function escHtml(str) {
-  if (!str) return '';
+// ── Newsletter Unsubscribe toggle ──
+function toggleUnsubForm() {
+  const form = document.getElementById('footer-unsub-form');
+  if (!form) return;
+  const isHidden = form.style.display === 'none';
+  form.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) {
+    const input = document.getElementById('unsub-email-input');
+    if (input) input.focus();
+  }
+}
+
+// ── Newsletter Unsubscribe handler ──
+async function handleUnsubscribe() {
+  const input = document.getElementById('unsub-email-input');
+  if (!input || !input.value) {
+    Toast.error('Please enter your email address.');
+    return;
+  }
+  const email = input.value.trim();
+  if (!email) {
+    Toast.error('Please enter a valid email address.');
+    return;
+  }
+
+  const btn = document.querySelector('#footer-unsub-form .newsletter-btn');
+  const originalText = btn ? btn.innerText : 'Unsubscribe';
+  if (btn) { btn.disabled = true; btn.innerText = 'Processing...'; }
+
+  try {
+    const path = window.location.pathname;
+    const root = path.includes('/src/pages/')
+      ? path.split('/src/pages/')[0]
+      : path.substring(0, path.lastIndexOf('/'));
+
+    const formData = new FormData();
+    formData.append('email', email);
+
+    const res = await fetch(root + '/src/php/unsubscribe_newsletter.php', {
+      method: 'POST',
+      body: formData
+    });
+
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch (e) { throw new Error('Server error. Please try again.'); }
+
+    if (data.status === 'success') {
+      Toast.success(data.message || 'You have been unsubscribed.');
+      input.value = '';
+      toggleUnsubForm(); // hide form
+    } else {
+      Toast.error(data.message || 'Could not unsubscribe. Please try again.');
+    }
+  } catch (err) {
+    Toast.error(err.message || 'An error occurred. Please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerText = originalText; }
+  }
+}
+
+function escHtml(str, fallback = '') {
+  if (!str) return fallback;
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -3605,7 +3966,6 @@ function escHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
-*/
 
 // ── Session quality guard ──
 // Returns the user object if the session is valid and complete.
@@ -3622,7 +3982,7 @@ function checkSession() {
 */
 
 // ── Global init ──
-document.addEventListener('DOMContentLoaded', () => {
+function initGlobal() {
   if (typeof PageLoader !== 'undefined') PageLoader.hide();
   initReveal();
   initNavbar();
@@ -3632,6 +3992,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initSidebar();
   setSidebarActive();
+  initSidebarProfile();
   animateProgressBars();
   initUploadArea();
   initSymptomChips();
@@ -3646,6 +4007,14 @@ document.addEventListener('DOMContentLoaded', () => {
   Stats.update().then(() => {
     initCountUps();
   });
-});
+  
+  Auth.initInactivityTimer(15); // Auto-logout after 15 mins of inactivity
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initGlobal);
+} else {
+  initGlobal();
+}
 
 /* eslint-disable no-unused-vars */ function checkSession() { return Auth.checkSession(); }

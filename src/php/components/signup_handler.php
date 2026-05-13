@@ -92,8 +92,7 @@ function handleSignup($pdo)
         }
 
         // Log the signup
-        require_once __DIR__ . '/../utils/Logger.php';
-        Logger::log('auth', 'info', "New account registered: " . $username . " (Role: " . $role . ")", $data['full_name']);
+        \App\Utils\Logger::log('auth', 'info', "New account registered: " . $username . " (Role: " . $role . ")", $data['full_name']);
 
         echo json_encode([
             'status' => 'success',
@@ -117,8 +116,7 @@ function handleSignup($pdo)
         if ($e->getCode() == 23000) {
             echo json_encode(['status' => 'error', 'message' => 'An account with this username or email already exists. Try signing in instead.']);
         } else {
-            require_once __DIR__ . '/../utils/Logger.php';
-            Logger::log('database', 'error', "Registration failed for " . $username . ": " . $e->getMessage(), 'System');
+            \App\Utils\Logger::log('database', 'error', "Registration failed for " . $username . ": " . $e->getMessage(), 'System');
             echo json_encode(['status' => 'error', 'message' => 'Registration failed: ' . $e->getMessage()]);
         }
     }

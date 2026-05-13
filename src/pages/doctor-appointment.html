@@ -288,19 +288,13 @@
     <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script>
-        function checkSession() {
-    const userStr = sessionStorage.getItem('user');
-    if (userStr) {
-        try { return JSON.parse(userStr); } catch (e) { return null; }
-    }
-    return null;
-}
-let selectedDoctor = null;
+        let selectedDoctor = null;
         let selectedHospital = '';
         let selectedTime = '';
 
         // Check session, but allow viewing without login
-        const user = checkSession();
+        const user = Auth.getUser();
+        const isLoggedIn = Auth.isLoggedIn();
 
         document.addEventListener('DOMContentLoaded', () => {
             

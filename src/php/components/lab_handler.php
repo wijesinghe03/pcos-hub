@@ -72,7 +72,7 @@ if ($method === 'POST') {
         }
 
         $safe_name  = $patient_id . '_lab_' . time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $orig_name);
-        $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
+        $upload_dir = dirname(__FILE__, 4) . '/uploads/reports/';
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0755, true);
         }
@@ -188,7 +188,7 @@ if ($method === 'POST') {
 
         // 4. Remove file
         if ($row['file_path']) {
-            $full_path = dirname(__FILE__, 3) . '/' . $row['file_path'];
+            $full_path = dirname(__FILE__, 4) . '/' . $row['file_path'];
             if (file_exists($full_path)) {
                 @unlink($full_path);
             }

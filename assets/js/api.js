@@ -19,16 +19,29 @@ const API = {
     /**
      * Generic fetch wrapper
      */
-    async call(script, data = null) {
-        const url = this.getPHPPath(script);
+    async call(script, data = null, method = null) {
+        let url = this.getPHPPath(script);
+        const resolvedMethod = method || (data ? 'POST' : 'GET');
+        
         const options = {
-            method: data ? 'POST' : 'GET',
+            method: resolvedMethod,
             headers: {
                 'Content-Type': 'application/json'
             }
         };
 
-        if (data) {
+        if (resolvedMethod === 'GET' && data) {
+            const params = new URLSearchParams();
+            for (const key in data) {
+                if (data[key] !== null && data[key] !== undefined) {
+                    params.append(key, data[key]);
+                }
+            }
+            const queryString = params.toString();
+            if (queryString) {
+                url += (url.includes('?') ? '&' : '?') + queryString;
+            }
+        } else if (data && resolvedMethod !== 'GET') {
             options.body = JSON.stringify(data);
         }
 
