@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../../assets/css/footer.css">
   <link rel="stylesheet" href="../../assets/css/auth.css">
   <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <script src="../../assets/js/icons.js"></script>
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
   <style>
@@ -122,8 +123,9 @@
           }
         </style>
         <div class="hero-actions">
-          <a href="signup-choice.html" class="btn btn-primary btn-lg" data-i18n="btn_get_started">
-            <span>♥</span> Get Started Free
+          <a href="signup-choice.html" class="btn btn-primary btn-lg">
+            <span data-icon="heart" data-size="18"></span> 
+            <span data-i18n="btn_get_started">Get Started Free</span>
           </a>
           <a href="learn-more.html" class="btn btn-outline btn-lg" data-i18n="btn_learn_more">
             Learn More
@@ -147,21 +149,21 @@
 
           <!-- Floating cards -->
           <div class="hero-card hero-card-1">
-            <div class="hero-card-icon purple">📋</div>
+            <div class="hero-card-icon purple" data-icon="logs"></div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="reports" data-suffix="">0</span></div>
               <div class="hero-card-lbl" data-i18n="hero_stat_reports">Reports Uploaded</div>
             </div>
           </div>
           <div class="hero-card hero-card-2">
-            <div class="hero-card-icon pink">👩</div>
+            <div class="hero-card-icon pink" data-icon="user"></div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="patients" data-suffix="">0</span></div>
               <div class="hero-card-lbl" data-i18n="hero_stat_patients">Patients Supported</div>
             </div>
           </div>
           <div class="hero-card hero-card-3">
-            <div class="hero-card-icon teal">🏥</div>
+            <div class="hero-card-icon teal" data-icon="hospital"></div>
               <div>
                 <div class="hero-card-num"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></div>
               <div class="hero-card-lbl" data-i18n="hero_stat_hospitals">Partner Hospitals</div>
@@ -791,8 +793,9 @@
         <h2 data-i18n="cta_journey_title">Start Your PCOS Journey Today</h2>
         <p data-i18n="cta_journey_desc">Join thousands of Sri Lankan women who are managing their PCOS smarter, safer, and with more confidence.</p>
         <div class="cta-actions">
-          <a href="signup-choice.html" class="btn-white" data-i18n="cta_create_btn">
-            ♥ Create Free Account
+          <a href="signup-choice.html" class="btn-white">
+            <span data-icon="heart" data-size="18" data-color="var(--purple-primary)"></span> 
+            <span data-i18n="cta_create_btn">Create Free Account</span>
           </a>
           <a href="login.html" class="btn btn-ghost btn-lg" data-i18n="cta_login_text">
             Already a member? Log In

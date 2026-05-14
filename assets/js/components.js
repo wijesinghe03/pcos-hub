@@ -3,12 +3,20 @@
 // ============================================================
 
 function renderNavbar(activePage = '') {
+  const user = (typeof Auth !== 'undefined') ? Auth.getUser() : null;
+  let dashboardUrl = 'patient-dashboard.html';
+  if (user) {
+    const role = (user.role || '').toLowerCase();
+    if (role.includes('admin')) dashboardUrl = 'admin-dashboard.html';
+    else if (role.includes('hospital')) dashboardUrl = 'hospital-dashboard.html';
+  }
+
   return `
   <div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
   <nav class="navbar" id="mainNav">
     <div class="container">
       <a href="index.html" class="nav-logo">
-        <div class="nav-logo-icon">♥</div>
+        <div class="nav-logo-icon">${typeof Icons !== 'undefined' ? Icons.get('heart', 20) : '♥'}</div>
         <span><span>PCOS</span> Care Hub</span>
       </a>
       <div class="nav-links">
@@ -22,10 +30,10 @@ function renderNavbar(activePage = '') {
       </div>
       <div class="nav-actions">
         <button id="globalThemeToggle" class="theme-toggle-btn" onclick="Theme.toggle()" title="Toggle Theme">
-          ${typeof Theme !== 'undefined' ? Theme.getIcon() : '🌙'}
+          ${typeof Theme !== 'undefined' ? Theme.getIcon() : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'}
         </button>
-        ${(typeof Auth !== 'undefined' && Auth.isLoggedIn()) ? 
-          `<button class="nav-btn-cta" onclick="window.location.href='patient-dashboard.html'" data-i18n="view_in_dashboard">View in Dashboard</button>` : 
+        ${(user && user.loggedIn) ? 
+          `<button class="nav-btn-cta" onclick="window.location.href='${dashboardUrl}'" data-i18n="view_in_dashboard">View Dashboard</button>` : 
           `<button class="nav-btn-login" onclick="window.location.href='login.html'" data-i18n="nav_login">Log In</button>
            <button class="nav-btn-cta"   onclick="window.location.href='signup-choice.html'" data-i18n="nav_signup">Get Connected</button>`
         }
@@ -47,11 +55,11 @@ function renderNavbar(activePage = '') {
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:10px;">
         <span style="font-weight:600; color:var(--text-mid)" data-i18n="nav_appearance">Appearance</span>
         <button id="globalThemeToggleMobile" class="theme-toggle-btn" onclick="Theme.toggle()" title="Toggle Theme">
-          ${typeof Theme !== 'undefined' ? Theme.getIcon() : '🌙'}
+          ${typeof Theme !== 'undefined' ? Theme.getIcon() : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'}
         </button>
       </div>
-      ${(typeof Auth !== 'undefined' && Auth.isLoggedIn()) ? 
-        `<button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='patient-dashboard.html'" data-i18n="view_in_dashboard">View in Dashboard</button>` : 
+      ${(user && user.loggedIn) ? 
+        `<button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='${dashboardUrl}'" data-i18n="view_in_dashboard">View Dashboard</button>` : 
         `<button class="btn btn-outline" style="width:100%;justify-content:center" onclick="window.location.href='login.html'" data-i18n="nav_login">Log In</button>
          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="window.location.href='signup-choice.html'" data-i18n="nav_signup">Get Connected</button>`
       }
@@ -70,7 +78,7 @@ function renderFooter() {
           <!-- Brand -->
           <div class="footer-brand">
             <a href="index.html" class="footer-logo">
-              <div class="footer-logo-icon">♥</div>
+              <div class="footer-logo-icon">${typeof Icons !== 'undefined' ? Icons.get('heart', 20) : '♥'}</div>
               <div class="footer-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
             <p class="footer-tagline" data-i18n="footer_tagline">Sri Lanka's first dedicated digital platform for managing Polycystic Ovary Syndrome — empowering patients and healthcare providers with secure, connected care.</p>
