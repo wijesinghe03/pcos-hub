@@ -1,15 +1,15 @@
 <?php
+
 session_start();
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 
 header('Content-Type: application/json');
 
+require_once 'utils/AuthHelper.php';
+
 // Security Check: Only admins can manage roles
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    echo json_encode(['status' => 'error', 'message' => 'Unauthorized access.']);
-    exit;
-}
+\App\Utils\AuthHelper::requireAdmin();
 
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);

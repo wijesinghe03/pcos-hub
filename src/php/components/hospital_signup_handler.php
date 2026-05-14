@@ -124,11 +124,17 @@ if (!empty($_FILES['approval_documents']['name'][0])) {
     $files = $_FILES['approval_documents'];
     $count = count($files['name']);
     for ($i = 0; $i < $count; $i++) {
-        if ($files['error'][$i] !== UPLOAD_ERR_OK) continue;
-        if ($files['size'][$i] > $maxFileSize) continue;
+        if ($files['error'][$i] !== UPLOAD_ERR_OK) {
+            continue;
+        }
+        if ($files['size'][$i] > $maxFileSize) {
+            continue;
+        }
         $finfo    = new finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->file($files['tmp_name'][$i]);
-        if (!in_array($mimeType, $allowedTypes)) continue;
+        if (!in_array($mimeType, $allowedTypes)) {
+            continue;
+        }
         $ext      = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
         $safeName = 'doc_' . time() . '_' . $i . '.' . $ext;
         move_uploaded_file($files['tmp_name'][$i], $tempUploadDir . $safeName);

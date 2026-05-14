@@ -223,8 +223,7 @@
   <script src="../assets/js/dashboard.js"></script>
   <script>
     // Session Guard
-    const user = Auth.checkSession();
-    if (!user || !user.id || (user.role !== 'admin' && user.role !== 'superadmin')) {
+    if (!Auth.isAdmin()) {
         localStorage.removeItem('pcos_user');
         window.location.href = 'login.html';
     }

@@ -88,15 +88,15 @@ try {
     if (!is_dir($permDir)) {
         mkdir($permDir, 0755, true);
     }
-    
+
     if (is_dir($tempDir)) {
         $finfo = class_exists('finfo') ? new finfo(FILEINFO_MIME_TYPE) : null;
         $files = glob($tempDir . '*');
-        
+
         foreach ($files as $file) {
             $fileName = basename($file);
             $newPath  = $permDir . 'hosp_' . $hospitalId . '_' . $fileName;
-            
+
             if (rename($file, $newPath)) {
                 // Log in hospital_documents
                 try {
@@ -170,7 +170,6 @@ try {
             'role'            => 'hospital'
         ]
     ]);
-
 } catch (PDOException $e) {
     if ($e->getCode() == 23000) {
         // Cleanup duplicate

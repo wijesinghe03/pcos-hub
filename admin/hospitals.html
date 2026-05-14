@@ -203,6 +203,9 @@
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script>
+        if (!Auth.isAdmin()) {
+            window.location.href = 'login.html';
+        }
         let hospitalList = [];
 
         async function loadHospitals() {

@@ -184,8 +184,7 @@
     <script src="../assets/js/icons.js"></script>
     <script>
         const user = Auth.checkSession();
-        if (!user || !user.id || (user.role !== 'admin' && user.role !== 'superadmin')) {
-            localStorage.removeItem('pcos_user');
+        if (!Auth.isAdmin()) {
             window.location.href = 'login.html';
         }
 

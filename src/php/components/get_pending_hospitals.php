@@ -7,14 +7,12 @@
  */
 
 require_once '../db_connect.php';
-session_start();
 header('Content-Type: application/json');
 
+require_once '../utils/AuthHelper.php';
+
 // Security Check: Only admins can view pending applications
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    echo json_encode(['status' => 'error', 'message' => 'Unauthorized access.']);
-    exit;
-}
+\App\Utils\AuthHelper::requireAdmin();
 
 try {
     // Fetch pending from registered_hospitals (self-signup)

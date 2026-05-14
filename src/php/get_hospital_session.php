@@ -40,7 +40,6 @@ try {
         'status'   => 'success',
         'hospital' => $hospital
     ]);
-
 } catch (PDOException $e) {
     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }

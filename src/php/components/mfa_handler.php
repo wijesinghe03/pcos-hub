@@ -46,7 +46,7 @@ try {
         // Complete Login
         $displayName = $user['full_name'] ?? ($user['username'] ?? 'Admin');
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_role'] = 'admin';
+        $_SESSION['user_role'] = $user['role'];
         $_SESSION['user_name'] = $displayName;
 
         Logger::log('auth', 'info', "Admin logged in via MFA: " . $user['username'], $displayName);
@@ -57,7 +57,7 @@ try {
             'user' => [
                 'id' => $user['id'],
                 'name' => $displayName,
-                'role' => 'admin',
+                'role' => $user['role'],
                 'email' => $user['email'],
                 'username' => $user['username'],
                 'avatar' => $user['avatar'] ?? null

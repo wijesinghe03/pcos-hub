@@ -12,11 +12,10 @@ require_once __DIR__ . '/../utils/Logger.php';
 session_start();
 header('Content-Type: application/json');
 
-// Security Check: Only admins can approve or reject hospitals
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    echo json_encode(['status' => 'error', 'message' => 'Unauthorized access.']);
-    exit;
-}
+require_once '../utils/AuthHelper.php';
+
+// Security Check: Only admins can manage applications
+\App\Utils\AuthHelper::requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
@@ -116,7 +115,6 @@ try {
             'status'  => 'success',
             'message' => 'Hospital approved and is now visible in the public directory.'
         ]);
-
     } else {
         // ── Reject ────────────────────────────────────────────────────────────
         $rejectionReason = trim($data['reason'] ?? 'Application did not meet requirements.');
@@ -130,7 +128,7 @@ try {
             // Absolute path to file
             // __DIR__ is src/php/components/
             // uploads is at root/uploads/
-            $filePath = dirname(__DIR__, 2) . '/' . $doc['file_path'];
+            $filePath = dirname(__DIR__, 3) . '/' . $doc['file_path'];
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -147,8 +145,12 @@ try {
             $hosp['email'], $hosp['reg_number']
         ]);
 
-        \App\Utils\Logger::log('hospital', 'warning',
-            "Hospital rejected & account deleted: " . $hosp['hosp_name'] . " (Reason: $rejectionReason)", 'Admin');
+        \App\Utils\Logger::log(
+            'hospital',
+            'warning',
+            "Hospital rejected & account deleted: " . $hosp['hosp_name'] . " (Reason: $rejectionReason)",
+            'Admin'
+        );
 
         try {
             require_once '../utils/Mailer.php';
@@ -168,7 +170,6 @@ try {
             'message' => 'Hospital application rejected.'
         ]);
     }
-
 } catch (PDOException $e) {
     \App\Utils\Logger::log('database', 'error', "Hospital approval operation failed: " . $e->getMessage(), 'System');
     echo json_encode(['status' => 'error', 'message' => 'Operation failed: ' . $e->getMessage()]);

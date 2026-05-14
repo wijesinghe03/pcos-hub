@@ -1,12 +1,11 @@
 <?php
+
 session_start();
 require_once 'db_connect.php';
+require_once 'utils/AuthHelper.php';
 
-// Security Check: Only admins can export logs
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header('HTTP/1.1 403 Forbidden');
-    exit('Unauthorized access.');
-}
+// Security Check
+\App\Utils\AuthHelper::requireAdmin();
 
 try {
     $stmt = $pdo->query("SELECT * FROM system_logs ORDER BY timestamp DESC");
@@ -43,7 +42,6 @@ try {
 
     fclose($output);
     exit;
-
 } catch (Exception $e) {
     exit('Export failed: ' . $e->getMessage());
 }

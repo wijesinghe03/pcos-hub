@@ -3806,6 +3806,13 @@ const Auth = {
     document.onclick = resetTimer;
     
     resetTimer();
+  },
+
+  isAdmin() {
+    const u = this.getUser();
+    if (!u) return false;
+    const adminRoles = ['admin', 'superadmin', 'Super Admin', 'Admin'];
+    return adminRoles.includes(u.role);
   }
 
 };
@@ -4039,3 +4046,7 @@ if (document.readyState === 'loading') {
 }
 
 /* eslint-disable no-unused-vars */ function checkSession() { return Auth.checkSession(); }
+
+// Expose to global scope for HTML event handlers
+window.handleUnsubscribe = handleUnsubscribe;
+window.escHtml = escHtml;

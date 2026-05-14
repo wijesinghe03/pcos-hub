@@ -29,6 +29,7 @@ try {
                 approval_status, is_verified, created_at,
                 'registered' AS source
          FROM registered_hospitals
+         WHERE approval_status != 'approved'
          ORDER BY created_at DESC"
     );
     $registeredHospitals = $stmtReg->fetchAll(PDO::FETCH_ASSOC);

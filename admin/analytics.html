@@ -298,6 +298,10 @@
     <script>
         // Initialize Charts and Load Real Data from NEW Analytics API
         document.addEventListener('DOMContentLoaded', async () => {
+            if (!Auth.isAdmin()) {
+                window.location.href = 'login.html';
+                return;
+            }
             try {
                 const res = await fetch('../src/php/get_analytics_data.php');
                 const json = await res.json();
@@ -441,4 +445,3 @@
     <script src="../assets/js/admin-ui.js"></script>
 </body>
 </html>
-

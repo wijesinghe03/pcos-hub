@@ -5,11 +5,10 @@ require_once __DIR__ . '/utils/Logger.php';
 session_start();
 header('Content-Type: application/json');
 
+require_once 'utils/AuthHelper.php';
+
 // Security Check: Only admins can manage hospitals
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    echo json_encode(['status' => 'error', 'message' => 'Unauthorized access.']);
-    exit;
-}
+\App\Utils\AuthHelper::requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if ($action === 'delete') {
             $table = ($source === 'registered') ? 'registered_hospitals' : 'hospitals';
-            
+
             // Delete related documents if it's a registered hospital
             if ($source === 'registered') {
                 $stmt = $pdo->prepare("DELETE FROM hospital_documents WHERE hospital_id = ?");

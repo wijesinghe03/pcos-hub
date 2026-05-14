@@ -288,6 +288,9 @@
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script>
+        if (!Auth.isAdmin()) {
+            window.location.href = 'login.html';
+        }
         let logsData = [];
         let currentPage = 0;
         const pageSize = 15;
@@ -417,4 +420,3 @@
     <script src="../assets/js/admin-ui.js"></script>
 </body>
 </html>
-
