@@ -7,7 +7,7 @@ function renderNavbar(activePage = '') {
   let dashboardUrl = 'patient-dashboard.html';
   if (user) {
     const role = (user.role || '').toLowerCase();
-    if (role.includes('admin')) dashboardUrl = 'admin-dashboard.html';
+    if (role.includes('admin')) dashboardUrl = '../../admin/dashboard.html';
     else if (role.includes('hospital')) dashboardUrl = 'hospital-dashboard.html';
   }
 
@@ -66,6 +66,43 @@ function renderNavbar(activePage = '') {
     </div>
   </div>
   <button class="scroll-to-top" id="scrollToTop" title="Scroll to top" aria-label="Scroll to top">↑</button>`;
+}
+
+function renderChatbot() {
+  return `
+  <div class="chatbot-container">
+    <button class="chatbot-toggle" id="chatbotToggle" title="PCOS AI Assistant">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </button>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-header-icon">✨</div>
+          <div class="chatbot-header-text">
+            <h3 data-i18n="chatbot_title">PCOS AI Guide</h3>
+            <p data-i18n="chatbot_subtitle">Always here to help</p>
+          </div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose">&times;</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chat-msg bot" data-i18n="chatbot_welcome">
+          Hello! I'm your PCOS Hub assistant. How can I help you today?
+        </div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ask about PCOS or website..." data-i18n-placeholder="chatbot_placeholder">
+        <button class="chatbot-send" id="chatbotSend">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
 }
 
 function renderFooter() {
@@ -205,11 +242,129 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof initNewsletter === 'function') initNewsletter();
       if (typeof initReveal === 'function') initReveal();
       if (typeof initCountUps === 'function') initCountUps();
+      
+      // Ensure api.js is loaded
+      ensureAPI(() => {
+        // Init Chatbot
+        const chatbotDiv = document.createElement('div');
+        chatbotDiv.innerHTML = renderChatbot();
+        document.body.appendChild(chatbotDiv);
+        initChatbot();
+      });
+
       // Ensure loader is hidden after all components are ready
       if (typeof PageLoader !== 'undefined') PageLoader.hide();
       // Re-apply localization AFTER all components are in the DOM
-      // This guarantees every page (including contact) is translated correctly
       if (typeof L10n !== 'undefined') L10n.init();
     }, 0);
   }
 });
+
+function initChatbot() {
+  const toggle = document.getElementById('chatbotToggle');
+  const window = document.getElementById('chatbotWindow');
+  const close = document.getElementById('chatbotClose');
+  const input = document.getElementById('chatbotInput');
+  const send = document.getElementById('chatbotSend');
+  const messages = document.getElementById('chatbotMessages');
+
+  if (!toggle || !window || !messages) return;
+
+  const toggleChat = () => window.classList.toggle('active');
+  toggle.addEventListener('click', toggleChat);
+  close.addEventListener('click', toggleChat);
+
+  const addMessage = (text, sender) => {
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${sender}`;
+    msg.innerText = text;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  const showTyping = () => {
+    const loader = document.createElement('div');
+    loader.className = 'typing-indicator';
+    loader.id = 'chatbotTyping';
+    loader.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    messages.appendChild(loader);
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  const hideTyping = () => {
+    const loader = document.getElementById('chatbotTyping');
+    if (loader) loader.remove();
+  };
+
+  const sendMessage = async () => {
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    addMessage(text, 'user');
+    showTyping();
+
+    if (typeof API !== 'undefined') {
+      try {
+        const data = await API.call('chatbot_handler.php', { message: text });
+        hideTyping();
+        if (data.status === 'success') {
+          addMessage(data.reply, 'bot');
+        } else {
+          addMessage("I'm having trouble connecting. Please try again later.", 'bot');
+        }
+      } catch (err) {
+        hideTyping();
+        addMessage("Connection error. Check your internet.", 'bot');
+      }
+    } else {
+      hideTyping();
+      addMessage("API service is not available.", 'bot');
+    }
+  };
+
+  send.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // Load history if logged in
+  const user = (typeof Auth !== 'undefined') ? Auth.getUser() : null;
+  if (user && user.loggedIn && typeof API !== 'undefined') {
+    API.call('get_chat_history.php')
+      .then(data => {
+        if (data.status === 'success' && data.history && data.history.length > 0) {
+          messages.innerHTML = ''; // Clear initial message
+          data.history.forEach(chat => {
+            addMessage(chat.message, chat.sender);
+          });
+        }
+      })
+      .catch(err => console.error("History load error:", err));
+  }
+}
+
+/**
+ * Dynamically load api.js if not present
+ */
+function ensureAPI(callback) {
+  if (typeof API !== 'undefined') {
+    callback();
+    return;
+  }
+
+  // Determine path to assets/js/api.js
+  const path = window.location.pathname;
+  let basePath = '../../'; // Default for src/pages/
+  if (path.includes('/admin/')) basePath = '../';
+  else if (path.includes('/index.html') && !path.includes('/src/pages/')) basePath = 'assets/'; // For root index.html
+
+  const script = document.createElement('script');
+  script.src = basePath + 'assets/js/api.js';
+  script.onload = callback;
+  script.onerror = () => {
+    console.error("Failed to load api.js dynamically.");
+    callback(); // Still try to init, it will show the error message in UI
+  };
+  document.head.appendChild(script);
+}

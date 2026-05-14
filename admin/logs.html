@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
+  <script src="../assets/js/theme-init.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Logs — PCOS Care Hub</title>
-    <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
     <style>
         /* Fix layout issues where content might be cut off */
         body {
@@ -162,43 +164,37 @@
 
     <div class="dashboard-layout">
         <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="sidebar-logo">
+                <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
-            <div class="sidebar-profile">
-                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+            <div class="sidebar-profile" id="sidebarProfileCard" style="cursor:pointer">
+                <div class="sidebar-avatar" id="sidebarAvatar">AU</div>
                 <div>
-                    <div class="sidebar-name">Admin User</div>
-                    <div class="sidebar-role">System Administrator</div>
+                    <div class="sidebar-name" id="sidebarName">Admin User</div>
+                    <div class="sidebar-role" id="sidebarRole">System Administrator</div>
                 </div>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Overview</span>
-                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
-                    Dashboard</a>
-                <a class="sidebar-item" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
-                    Analytics</a>
-                <a class="sidebar-item active" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System
-                    Logs</a>
+                <a class="sidebar-item" href="dashboard.html"><i data-icon="home"></i> Dashboard</a>
+                <a class="sidebar-item" href="analytics.html"><i data-icon="analytics"></i> Analytics</a>
+                <a class="sidebar-item active" href="logs.html"><i data-icon="logs"></i> System Logs</a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Management</span>
-                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
-                    Users<span class="sidebar-badge">5</span></a>
-                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
-                    Hospitals<span class="sidebar-badge">2</span></a>
-                <a class="sidebar-item" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i> Approve
-                    Hospital</a>
-                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+                <a class="sidebar-item" href="patients.html"><i data-icon="users"></i> Manage Patients</a>
+                <a class="sidebar-item" href="hospitals.html"><i data-icon="hospital"></i> Manage Hospitals</a>
+                <a class="sidebar-item" href="approvals.html"><i data-icon="approve"></i> Approve Hospital</a>
+                <a class="sidebar-item" href="roles.html"><i data-icon="roles"></i> Role & Permissions</a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">System</span>
-                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
-                    Configuration</a>
-                <a class="sidebar-item" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
+                <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
+                
+                <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
             </div>
         </aside>
 
@@ -277,12 +273,12 @@
                 </div>
 
                 <!-- Pagination -->
-                <div style="margin-top:20px; display:flex; justify-content:between; align-items:center;">
-                    <div style="font-size:0.875rem; color:var(--text-light)">Showing <span id="logCount">10</span> of
-                        150 entries</div>
+                <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-size:0.875rem; color:var(--text-light)">Showing <span id="logCount">0</span> of
+                        <span id="totalLogs">0</span> entries</div>
                     <div style="display:flex; gap:8px">
-                        <button class="btn btn-outline btn-sm" disabled>Previous</button>
-                        <button class="btn btn-outline btn-sm">Next</button>
+                        <button class="btn btn-outline btn-sm" id="prevBtn" onclick="changePage(-1)" disabled>Previous</button>
+                        <button class="btn btn-outline btn-sm" id="nextBtn" onclick="changePage(1)" disabled>Next</button>
                     </div>
                 </div>
             </div>
@@ -290,24 +286,27 @@
     </div>
 
     <div class="toast-container" id="toast-container"></div>
-    <script src="../../assets/js/utils.js"></script>
-    <script src="../../assets/js/dashboard.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
     <script>
         let logsData = [];
+        let currentPage = 0;
+        const pageSize = 15;
 
         async function fetchLogs() {
             const severity = document.getElementById('severityFilter').value;
             const category = document.getElementById('categoryFilter').value;
             const search = document.getElementById('logSearch').value;
+            const offset = currentPage * pageSize;
 
             try {
-                const url = `../../src/php/get_system_logs.php?severity=${severity}&category=${category}&search=${encodeURIComponent(search)}`;
+                const url = `../src/php/get_system_logs.php?severity=${severity}&category=${category}&search=${encodeURIComponent(search)}&limit=${pageSize}&offset=${offset}`;
                 const res = await fetch(url);
                 if (!res.ok) throw new Error('Network response was not ok');
                 const json = await res.json();
                 if (json.status === 'success') {
                     logsData = json.data;
-                    renderLogs(logsData);
+                    renderLogs(logsData, json.total);
                 } else {
                     throw new Error(json.message);
                 }
@@ -318,13 +317,16 @@
             }
         }
 
-        function renderLogs(data) {
+        function renderLogs(data, total) {
             const tableBody = document.getElementById('logsTableBody');
             tableBody.innerHTML = '';
 
             if (data.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-light)">No log entries found</td></tr>';
                 document.getElementById('logCount').textContent = '0';
+                document.getElementById('totalLogs').textContent = '0';
+                document.getElementById('prevBtn').disabled = true;
+                document.getElementById('nextBtn').disabled = true;
                 return;
             }
 
@@ -348,9 +350,19 @@
             });
 
             document.getElementById('logCount').textContent = data.length;
+            document.getElementById('totalLogs').textContent = total;
+            
+            document.getElementById('prevBtn').disabled = currentPage === 0;
+            document.getElementById('nextBtn').disabled = (currentPage + 1) * pageSize >= total;
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            fetchLogs();
         }
 
         function filterLogs() {
+            currentPage = 0;
             fetchLogs();
         }
 
@@ -366,10 +378,21 @@
             Toast.show(`Log ${id}: ${log.message} (IP: ${log.ip_address})`, 'info');
         }
 
-        function clearLogs() {
+        async function clearLogs() {
             if (confirm('Are you sure you want to clear all system logs? This action cannot be undone.')) {
-                // To be implemented: backend clear endpoint
-                Toast.error('Clear logs action requires Super Admin elevated permissions.');
+                try {
+                    const res = await fetch('../src/php/clear_system_logs.php', { method: 'POST' });
+                    const json = await res.json();
+                    if (json.status === 'success') {
+                        Toast.success(json.message);
+                        currentPage = 0;
+                        fetchLogs();
+                    } else {
+                        Toast.error(json.message);
+                    }
+                } catch (e) {
+                    Toast.error('Failed to clear logs.');
+                }
             }
         }
 
@@ -381,8 +404,18 @@
             fetchLogs();
             // Optional: Live feed refresh every 10 seconds
             setInterval(fetchLogs, 10000);
+
+            // Force Sidebar Profile Redirection
+            const spCard = document.getElementById('sidebarProfileCard');
+            if (spCard) {
+                spCard.addEventListener('click', function() {
+                    window.location.href = 'profile.html';
+                }, true);
+            }
         });
     </script>
+    <script src="../assets/js/icons.js"></script>
+    <script src="../assets/js/admin-ui.js"></script>
 </body>
-
 </html>
+

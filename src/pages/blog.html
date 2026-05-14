@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+<span>\u23f1 <span>${b.read_time || 5} min read</span></span><!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PCOS Blog & Resources — PCOS Care Hub</title>
+  <title>PCOS Blog & Resources \u2014 PCOS Care Hub</title>
   <link rel="stylesheet" href="../../assets/css/global.css">
   <link rel="stylesheet" href="../../assets/css/navbar.css">
   <link rel="stylesheet" href="../../assets/css/footer.css">
@@ -134,87 +136,22 @@
     <div class="container">
       <h1 data-i18n="blog_hero_title">PCOS Knowledge Center</h1>
       <p data-i18n="blog_hero_desc">Evidence-based articles, tips, and guides to help you understand and manage PCOS better every day.</p>
+      
+      <!-- Admin Add Button (Hero) -->
+      <div id="admin-blog-controls-hero" style="display:none; margin-top:30px; position:relative; z-index:10;">
+        <button class="btn" onclick="openBlogManageModal()" style="background:white; color:var(--purple-primary); border:none; padding:12px 34px; font-weight:700; box-shadow:0 10px 30px rgba(0,0,0,0.15); transition:var(--transition);">
+            Add New Article
+        </button>
+      </div>
+      
+
     </div>
   </section>
 
   <section class="section-pad">
     <div class="container">
-      <div class="blog-grid">
-
-        <div class="blog-card reveal">
-          <img class="blog-card-img"
-            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80"
-            alt="PCOS Diet">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_diet">Diet &amp; Nutrition</span>
-            <h4 data-i18n="blog_title_1">The Best Anti-Inflammatory Diet for PCOS Management</h4>
-            <p data-i18n="blog_desc_1">Discover how a low-glycaemic, anti-inflammatory diet can help manage insulin resistance, reduce androgen levels, and improve hormonal balance in PCOS.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_1">Feb 20, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_1">6 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('diet-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-card reveal reveal-delay-1">
-          <img class="blog-card-img"
-            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&auto=format&fit=crop&q=80"
-            alt="Exercise PCOS">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_exercise">Exercise</span>
-            <h4 data-i18n="blog_title_2">Exercise Guide for Women with PCOS: What Works Best</h4>
-            <p data-i18n="blog_desc_2">A combination of strength training and cardio can significantly improve insulin sensitivity, support weight management, and reduce PCOS symptoms.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_2">Feb 15, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_2">5 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('exercise-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-card reveal reveal-delay-2">
-          <img class="blog-card-img" src="../../images/photo13.jpg" alt="Mental health PCOS">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_mental">Mental Health</span>
-            <h4 data-i18n="blog_title_3">Managing Anxiety and Depression Linked to PCOS</h4>
-            <p data-i18n="blog_desc_3">PCOS significantly increases the risk of depression and anxiety. Learn practical strategies for mental wellness including CBT, mindfulness, and community support.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_3">Feb 10, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_3">7 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('mental-health-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-card reveal">
-          <img class="blog-card-img"
-            src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&auto=format&fit=crop&q=80"
-            alt="Hormones PCOS">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_hormones">Hormones</span>
-            <h4 data-i18n="blog_title_4">Understanding Insulin Resistance in PCOS</h4>
-            <p data-i18n="blog_desc_4">Up to 70% of women with PCOS have insulin resistance. Learn how it affects your body, why it matters, and what you can do about it through lifestyle and medical approaches.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_4">Feb 5, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_4">8 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('hormones-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-card reveal reveal-delay-1">
-          <img class="blog-card-img" src="../../images/photo11.jpg" alt="Fertility PCOS">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_fertility">Fertility</span>
-            <h4 data-i18n="blog_title_5">PCOS and Fertility: What You Need to Know</h4>
-            <p data-i18n="blog_desc_5">PCOS is one of the leading causes of female infertility, but most women with PCOS can conceive with the right treatment. Understand your options from lifestyle to IVF.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_5">Jan 28, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_5">9 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('fertility-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="blog-card reveal reveal-delay-2">
-          <img class="blog-card-img"
-            src="https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=600&auto=format&fit=crop&q=80"
-            alt="Sleep PCOS">
-          <div class="blog-card-body">
-            <span class="blog-card-tag" data-i18n="blog_tag_wellness">Wellness</span>
-            <h4 data-i18n="blog_title_6">Why Sleep Is Critical for PCOS Management</h4>
-            <p data-i18n="blog_desc_6">Poor sleep worsens insulin resistance, disrupts hormone balance, and increases cortisol in PCOS. Discover evidence-backed sleep hygiene strategies tailored for PCOS.</p>
-            <div class="blog-card-meta"><span>📅 <span data-i18n="blog_date_6">Jan 22, 2026</span></span><span>#�️ <span data-i18n="blog_read_time_6">5 min read</span></span><a href="javascript:void(0)" onclick="openBlogModal('sleep-article')" data-i18n="blog_read_more">Read More →</a>
-            </div>
-          </div>
-        </div>
-
+      <div class="blog-grid" id="blogs-grid">
+        <!-- Dynamic content will be injected here -->
       </div>
     </div>
   </section>
@@ -227,6 +164,57 @@
       <div id="modal-article-body" style="padding:0;">
         <!-- Content will be injected here -->
       </div>
+    </div>
+  </div>
+
+  <!-- Blog Management Modal (Admin) -->
+  <div id="blog-manage-modal" class="modal-backdrop" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(8px);">
+    <div class="modal-content" style="background:var(--bg-card); border-radius:var(--radius-lg); width:100%; max-width:700px; padding:32px; position:relative; animation: modalSlideUp 0.3s ease-out; max-height:90vh; overflow-y:auto; border:1px solid var(--border);">
+      <button onclick="closeBlogManageModal()" style="position:absolute; top:20px; right:20px; background:var(--purple-primary); border:none; width:36px; height:36px; border-radius:50%; font-size:1.2rem; cursor:pointer; color:white; display:flex; align-items:center; justify-content:center;">&times;</button>
+      
+      <div style="text-align:center; margin-bottom:24px;">
+        <h3 id="manage-blog-title" style="color:var(--purple-primary); font-size:1.8rem;">Add New Article</h3>
+        <p style="font-size:0.9rem; color:var(--text-mid)">Fill in the details below to post an article</p>
+      </div>
+
+      <form id="blogManageForm">
+        <input type="hidden" id="manage-blog-id">
+        <input type="hidden" id="manage-blog-action" value="create">
+        
+        <div class="form-group" style="margin-bottom:15px;">
+          <label class="form-label">Article Name</label>
+          <input type="text" class="form-control" id="blog-title" placeholder="Enter article name" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <input type="text" class="form-control" id="blog-category" placeholder="e.g. Diet, Exercise" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Read Time (minutes)</label>
+                <input type="number" class="form-control" id="blog-read-time" value="5" min="1" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:15px;">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="blog-desc" rows="2" placeholder="Brief summary of the article" required></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:15px;">
+          <label class="form-label">Content (HTML allowed)</label>
+          <textarea class="form-control" id="blog-content" rows="10" placeholder="Write the full article content here..." required></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label">Feature Image</label>
+          <input type="file" class="form-control" id="blog-image" accept="image/*">
+          <p style="font-size:0.8rem; color:var(--text-mid); margin-top:5px;">\ud83d\udca1 Leave empty to keep the existing image when editing.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-weight:600;">Post Article</button>
+      </form>
     </div>
   </div>
 
@@ -254,21 +242,18 @@
   <div id="footer-placeholder"></div>
   <div class="toast-container" id="toast-container"></div>
   <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/components.js"></script>
+  <script src="../../assets/js/components.js"><script src="../../assets/js/components.js"></script>
   <script>
-
-    const siBlogArticles = {"diet-article":{"title":"PCOS කළමනාකරණය සඳහා හොඳම ප්‍රතිදාහක ආහාර වේල","content":"\n                <img src=\"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS කළමනාකරණය සඳහා හොඳම ප්‍රතිදාහක ආහාර වේල</h1>\n                    <p>පොලිසිස්ටික් ඕවරි සින්ඩ්‍රෝමය (PCOS) යනු ලොව පුරා කාන්තාවන්ට බලපාන වඩාත් පොදු හෝමෝන තත්ත්වයකි. නිවැරදි ආහාර වේලක් අනුගමනය කිරීමෙන් රෝග ලක්ෂණ ස්වභාවිකව කළමනාකරණය කළ හැකිය.</p>\n                    <p>අඩු ග්ලයිසමික් (Low-GI) සහ ප්‍රතිදාහක (Anti-inflammatory) ආහාර වේලක් අනුගමනය කිරීම මෙහිදී වඩාත් ඵලදායී වේ.</p>\n                    \n                    <h2>PCOS කළමනාකරණය සඳහා හොඳම ආහාර</h2>\n                    <h3>1. පත්‍ර සහිත කොළ එළවළු</h3>\n                    <p>නිවිති, ගෝවා සහ බ්‍රොකොලි වැනි එළවළු ප්‍රතිඔක්සිකාරක සහ තන්තු වලින් පොහොසත්ය. මේවා ශරීරයේ දැවිල්ල අඩු කිරීමට සහ ජීර්ණය වැඩි දියුණු කිරීමට උපකාරී වේ.</p>\n                    \n                    <h3>2. පූර්ණ ධාන්‍ය</h3>\n                    <p>රතු සහල්, ඕට්ස් සහ කුරක්කන් වැනි පූර්ණ ධාන්‍ය මගින් රුධිරයේ සීනි මට්ටම හදිසියේ ඉහළ යාම වළක්වයි.</p>\n                    \n                    <div class=\"meal-plan\">\n                        <div class=\"meal-item\"><strong>උදෑසන ආහාරය:</strong> චියා ඇට, බෙරි සහ යෝගට් සමඟ ඕට්ස්</div>\n                        <div class=\"meal-item\"><strong>දිවා ආහාරය:</strong> අලිගැටපේර සහ එළවළු සහිත සලාදයක්</div>\n                        <div class=\"meal-item\"><strong>රාත්‍රී ආහාරය:</strong> තැම්බූ එළවළු සහ රතු සහල්</div>\n                    </div>\n                </div>\n            "},"exercise-article":{"title":"PCOS සහිත කාන්තාවන් සඳහා ව්‍යායාම මාර්ගෝපදේශය","content":"\n                <img src=\"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS සහිත කාන්තාවන් සඳහා ව්‍යායාම මාර්ගෝපදේශය</h1>\n                    <p>නිතිපතා ව්‍යායාම කිරීම PCOS කළමනාකරණය සඳහා ඇති වඩාත් ඵලදායී ස්වභාවික ක්‍රමයකි. ශක්තිය වර්ධනය කිරීමේ ව්‍යායාම සහ හෘද රෝග වළක්වන (Cardio) ව්‍යායාම මෙහිදී වැදගත් වේ.</p>\n                    \n                    <h2>වැදගත් ව්‍යායාම වර්ග</h2>\n                    <h3>1. ශක්තිය වර්ධනය කිරීමේ ව්‍යායාම (Strength Training)</h3>\n                    <p>මාංශ පේශි වර්ධනය කිරීමෙන් ශරීරයේ ඉන්සියුලින් සංවේදීතාව වැඩි දියුණු වේ.</p>\n                    \n                    <h3>2. හෘද රෝග වළක්වන ව්‍යායාම (Cardio)</h3>\n                    <p>ඇවිදීම, දිවීම, පාපැදි පැදීම හෝ පිහිනීම හෘද සෞඛ්‍යයට සහ මානසික සහනයට උපකාරී වේ.</p>\n                </div>\n            "},"mental-health-article":{"title":"PCOS හා සම්බන්ධ කාංසාව සහ විශාදය කළමනාකරණය","content":"\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS හා සම්බන්ධ කාංසාව සහ විශාදය කළමනාකරණය</h1>\n                    <p>PCOS යනු කායික මෙන්ම මානසික සෞඛ්‍යයටද බලපාන තත්ත්වයකි. බොහෝ කාන්තාවන් කාංසාව, විශාදය සහ අඩු ආත්ම අභිමානය වැනි ගැටළු වලට මුහුණ දෙයි.</p>\n                    <h2>ප්‍රායෝගික ක්‍රම</h2>\n                    <ul>\n                        <li>සිහියෙන් සිටීමේ අභ්‍යාස (Mindfulness) සහ භාවනාව</li>\n                        <li>නිතිපතා ව්‍යායාම කිරීම</li>\n                        <li>හිතමිතුරන් සහ පවුලේ අයගේ සහාය ලබා ගැනීම</li>\n                    </ul>\n                </div>\n            "},"hormones-article":{"title":"PCOS වලදී ඉන්සියුලින් ප්‍රතිරෝධය අවබෝධ කර ගැනීම","content":"\n                <img src=\"https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS වලදී ඉන්සියුලින් ප්‍රතිරෝධය අවබෝධ කර ගැනීම</h1>\n                    <p>PCOS ඇති කාන්තාවන්ගෙන් 70% කට පමණ ඉන්සියුලින් ප්‍රතිරෝධය බලපායි. මෙය හෝමෝන අසමතුලිතතාවයට සහ දියවැඩියාව ඇතිවීමේ අවදානමට ප්‍රධාන හේතුවකි.</p>\n                    <h2>රෝග ලක්ෂණ</h2>\n                    <ul>\n                        <li>අධික ලෙස පැණිරස ආහාර ගැනීමට ඇති ආශාව</li>\n                        <li>නිතර දැනෙන විඩාව</li>\n                        <li>බෙල්ල සහ කිහිලි ප්‍රදේශයේ සම අඳුරු වීම</li>\n                    </ul>\n                </div>\n            "},"fertility-article":{"title":"PCOS සහ සරුභාවය (Fertility): ඔබ දැනගත යුතු කරුණු","content":"\n                <img src=\"../../images/photo11.jpg\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS සහ සරුභාවය (Fertility): ඔබ දැනගත යුතු කරුණු</h1>\n                    <p>PCOS යනු දරුඵල අහිමි වීමට ප්‍රධාන හේතුවක් වුවද, නිවැරදි ප්‍රතිකාර සහ ජීවන රටාව වෙනස් කිරීම මගින් බොහෝ කාන්තාවන්ට සාර්ථකව දරුවන් ලැබිය හැකිය.</p>\n                    <h2>සරුභාවය වැඩි දියුණු කිරීමට ක්‍රම</h2>\n                    <ul>\n                        <li>සෞඛ්‍ය සම්පන්න ආහාර වේලක් අනුගමනය කිරීම</li>\n                        <li>ශරීර බර කළමනාකරණය කිරීම</li>\n                        <li>වෛද්‍ය උපදෙස් මත ඖෂධ ලබා ගැනීම</li>\n                    </ul>\n                </div>\n            "},"sleep-article":{"title":"PCOS කළමනාකරණය සඳහා නින්ද ඉතා වැදගත් වන්නේ ඇයි?","content":"\n                <img src=\"https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS කළමනාකරණය සඳහා නින්ද ඉතා වැදගත් වන්නේ ඇයි?</h1>\n                    <p>නින්ද නොමැතිකම ඉන්සියුලින් ප්‍රතිරෝධය වැඩි කරන අතර හෝමෝන අසමතුලිතතාවය තවදුරටත් උග්‍ර කරයි. දිනකට පැය 7-9 ක සුවබර නින්දක් ලබා ගැනීම අත්‍යවශ්‍ය වේ.</p>\n                    <h2>සුවබර නින්දක් සඳහා උපදෙස්</h2>\n                    <ul>\n                        <li>නියමිත වේලාවකට නින්දට යාම</li>\n                        <li>නින්දට පෙර ජංගම දුරකථන භාවිතයෙන් වැළකීම</li>\n                        <li>නිදන කාමරය සුවපහසු ලෙස තබා ගැනීම</li>\n                    </ul>\n                </div>\n            "}};
-    const taBlogArticles = {"diet-article":{"title":"PCOS மேலாண்மைக்கான சிறந்த அழற்சி எதிர்ப்பு உணவு முறை","content":"\n                <img src=\"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS மேலாண்மைக்கான சிறந்த அழற்சி எதிர்ப்பு உணவு முறை</h1>\n                    <p>ஆரோக்கியமான உணவு முறை மூலம் PCOS அறிகுறிகளை இயற்கையாகக் கட்டுப்படுத்தலாம். குறைந்த கிளைசெமிக் குறியீடு கொண்ட உணவுகள் இதற்கு மிகவும் சிறந்தது.</p>\n                </div>\n            "},"exercise-article":{"title":"PCOS பெண்களுக்கு ஏற்ற உடற்பயிற்சி வழிகாட்டி","content":"\n                <img src=\"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80\" style=\"width:100%; height:400px; object-fit:cover;\">\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS பெண்களுக்கு ஏற்ற உடற்பயிற்சி வழிகாட்டி</h1>\n                    <p>வழக்கமான உடற்பயிற்சி இன்சுலின் உணர்திறனை மேம்படுத்தவும் ஹார்மோன் சமநிலையை அடையவும் உதவுகிறது.</p>\n                </div>\n            "},"mental-health-article":{"title":"PCOS தொடர்பான கவலை மற்றும் மனச்சோர்வை நிர்வகித்தல்","content":"\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS தொடர்பான கவலை மற்றும் மனச்சோர்வை நிர்வகித்தல்</h1>\n                    <p>PCOS உடல் ஆரோக்கியத்தை மட்டுமல்ல, மன ஆரோக்கியத்தையும் பாதிக்கிறது. தியானம் மற்றும் உடற்பயிற்சி மன அழுத்தத்தைக் குறைக்க உதவும்.</p>\n                </div>\n            "},"hormones-article":{"title":"PCOS இல் இன்சுலின் எதிர்ப்பைப் புரிந்துகொள்ளுதல்","content":"\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS இல் இன்சுலின் எதிர்ப்பைப் புரிந்துகொள்ளுதல்</h1>\n                    <p>PCOS உள்ள பெண்களில் 70% பேர் இன்சுலின் எதிர்ப்பால் பாதிக்கப்படுகின்றனர். சரியான உணவு முறை மற்றும் உடற்பயிற்சி மூலம் இதைக் குறைக்கலாம்.</p>\n                </div>\n            "},"fertility-article":{"title":"PCOS மற்றும் கருவுறுதல்: நீங்கள் தெரிந்து கொள்ள வேண்டியவை","content":"\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS மற்றும் கருவுறுதல்: நீங்கள் தெரிந்து கொள்ள வேண்டியவை</h1>\n                    <p>PCOS கருவுறுதலில் சிக்கல்களை ஏற்படுத்தினாலும், முறையான சிகிச்சை மூலம் தாய்மை அடைய முடியும்.</p>\n                </div>\n            "},"sleep-article":{"title":"PCOS நிர்வாகத்தில் தூக்கத்தின் முக்கியத்துவம்","content":"\n                <div class=\"article-content\">\n                    <h1 style=\"font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;\">PCOS நிர்வாகத்தில் தூக்கத்தின் முக்கியத்துவம்</h1>\n                    <p>சரியான தூக்கம் ஹார்மோன் சமநிலைக்கு அவசியம். தினமும் 7-9 மணிநேர தூக்கம் பரிந்துரைக்கப்படுகிறது.</p>\n                </div>\n            "}};
-    
+    const siBlogArticles = {"diet-article":{"title":"PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0dc4\u0ddc\u0db3\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0daf\u0dcf\u0dc4\u0d9a \u0d86\u0dc4\u0dcf\u0dbb \u0dc0\u0dda\u0dbd","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0dc4\u0ddc\u0db3\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0daf\u0dcf\u0dc4\u0d9a \u0d86\u0dc4\u0dcf\u0dbb \u0dc0\u0dda\u0dbd</h1><p>\u0db4\u0ddc\u0dbd\u0dd2\u0dc3\u0dd2\u0dc3\u0dca\u0da7\u0dd2\u0d9a\u0dca \u0d95\u0dc0\u0dbb\u0dd2 \u0dc3\u0dd2\u0db1\u0dca\u0da9\u0dca\u200d\u0dbb\u0ddd\u0db8\u0dba (PCOS) \u0dba\u0db1\u0dd4 \u0dbd\u0ddc\u0dc0 \u0db4\u0dd4\u0dbb\u0dcf \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca\u0da7 \u0db6\u0dbd\u0db4\u0dcf\u0db1 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0db4\u0ddc\u0daf\u0dd4 \u0dc4\u0ddd\u0db8\u0ddd\u0db1 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba\u0d9a\u0dd2. \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0d86\u0dc4\u0dcf\u0dbb \u0dc0\u0dda\u0dbd\u0d9a\u0dca \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab \u0dc3\u0dca\u0dc0\u0db7\u0dcf\u0dc0\u0dd2\u0d9a\u0dc0 \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0d9a\u0dc5 \u0dc4\u0dd0\u0d9a\u0dd2\u0dba.</p><p>\u0d85\u0da9\u0dd4 \u0d9c\u0dca\u0dbd\u0dba\u0dd2\u0dc3\u0db8\u0dd2\u0d9a\u0dca (Low-GI) \u0dc3\u0dc4 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0daf\u0dcf\u0dc4\u0d9a (Anti-inflammatory) \u0d86\u0dc4\u0dcf\u0dbb \u0dc0\u0dda\u0dbd\u0d9a\u0dca \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0db8\u0dd9\u0dc4\u0dd2\u0daf\u0dd3 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0db5\u0dbd\u0daf\u0dcf\u0dba\u0dd3 \u0dc0\u0dda.</p><h2>PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0dc4\u0ddc\u0db3\u0db8 \u0d86\u0dc4\u0dcf\u0dbb</h2><h3>1. \u0db4\u0dad\u0dca\u200d\u0dbb \u0dc3\u0dc4\u0dd2\u0dad \u0d9a\u0ddc\u0dc5 \u0d91\u0dc5\u0dc0\u0dc5\u0dd4</h3><p>\u0db1\u0dd2\u0dc0\u0dd2\u0dad\u0dd2, \u0d9c\u0ddd\u0dc0\u0dcf \u0dc3\u0dc4 \u0db6\u0dca\u200d\u0dbb\u0ddc\u0d9a\u0ddc\u0dbd\u0dd2 \u0dc0\u0dd0\u0db1\u0dd2 \u0d91\u0dc5\u0dc0\u0dc5\u0dd4 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0d94\u0d9a\u0dca\u0dc3\u0dd2\u0d9a\u0dcf\u0dbb\u0d9a \u0dc3\u0dc4 \u0dad\u0db1\u0dca\u0dad\u0dd4 \u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0db4\u0ddc\u0dc4\u0ddc\u0dc3\u0dad\u0dca\u0dba. \u0db8\u0dda\u0dc0\u0dcf \u0dc1\u0dbb\u0dd3\u0dbb\u0dba\u0dda \u0daf\u0dd0\u0dc0\u0dd2\u0dbd\u0dca\u0dbd \u0d85\u0da9\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc3\u0dc4 \u0da2\u0dd3\u0dbb\u0dca\u0dab\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d8b\u0db4\u0d9a\u0dcf\u0dbb\u0dd3 \u0dc0\u0dda.</p><h3>2. \u0db4\u0dd6\u0dbb\u0dca\u0dab \u0db0\u0dcf\u0db1\u0dca\u200d\u0dba</h3><p>\u0dbb\u0dad\u0dd4 \u0dc3\u0dc4\u0dbd\u0dca, \u0d95\u0da7\u0dca\u0dc3\u0dca \u0dc3\u0dc4 \u0d9a\u0dd4\u0dbb\u0d9a\u0dca\u0d9a\u0db1\u0dca \u0dc0\u0dd0\u0db1\u0dd2 \u0db4\u0dd6\u0dbb\u0dca\u0dab \u0db0\u0dcf\u0db1\u0dca\u200d\u0dba \u0db8\u0d9c\u0dd2\u0db1\u0dca \u0dbb\u0dd4\u0db0\u0dd2\u0dbb\u0dba\u0dda \u0dc3\u0dd3\u0db1\u0dd2 \u0db8\u0da7\u0dca\u0da7\u0db8 \u0dc4\u0daf\u0dd2\u0dc3\u0dd2\u0dba\u0dda \u0d89\u0dc4\u0dc5 \u0dba\u0dcf\u0db8 \u0dc0\u0dc5\u0d9a\u0dca\u0dc0\u0dba\u0dd2.</p><div class='meal-plan'><div class='meal-item'><strong>\u0d8b\u0daf\u0dd1\u0dc3\u0db1 \u0d86\u0dc4\u0dcf\u0dbb\u0dba:</strong> \u0da0\u0dd2\u0dba\u0dcf \u0d87\u0da7, \u0db6\u0dd9\u0dbb\u0dd2 \u0dc3\u0dc4 \u0dba\u0ddd\u0d9c\u0da7\u0dca \u0dc3\u0db8\u0d9f \u0d95\u0da7\u0dca\u0dc3\u0dca</div><div class='meal-item'><strong>\u0daf\u0dd2\u0dc0\u0dcf \u0d86\u0dc4\u0dcf\u0dbb\u0dba:</strong> \u0d85\u0dbd\u0dd2\u0d9c\u0dd0\u0da7\u0db4\u0dda\u0dbb \u0dc3\u0dc4 \u0d91\u0dc5\u0dc0\u0dc5\u0dd4 \u0dc3\u0dc4\u0dd2\u0dad \u0dc3\u0dbd\u0dcf\u0daf\u0dba\u0d9a\u0dca</div><div class='meal-item'><strong>\u0dbb\u0dcf\u0dad\u0dca\u200d\u0dbb\u0dd3 \u0d86\u0dc4\u0dcf\u0dbb\u0dba:</strong> \u0dad\u0dd0\u0db8\u0dca\u0db6\u0dd6 \u0d91\u0dc5\u0dc0\u0dc5\u0dd4 \u0dc3\u0dc4 \u0dbb\u0dad\u0dd4 \u0dc3\u0dc4\u0dbd\u0dca</div></div></div>"},"exercise-article":{"title":"PCOS \u0dc3\u0dc4\u0dd2\u0dad \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca \u0dc3\u0db3\u0dc4\u0dcf \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0db8\u0dcf\u0dbb\u0dca\u0d9c\u0ddd\u0db4\u0daf\u0dda\u0dc1\u0dba","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0dc3\u0dc4\u0dd2\u0dad \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca \u0dc3\u0db3\u0dc4\u0dcf \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0db8\u0dcf\u0dbb\u0dca\u0d9c\u0ddd\u0db4\u0daf\u0dda\u0dc1\u0dba</h1><p>\u0db1\u0dd2\u0dad\u0dd2\u0db4\u0dad\u0dcf \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0d87\u0dad\u0dd2 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0db5\u0dbd\u0daf\u0dcf\u0dba\u0dd3 \u0dc3\u0dca\u0dc0\u0db7\u0dcf\u0dc0\u0dd2\u0d9a \u0d9a\u0dca\u200d\u0dbb\u0db8\u0dba\u0d9a\u0dd2. \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0dba \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0dc3\u0dc4 \u0dc4\u0dd8\u0daf \u0dbb\u0ddd\u0d9c \u0dc0\u0dc5\u0d9a\u0dca\u0dc0\u0db1 (Cardio) \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0db8\u0dd9\u0dc4\u0dd2\u0daf\u0dd3 \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0dda.</p><h2>\u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0dc0\u0dbb\u0dca\u0d9c</h2><h3>1. \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0dba \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 (Strength Training)</h3><p>\u0db8\u0dcf\u0d82\u0dc1 \u0db4\u0dda\u0dc1\u0dd2 \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0dc1\u0dbb\u0dd3\u0dbb\u0dba\u0dda \u0d89\u0db1\u0dca\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dd2\u0db1\u0dca \u0dc3\u0d82\u0dc0\u0dda\u0daf\u0dd3\u0dad\u0dcf\u0dc0 \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0dc0\u0dda.</p><h3>2. \u0dc4\u0dd8\u0daf \u0dbb\u0ddd\u0d9c \u0dc0\u0dc5\u0d9a\u0dca\u0dc0\u0db1 \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 (Cardio)</h3><p>\u0d87\u0dc0\u0dd2\u0daf\u0dd3\u0db8, \u0daf\u0dd2\u0dc0\u0dd3\u0db8, \u0db4\u0dcf\u0db4\u0dd0\u0daf\u0dd2 \u0db4\u0dd0\u0daf\u0dd3\u0db8 \u0dc4\u0ddd \u0db4\u0dd2\u0dc4\u0dd2\u0db1\u0dd3\u0db8 \u0dc4\u0dd8\u0daf \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba\u0da7 \u0dc3\u0dc4 \u0db8\u0dcf\u0db1\u0dc3\u0dd2\u0d9a \u0dc3\u0dc4\u0db1\u0dba\u0da7 \u0d8b\u0db4\u0d9a\u0dcf\u0dbb\u0dd3 \u0dc0\u0dda.</p></div>"},"mental-health-article":{"title":"PCOS \u0dc4\u0dcf \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0 \u0d9a\u0dcf\u0d82\u0dc3\u0dcf\u0dc0 \u0dc3\u0dc4 \u0dc0\u0dd2\u0dc1\u0dcf\u0daf\u0dba \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0dc4\u0dcf \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0 \u0d9a\u0dcf\u0d82\u0dc3\u0dcf\u0dc0 \u0dc3\u0dc4 \u0dc0\u0dd2\u0dc1\u0dcf\u0daf\u0dba \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba</h1><p>PCOS \u0dba\u0db1\u0dd4 \u0d9a\u0dcf\u0dba\u0dd2\u0d9a \u0db8\u0dd9\u0db1\u0dca\u0db8 \u0db8\u0dcf\u0db1\u0dc3\u0dd2\u0d9a \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba\u0da7\u0daf \u0db6\u0dbd\u0db4\u0dcf\u0db1 \u0dad\u0dad\u0dca\u0dad\u0dca\u0dc0\u0dba\u0d9a\u0dd2. \u0db6\u0ddc\u0dc4\u0ddd \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca \u0d9a\u0dcf\u0d82\u0dc3\u0dcf\u0dc0, \u0dc0\u0dd2\u0dc1\u0dcf\u0daf\u0dba \u0dc3\u0dc4 \u0d85\u0da9\u0dd4 \u0d86\u0dad\u0dca\u0db8 \u0d85\u0db7\u0dd2\u0db8\u0dcf\u0db1\u0dba \u0dc0\u0dd0\u0db1\u0dd2 \u0d9c\u0dd0\u0da7\u0dc5\u0dd4 \u0dc0\u0dbd\u0da7 \u0db8\u0dd4\u0dc4\u0dd4\u0dab \u0daf\u0dd9\u0dba\u0dd2.</p><h2>\u0db4\u0dca\u200d\u0dbb\u0dcf\u0dba\u0ddd\u0d9c\u0dd2\u0d9a \u0d9a\u0dca\u200d\u0dbb\u0db8</h2><ul><li>\u0dc3\u0dd2\u0dc4\u0dd2\u0dba\u0dd9\u0db1\u0dca \u0dc3\u0dd2\u0da7\u0dd3\u0db8\u0dda \u0d85\u0db7\u0dca\u200d\u0dba\u0dcf\u0dc3 (Mindfulness) \u0dc3\u0dc4 \u0db7\u0dcf\u0dc0\u0db1\u0dcf\u0dc0</li><li>\u0db1\u0dd2\u0dad\u0dd2\u0db4\u0dad\u0dcf \u0dc0\u0dca\u200d\u0dba\u0dcf\u0dba\u0dcf\u0db8 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8</li><li>\u0dc4\u0dd2\u0dad\u0db8\u0dd2\u0dad\u0dd4\u0dbb\u0db1\u0dca \u0dc3\u0dc4 \u0db4\u0dc0\u0dd4\u0dbd\u0dda \u0d85\u0dba\u0d9c\u0dda \u0dc3\u0dc4\u0dcf\u0dba \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8</li></ul></div>"},"hormones-article":{"title":"PCOS \u0dc0\u0dbd\u0daf\u0dd3 \u0d89\u0db1\u0dca\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dd2\u0db1\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dbb\u0ddd\u0db0\u0dba \u0d85\u0dc0\u0db6\u0ddd\u0db0 \u0d9a\u0dbb \u0d9c\u0dd0\u0db1\u0dd3\u0db8","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0dc0\u0dbd\u0daf\u0dd3 \u0d89\u0db1\u0dca\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dd2\u0db1\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dbb\u0ddd\u0db0\u0dba \u0d85\u0dc0\u0db6\u0ddd\u0db0 \u0d9a\u0dbb \u0d9c\u0dd0\u0db1\u0dd3\u0db8</h1><p>PCOS \u0d87\u0dad\u0dd2 \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca\u0d9c\u0dd9\u0db1\u0dca 70% \u0d9a\u0da7 \u0db4\u0db8\u0dab \u0d89\u0db1\u0dca\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dd2\u0db1\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dbb\u0ddd\u0db0\u0dba \u0db6\u0dbd\u0db4\u0dcf\u0dba\u0dd2. \u0db8\u0dd9\u0dba \u0dc4\u0ddd\u0db8\u0ddd\u0db1 \u0d85\u0dc3\u0db8\u0dad\u0dd4\u0dbd\u0dd2\u0dad\u0dad\u0dcf\u0dc0\u0dba\u0da7 \u0dc3\u0dc4 \u0daf\u0dd2\u0dba\u0dc0\u0dd0\u0da9\u0dd2\u0dba\u0dcf\u0dc0 \u0d87\u0dad\u0dd2\u0dc0\u0dd3\u0db8\u0dda \u0d85\u0dc0\u0daf\u0dcf\u0db1\u0db8\u0da7 \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc4\u0dda\u0dad\u0dd4\u0dc0\u0d9a\u0dd2.</p><h2>\u0dbb\u0ddd\u0d9c \u0dbd\u0d9a\u0dca\u0dc2\u0dab</h2><ul><li>\u0d85\u0db0\u0dd2\u0d9a \u0dbd\u0dd9\u0dc3 \u0db4\u0dd0\u0dab\u0dd2\u0dbb\u0dc3 \u0d86\u0dc4\u0dcf\u0dbb \u0d9c\u0dd0\u0db1\u0dd3\u0db8\u0da7 \u0d87\u0dad\u0dd2 \u0d86\u0dc1\u0dcf\u0dc0</li><li>\u0db1\u0dd2\u0dad\u0dbb \u0daf\u0dd0\u0db1\u0dd9\u0db1 \u0dc0\u0dd2\u0da9\u0dcf\u0dc0</li><li>\u0db6\u0dd9\u0dbd\u0dca\u0dbd \u0dc3\u0dc4 \u0d9a\u0dd2\u0dc4\u0dd2\u0dbd\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dba\u0dda \u0dc3\u0db8 \u0d85\u0db3\u0dd4\u0dbb\u0dd4 \u0dc0\u0dd3\u0db8</li></ul></div>"},"fertility-article":{"title":"PCOS \u0dc3\u0dc4 \u0dc3\u0dbb\u0dd4\u0db7\u0dcf\u0dc0\u0dba (Fertility): \u0d94\u0db6 \u0daf\u0dd0\u0db1\u0d9c\u0dad \u0dba\u0dd4\u0dad\u0dd4 \u0d9a\u0dbb\u0dd4\u0dab\u0dd4","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0dc3\u0dc4 \u0dc3\u0dbb\u0dd4\u0db7\u0dcf\u0dc0\u0dba (Fertility): \u0d94\u0db6 \u0daf\u0dd0\u0db1\u0d9c\u0dad \u0dba\u0dd4\u0dad\u0dd4 \u0d9a\u0dbb\u0dd4\u0dab\u0dd4</h1><p>PCOS \u0dba\u0db1\u0dd4 \u0daf\u0dbb\u0dd4\u0db5\u0dbd \u0d85\u0dc4\u0dd2\u0db8\u0dd2 \u0dc0\u0dd3\u0db8\u0da7 \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc4\u0dda\u0dad\u0dd4\u0dc0\u0d9a\u0dca \u0dc0\u0dd4\u0dc0\u0daf, \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0d9a\u0dcf\u0dbb \u0dc3\u0dc4 \u0da2\u0dd3\u0dc0\u0db1 \u0dbb\u0da7\u0dcf\u0dc0 \u0dc0\u0dd9\u0db1\u0dc3\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0db8\u0d9c\u0dd2\u0db1\u0dca \u0db6\u0ddc\u0dc4\u0ddd \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf\u0dc0\u0db1\u0dca\u0da7 \u0dc3\u0dcf\u0dbb\u0dca\u0dae\u0d9a\u0dc0 \u0daf\u0dbb\u0dd4\u0dc0\u0db1\u0dca \u0dbd\u0dd0\u0db6\u0dd2\u0dba \u0dc4\u0dd0\u0d9a\u0dd2\u0dba.</p><h2>\u0dc3\u0dbb\u0dd4\u0db7\u0dcf\u0dc0\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d9a\u0dca\u200d\u0dbb\u0db8</h2><ul><li>\u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba \u0dc3\u0db8\u0dca\u0db4\u0db1\u0dca\u0db1 \u0d86\u0dc4\u0dcf\u0dbb \u0dc0\u0dda\u0dbd\u0d9a\u0dca \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8</li><li>\u0dc1\u0dbb\u0dd3\u0dbb \u0db6\u0dbb \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8</li><li>\u0dc0\u0ddb\u0daf\u0dca\u200d\u0dba \u0d8b\u0db4\u0daf\u0dd9\u0dc3\u0dca \u0db8\u0dad \u0d96\u0dc2\u0db0 \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8</li></ul></div>"},"sleep-article":{"title":"PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db1\u0dd2\u0db1\u0dca\u0daf \u0d89\u0dad\u0dcf \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0db1\u0dca\u0db1\u0dda \u0d87\u0dba\u0dd2?","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0d9a\u0dc5\u0db8\u0db1\u0dcf\u0d9a\u0dbb\u0dab\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db1\u0dd2\u0db1\u0dca\u0daf \u0d89\u0dad\u0dcf \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0db1\u0dca\u0db1\u0dda \u0d87\u0dba\u0dd2?</h1><p>\u0db1\u0dd2\u0db1\u0dca\u0daf \u0db1\u0ddc\u0db8\u0dd0\u0dad\u0dd2\u0d9a\u0db8 \u0d89\u0db1\u0dca\u0dc3\u0dd2\u0dba\u0dd4\u0dbd\u0dd2\u0db1\u0dca \u0db4\u0dca\u200d\u0dbb\u0dad\u0dd2\u0dbb\u0ddd\u0db0\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0d9a\u0dbb\u0db1 \u0d85\u0dad\u0dbb \u0dc4\u0ddd\u0db8\u0ddd\u0db1 \u0d85\u0dc3\u0db8\u0dad\u0dd4\u0dbd\u0dd2\u0dad\u0dad\u0dcf\u0dc0\u0dba \u0dad\u0dc0\u0daf\u0dd4\u0dbb\u0da7\u0dad\u0dca \u0d8b\u0d9c\u0dca\u200d\u0dbb \u0d9a\u0dbb\u0dba\u0dd2. \u0daf\u0dd2\u0db1\u0d9a\u0da7 \u0db4\u0dd0\u0dba 7-9 \u0d9a \u0dc3\u0dd4\u0dc0\u0db6\u0dbb \u0db1\u0dd2\u0db1\u0dca\u0daf\u0d9a\u0dca \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8 \u0d85\u0dad\u0dca\u200d\u0dba\u0dc0\u0dc1\u0dca\u200d\u0dba \u0dc0\u0dda.</p><h2>\u0dc3\u0dd4\u0dc0\u0db6\u0dbb \u0db1\u0dd2\u0db1\u0dca\u0daf\u0d9a\u0dca \u0dc3\u0db3\u0dc4\u0dcf \u0d8b\u0db4\u0daf\u0dd9\u0dc3\u0dca</h2><ul><li>\u0db1\u0dd2\u0dba\u0db8\u0dd2\u0dad \u0dc0\u0dda\u0dbd\u0dcf\u0dc0\u0d9a\u0da7 \u0db1\u0dd2\u0db1\u0dca\u0daf\u0da7 \u0dba\u0dcf\u0db8</li><li>\u0db1\u0dd2\u0db1\u0dca\u0daf\u0da7 \u0db4\u0dd9\u0dbb \u0da2\u0d82\u0d9c\u0db8 \u0daf\u0dd4\u0dbb\u0d9a\u0dae\u0db1 \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dba\u0dd9\u0db1\u0dca \u0dc0\u0dd0\u0dc5\u0d9a\u0dd3\u0db8</li><li>\u0db1\u0dd2\u0daf\u0db1 \u0d9a\u0dcf\u0db8\u0dbb\u0dba \u0dc3\u0dd4\u0dc0\u0db4\u0dc4\u0dc3\u0dd4 \u0dbd\u0dd9\u0dc3 \u0dad\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8</li></ul></div>"}};
+    const taBlogArticles = {"diet-article":{"title":"PCOS \u0bae\u0bc7\u0bb2\u0bbe\u0ba3\u0bcd\u0bae\u0bc8\u0b95\u0bcd\u0b95\u0bbe\u0ba9 \u0b9a\u0bbf\u0bb1\u0ba8\u0bcd\u0ba4 \u0b85\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1 \u0bae\u0bc1\u0bb1\u0bc8","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0bae\u0bc7\u0bb2\u0bbe\u0ba3\u0bcd\u0bae\u0bc8\u0b95\u0bcd\u0b95\u0bbe\u0ba9 \u0b9a\u0bbf\u0bb1\u0ba8\u0bcd\u0ba4 \u0b85\u0bb4\u0bb1\u0bcd\u0b9a\u0bbf \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1 \u0bae\u0bc1\u0bb1\u0bc8</h1><p>\u0b86\u0bb0\u0bcb\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bbe\u0ba9 \u0b89\u0ba3\u0bb5\u0bc1 \u0bae\u0bc1\u0bb1\u0bc8 \u0bae\u0bc2\u0bb2\u0bae\u0bcd PCOS \u0b85\u0bb1\u0bbf\u0b95\u0bc1\u0bb1\u0bbf\u0b95\u0bb3\u0bc8 \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8\u0baf\u0bbe\u0b95\u0b95\u0bcd \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bb2\u0bbe\u0bae\u0bcd. \u0b95\u0bc1\u0bb1\u0bc8\u0ba8\u0bcd\u0ba4 \u0b95\u0bbf\u0bb3\u0bc8\u0b9a\u0bc6\u0bae\u0bbf\u0b95\u0bcd \u0b95\u0bc1\u0bb1\u0bbf\u0baf\u0bc0\u0b9f\u0bc1 \u0b95\u0bca\u0ba3\u0bcd\u0b9f \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bb3\u0bcd \u0b87\u0ba4\u0bb1\u0bcd\u0b95\u0bc1 \u0bae\u0bbf\u0b95\u0bb5\u0bc1\u0bae\u0bcd \u0b9a\u0bbf\u0bb1\u0ba8\u0bcd\u0ba4\u0ba4\u0bc1.</p></div>"},"exercise-article":{"title":"PCOS \u0baa\u0bc6\u0ba3\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b8f\u0bb1\u0bcd\u0bb1 \u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bb5\u0bb4\u0bbf\u0b95\u0bbe\u0b9f\u0bcd\u0b9f\u0bbf","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0baa\u0bc6\u0ba3\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b8f\u0bb1\u0bcd\u0bb1 \u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bb5\u0bb4\u0bbf\u0b95\u0bbe\u0b9f\u0bcd\u0b9f\u0bbf</h1><p>\u0bb5\u0bb4\u0b95\u0bcd\u0b95\u0bae\u0bbe\u0ba9 \u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0b87\u0ba9\u0bcd\u0b9a\u0bc1\u0bb2\u0bbf\u0ba9\u0bcd \u0b89\u0ba3\u0bb0\u0bcd\u0ba4\u0bbf\u0bb1\u0ba9\u0bc8 \u0bae\u0bc7\u0bae\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bb5\u0bc1\u0bae\u0bcd \u0bb9\u0bbe\u0bb0\u0bcd\u0bae\u0bcb\u0ba9\u0bcd \u0b9a\u0bae\u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bc8 \u0b85\u0b9f\u0bc8\u0baf\u0bb5\u0bc1\u0bae\u0bcd \u0b89\u0ba4\u0bb5\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.</p></div>"},"mental-health-article":{"title":"PCOS \u0ba4\u0bca\u0b9f\u0bb0\u0bcd\u0baa\u0bbe\u0ba9 \u0b95\u0bb5\u0bb2\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0bae\u0ba9\u0b9a\u0bcd\u0b9a\u0bcb\u0bb0\u0bcd\u0bb5\u0bc8 \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0b95\u0bbf\u0ba4\u0bcd\u0ba4\u0bb2\u0bcd","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0ba4\u0bca\u0b9f\u0bb0\u0bcd\u0baa\u0bbe\u0ba9 \u0b95\u0bb5\u0bb2\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0bae\u0ba9\u0b9a\u0bcd\u0b9a\u0bcb\u0bb0\u0bcd\u0bb5\u0bc8 \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0b95\u0bbf\u0ba4\u0bcd\u0ba4\u0bb2\u0bcd</h1><p>PCOS \u0b89\u0b9f\u0bb2\u0bcd \u0b86\u0bb0\u0bcb\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0ba4\u0bcd\u0ba4\u0bc8 \u0bae\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bb2\u0bcd\u0bb2, \u0bae\u0ba9 \u0b86\u0bb0\u0bcb\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0ba4\u0bcd\u0ba4\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0baa\u0bbe\u0ba4\u0bbf\u0b95\u0bcd\u0b95\u0bbf\u0bb1\u0ba4\u0bc1. \u0ba4\u0bbf\u0baf\u0bbe\u0ba9\u0bae\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bae\u0ba9 \u0b85\u0bb4\u0bc1\u0ba4\u0bcd\u0ba4\u0ba4\u0bcd\u0ba4\u0bc8\u0b95\u0bcd \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95 \u0b89\u0ba4\u0bb5\u0bc1\u0bae\u0bcd.</p></div>"},"hormones-article":{"title":"PCOS \u0b87\u0bb2\u0bcd \u0b87\u0ba9\u0bcd\u0b9a\u0bc1\u0bb2\u0bbf\u0ba9\u0bcd \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0baa\u0bcd\u0baa\u0bc8\u0baa\u0bcd \u0baa\u0bc1\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bc1\u0ba4\u0bb2\u0bcd","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0b87\u0bb2\u0bcd \u0b87\u0ba9\u0bcd\u0b9a\u0bc1\u0bb2\u0bbf\u0ba9\u0bcd \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0baa\u0bcd\u0baa\u0bc8\u0baa\u0bcd \u0baa\u0bc1\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1\u0b95\u0bca\u0bb3\u0bcd\u0bb3u\u0ba4\u0bb2\u0bcd</h1><p>PCOS \u0b89\u0bb3\u0bcd\u0bb3 \u0baa\u0bc6\u0ba3\u0bcd\u0b95\u0bb3\u0bbf\u0bb2\u0bcd 70% \u0baa\u0bc7\u0bb0\u0bcd \u0b87\u0ba9\u0bcd\u0b9a\u0bc1\u0bb2\u0bbf\u0ba9\u0bcd \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0baa\u0bcd\u0baa\u0bbe\u0bb2\u0bcd \u0baa\u0bbe\u0ba4\u0bbf\u0b95\u0bcd\u0b95\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9\u0bb0\u0bcd. \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0ba9 \u0b89\u0ba3\u0bb5\u0bc1 \u0bae\u0bc1\u0bb1\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b89\u0b9f\u0bb1\u0bcd\u0baa\u0baf\u0bbf\u0bb1\u0bcd\u0b9a\u0bbf \u0bae\u0bc2\u0bb2\u0bae\u0bcd \u0b87\u0ba4\u0bc8\u0b95\u0bcd \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95\u0bb2\u0bbe\u0bae\u0bcd.</p></div>"},"fertility-article":{"title":"PCOS \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bb0\u0bc1\u0bb5\u0bc1\u0bb1\u0bc1\u0ba4\u0bb2\u0bcd: \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0ba4\u0bc6\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1 \u0b95\u0bca\u0bb3\u0bcd\u0bb3 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bbf\u0baf\u0bb5\u0bc8","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bb0\u0bc1\u0bb5\u0bc1\u0bb1\u0bc1\u0ba4\u0bb2\u0bcd: \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0ba4\u0bc6\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1 \u0b95\u0bca\u0bb3\u0bcd\u0bb3 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bbf\u0baf\u0bb5\u0bc8</h1><p>PCOS \u0b95\u0bb0\u0bc1\u0bb5\u0bc1\u0bb1\u0bc1\u0ba4\u0bb2\u0bbf\u0bb2\u0bcd \u0b9a\u0bbf\u0b95\u0bcd\u0b95\u0bb2\u0bcd\u0b95\u0bb3\u0bc8 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bbe\u0bb2\u0bc1\u0bae\u0bcd, \u0bae\u0bc1\u0bb1\u0bc8\u0baf\u0bbe\u0ba9 \u0b9a\u0bbf\u0b95\u0bbf\u0b9a\u0bcd\u0b9a\u0bc8 \u0bae\u0bc2\u0bb2\u0bae\u0bcd \u0ba4\u0bbe\u0baf\u0bcd\u0bae\u0bc8 \u0b85\u0b9f\u0bc8\u0baf \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.</p></div>"},"sleep-article":{"title":"PCOS \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0bbe\u0b95\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0ba4\u0bc2\u0b95\u0bcd\u0b95\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0ba4\u0bcd\u0ba4\u0bc1\u0bb5\u0bae\u0bcd","content":"<div class='article-content'><h1 style='font-size:2.2rem; color:var(--purple-deep); line-height:1.3; margin-bottom:20px;'>PCOS \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0bbe\u0b95\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0ba4\u0bc2\u0b95\u0bcd\u0b95\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0ba4\u0bcd\u0ba4\u0bc1\u0bb5\u0bae\u0bcd</h1><p>\u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0ba9 \u0ba4\u0bc2\u0b95\u0bcd\u0b95\u0bae\u0bcd \u0bb9\u0bbe\u0bb0\u0bcd\u0bae\u0bcb\u0ba9\u0bcd \u0b9a\u0bae\u0ba8\u0bbf\u0bb2\u0bc8\u0b95\u0bcd\u0b95\u0bc1 \u0b85\u0bb5\u0b9a\u0bbf\u0baf\u0bae\u0bcd. \u0ba4\u0bbf\u0ba9\u0bae\u0bc1\u0bae\u0bcd 7-9 \u0bae\u0ba3\u0bbf\u0ba8\u0bc7\u0bb0 \u0ba4\u0bc2\u0b95\u0bcd\u0b95\u0bae\u0bcd \u0baa\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1\u0bb0\u0bc8\u0b95\u0bcd\u0b95\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.</p></div>"}};
     const blogArticles = {
       'diet-article': {
         title: 'The Best Anti-Inflammatory Diet for PCOS Management',
         image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80',
         content: `
-          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">The Best Anti-Inflammatory Diet for PCOS Management</h1>
-            <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal conditions affecting women worldwide. It can cause symptoms such as irregular periods, weight gain, acne, excessive hair growth, fatigue, and difficulty getting pregnant. While there is no single cure for PCOS, research shows that lifestyle changes — especially diet — can play a major role in managing symptoms naturally.</p>
+            <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal conditions affecting women worldwide. It can cause symptoms such as irregular periods, weight gain, acne, excessive hair growth, fatigue, and difficulty getting pregnant. While there is no single cure for PCOS, research shows that lifestyle changes \u2014 especially diet \u2014 can play a major role in managing symptoms naturally.</p>
             <p>One of the most effective approaches is following a low-glycaemic, anti-inflammatory diet. This way of eating helps control insulin resistance, reduce inflammation, balance hormones, and improve overall health.</p>
             <p>In this article, we'll explore how an anti-inflammatory diet works for PCOS and the best foods to include in your daily meals.</p>
 
@@ -331,7 +316,6 @@
         title: 'Exercise Guide for Women with PCOS: What Works Best',
         image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80',
         content: `
-          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Exercise Guide for Women with PCOS: What Works Best</h1>
             <p>Living with PCOS (Polycystic Ovary Syndrome) can sometimes feel challenging, especially when dealing with symptoms like weight gain, fatigue, irregular periods, acne, and hormonal imbalances. While medication and medical support can help, one of the most effective natural ways to manage PCOS is regular exercise.</p>
@@ -382,7 +366,6 @@
         title: 'Managing Anxiety and Depression Linked to PCOS',
         image: '../../images/photo13.jpg',
         content: `
-          <img src="../../images/photo13.jpg" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Managing Anxiety and Depression Linked to PCOS</h1>
             <p>Polycystic Ovary Syndrome (PCOS) is often discussed as a hormonal and physical health condition, but its impact on mental health is just as important. Many women with PCOS experience emotional struggles such as anxiety, depression, low self-esteem, stress, and mood swings.</p>
@@ -414,13 +397,13 @@
             <p>CBT is one of the most effective treatments for anxiety and depression. It helps people identify and change negative thought patterns and unhealthy behaviours, helping with stress management and self-esteem.</p>
 
             <h3>2. Practice Mindfulness and Meditation</h3>
-            <p>Mindfulness helps reduce stress, calm the mind, and improve emotional balance. Simple practices include deep breathing, journaling, and gratitude exercises. Even 10–15 minutes daily can help.</p>
+            <p>Mindfulness helps reduce stress, calm the mind, and improve emotional balance. Simple practices include deep breathing, journaling, and gratitude exercises. Even 10\u201315 minutes daily can help.</p>
 
             <h3>3. Exercise for Mental Health</h3>
             <p>Physical activity releases endorphins, which are natural mood boosters. Regular exercise like walking, yoga, or swimming can reduce anxiety and improve sleep quality.</p>
 
             <h3>4. Build a Support System</h3>
-            <p>PCOS can feel isolating. Talking with supportive people—family, friends, or online PCOS communities—can make a huge difference. Connecting with women who share similar experiences provides emotional strength.</p>
+            <p>PCOS can feel isolating. Talking with supportive people\u2014family, friends, or online PCOS communities\u2014can make a huge difference. Connecting with women who share similar experiences provides emotional strength.</p>
 
             <div class="meal-plan">
               <div class="meal-item"><strong>Daily Wellness Habits:</strong></div>
@@ -439,7 +422,6 @@
         title: 'Understanding Insulin Resistance in PCOS',
         image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&auto=format&fit=crop&q=80',
         content: `
-          <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Understanding Insulin Resistance in PCOS</h1>
             <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal disorders affecting women. While many associate it with irregular periods or acne, one of the biggest underlying issues is insulin resistance. Studies show that up to 70% of women with PCOS experience it, playing a major role in hormone imbalance and fertility issues.</p>
@@ -473,7 +455,7 @@
             <p>Physical activity helps the body use insulin more effectively. A mix of strength training, walking, and cardio supports metabolism and hormone balance.</p>
 
             <h3>3. Quality Sleep & Stress Management</h3>
-            <p>Poor sleep and high cortisol can worsen insulin resistance. Aim for 7–9 hours of sleep and use techniques like meditation or deep breathing to manage stress.</p>
+            <p>Poor sleep and high cortisol can worsen insulin resistance. Aim for 7\u20139 hours of sleep and use techniques like meditation or deep breathing to manage stress.</p>
 
             <div class="meal-plan">
               <div class="meal-item"><strong>Medical Options:</strong></div>
@@ -491,14 +473,13 @@
         title: 'PCOS and Fertility: What You Need to Know',
         image: '../../images/photo11.jpg',
         content: `
-          <img src="../../images/photo11.jpg" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">PCOS and Fertility: What You Need to Know</h1>
             <p>Polycystic Ovary Syndrome (PCOS) is one of the most common hormonal conditions affecting women of reproductive age and one of the leading causes of female infertility. Hearing this can feel overwhelming, but there is hope.</p>
             <p>The majority of women with PCOS can successfully conceive with the right support, lifestyle changes, and medical treatments. Advances in fertility care have made pregnancy more possible than ever for women living with PCOS.</p>
 
             <h2>How PCOS Affects Fertility</h2>
-            <p>The main fertility issue in PCOS is related to ovulation. Hormonal imbalances—high levels of insulin and androgens—can prevent eggs from maturing properly. This results in irregular ovulation or a complete lack of it, making conception more difficult.</p>
+            <p>The main fertility issue in PCOS is related to ovulation. Hormonal imbalances\u2014high levels of insulin and androgens\u2014can prevent eggs from maturing properly. This results in irregular ovulation or a complete lack of it, making conception more difficult.</p>
 
             <h2>Can You Get Pregnant Naturally?</h2>
             <p>Yes. Many women can conceive naturally by managing insulin resistance and maintaining a healthy lifestyle. Factors like balanced eating, regular exercise, reducing stress, and improving sleep quality can help restore regular ovulation cycles.</p>
@@ -507,7 +488,7 @@
             <ul>
               <li><strong>Healthy Eating:</strong> Whole grains, lean proteins, and healthy fats help stabilize blood sugar.</li>
               <li><strong>Regular Exercise:</strong> Improves insulin sensitivity and supports weight management.</li>
-              <li><strong>Weight Management:</strong> For those overweight, even a 5–10% loss can restore ovulation.</li>
+              <li><strong>Weight Management:</strong> For those overweight, even a 5\u201310% loss can restore ovulation.</li>
               <li><strong>Stress Reduction:</strong> Techniques like meditation and journaling support hormone balance.</li>
             </ul>
 
@@ -526,7 +507,7 @@
               <div class="meal-item">Track your menstrual cycles carefully</div>
               <div class="meal-item">Seek emotional support via communities or counseling</div>
               <div class="meal-item">Speak with a fertility specialist if cycles are absent or irregular</div>
-              <div class="meal-item">Every fertility journey is unique—stay patient and positive</div>
+              <div class="meal-item">Every fertility journey is unique\u2014stay patient and positive</div>
             </div>
 
             <h2>Final Thoughts</h2>
@@ -538,10 +519,9 @@
         title: 'Why Sleep Is Critical for PCOS Management',
         image: 'https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=1200&auto=format&fit=crop&q=80',
         content: `
-          <img src="https://images.unsplash.com/photo-1544991875-5dc1b05f607d?w=1200&auto=format&fit=crop&q=80" style="width:100%; height:400px; object-fit:cover;">
           <div class="article-content">
             <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">Why Sleep Is Critical for PCOS Management</h1>
-            <p>When managing Polycystic Ovary Syndrome (PCOS), many women focus on diet, exercise, and medication. While these are important, one powerful factor is often overlooked — sleep. Poor sleep can worsen symptoms by increasing insulin resistance, disrupting hormone balance, and raising stress hormones like cortisol.</p>
+            <p>When managing Polycystic Ovary Syndrome (PCOS), many women focus on diet, exercise, and medication. While these are important, one powerful factor is often overlooked \u2014 sleep. Poor sleep can worsen symptoms by increasing insulin resistance, disrupting hormone balance, and raising stress hormones like cortisol.</p>
             <p>For women with PCOS, improving sleep quality is an essential part of long-term hormonal health and symptom management.</p>
 
             <h2>How Poor Sleep Affects PCOS</h2>
@@ -554,7 +534,7 @@
 
             <h2>Evidence-Based Sleep Hygiene Strategies</h2>
             <h3>1. Consistent Schedule</h3>
-            <p>Maintain a regular sleep/wake cycle even on weekends. Aim for 7–9 hours of quality rest every night to support hormone balance.</p>
+            <p>Maintain a regular sleep/wake cycle even on weekends. Aim for 7\u20139 hours of quality rest every night to support hormone balance.</p>
 
             <h3>2. Digital Detox</h3>
             <p>Avoid blue light from phones or laptops 1 hour before bed. Blue light interferes with melatonin, the hormone that regulates your sleep cycles.</p>
@@ -580,49 +560,247 @@
       }
     };
 
-    function openBlogModal(id) {
-      const lang = (typeof L10n !== "undefined") ? L10n.get() : "en";
-      let article = blogArticles[id];
-      if (!article) return;
+    // --- Admin Action Triggers ---
+    function openBlogManageModal() {
+      console.log("Attempting to open modal...");
+      const modal = document.getElementById('blog-manage-modal');
+      const form = document.getElementById('blogManageForm');
       
-      let html = article.content;
+      if (!modal) {
+        alert("Critical Error: Modal element 'blog-manage-modal' not found!");
+        return;
+      }
       
-      // Use Sinhala or Tamil translations if available
-      if (lang === "si" && typeof siBlogArticles !== "undefined" && siBlogArticles[id]) {
-        html = siBlogArticles[id].content;
-      } else if (lang === "ta" && typeof taBlogArticles !== "undefined" && taBlogArticles[id]) {
-        html = taBlogArticles[id].content;
-      } else if (lang === "si" || lang === "ta") {
-        // Fallback: Localize main heading in original English modal content
-        const key = "blog_title_" + (Object.keys(blogArticles).indexOf(id) + 1);
-        const localizedTitle = L10n.translations[lang][key];
-        if (localizedTitle) {
-          html = html.replace(/<h1[^>]*>.*?<\/h1>/, `<h1 style="font-size:2.2rem; color:var(--purple-deep); line-height:1.4; margin-bottom:20px;">${localizedTitle}</h1>`);
+      if (form) form.reset();
+      
+      document.getElementById('manage-blog-id').value = '';
+      document.getElementById('manage-blog-action').value = 'create';
+      document.getElementById('manage-blog-title').textContent = 'Add New Article';
+      
+      // Force display
+      modal.style.display = 'flex';
+      modal.style.visibility = 'visible';
+      modal.style.opacity = '1';
+      
+      document.body.style.overflow = 'hidden';
+      console.log("Modal display logic executed.");
+    }
+
+    function closeBlogManageModal() {
+      const modal = document.getElementById('blog-manage-modal');
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function closeBlogModal() {
+      const modal = document.getElementById('blog-modal');
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // --- Core Logic ---
+    let currentBlogs = [];
+
+    async function loadBlogs() {
+      try {
+        const res = await fetch('../../src/php/get_blogs.php');
+        const json = await res.json();
+        if (json.status === 'success') {
+          currentBlogs = json.data;
+          renderBlogs(currentBlogs);
+        }
+      } catch (err) { 
+        console.error('Load failed', err); 
+        renderBlogs([]);
+      }
+    }
+
+    function renderBlogs(blogs) {
+      const grid = document.getElementById('blogs-grid');
+      if (!grid) return;
+      
+      const user = (typeof Auth !== 'undefined') ? Auth.getUser() : null;
+      const isAdmin = (user && (user.role === 'admin' || user.role === 'superadmin'));
+
+      if (!blogs || blogs.length === 0) {
+        grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:50px; color:var(--text-light)">No articles found. Check back soon!</p>';
+        return;
+      }
+
+      grid.innerHTML = blogs.map((b, i) => {
+        const dateStr = new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const imgPath = b.image_url ? 
+          (b.image_url.startsWith('http') || b.image_url.startsWith('..') ? b.image_url : '../../' + b.image_url) 
+          : 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80';
+
+        return `
+          <div class="blog-card reveal" style="animation-delay: ${i * 0.1}s">
+            <img class="blog-card-img" src="${imgPath}" alt="${b.title_en}">
+            <div class="blog-card-body">
+              <span class="blog-card-tag">${b.category || 'Health'}</span>
+              <h4>${b.title_en}</h4>
+              <p>${b.description_en || 'Educational article about PCOS management and wellness.'}</p>
+              
+              ${isAdmin ? `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px; border-top:1px solid var(--border); padding-top:15px;">
+                  <button class="btn btn-outline btn-sm" onclick="editBlogByIndex(${i})">Edit</button>
+                  <button class="btn btn-outline btn-sm" style="color:var(--red-accent); border-color:var(--red-accent)" onclick="deleteBlog(${b.id})">Remove</button>
+                </div>
+              ` : `
+                <div class="blog-card-meta">
+                  <span>By <span>${dateStr}</span></span>
+                  <span>#\ufe0f <span>${b.read_time || 5} min read</span></span>
+                  <a href="javascript:void(0)" onclick="viewBlogByIndex(${i})">Read More \u2192</a>
+                </div>
+              `}
+              <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px; display:${isAdmin ? 'block' : 'none'}" onclick="viewBlogByIndex(${i})">Preview</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      if (typeof Icons !== 'undefined') Icons.replace();
+      if (typeof initReveal !== 'undefined') initReveal();
+    }
+
+    function viewBlogByIndex(index) {
+      const b = currentBlogs[index];
+      if (!b) return;
+
+      // --- Content Fallback Logic ---
+      // If DB content is placeholder or empty, try to match with the pre-written content in our internal objects
+      let displayContent = b.content_en;
+      
+      if (!displayContent || displayContent.trim() === "" || displayContent.includes("Content for")) {
+        // Try to match by English Title
+        const matchKey = Object.keys(blogArticles).find(key => blogArticles[key].title === b.title_en);
+        if (matchKey) {
+          displayContent = blogArticles[matchKey].content;
         }
       }
 
+      const imgPath = b.image_url ? 
+        (b.image_url.startsWith('http') || b.image_url.startsWith('..') ? b.image_url : '../../' + b.image_url) 
+        : 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80';
+        
+      const html = `
+        <div class="article-viewer">
+          ${displayContent.includes('<img') ? '' : `<img src="${imgPath}" style="width:100%; height:400px; object-fit:cover;">`}
+          <div class="article-content">
+            <h1 style="font-size:2.5rem; color:var(--purple-deep); line-height:1.2; margin-bottom:20px;">${b.title_en}</h1>
+            <div class="blog-meta-info" style="margin-bottom:30px; color:var(--text-light); font-size:0.9rem;">
+              <span>Category: <strong>${b.category}</strong></span> | <span>Read Time: <strong>${b.read_time} min</strong></span>
+            </div>
+            <div style="font-size:1.1rem; line-height:1.8; color:var(--text-dark)">${displayContent}</div>
+          </div>
+        </div>
+      `;
       document.getElementById("modal-article-body").innerHTML = html;
       document.getElementById("blog-modal").style.display = "flex";
       document.body.style.overflow = "hidden";
     }
 
-    function closeBlogModal() {
-      document.getElementById('blog-modal').style.display = 'none';
-      document.body.style.overflow = 'auto';
+    function editBlogByIndex(index) {
+      const b = currentBlogs[index];
+      if (!b) return;
+      document.getElementById('manage-blog-id').value = b.id;
+      document.getElementById('manage-blog-action').value = 'update';
+      document.getElementById('manage-blog-title').textContent = 'Edit Article';
+      document.getElementById('blog-title').value = b.title_en;
+      document.getElementById('blog-category').value = b.category;
+      document.getElementById('blog-read-time').value = b.read_time;
+      document.getElementById('blog-desc').value = b.description_en;
+      document.getElementById('blog-content').value = b.content_en;
+      document.getElementById('blog-manage-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
 
-    // Close on outside click
-    window.onclick = function(event) {
-      const modal = document.getElementById('blog-modal');
-      if (event.target == modal) closeBlogModal();
+    async function saveBlog(e) {
+      e.preventDefault();
+      const formData = new FormData(document.getElementById('blogManageForm'));
+      
+      formData.append('action', document.getElementById('manage-blog-action').value);
+      formData.append('id', document.getElementById('manage-blog-id').value);
+      formData.append('title_en', document.getElementById('blog-title').value);
+      formData.append('category', document.getElementById('blog-category').value);
+      formData.append('read_time', document.getElementById('blog-read-time').value);
+      formData.append('description_en', document.getElementById('blog-desc').value);
+      formData.append('content_en', document.getElementById('blog-content').value);
+
+      const imageFile = document.getElementById('blog-image').files[0];
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+
+      try {
+        const res = await fetch('../../src/php/components/manage_blogs.php', {
+          method: 'POST',
+          body: formData
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          if (typeof Toast !== 'undefined') Toast.success(json.message);
+          else alert(json.message);
+          closeBlogManageModal();
+          loadBlogs();
+        } else { 
+          if (typeof Toast !== 'undefined') Toast.error(json.message);
+          else alert(json.message);
+        }
+      } catch (err) { alert('Failed to save article.'); }
     }
 
+    async function deleteBlog(id) {
+      if (!confirm('Are you sure you want to remove this article?')) return;
+      try {
+        const res = await fetch('../../src/php/components/manage_blogs.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', id: id })
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          if (typeof Toast !== 'undefined') Toast.success(json.message);
+          else alert(json.message);
+          loadBlogs();
+        } else { 
+          if (typeof Toast !== 'undefined') Toast.error(json.message);
+          else alert(json.message);
+        }
+      } catch (err) { alert('Delete failed'); }
+    }
+
+    // --- Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
-      // Components are handled by components.js, we just ensure L10n is applied
       if (typeof L10n !== "undefined") L10n.init();
-      initReveal();
-      initSmoothScroll();
+      if (typeof initNavbar === "function") initNavbar();
+      if (typeof setActiveNav === "function") setActiveNav();
+      if (typeof initReveal === "function") initReveal();
+      if (typeof initSmoothScroll === "function") initSmoothScroll();
+      
+      loadBlogs();
+
+      // Show admin controls
+      if (typeof Auth !== 'undefined') {
+        const user = Auth.getUser();
+        if (user && (user.role === 'admin' || user.role === 'superadmin')) {
+          const heroCtrl = document.getElementById('admin-blog-controls-hero');
+          if (heroCtrl) heroCtrl.style.display = 'block';
+        }
+      }
+
+      // Explicit event listener for form submission
+      const blogForm = document.getElementById('blogManageForm');
+      if (blogForm) blogForm.addEventListener('submit', saveBlog);
     });
+
+    // Outside click to close modals
+    window.onclick = function(event) {
+      const viewModal = document.getElementById('blog-modal');
+      const manageModal = document.getElementById('blog-manage-modal');
+      if (event.target == viewModal) closeBlogModal();
+      if (event.target == manageModal) closeBlogManageModal();
+    }
   </script>
 </body>
 

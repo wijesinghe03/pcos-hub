@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <script src="../assets/js/theme-init.js"></script>
+
+    <title>Logging out...</title>
+    <script src="../assets/js/utils.js"></script>
+</head>
+<body>
+    <script>
+        // Ensure all session data is cleared
+        if (typeof Auth !== 'undefined' && Auth.logout) {
+            // If Auth.logout is used, we need to ensure it doesn't redirect to index.html
+            // So we manually clear and redirect
+            localStorage.removeItem('pcos_user');
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        } else {
+            localStorage.removeItem('pcos_user');
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

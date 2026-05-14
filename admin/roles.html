@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../assets/js/theme-init.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role & Permissions — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <style>
+        /* Layout Fixes */
+        body {
+            overflow-x: hidden;
+        }
+
+        .dashboard-layout {
+            display: grid !important;
+            grid-template-columns: 260px 1fr !important;
+        }
+
+        .dash-main {
+            margin-left: 0 !important;
+            width: 100% !important;
+            min-width: 0;
+        }
+
+        /* Role & Permissions Specifics */
+        .roles-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .role-list-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+        }
+
+        .role-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .role-item:hover {
+            background: var(--bg-light);
+        }
+
+        .role-item.active {
+            background: var(--purple-ghost);
+            border-left: 4px solid var(--purple-primary);
+        }
+
+        .role-item:last-child {
+            border-bottom: none;
+        }
+
+        .role-name {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .role-count {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .permissions-matrix {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1.5px solid var(--border);
+            padding: 24px;
+        }
+
+        .permission-group {
+            margin-bottom: 30px;
+        }
+
+        .permission-group-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--purple-deep);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .permission-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .permission-row:last-child {
+            border-bottom: none;
+        }
+
+        .perm-info h5 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .perm-info p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-mid);
+        }
+
+        /* Custom Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--purple-primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        @media (max-width: 900px) {
+            .roles-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+                <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile" id="sidebarProfileCard" style="cursor:pointer">
+                <div class="sidebar-avatar" id="sidebarAvatar">AU</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Admin User</div>
+                    <div class="sidebar-role" id="sidebarRole">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="dashboard.html"><i data-icon="home"></i> Dashboard</a>
+                <a class="sidebar-item" href="analytics.html"><i data-icon="analytics"></i> Analytics</a>
+                <a class="sidebar-item" href="logs.html"><i data-icon="logs"></i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="patients.html"><i data-icon="users"></i> Manage Patients</a>
+                <a class="sidebar-item" href="hospitals.html"><i data-icon="hospital"></i> Manage Hospitals</a>
+                <a class="sidebar-item" href="approvals.html"><i data-icon="approve"></i> Approve Hospital</a>
+                <a class="sidebar-item active" href="roles.html"><i data-icon="roles"></i> Role & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
+                <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
+                
+                <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Role & Permissions</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary" onclick="Toast.info('Role creation is managed via system configuration.')"><i>➕</i>
+                        Create New Role</button>
+                </div>
+            </div>
+
+            <!-- Interface -->
+            <div class="roles-container">
+                <!-- Roles List -->
+                <div class="role-list-card reveal" id="rolesList">
+                    <div style="padding: 20px; background: var(--bg-light); border-bottom: 1px solid var(--border);">
+                        <h4 style="margin:0">System Roles</h4>
+                    </div>
+                    <!-- Dynamic Content -->
+                </div>
+
+                <!-- Permissions Panel -->
+                <div class="permissions-matrix reveal reveal-delay-1">
+                    <div class="panel-header" style="padding:0; margin-bottom: 24px; border:none">
+                        <div class="panel-title">Editing Permissions for: <strong id="selectedRoleName">Select a role</strong></div>
+                        <button class="btn btn-primary btn-sm" id="saveBtn" onclick="savePermissions()" disabled>Save Changes</button>
+                    </div>
+
+                    <div id="permissionsContainer">
+                        <div style="text-align:center; padding: 40px; color: var(--text-light);">
+                            Select a role from the left to manage permissions.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/icons.js"></script>
+    <script>
+        let roles = [];
+        let permissionsMatrix = {};
+        let rolePermissions = {};
+        let selectedRoleId = null;
+
+        async function initPage() {
+            try {
+                const res = await fetch('../src/php/get_roles_permissions.php');
+                const json = await res.json();
+                
+                if (json.status === 'success') {
+                    roles = json.data.roles;
+                    permissionsMatrix = json.data.permissions_matrix;
+                    rolePermissions = json.data.role_permissions;
+                    
+                    renderRoles();
+                    if (roles.length > 0) selectRole(roles[0].id);
+                }
+            } catch (e) {
+                Toast.error('Failed to load roles and permissions.');
+            }
+        }
+
+        function renderRoles() {
+            const list = document.getElementById('rolesList');
+            const header = list.querySelector('div');
+            list.innerHTML = '';
+            list.appendChild(header);
+
+            roles.forEach(role => {
+                const item = document.createElement('div');
+                item.className = `role-item ${selectedRoleId == role.id ? 'active' : ''}`;
+                item.onclick = () => selectRole(role.id);
+                item.innerHTML = `
+                    <div>
+                        <div class="role-name">${role.name}</div>
+                        <div class="role-count">${role.user_count} users assigned</div>
+                    </div>
+                    <i style="font-style: normal; font-size: 1.2rem;">${role.icon || '👤'}</i>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function selectRole(roleId) {
+            selectedRoleId = roleId;
+            const role = roles.find(r => r.id == roleId);
+            document.getElementById('selectedRoleName').textContent = role.name;
+            document.getElementById('saveBtn').disabled = false;
+            
+            renderRoles(); // Refresh active state
+            renderPermissions(roleId);
+        }
+
+        function renderPermissions(roleId) {
+            const container = document.getElementById('permissionsContainer');
+            container.innerHTML = '';
+
+            const currentPerms = rolePermissions[roleId] || [];
+
+            Object.keys(permissionsMatrix).forEach(category => {
+                const group = document.createElement('div');
+                group.className = 'permission-group';
+                
+                const categoryPerms = permissionsMatrix[category];
+                const allSelected = categoryPerms.every(p => currentPerms.includes(parseInt(p.id)));
+                
+                let permsHtml = '';
+                categoryPerms.forEach(p => {
+                    const isChecked = currentPerms.includes(parseInt(p.id));
+                    const checkedAttr = isChecked ? 'checked' : '';
+                    permsHtml += `
+                        <div class="permission-row">
+                            <div class="perm-info">
+                                <h5>${p.name}</h5>
+                                <p>${p.description}</p>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span style="font-size:0.75rem; font-weight:700; color:${isChecked ? 'var(--purple-primary)' : 'var(--text-light)'}">
+                                    ${isChecked ? 'ENABLED' : 'DISABLED'}
+                                </span>
+                                <label class="switch">
+                                    <input type="checkbox" class="perm-checkbox" data-id="${p.id}" ${checkedAttr} onchange="updateToggleLabel(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                group.innerHTML = `
+                    <div class="permission-group-title">
+                        <span>${category}</span>
+                        <button class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:4px 8px" onclick="toggleCategory('${category}', ${!allSelected})">
+                            ${allSelected ? 'Deselect All' : 'Select All'}
+                        </button>
+                    </div>
+                    ${permsHtml}
+                `;
+                container.appendChild(group);
+            });
+        }
+
+        function updateToggleLabel(cb) {
+            const label = cb.parentElement.previousElementSibling;
+            const isChecked = cb.checked;
+            label.textContent = isChecked ? 'ENABLED' : 'DISABLED';
+            label.style.color = isChecked ? 'var(--purple-primary)' : 'var(--text-light)';
+        }
+
+        function toggleCategory(category, state) {
+            const categoryPerms = permissionsMatrix[category];
+            const roleId = selectedRoleId;
+            
+            if (!rolePermissions[roleId]) rolePermissions[roleId] = [];
+            
+            categoryPerms.forEach(p => {
+                const id = parseInt(p.id);
+                const index = rolePermissions[roleId].indexOf(id);
+                if (state && index === -1) {
+                    rolePermissions[roleId].push(id);
+                } else if (!state && index !== -1) {
+                    rolePermissions[roleId].splice(index, 1);
+                }
+            });
+            
+            renderPermissions(roleId);
+        }
+
+        async function savePermissions() {
+            if (!selectedRoleId) return;
+            const btn = document.getElementById('saveBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            const checkboxes = document.querySelectorAll('.perm-checkbox');
+            const selectedPerms = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) selectedPerms.push(parseInt(cb.dataset.id));
+            });
+
+            try {
+                const res = await fetch('../src/php/update_role_permissions.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        role_id: selectedRoleId,
+                        permissions: selectedPerms
+                    })
+                });
+                const json = await res.json();
+                
+                if (json.status === 'success') {
+                    Toast.success('Permissions updated successfully!');
+                    rolePermissions[selectedRoleId] = selectedPerms;
+                } else {
+                    Toast.error(json.message);
+                }
+            } catch (e) {
+                Toast.error('Error saving permissions.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initPage();
+            
+            const spCard = document.getElementById('sidebarProfileCard');
+            if (spCard) {
+                spCard.addEventListener('click', function() {
+                    window.location.href = 'profile.html';
+                }, true);
+            }
+        });
+    </script>
+    <script src="../assets/js/admin-ui.js"></script>
+</body>
+</html>
+

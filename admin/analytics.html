@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
+  <script src="../assets/js/theme-init.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Analytics — PCOS Care Hub</title>
-    <link rel="stylesheet" href="../../assets/css/global.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
     <style>
         /* Fix layout issues where content might be cut off */
         body {
@@ -98,42 +100,37 @@
 
     <div class="dashboard-layout">
         <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="sidebar-logo">
+                <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
             </a>
-            <div class="sidebar-profile">
-                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#27ae60,#1a7a42)">AU</div>
+            <div class="sidebar-profile" id="sidebarProfileCard" style="cursor:pointer">
+                <div class="sidebar-avatar" id="sidebarAvatar">AU</div>
                 <div>
-                    <div class="sidebar-name">Admin User</div>
-                    <div class="sidebar-role">System Administrator</div>
+                    <div class="sidebar-name" id="sidebarName">Admin User</div>
+                    <div class="sidebar-role" id="sidebarRole">System Administrator</div>
                 </div>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Overview</span>
-                <a class="sidebar-item" href="admin-dashboard.html" data-page="admin-dashboard.html"><i>🏠</i>
-                    Dashboard</a>
-                <a class="sidebar-item active" href="admin-analytics.html" data-page="admin-analytics.html"><i>📊</i>
-                    Analytics</a>
-                <a class="sidebar-item" href="system-logs.html" data-page="system-logs.html"><i>📋</i> System Logs</a>
+                <a class="sidebar-item" href="dashboard.html"><i data-icon="home"></i> Dashboard</a>
+                <a class="sidebar-item active" href="analytics.html"><i data-icon="analytics"></i> Analytics</a>
+                <a class="sidebar-item" href="logs.html"><i data-icon="logs"></i> System Logs</a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Management</span>
-                <a class="sidebar-item" href="manage-users.html" data-page="manage-users.html"><i>👥</i> Manage
-                    Users<span class="sidebar-badge">5</span></a>
-                <a class="sidebar-item" href="manage-hospitals.html" data-page="manage-hospitals.html"><i>🏥</i> Manage
-                    Hospitals<span class="sidebar-badge">2</span></a>
-                <a class="sidebar-item" href="approve-hospital.html" data-page="approve-hospital.html"><i>✅</i> Approve
-                    Hospital</a>
-                <a class="sidebar-item" href="roles.html" data-page="roles.html"><i>🔐</i> Roles & Permissions</a>
+                <a class="sidebar-item" href="patients.html"><i data-icon="users"></i> Manage Patients</a>
+                <a class="sidebar-item" href="hospitals.html"><i data-icon="hospital"></i> Manage Hospitals</a>
+                <a class="sidebar-item" href="approvals.html"><i data-icon="approve"></i> Approve Hospital</a>
+                <a class="sidebar-item" href="roles.html"><i data-icon="roles"></i> Role & Permissions</a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">System</span>
-                <a class="sidebar-item" href="configuration.html" data-page="configuration.html"><i>⚙️</i>
-                    Configuration</a>
-                <a class="sidebar-item" href="security.html" data-page="security.html"><i>🛡️</i> Security</a>
-                <a class="sidebar-item" href="logout.html"><i>🚪</i> Logout</a>
+                <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
+                <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
+                
+                <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
             </div>
         </aside>
 
@@ -193,7 +190,7 @@
             <div class="analytics-grid">
                 <div class="dash-panel reveal">
                     <div class="panel-header">
-                        <div class="panel-title"><i>📊</i> User Growth (6 Months)</div>
+                        <div class="panel-title"><i>📊</i> Platform Engagement (Activity vs Reviews)</div>
                         <div class="panel-action">Last 6 Months ▾</div>
                     </div>
                     <div class="chart-container">
@@ -253,8 +250,9 @@
                         <tr>
                             <th>Hospital Name</th>
                             <th>Location</th>
-                            <th>Active Patients</th>
-                            <th>Growth</th>
+                            <th>Appointments</th>
+                            <th>Reviews</th>
+                            <th>Status</th>
                             <th>Rating</th>
                         </tr>
                     </thead>
@@ -295,38 +293,49 @@
 
     <div class="toast-container" id="toast-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../assets/js/utils.js"></script>
-    <script src="../../assets/js/dashboard.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
     <script>
         // Initialize Charts and Load Real Data from NEW Analytics API
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                const res = await fetch('../../src/php/get_analytics_data.php');
+                const res = await fetch('../src/php/get_analytics_data.php');
                 const json = await res.json();
                 
                 if (json.status === 'success') {
                     const d = json.data;
 
-                    // 1. Growth Chart (Historical Data)
+                    // 1. Engagement Chart (Appointments vs Reviews)
                     const ctxGrowth = document.getElementById('growthChart').getContext('2d');
                     new Chart(ctxGrowth, {
                         type: 'line',
                         data: {
-                            labels: d.growth.map(x => x.label),
-                            datasets: [{
-                                label: 'Total Patients',
-                                data: d.growth.map(x => x.count),
-                                borderColor: '#7B3FBE',
-                                backgroundColor: 'rgba(123, 63, 190, 0.1)',
-                                fill: true,
-                                tension: 0.4,
-                                borderWidth: 3
-                            }]
+                            labels: d.engagement.map(x => x.label),
+                            datasets: [
+                                {
+                                    label: 'Appointments',
+                                    data: d.engagement.map(x => x.appointments),
+                                    borderColor: '#7B3FBE',
+                                    backgroundColor: 'rgba(123, 63, 190, 0.1)',
+                                    fill: true,
+                                    tension: 0.4,
+                                    borderWidth: 3
+                                },
+                                {
+                                    label: 'Reviews',
+                                    data: d.engagement.map(x => x.reviews),
+                                    borderColor: '#E57FAF',
+                                    backgroundColor: 'rgba(229, 127, 175, 0.1)',
+                                    fill: true,
+                                    tension: 0.4,
+                                    borderWidth: 3
+                                }
+                            ]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: { legend: { display: false } },
+                            plugins: { legend: { display: true, position: 'top' } },
                             scales: {
                                 y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
                                 x: { grid: { display: false } }
@@ -384,24 +393,29 @@
                         }
                     });
 
-                    // 4. Top Performing Hospitals Table
+                    // 4. Hospital Performance Directory Table
                     const tableTbody = document.querySelector('.dash-panel .dash-table tbody');
                     if (d.top_hospitals.length > 0) {
                         tableTbody.innerHTML = d.top_hospitals.map(h => {
                             const stars = Math.round(h.avg_rating || 0);
                             const starHtml = '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
+                            const statusBadge = h.approval_status === 'approved' ? 
+                                '<span class="badge badge-green">Active</span>' : 
+                                '<span class="badge badge-orange">Pending</span>';
+                            
                             return `
                                 <tr>
                                     <td><strong>${h.hosp_name}</strong></td>
                                     <td class="td-light">${h.location || 'N/A'}</td>
-                                    <td>${h.active_patients}</td>
-                                    <td><span style="color:var(--green-accent)">+${Math.floor(Math.random() * 10) + 5}%</span></td>
+                                    <td>${h.appointment_count}</td>
+                                    <td>${h.review_count} reviews</td>
+                                    <td>${statusBadge}</td>
                                     <td style="color:#f1c40f">${starHtml}</td>
                                 </tr>
                             `;
                         }).join('');
                     } else {
-                        tableTbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">No hospital data available</td></tr>';
+                        tableTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#94a3b8">No hospital data available</td></tr>';
                     }
 
                     // Update Top Stats
@@ -413,8 +427,18 @@
             } catch (err) {
                 console.error('Analytics load error:', err);
             }
+
+            // Force Sidebar Profile Redirection
+            const spCard = document.getElementById('sidebarProfileCard');
+            if (spCard) {
+                spCard.addEventListener('click', function() {
+                    window.location.href = 'profile.html';
+                }, true);
+            }
         });
     </script>
+    <script src="../assets/js/icons.js"></script>
+    <script src="../assets/js/admin-ui.js"></script>
 </body>
-
 </html>
+

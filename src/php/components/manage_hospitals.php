@@ -17,9 +17,13 @@ try {
             $password = password_hash($data['password'] ?? '123456', PASSWORD_DEFAULT);
             $reg = $data['reg_number'] ?? 'REG-' . time();
             $desc = $data['description'] ?? '';
+            $phone = $data['phone'] ?? '';
+            $type = $data['hospital_type'] ?? 'Private';
+            $specs = $data['specialties'] ?? '';
+            $address = $data['address'] ?? '';
 
-            $stmt = $pdo->prepare("INSERT INTO hospitals (hosp_name, location, email, username, password, reg_number, description, approval_status) VALUES (?, ?, ?, ?, ?, ?, ?, 'approved')");
-            $stmt->execute([$name, $location, $email, $username, $password, $reg, $desc]);
+            $stmt = $pdo->prepare("INSERT INTO hospitals (hosp_name, location, email, username, password, reg_number, description, phone, hospital_type, specialties, address, approval_status, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved', 1)");
+            $stmt->execute([$name, $location, $email, $username, $password, $reg, $desc, $phone, $type, $specs, $address]);
             
             echo json_encode(['status' => 'success', 'message' => 'Hospital added successfully']);
             break;
@@ -30,12 +34,14 @@ try {
 
             $name = $data['hosp_name'] ?? '';
             $location = $data['location'] ?? '';
-            $email = $data['email'] ?? '';
-            $username = $data['username'] ?? '';
             $desc = $data['description'] ?? '';
+            $phone = $data['phone'] ?? '';
+            $type = $data['hospital_type'] ?? 'Private';
+            $specs = $data['specialties'] ?? '';
+            $address = $data['address'] ?? '';
 
-            $stmt = $pdo->prepare("UPDATE hospitals SET hosp_name = ?, location = ?, email = ?, username = ?, description = ? WHERE id = ?");
-            $stmt->execute([$name, $location, $email, $username, $desc, $id]);
+            $stmt = $pdo->prepare("UPDATE hospitals SET hosp_name = ?, location = ?, description = ?, phone = ?, hospital_type = ?, specialties = ?, address = ? WHERE id = ?");
+            $stmt->execute([$name, $location, $desc, $phone, $type, $specs, $address, $id]);
 
             echo json_encode(['status' => 'success', 'message' => 'Hospital updated successfully']);
             break;

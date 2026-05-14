@@ -35,25 +35,46 @@ try {
     $stmt = $pdo->query("SELECT location, COUNT(*) as count FROM hospitals GROUP BY location ORDER BY count DESC LIMIT 5");
     $locations = $stmt->fetchAll();
 
-    // 4. Top Performing Hospitals (Real counts from appointments and reviews)
+    // 4. Hospital Performance Directory (All hospitals with reviews/appointments)
     $stmt = $pdo->query("
         SELECT 
             h.id, 
             h.hosp_name, 
             h.location, 
+            h.approval_status,
             COALESCE(AVG(r.rating), 0) as avg_rating,
-            (SELECT COUNT(DISTINCT pa.patient_id) FROM patient_appointments pa WHERE pa.hospital_name = h.hosp_name) as active_patients,
+            (SELECT COUNT(*) FROM patient_appointments pa WHERE pa.hospital_name = h.hosp_name) as appointment_count,
             COUNT(r.id) as review_count
         FROM hospitals h
         LEFT JOIN hospital_reviews r ON h.id = r.hospital_id
-        WHERE h.approval_status = 'approved'
         GROUP BY h.id
-        ORDER BY avg_rating DESC, active_patients DESC
-        LIMIT 10
+        ORDER BY avg_rating DESC, appointment_count DESC, h.created_at DESC
+        LIMIT 20
     ");
     $top_hospitals = $stmt->fetchAll();
 
-    // 5. High-level Summary Metrics
+    // 5. Engagement Metrics (Appointments vs Reviews over time)
+    $engagement_data = [];
+    for ($i = 5; $i >= 0; $i--) {
+        $month = date('Y-m', strtotime("-$i months"));
+        $month_label = date('M', strtotime("-$i months"));
+        
+        $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM patient_appointments WHERE DATE_FORMAT(created_at, '%Y-%m') = ?");
+        $stmt->execute([$month]);
+        $apps = $stmt->fetch()['count'];
+
+        $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM hospital_reviews WHERE DATE_FORMAT(created_at, '%Y-%m') = ?");
+        $stmt->execute([$month]);
+        $revs = $stmt->fetch()['count'];
+        
+        $engagement_data[] = [
+            'label' => $month_label,
+            'appointments' => (int)$apps,
+            'reviews' => (int)$revs
+        ];
+    }
+
+    // 6. High-level Summary Metrics
     $stmt = $pdo->query("SELECT COUNT(*) FROM hospital_reviews");
     $total_reviews = $stmt->fetchColumn();
     
@@ -64,6 +85,7 @@ try {
         'status' => 'success',
         'data' => [
             'growth' => $growth_data,
+            'engagement' => $engagement_data,
             'distribution' => [
                 'patients' => (int)$p_count,
                 'hospitals' => (int)$h_count,

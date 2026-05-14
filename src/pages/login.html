@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — PCOS Care Hub</title>
@@ -148,14 +150,14 @@
   <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/utils.js"></script>
   <script>
-        // Parse URL params
-        const params = new URLSearchParams(window.location.search);
-        const email = params.get('email');
-        if (email) {
-            document.getElementById('identity').value = email;
-        }
+    // Parse URL params
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email');
+    if (email) {
+      document.getElementById('identity').value = email;
+    }
 
-        async function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       const identity = document.getElementById('identity').value;
       const password = document.getElementById('password').value;
@@ -185,18 +187,15 @@
             const params = new URLSearchParams(window.location.search);
             const redirectUrl = params.get('redirect');
             if (redirectUrl) {
-                // If the redirect URL is relative, navigate directly to it
-                // We construct the relative URL including its search parameters
-                // e.g. "doctor-appointment.html?hospital=..."
-                window.location.href = redirectUrl;
+              window.location.href = redirectUrl;
             } else {
-                const pages = {
-                  patient: 'patient-dashboard.html',
-                  hospital: 'hospital-dashboard.html',
-                  admin: 'admin-dashboard.html',
-                  superadmin: 'admin-dashboard.html'
-                };
-                window.location.href = pages[response.user.role];
+              const pages = {
+                patient: 'patient-dashboard.html',
+                hospital: 'hospital-dashboard.html',
+                admin: '../../admin/dashboard.html',
+                superadmin: '../../admin/dashboard.html'
+              };
+              window.location.href = pages[response.user.role] || 'patient-dashboard.html';
             }
           }, 1000);
         } else {
@@ -230,8 +229,13 @@
 
     function togglePassword(id, btn) {
       const input = document.getElementById(id);
-      if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
-      else { input.type = 'password'; btn.textContent = '👁'; }
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+      }
     }
   </script>
 </body>

@@ -3712,12 +3712,19 @@ function initSidebarProfile(retryCount = 0) {
 
   const sp = document.querySelector('.sidebar-profile');
   if (sp) {
+    const role = (user.role || '').toLowerCase();
     sp.style.cursor = 'pointer';
     sp.title = 'View Profile';
-    sp.onclick = () => {
-      const target = user.role === 'hospital' ? 'hospital-profile.html' : 'profile.html';
-      window.location.href = target;
-    };
+    
+    // Only add onclick if it's not already an <a> tag
+    if (sp.tagName.toLowerCase() !== 'a') {
+      sp.onclick = () => {
+        let target = 'profile.html';
+        if (role === 'hospital') target = 'hospital-profile.html';
+        else if (role === 'admin' || role === 'superadmin') target = 'admin-profile.html';
+        window.location.href = target;
+      };
+    }
   }
   
   if (sa) {
@@ -3753,7 +3760,14 @@ const Auth = {
     window.location.href = target;
   },
   getUser() {
-    try { return JSON.parse(localStorage.getItem('pcos_user')); } catch { return null; }
+    try { 
+      let u = JSON.parse(localStorage.getItem('pcos_user')); 
+      // Recovery for corrupted string-based user data
+      if (typeof u === 'string') {
+        u = { role: u, name: 'User', loggedIn: true };
+      }
+      return u;
+    } catch { return null; }
   },
   isLoggedIn() {
     const u = this.getUser();

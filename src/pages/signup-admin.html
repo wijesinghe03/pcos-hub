@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Registration — PCOS Care Hub</title>
@@ -130,7 +132,7 @@
                 </form>
 
                 <div class="auth-footer">
-                    <p>Already have an account? <a href="admin-login.html">Sign in here</a></p>
+                    <p>Already have an account? <a href="../admin/login.html">Sign in here</a></p>
                     <p style="margin-top:10px"><a href="index.html">← Back to Site</a></p>
                 </div>
             </div>
@@ -163,10 +165,10 @@
             try {
                 const response = await API.call('components/signup_handler.php', data);
                 if (response.status === 'success') {
-                    Auth.login('admin', response.user.name);
+                    Auth.login(response.user);
                     Toast.success('Admin account created! Accessing dashboard...');
                     setTimeout(() => {
-                        window.location.href = 'admin-dashboard.html';
+                        window.location.href = '../../admin/dashboard.html';
                     }, 1500);
                 } else {
                     Toast.error(response.message);

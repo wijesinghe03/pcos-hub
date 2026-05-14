@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../assets/js/theme-init.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Patients — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <style>
+        body { overflow-x: hidden; }
+        .dashboard-layout { display: grid !important; grid-template-columns: 260px 1fr !important; }
+        .dash-main { margin-left: 0 !important; width: 100% !important; min-width: 0; }
+        .user-avatar-cell { display: flex; align-items: center; gap: 12px; }
+        .user-avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: var(--purple-mid); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
+        .filter-bar { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; background: white; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid var(--border); }
+        .filter-item { flex: 1; min-width: 200px; }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader">
+        <div class="loader-ring"></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+                <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile" id="sidebarProfileCard" style="cursor:pointer">
+                <div class="sidebar-avatar" id="sidebarAvatar">AU</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Admin User</div>
+                    <div class="sidebar-role" id="sidebarRole">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="dashboard.html"><i data-icon="home"></i> Dashboard</a>
+                <a class="sidebar-item" href="analytics.html"><i data-icon="analytics"></i> Analytics</a>
+                <a class="sidebar-item" href="logs.html"><i data-icon="logs"></i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item active" href="patients.html"><i data-icon="users"></i> Manage Patients</a>
+                <a class="sidebar-item" href="hospitals.html"><i data-icon="hospital"></i> Manage Hospitals</a>
+                <a class="sidebar-item" href="approvals.html"><i data-icon="approve"></i> Approve Hospital</a>
+                <a class="sidebar-item" href="roles.html"><i data-icon="roles"></i> Role & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
+                <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
+                
+                <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>Patient Management</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary" onclick="Toast.info('Patients can register via the main sign-up page.')"><i>➕</i> Registration Info</button>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar reveal">
+                <div class="filter-item">
+                    <div class="topbar-search" style="border: 1.5px solid var(--border); width: 100%;">
+                        <i>🔍</i>
+                        <input type="text" id="userSearch" placeholder="Search by name, email, or ID..." onkeyup="filterPatients()">
+                    </div>
+                </div>
+                <div class="filter-item" style="display: flex; gap: 12px; flex: 0 0 auto;">
+                    <select class="form-control" id="statusFilter" onchange="filterPatients()">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="deactivated">Deactivated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Patients Table -->
+            <div class="dash-panel reveal">
+                <div class="panel-header">
+                    <div class="panel-title"><i>👥</i> Registered Patients</div>
+                    <div class="panel-action" onclick="resetFilters()">Reset Filters</div>
+                </div>
+                <div class="user-table-container">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Patient Details</th>
+                                <th>Joined Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+        let patientList = [];
+
+        async function loadPatients() {
+            try {
+                const res = await fetch('../src/php/get_patients.php');
+                const json = await res.json();
+                if (json.status === 'success') {
+                    patientList = json.data;
+                    renderPatients(patientList);
+                }
+            } catch (e) { console.error('Load fail', e); }
+        }
+
+        function renderPatients(data) {
+            const tbody = document.getElementById('patientTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-light)">No patients found.</td></tr>';
+                return;
+            }
+
+            data.forEach(p => {
+                const initials = p.full_name.split(' ').map(n => n[0]).join('').toUpperCase();
+                const date = new Date(p.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+                const statusClass = p.status === 'active' ? 'badge-green' : 'badge-red';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="user-avatar-cell">
+                            <div class="user-avatar-sm">${initials}</div>
+                            <div>
+                                <div style="font-weight:700">${p.full_name}</div>
+                                <div style="font-size:0.75rem; color:var(--text-light)">${p.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="td-light">${date}</td>
+                    <td><span class="badge ${statusClass}">${p.status}</span></td>
+                    <td>
+                        <button class="btn btn-outline btn-sm" onclick="Toast.info('Patient ID: ${p.id}')">View</button>
+                        <button class="btn btn-icon btn-sm" style="color:var(--red-accent)" onclick="deletePatient(${p.id})">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterPatients() {
+            const query = document.getElementById('userSearch').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            
+            const filtered = patientList.filter(p => {
+                const matchQuery = p.full_name.toLowerCase().includes(query) || p.email.toLowerCase().includes(query) || String(p.id).includes(query);
+                const matchStatus = status === 'all' || p.status === status;
+                return matchQuery && matchStatus;
+            });
+            renderPatients(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('userSearch').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            renderPatients(patientList);
+        }
+
+        async function deletePatient(id) {
+            if (confirm('Are you sure you want to PERMANENTLY remove this patient?')) {
+                try {
+                    const res = await fetch('../src/php/manage_patients.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: id, action: 'delete' })
+                    });
+                    const json = await res.json();
+                    if (json.status === 'success') {
+                        Toast.success(json.message);
+                        loadPatients();
+                    } else { Toast.error(json.message); }
+                } catch (e) { Toast.error('Error deleting patient'); }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPatients();
+            
+            const spCard = document.getElementById('sidebarProfileCard');
+            if (spCard) {
+                spCard.addEventListener('click', function() {
+                    window.location.href = 'profile.html';
+                }, true);
+            }
+        });
+    </script>
+    <script src="../assets/js/icons.js"></script>
+    <script src="../assets/js/admin-ui.js"></script>
+</body>
+</html>
+

@@ -1,4 +1,8 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__.'/error.log');
 
 /**
  * PCOS CARE HUB — Appointment Handler (appointment_handler.php)
@@ -6,6 +10,7 @@
  */
 
 require_once '../db_connect.php';
+require_once '../utils/Mailer.php';
 session_start();
 
 header('Content-Type: application/json');
@@ -85,8 +90,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     } else {
         // We still resolve it if possible, but don't strictly require it to block execution
-        // Alternatively, since save_hospital_appointment uses email/contact, it's fine.
         $patient_id = resolvePatient($pdo, $data) ?? null;
+    }
+
+    if ($action === 'get_taken_slots') {
+        $doctor = $data['doctor_name'] ?? '';
+        $hosp   = $data['hospital_name'] ?? '';
+        $date   = $data['appointment_date'] ?? '';
+
+        if (!$doctor || !$hosp || !$date) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing parameters for availability check.']);
+            exit;
+        }
+
+        try {
+            $stmt = $pdo->prepare("SELECT appointment_time FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
+            $stmt->execute([$doctor, $hosp, $date]);
+            $taken = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            echo json_encode(['status' => 'success', 'data' => $taken]);
+        } catch (PDOException $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+        exit;
     }
 
     if ($action === 'reschedule') {
@@ -154,7 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Send Email
             try {
-                require_once '../utils/Mailer.php';
                 $subject = "Payment Successful - Appointment at " . $appt['hospital_name'];
                 $emailBody = "
                     <p>Hi <strong>" . ($patient['full_name'] ?? 'Patient') . "</strong>,</p>
@@ -169,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <p>Amount Received: <strong>Rs. 2,500.00</strong></p>
                     <p>Thank you for choosing PCOS Care Hub.</p>
                 ";
-                Mailer::send($patient['email'], $subject, $emailBody);
+                \App\Utils\Mailer::send($patient['email'], $subject, $emailBody);
             } catch (Exception $e) {
                 error_log("Payment email failed: " . $e->getMessage());
             }
@@ -222,7 +247,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Send Confirmation Email
             try {
-                require_once '../utils/Mailer.php';
                 $patientStmt = $pdo->prepare("SELECT email, full_name FROM patients WHERE id = ?");
                 $patientStmt->execute([$patient_id]);
                 $patient = $patientStmt->fetch();
@@ -241,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         </div>
                         <p>Please arrive 15 minutes early for your appointment.</p>
                     ";
-                    Mailer::send($patient['email'], $subject, $emailBody);
+                    \App\Utils\Mailer::send($patient['email'], $subject, $emailBody);
                 }
             } catch (Exception $e) {
                 error_log("Appointment email failed: " . $e->getMessage());
@@ -307,7 +331,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Send Email
             try {
-                require_once '../utils/Mailer.php';
                 $subject = "Your Appointment Number: #$nextApptNum at $hosp";
                 $emailBody = "
                 <p>Hi <strong>$patient_name</strong>,</p>
@@ -321,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </div>
                 <p>Please present your appointment number at the hospital reception.</p>
             ";
-                Mailer::send($email, $subject, $emailBody);
+                \App\Utils\Mailer::send($email, $subject, $emailBody);
             } catch (Exception $e) {
                 error_log("Hospital Appointment email failed: " . $e->getMessage());
             }

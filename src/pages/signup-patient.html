@@ -1,18 +1,219 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Sign Up — PCOS Care Hub</title>
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/navbar.css">
     <link rel="stylesheet" href="../../assets/css/auth.css">
+    <style>
+        /* ── OTP Overlay ── */
+        .otp-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 9, 26, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .otp-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .otp-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 48px 40px 40px;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 24px 80px rgba(91, 45, 142, 0.4);
+            border: 1px solid var(--border);
+            text-align: center;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            position: relative;
+        }
+        .otp-overlay.active .otp-card {
+            transform: translateY(0) scale(1);
+        }
+        .otp-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--purple-deep));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 22px;
+            box-shadow: 0 8px 24px rgba(123,63,190,0.35);
+        }
+        .otp-card h2 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .otp-card p {
+            font-size: 0.92rem;
+            color: var(--text-mid);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .otp-email-badge {
+            display: inline-block;
+            background: var(--purple-pale);
+            color: var(--purple-deep);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 5px 16px;
+            border-radius: var(--radius-full);
+            margin-bottom: 28px;
+        }
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        .otp-digit {
+            width: 52px;
+            height: 58px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-dark);
+            background: var(--input-bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            font-family: var(--font-body);
+            caret-color: var(--purple-primary);
+        }
+        .otp-digit:focus {
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(123,63,190,0.15);
+        }
+        .otp-digit.filled {
+            border-color: var(--purple-mid);
+            background: var(--purple-ghost);
+        }
+        .otp-verify-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--purple-deep));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(123,63,190,0.35);
+            font-family: var(--font-body);
+            margin-bottom: 16px;
+        }
+        .otp-verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(123,63,190,0.45);
+        }
+        .otp-verify-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .otp-footer {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .otp-footer a, .otp-resend-btn {
+            color: var(--purple-primary);
+            font-weight: 700;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            padding: 0;
+            text-decoration: underline;
+        }
+        .otp-footer a:hover, .otp-resend-btn:hover {
+            color: var(--purple-deep);
+        }
+        .otp-timer {
+            display: inline-block;
+            color: var(--orange-accent);
+            font-weight: 700;
+            font-size: 0.85rem;
+            min-width: 36px;
+        }
+        .otp-success-icon {
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.4,0,0.2,1) both;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+        .otp-card.verified .otp-icon { background: linear-gradient(135deg, #27AE60, #1a7a42); }
+        .otp-back-link {
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .otp-back-link:hover { color: var(--purple-primary); }
+    </style>
 </head>
 
 <body>
     <div id="page-loader" class="page-loader">
         <div class="loader-ring"></div>
+    </div>
+
+    <!-- ── OTP Verification Overlay ── -->
+    <div class="otp-overlay" id="otpOverlay" role="dialog" aria-modal="true" aria-label="Email Verification">
+        <div class="otp-card" id="otpCard">
+            <button class="otp-back-link" id="otpBackBtn" title="Go back" aria-label="Go back">&larr;</button>
+            <div class="otp-icon" id="otpIcon">✉️</div>
+            <h2>Verify Your Email</h2>
+            <p>We've sent a 6-digit verification code to:</p>
+            <div class="otp-email-badge" id="otpEmailDisplay">your@email.com</div>
+            <p style="font-size:0.85rem; margin-bottom:22px;">Enter the code below to activate your account.</p>
+
+            <div class="otp-inputs" id="otpInputsGroup">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp0" autocomplete="one-time-code" aria-label="Digit 1">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp1" aria-label="Digit 2">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp2" aria-label="Digit 3">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp3" aria-label="Digit 4">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp4" aria-label="Digit 5">
+                <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="otp5" aria-label="Digit 6">
+            </div>
+
+            <button class="otp-verify-btn" id="otpVerifyBtn" disabled>Verify &amp; Create Account</button>
+
+            <div class="otp-footer">
+                Code expires in <span class="otp-timer" id="otpTimer">15:00</span> &nbsp;|&nbsp;
+                Didn't receive it?
+                <button class="otp-resend-btn" id="otpResendBtn" disabled>Resend Code</button>
+            </div>
+        </div>
     </div>
 
     <div class="auth-page">
@@ -24,8 +225,7 @@
                     <div class="logo-text"><span>PCOS</span> Care Hub</div>
                 </a>
                 <h2>Start Managing PCOS the Smart Way</h2>
-                <p>Join thousands of Sri Lankan women taking control of their PCOS with our secure, comprehensive
-                    platform.</p>
+                <p>Join thousands of Sri Lankan women taking control of their PCOS with our secure, comprehensive platform.</p>
                 <div class="auth-features">
                     <div class="auth-feature">
                         <div class="auth-feature-icon">🆓</div>
@@ -102,8 +302,7 @@
                         <label class="form-label">Username</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">🆔</span>
-                            <input class="form-control" type="text" id="username" placeholder="Pick a unique username"
-                                required>
+                            <input class="form-control" type="text" id="username" placeholder="Pick a unique username" required>
                         </div>
                     </div>
 
@@ -130,8 +329,7 @@
                         <label class="form-label">Medical History (Optional)</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">⚕️</span>
-                            <textarea class="form-control" id="med_history"
-                                placeholder="Any relevant medical conditions or medications..." rows="3"></textarea>
+                            <textarea class="form-control" id="med_history" placeholder="Any relevant medical conditions or medications..." rows="3"></textarea>
                         </div>
                     </div>
 
@@ -140,8 +338,7 @@
                         <label class="form-label">Password</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">🔒</span>
-                            <input class="form-control" type="password" id="pw1" placeholder="Min. 8 characters"
-                                required minlength="8">
+                            <input class="form-control" type="password" id="pw1" placeholder="Min. 8 characters" required minlength="8">
                             <button type="button" class="toggle-pw" onclick="togglePw('pw1',this)">👁</button>
                         </div>
                     </div>
@@ -151,8 +348,7 @@
                         <label class="form-label">Confirm Password</label>
                         <div class="input-icon-wrap">
                             <span class="input-icon">🔒</span>
-                            <input class="form-control" type="password" id="pw2" placeholder="Re-enter password"
-                                required>
+                            <input class="form-control" type="password" id="pw2" placeholder="Re-enter password" required>
                             <button type="button" class="toggle-pw" onclick="togglePw('pw2',this)">👁</button>
                         </div>
                     </div>
@@ -160,17 +356,14 @@
                     <!-- Terms -->
                     <div class="terms-check">
                         <input type="checkbox" id="terms" required>
-                        <label for="terms">I agree to the <a href="terms-of-service.html">Terms of Service</a> and <a
-                                href="privacy-policy.html">Privacy
-                                Policy</a>. I consent to the storage and processing of my health data.</label>
+                        <label for="terms">I agree to the <a href="terms-of-service.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy</a>. I consent to the storage and processing of my health data.</label>
                     </div>
 
-                    <button type="submit" class="auth-submit">Create Patient Account</button>
+                    <button type="submit" class="auth-submit" id="signupSubmitBtn">Create Patient Account</button>
                 </form>
 
                 <div class="auth-footer">
-                    <p><a href="signup-choice.html">← Back to signup options</a> | <a href="index.html">Back to Home</a>
-                    </p>
+                    <p><a href="signup-choice.html">← Back to signup options</a> | <a href="index.html">Back to Home</a></p>
                 </div>
             </div>
         </div>
@@ -180,65 +373,292 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Parse URL params
+        // ── URL Params ──
         const params = new URLSearchParams(window.location.search);
-        const email = params.get('email');
-        if (email) {
-            document.getElementById('email').value = email;
+        const prefillEmail = params.get('email');
+        if (prefillEmail) document.getElementById('email').value = prefillEmail;
+
+        // ── Toggle Password Visibility ──
+        function togglePw(id, btn) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+            btn.textContent = input.type === 'password' ? '👁' : '🙈';
         }
 
+        // ── State ──
+        let pendingEmail = '';
+        let otpTimerInterval = null;
+        let resendCooldown = null;
+        let timerSeconds = 15 * 60; // 15 minutes
+
+        // ─────────────────────────────────────────────────
+        //  STEP 1: Handle Signup Form Submit → Send OTP
+        // ─────────────────────────────────────────────────
         async function handlePatientSignup(e) {
             e.preventDefault();
             const pw1 = document.getElementById('pw1').value;
             const pw2 = document.getElementById('pw2').value;
             if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
 
-            const submitBtn = e.target.querySelector('.auth-submit');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Creating Account...';
+            const submitBtn = document.getElementById('signupSubmitBtn');
+            submitBtn.textContent = 'Sending Verification Code...';
             submitBtn.disabled = true;
 
             const data = {
-                role: 'patient',
-                full_name: document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
-                username: document.getElementById('username').value,
-                email: document.getElementById('email').value,
-                password: pw1,
-                dob: document.getElementById('dob').value,
-                phone: document.getElementById('phone').value,
-                gender: document.getElementById('gender').value,
-                address: document.getElementById('med_history').value
+                role:       'patient',
+                full_name:  document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+                username:   document.getElementById('username').value,
+                email:      document.getElementById('email').value,
+                password:   pw1,
+                dob:        document.getElementById('dob').value,
+                phone:      document.getElementById('phone').value,
+                gender:     document.getElementById('gender').value,
+                address:    document.getElementById('med_history').value
             };
 
             try {
-                const response = await API.call('components/signup_handler.php', data);
+                const response = await API.call('components/send_verification.php', data);
                 if (response.status === 'success') {
-                    Auth.login(response.user);
-                    Toast.success('Account created! Welcome to PCOS Care Hub.');
-                    setTimeout(() => {
-                        const redirect = params.get('redirect');
-                        if (redirect) {
-                            window.location.href = redirect;
-                        } else {
-                            window.location.href = 'patient-dashboard.html';
-                        }
-                    }, 1500);
+                    pendingEmail = data.email;
+                    openOtpOverlay(pendingEmail);
                 } else {
-                    Toast.error(response.message);
+                    Toast.error(response.message || 'Failed to send verification code.');
                 }
             } catch (err) {
-                Toast.error('Signup failed. Please try again.');
+                Toast.error('Network error. Please try again.');
             } finally {
-                submitBtn.textContent = originalText;
+                submitBtn.textContent = 'Create Patient Account';
                 submitBtn.disabled = false;
             }
         }
-        function togglePw(id, btn) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-            btn.textContent = input.type === 'password' ? '👁' : '🙈';
+
+        // ─────────────────────────────────────────────────
+        //  OTP Overlay — Open / Close
+        // ─────────────────────────────────────────────────
+        function openOtpOverlay(email) {
+            document.getElementById('otpEmailDisplay').textContent = email;
+            document.getElementById('otpOverlay').classList.add('active');
+            document.getElementById('otp0').focus();
+            startOtpTimer();
+            enableResendAfterDelay();
         }
+
+        function closeOtpOverlay() {
+            document.getElementById('otpOverlay').classList.remove('active');
+            clearInterval(otpTimerInterval);
+            clearTimeout(resendCooldown);
+            resetOtpInputs();
+        }
+
+        document.getElementById('otpBackBtn').addEventListener('click', closeOtpOverlay);
+
+        // ─────────────────────────────────────────────────
+        //  OTP Digit Inputs — Smart Navigation
+        // ─────────────────────────────────────────────────
+        const otpDigits = document.querySelectorAll('.otp-digit');
+        otpDigits.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                // Allow only digits
+                input.value = input.value.replace(/\D/g, '').slice(-1);
+                input.classList.toggle('filled', input.value.length > 0);
+
+                if (input.value && index < 5) {
+                    otpDigits[index + 1].focus();
+                }
+                checkOtpComplete();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    otpDigits[index - 1].focus();
+                    otpDigits[index - 1].value = '';
+                    otpDigits[index - 1].classList.remove('filled');
+                    checkOtpComplete();
+                }
+                // Allow paste
+                if (e.key === 'v' && (e.ctrlKey || e.metaKey)) return;
+            });
+
+            // Handle paste on first digit
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+                pasted.split('').forEach((ch, i) => {
+                    if (otpDigits[i]) {
+                        otpDigits[i].value = ch;
+                        otpDigits[i].classList.add('filled');
+                    }
+                });
+                if (pasted.length > 0) otpDigits[Math.min(pasted.length, 5)].focus();
+                checkOtpComplete();
+            });
+        });
+
+        function getOtpValue() {
+            return Array.from(otpDigits).map(d => d.value).join('');
+        }
+
+        function checkOtpComplete() {
+            const complete = getOtpValue().length === 6;
+            document.getElementById('otpVerifyBtn').disabled = !complete;
+        }
+
+        function resetOtpInputs() {
+            otpDigits.forEach(d => { d.value = ''; d.classList.remove('filled'); });
+            document.getElementById('otpVerifyBtn').disabled = true;
+        }
+
+        // ─────────────────────────────────────────────────
+        //  OTP Timer
+        // ─────────────────────────────────────────────────
+        function startOtpTimer() {
+            timerSeconds = 15 * 60;
+            clearInterval(otpTimerInterval);
+            updateTimerDisplay();
+            otpTimerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    clearInterval(otpTimerInterval);
+                    document.getElementById('otpTimer').textContent = 'Expired';
+                    document.getElementById('otpTimer').style.color = 'var(--red-accent)';
+                    document.getElementById('otpVerifyBtn').disabled = true;
+                    Toast.error('Verification code expired. Please request a new one.');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+            const s = String(timerSeconds % 60).padStart(2, '0');
+            const el = document.getElementById('otpTimer');
+            el.textContent = `${m}:${s}`;
+            el.style.color = timerSeconds < 60 ? 'var(--red-accent)' : 'var(--orange-accent)';
+        }
+
+        // ─────────────────────────────────────────────────
+        //  Resend OTP (30-second cooldown)
+        // ─────────────────────────────────────────────────
+        function enableResendAfterDelay() {
+            const btn = document.getElementById('otpResendBtn');
+            btn.disabled = true;
+            let secs = 30;
+            btn.textContent = `Resend Code (${secs}s)`;
+            resendCooldown = setInterval(() => {
+                secs--;
+                btn.textContent = `Resend Code (${secs}s)`;
+                if (secs <= 0) {
+                    clearInterval(resendCooldown);
+                    btn.disabled = false;
+                    btn.textContent = 'Resend Code';
+                }
+            }, 1000);
+        }
+
+        document.getElementById('otpResendBtn').addEventListener('click', async () => {
+            const data = {
+                role:       'patient',
+                full_name:  document.getElementById('fname').value + ' ' + document.getElementById('lname').value,
+                username:   document.getElementById('username').value,
+                email:      pendingEmail,
+                password:   document.getElementById('pw1').value,
+                dob:        document.getElementById('dob').value,
+                phone:      document.getElementById('phone').value,
+                gender:     document.getElementById('gender').value,
+                address:    document.getElementById('med_history').value
+            };
+            const btn = document.getElementById('otpResendBtn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            try {
+                const res = await API.call('components/send_verification.php', data);
+                if (res.status === 'success') {
+                    Toast.success('New code sent! Check your email.');
+                    resetOtpInputs();
+                    startOtpTimer();
+                    enableResendAfterDelay();
+                } else {
+                    Toast.error(res.message || 'Failed to resend code.');
+                    btn.disabled = false;
+                    btn.textContent = 'Resend Code';
+                }
+            } catch (err) {
+                Toast.error('Network error. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Resend Code';
+            }
+        });
+
+        // ─────────────────────────────────────────────────
+        //  STEP 2: Verify OTP → Create Account
+        // ─────────────────────────────────────────────────
+        document.getElementById('otpVerifyBtn').addEventListener('click', async () => {
+            const otp = getOtpValue();
+            if (otp.length !== 6) return;
+
+            const verifyBtn = document.getElementById('otpVerifyBtn');
+            verifyBtn.textContent = 'Verifying...';
+            verifyBtn.disabled = true;
+
+            try {
+                const res = await API.call('components/verify_patient_email.php', {
+                    email: pendingEmail,
+                    otp:   otp
+                });
+
+                if (res.status === 'success') {
+                    // Show success state
+                    clearInterval(otpTimerInterval);
+                    const card = document.getElementById('otpCard');
+                    const icon = document.getElementById('otpIcon');
+                    card.classList.add('verified');
+                    icon.textContent = '✅';
+                    verifyBtn.textContent = '✓ Account Created!';
+                    verifyBtn.style.background = 'linear-gradient(135deg, #27AE60, #1a7a42)';
+
+                    // Log in the user via Auth utility
+                    if (typeof Auth !== 'undefined') Auth.login(res.user);
+
+                    Toast.success('Email verified! Welcome to PCOS Care Hub 💜');
+
+                    // Redirect to patient dashboard after 1.5s
+                    setTimeout(() => {
+                        const redirect = params.get('redirect');
+                        window.location.href = redirect || 'patient-dashboard.html';
+                    }, 1500);
+
+                } else if (res.status === 'expired') {
+                    Toast.error('Code expired. Please sign up again.');
+                    closeOtpOverlay();
+                    verifyBtn.textContent = 'Verify & Create Account';
+                } else {
+                    Toast.error(res.message || 'Invalid code. Please try again.');
+                    // Shake the inputs
+                    const group = document.getElementById('otpInputsGroup');
+                    group.style.animation = 'none';
+                    group.offsetHeight; // trigger reflow
+                    group.style.animation = 'shake 0.4s ease';
+                    resetOtpInputs();
+                    otpDigits[0].focus();
+                    verifyBtn.textContent = 'Verify & Create Account';
+                    verifyBtn.disabled = false;
+                }
+            } catch (err) {
+                Toast.error('Network error. Please try again.');
+                verifyBtn.textContent = 'Verify & Create Account';
+                verifyBtn.disabled = false;
+            }
+        });
     </script>
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%       { transform: translateX(-8px); }
+            40%       { transform: translateX(8px); }
+            60%       { transform: translateX(-6px); }
+            80%       { transform: translateX(6px); }
+        }
+    </style>
 </body>
 
 </html>

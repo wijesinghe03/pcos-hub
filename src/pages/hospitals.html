@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="hosp_title">Partner Hospitals — PCOS Care Hub</title>
@@ -220,6 +222,13 @@
         <span style="font-size:1.8rem;font-weight:800;color:var(--purple-primary)"><span data-count="0" data-stat="hospitals" data-suffix="">0</span></span>
         <span style="font-size:0.95rem;font-weight:600;color:var(--text-mid)" data-i18n="stat_partner_hosp">Partner Hospitals</span>
       </div>
+
+      <!-- Admin Add Button -->
+      <div id="admin-controls" style="display:none; margin-top:30px;">
+        <button class="btn btn-primary" onclick="openHospManageModal()" style="padding:12px 30px; box-shadow:0 10px 20px rgba(138,43,226,0.2)">
+            <span data-icon="plus" data-size="18"></span> Add New Partner Hospital
+        </button>
+      </div>
     </div>
   </section>
   <section class="section-pad">
@@ -268,7 +277,7 @@
       
       <div style="text-align:center; margin-bottom:40px;">
         <div style="width:70px; height:70px; background:linear-gradient(135deg, var(--purple-light), var(--purple-primary)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 20px; color:white; box-shadow:0 10px 20px rgba(138, 43, 226, 0.2);">🏥</div>
-        <h2 id="modal-hospital-name" style="color:var(--text-main); font-size:2rem; font-weight:700; margin-bottom:12px; letter-spacing:-0.5px;" data-i18n="welcome">Welcome</h2>
+        <h2 id="modal-hospital-name" style="color:var(--text-main); font-size:2rem; font-weight:700; margin-bottom:12px; letter-spacing:-0.5px;">Welcome</h2>
         <p id="modal-hospital-desc" style="color:var(--text-mid); font-size:1.1rem; max-width:600px; margin:0 auto; line-height:1.6;">Excellent care awaits you. Connect with leading specialists.</p>
       </div>
 
@@ -294,6 +303,80 @@
         <button class="btn" onclick="closeHospitalModal()" style="padding:12px 30px; background:var(--bg-light); color:var(--text-main); border:1px solid var(--border);" data-i18n="cancel">Cancel</button>
         <button class="btn btn-primary" onclick="confirmConnection()" style="padding:12px 40px; box-shadow:0 8px 16px rgba(138,43,226,0.2);" data-i18n="confirm_connection">Confirm Connection</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Hospital Management Modal (Admin) -->
+  <div id="hosp-manage-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:4000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px);">
+    <div class="modal-content" style="background:var(--bg-card); border-radius:var(--radius-lg); width:100%; max-width:550px; padding:32px; position:relative; animation: slideUp 0.3s ease-out;">
+      <button onclick="closeHospManageModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-light)">&times;</button>
+      
+      <div style="text-align:center; margin-bottom:24px;">
+        <h3 id="manage-hosp-title">Manage Hospital</h3>
+        <p style="font-size:0.9rem; color:var(--text-mid)">Fill in the details below</p>
+      </div>
+
+      <form id="hospManageForm" onsubmit="saveHospital(event)">
+        <input type="hidden" id="manage-hosp-id">
+        <input type="hidden" id="manage-hosp-action" value="add">
+        
+        <div class="form-group">
+          <label class="form-label">Hospital Name</label>
+          <input type="text" class="form-control" id="hosp-name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-control" id="hosp-location" placeholder="e.g. Colombo 05" required>
+        </div>
+
+        <div class="form-group" id="hosp-email-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="hosp-email" required>
+        </div>
+
+        <div class="form-group" id="hosp-username-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control" id="hosp-username" required>
+        </div>
+
+        <div class="form-group" id="hosp-password-group">
+          <label class="form-label">Temporary Password</label>
+          <input type="password" class="form-control" id="hosp-password" placeholder="Default: 123456">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="hosp-phone">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Hospital Type</label>
+            <select class="form-control" id="hosp-type">
+              <option value="Private">Private</option>
+              <option value="Public">Public / Government</option>
+              <option value="Clinic">Specialized Clinic</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Specialties (Comma separated)</label>
+          <input type="text" class="form-control" id="hosp-specialties" placeholder="e.g. Gynaecology, PCOS Care, Lab Services">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Full Address</label>
+          <input type="text" class="form-control" id="hosp-address">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description (Shown to patients)</label>
+          <textarea class="form-control" id="hosp-desc" rows="3" placeholder="Briefly describe the hospital and its PCOS care capabilities..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px;">Save Hospital</button>
+      </form>
     </div>
   </div>
 
@@ -371,7 +454,8 @@
           grid.innerHTML = hospitals.map((h, i) => {
             const stars = Math.round(h.avg_rating || 0);
             const starHtml = '★'.repeat(stars) + '☆'.repeat(5 - stars);
-            
+            const isAdmin = (typeof Auth !== 'undefined' && (Auth.getUser()?.role === 'admin' || Auth.getUser()?.role === 'superadmin'));
+
             return `
               <div class="hospital-card reveal" style="animation-delay: ${i * 0.1}s">
                 <div class="hospital-icon" data-icon="hospital" data-size="32" data-color="white"></div>
@@ -384,18 +468,32 @@
                 </div>
 
                 <div class="hospital-specialties">
-                  <span class="specialty-tag">Gynaecology</span>
-                  <span class="specialty-tag">PCOS Care</span>
+                  ${(h.specialties || 'Gynaecology, PCOS Care').split(',').map(s => `<span class="specialty-tag">${s.trim()}</span>`).join('')}
                 </div>
-                <p style="font-size:.875rem;margin-bottom:auto">${h.contact_person || 'Leading healthcare provider dedicated to excellence.'}</p>
+                <p style="font-size:.875rem;margin-bottom:auto">${h.description || h.contact_person || 'Leading healthcare provider dedicated to excellence.'}</p>
                 
-                <button class="btn btn-review" onclick="openReviewModal(${h.id}, '${h.hosp_name.replace(/'/g, "\\'")}')">Give Review</button>
+                ${isAdmin ? `
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px;">
+                    <button class="btn btn-outline btn-sm" onclick="editHospital(${JSON.stringify(h).replace(/"/g, '&quot;')})">Edit</button>
+                    <button class="btn btn-outline btn-sm" style="color:var(--red-accent); border-color:var(--red-accent)" onclick="deleteHospital(${h.id})">Remove</button>
+                  </div>
+                ` : `
+                  <button class="btn btn-review" onclick="openReviewModal(${h.id}, '${h.hosp_name.replace(/'/g, "\\'")}')">Give Review</button>
+                `}
                 <button class="btn btn-primary btn-sm" style="width:100%; margin-top:10px;" onclick="openHospitalModal('${h.id}', '${h.hosp_name.replace(/'/g, "\\'")}')">Connect</button>
               </div>
             `;
           }).join('');
           
-          initReveal(); // Re-trigger reveal animations
+          if (typeof Icons !== 'undefined') Icons.replace();
+          if (typeof initReveal !== 'undefined') initReveal();
+
+          // Update the hospital count chip dynamically
+          const statEl = document.querySelector('[data-stat="hospitals"]');
+          if (statEl) {
+            statEl.setAttribute('data-count', hospitals.length);
+            statEl.textContent = hospitals.length;
+          }
         }
       } catch (err) { console.error('Hospitals load failed', err); }
     }
@@ -488,7 +586,20 @@
       }
       
       const doc = mockDoctors[selectedDoctorIndex];
-      window.location.href = 'doctor-appointment.html';
+      const nameEl = document.getElementById('modal-hospital-name');
+      let hospName = nameEl.textContent;
+      
+      // Remove welcome prefix in all supported languages
+      hospName = hospName.replace(/Welcome to |සාදරයෙන් පිළිගනිමු |வரவேற்கிறோம் /g, '').trim();
+      
+      const params = new URLSearchParams();
+      params.append('hospital', hospName);
+      params.append('docName', doc.name);
+      params.append('docSpec', doc.spec);
+      params.append('docExp', doc.exp);
+      params.append('docImg', doc.img);
+      
+      window.location.href = 'doctor-appointment.html?' + params.toString();
     }
     
     document.getElementById('hospital-connect-modal').addEventListener('click', function(e) {
@@ -496,6 +607,94 @@
         closeHospitalModal();
       }
     });
+
+    // Admin Management Functions
+    function openHospManageModal() {
+      document.getElementById('hospManageForm').reset();
+      document.getElementById('manage-hosp-id').value = '';
+      document.getElementById('manage-hosp-action').value = 'add';
+      document.getElementById('manage-hosp-title').textContent = 'Add New Partner Hospital';
+      document.getElementById('hosp-email-group').style.display = 'block';
+      document.getElementById('hosp-username-group').style.display = 'block';
+      document.getElementById('hosp-password-group').style.display = 'block';
+      document.getElementById('hosp-manage-modal').style.display = 'flex';
+    }
+
+    function closeHospManageModal() {
+      document.getElementById('hosp-manage-modal').style.display = 'none';
+    }
+
+    function editHospital(h) {
+      document.getElementById('manage-hosp-id').value = h.id;
+      document.getElementById('manage-hosp-action').value = 'update';
+      document.getElementById('manage-hosp-title').textContent = 'Edit Hospital Details';
+      document.getElementById('hosp-name').value = h.hosp_name;
+      document.getElementById('hosp-location').value = h.location || '';
+      document.getElementById('hosp-desc').value = h.description || h.contact_person || '';
+      document.getElementById('hosp-phone').value = h.phone || '';
+      document.getElementById('hosp-type').value = h.hospital_type || 'Private';
+      document.getElementById('hosp-specialties').value = h.specialties || '';
+      document.getElementById('hosp-address').value = h.address || '';
+      
+      // Hide account fields for update to keep it simple
+      document.getElementById('hosp-email-group').style.display = 'none';
+      document.getElementById('hosp-username-group').style.display = 'none';
+      document.getElementById('hosp-password-group').style.display = 'none';
+      
+      document.getElementById('hosp-manage-modal').style.display = 'flex';
+    }
+
+    async function deleteHospital(id) {
+      if (!confirm('Are you sure you want to remove this hospital?')) return;
+      try {
+        const res = await fetch('../../src/php/components/manage_hospitals.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', id: id })
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          Toast.success(json.message);
+          loadHospitals();
+        } else { Toast.error(json.message); }
+      } catch (err) { Toast.error('Delete failed'); }
+    }
+
+    async function saveHospital(e) {
+      e.preventDefault();
+      const action = document.getElementById('manage-hosp-action').value;
+      const data = {
+        action: action,
+        id: document.getElementById('manage-hosp-id').value,
+        hosp_name: document.getElementById('hosp-name').value,
+        location: document.getElementById('hosp-location').value,
+        description: document.getElementById('hosp-desc').value,
+        phone: document.getElementById('hosp-phone').value,
+        hospital_type: document.getElementById('hosp-type').value,
+        specialties: document.getElementById('hosp-specialties').value,
+        address: document.getElementById('hosp-address').value
+      };
+
+      if (action === 'add') {
+        data.email = document.getElementById('hosp-email').value;
+        data.username = document.getElementById('hosp-username').value;
+        data.password = document.getElementById('hosp-password').value || '123456';
+      }
+
+      try {
+        const res = await fetch('../../src/php/components/manage_hospitals.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+          Toast.success(json.message);
+          closeHospManageModal();
+          loadHospitals();
+        } else { Toast.error(json.message); }
+      } catch (err) { Toast.error('Save failed'); }
+    }
   </script>
 
   <script src="../../assets/js/utils.js"></script>
@@ -509,6 +708,12 @@
       initReveal();
       initSmoothScroll();
       loadHospitals();
+
+      // Show admin controls if logged in
+      const user = Auth.getUser();
+      if (user && (user.role === 'admin' || user.role === 'superadmin')) {
+        document.getElementById('admin-controls').style.display = 'block';
+      }
     });
   </script>
 </body>

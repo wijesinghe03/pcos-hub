@@ -37,11 +37,16 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals WHERE approval_status = 'pending'");
     $pending_count = $stmt->fetch()['count'];
 
+    // 6. Count Total Hospitals (any status)
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals");
+    $total_hospitals = $stmt->fetch()['count'];
+
     echo json_encode([
         'status' => 'success',
         'data' => [
             'patients' => (int)$patient_count,
             'hospitals' => (int)$hospital_count,
+            'total_hospitals' => (int)$total_hospitals,
             'reports' => (int)$total_reports,
             'admins' => (int)$admin_count,
             'pending_hospitals' => (int)$pending_count

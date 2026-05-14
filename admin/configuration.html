@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../assets/js/theme-init.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Configuration — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <style>
+        /* Layout Fixes */
+        body { overflow-x: hidden; }
+        .dashboard-layout { display: grid !important; grid-template-columns: 260px 1fr !important; }
+        .dash-main { margin-left: 0 !important; width: 100% !important; min-width: 0; }
+        .config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 24px; }
+        .config-section { background: white; border-radius: var(--radius-lg); border: 1.5px solid var(--border); padding: 24px; }
+        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--purple-deep); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .form-group-flex { display: flex; flex-direction: column; gap: 15px; }
+        .config-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .config-row:last-child { border-bottom: none; }
+        .config-info h5 { margin: 0; font-size: 0.95rem; color: var(--text-dark); }
+        .config-info p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-mid); }
+        .input-wrapper { width: 220px; }
+        .alert-banner { background: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; border-radius: var(--radius-md); margin-bottom: 24px; display: flex; gap: 15px; align-items: center; }
+        [data-theme="dark"] .config-section { background: var(--bg-card); }
+        [data-theme="dark"] .config-info h5 { color: white; }
+    </style>
+</head>
+
+<body>
+    <div id="page-loader" class="page-loader"><div class="loader-ring"></div></div>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99"></div>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
+                <div class="sidebar-logo-icon">♥</div>
+                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+            </a>
+            <div class="sidebar-profile" id="sidebarProfileCard" style="cursor:pointer">
+                <div class="sidebar-avatar" id="sidebarAvatar">AU</div>
+                <div>
+                    <div class="sidebar-name" id="sidebarName">Admin User</div>
+                    <div class="sidebar-role" id="sidebarRole">System Administrator</div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item" href="dashboard.html"><i data-icon="home"></i> Dashboard</a>
+                <a class="sidebar-item" href="analytics.html"><i data-icon="analytics"></i> Analytics</a>
+                <a class="sidebar-item" href="logs.html"><i data-icon="logs"></i> System Logs</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Management</span>
+                <a class="sidebar-item" href="patients.html"><i data-icon="users"></i> Manage Patients</a>
+                <a class="sidebar-item" href="hospitals.html"><i data-icon="hospital"></i> Manage Hospitals</a>
+                <a class="sidebar-item" href="approvals.html"><i data-icon="approve"></i> Approve Hospital</a>
+                <a class="sidebar-item" href="roles.html"><i data-icon="roles"></i> Role & Permissions</a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
+                <a class="sidebar-item active" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
+                
+                <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div class="dash-page-title">
+                    <h2>System Configuration</h2>
+                    <p id="dateDisplay">Loading...</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary" onclick="saveAllSettings()" id="saveBtn">Save All Changes</button>
+                </div>
+            </div>
+
+            <div class="alert-banner reveal">
+                <div style="font-size:1.5rem">⚠️</div>
+                <div>
+                    <h5 style="margin:0; color:#92400e;">Production Environment</h5>
+                    <p style="margin:4px 0 0; font-size:0.85rem; color:#b45309;">Changes made here will affect the live application immediately. Please be cautious.</p>
+                </div>
+            </div>
+
+            <form id="configForm">
+                <div class="config-grid">
+                    <!-- General Settings -->
+                    <div class="config-section reveal">
+                        <div class="section-title"><i>🌍</i> General Settings</div>
+                        <div class="form-group-flex">
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Application Name</h5>
+                                    <p>The display name of the platform.</p>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" name="app_name" id="app_name" class="form-control" placeholder="PCOS Care Hub">
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Support Email</h5>
+                                    <p>Primary email for patient inquiries.</p>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="email" name="support_email" id="support_email" class="form-control" placeholder="support@pcoscare.lk">
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Default Language</h5>
+                                    <p>Default interface language for new users.</p>
+                                </div>
+                                <div class="input-wrapper">
+                                    <select name="default_language" id="default_language" class="form-control">
+                                        <option value="en">English (UK)</option>
+                                        <option value="si">Sinhala</option>
+                                        <option value="ta">Tamil</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Preferences -->
+                    <div class="config-section reveal reveal-delay-1">
+                        <div class="section-title"><i>⚙️</i> System Preferences</div>
+                        <div class="form-group-flex">
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Maintenance Mode</h5>
+                                    <p>Restrict access while performing updates.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="maintenance_mode" id="maintenance_mode"><span class="slider"></span></label>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>User Registration</h5>
+                                    <p>Allow new patients to create accounts.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="user_registration" id="user_registration"><span class="slider"></span></label>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Automatic Backups</h5>
+                                    <p>Save database snapshots every 24 hours.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="auto_backups" id="auto_backups"><span class="slider"></span></label>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Debug Logging</h5>
+                                    <p>Record verbose data for troubleshooting.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="debug_logging" id="debug_logging"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="config-section reveal reveal-delay-2">
+                        <div class="section-title"><i>🔔</i> Notification Settings</div>
+                        <div class="form-group-flex">
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Email Notifications</h5>
+                                    <p>Send automated updates to users' registered emails.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="email_notifications" id="email_notifications"><span class="slider"></span></label>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Hospital Alerts</h5>
+                                    <p>Notify hospitals of new pending approvals.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="hospital_alerts" id="hospital_alerts"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="config-section reveal reveal-delay-3">
+                        <div class="section-title"><i>🛡️</i> Security Configuration</div>
+                        <div class="form-group-flex">
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Session Timeout (min)</h5>
+                                    <p>Auto-logout after period of inactivity.</p>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="number" name="session_timeout" id="session_timeout" class="form-control" value="30">
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Password Complexity</h5>
+                                    <p>Require symbols and uppercase letters.</p>
+                                </div>
+                                <div class="input-wrapper">
+                                    <select name="password_complexity" id="password_complexity" class="form-control">
+                                        <option value="basic">Basic</option>
+                                        <option value="strong">Strong (Recommended)</option>
+                                        <option value="strict">Strict</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div class="config-info">
+                                    <h5>Two-Factor Admin Login</h5>
+                                    <p>Enforce MFA for all administrative roles.</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" name="two_factor_admin" id="two_factor_admin"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/icons.js"></script>
+    <script>
+        const user = Auth.checkSession();
+        if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')), 100);
+        });
+
+        async function loadSettings() {
+            try {
+                const res = await API.call('components/system_settings_handler.php');
+                if (res.status === 'success') {
+                    const settings = res.data;
+                    for (const key in settings) {
+                        const el = document.getElementById(key);
+                        if (el) {
+                            if (el.type === 'checkbox') {
+                                el.checked = settings[key] === '1';
+                            } else {
+                                el.value = settings[key];
+                            }
+                        }
+                    }
+                } else {
+                    Toast.error('Failed to load settings');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function saveAllSettings() {
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+
+            const settings = {};
+            const form = document.getElementById('configForm');
+            const formData = new FormData(form);
+
+            // Special handling for checkboxes because FormData only includes checked ones
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                settings[cb.name] = cb.checked ? '1' : '0';
+            });
+
+            // Handling other inputs
+            form.querySelectorAll('input:not([type="checkbox"]), select').forEach(input => {
+                settings[input.name] = input.value;
+            });
+
+            try {
+                const res = await API.call('components/system_settings_handler.php', { settings });
+                if (res.status === 'success') {
+                    Toast.success('All settings saved successfully!');
+                } else {
+                    Toast.error(res.message || 'Failed to save settings');
+                }
+            } catch (e) {
+                Toast.error('Network error occurred');
+            } finally {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            }
+        }
+    </script>
+    <script src="../assets/js/admin-ui.js"></script>
+</body>
+</html>
+

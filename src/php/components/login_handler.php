@@ -7,13 +7,13 @@
 
 require_once '../db_connect.php';
 require_once __DIR__ . '/../utils/Logger.php';
+session_start();
 header('Content-Type: application/json');
 
 use App\Utils\Logger;
 
 function handleLogin($pdo)
 {
-
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     if (!$data || !isset($data['identity']) || !isset($data['password']) || !isset($data['role'])) {
@@ -45,6 +45,34 @@ function handleLogin($pdo)
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
+            // Check if this is an admin and if 2FA is required
+            if ($role === 'admin') {
+                // Generate 6-digit MFA code
+                $mfaCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $expiresAt = date('Y-m-d H:i:s', strtotime('+10 minutes'));
+
+                // Save code to database
+                $updateMfa = $pdo->prepare("UPDATE admin_users SET mfa_code = ?, mfa_expires_at = ? WHERE id = ?");
+                $updateMfa->execute([$mfaCode, $expiresAt, $user['id']]);
+
+                // Send Email
+                require_once __DIR__ . '/../utils/Mailer.php';
+                $emailSubject = "Your Administrative Verification Code";
+                $emailBody = "<p>Hello <strong>" . htmlspecialchars($user['full_name'] ?? $user['username']) . "</strong>,</p>
+                              <p>You recently attempted to sign in to the PCOS Care Hub Administrative Portal.</p>
+                              <p style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #6a11cb; text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;'>$mfaCode</p>
+                              <p>This code will expire in 10 minutes. If you did not attempt to sign in, please contact system security immediately.</p>";
+                
+                \App\Utils\Mailer::send($user['email'], $emailSubject, $emailBody);
+
+                echo json_encode([
+                    'status' => 'mfa_required',
+                    'message' => 'A verification code has been sent to your registered email.',
+                    'admin_id' => $user['id']
+                ]);
+                return;
+            }
+
             // Determine display name based on role
             $displayName = '';
             if ($role === 'hospital') {
@@ -52,6 +80,11 @@ function handleLogin($pdo)
             } else {
                 $displayName = $user['full_name'] ?? ($user['username'] ?? 'User');
             }
+
+            // Set PHP Session for backend security
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_role'] = $role;
+            $_SESSION['user_name'] = $displayName;
 
             // NEW: 30-Day Deactivation / Reactivation Logic for Patients
             if ($role === 'patient' && $user['status'] === 'deactivated') {
@@ -74,7 +107,7 @@ function handleLogin($pdo)
             }
 
             // Log Success
-            \App\Utils\Logger::log('auth', 'info', ucfirst($role) . " logged in: " . $identity, $displayName);
+            Logger::log('auth', 'info', ucfirst($role) . " logged in: " . $identity, $displayName);
 
             echo json_encode([
                 'status' => 'success',
@@ -101,12 +134,12 @@ function handleLogin($pdo)
             $reason = !$user ? 'User not found' : 'Password mismatch';
             
             // Log Failure
-            \App\Utils\Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
+            Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
             
             echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal. (Reason: ' . $reason . ')']);
         }
     } catch (PDOException $e) {
-        \App\Utils\Logger::log('database', 'error', 'Login system error: ' . $e->getMessage(), 'System');
+        Logger::log('database', 'error', 'Login system error: ' . $e->getMessage(), 'System');
         echo json_encode(['status' => 'error', 'message' => 'System error: ' . $e->getMessage()]);
     }
 }

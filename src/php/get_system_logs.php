@@ -8,35 +8,53 @@ try {
     $severity = $_GET['severity'] ?? 'all';
     $category = $_GET['category'] ?? 'all';
     $search = $_GET['search'] ?? '';
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 15;
+    $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
 
-    $query = "SELECT * FROM system_logs WHERE 1=1";
+    $queryBase = "FROM system_logs WHERE 1=1";
     $params = [];
 
     if ($severity !== 'all') {
-        $query .= " AND severity = ?";
+        $queryBase .= " AND severity = ?";
         $params[] = $severity;
     }
     if ($category !== 'all') {
-        $query .= " AND category = ?";
+        $queryBase .= " AND category = ?";
         $params[] = $category;
     }
     if ($search !== '') {
-        $query .= " AND (message LIKE ? OR log_id LIKE ? OR user_identifier LIKE ?)";
+        $queryBase .= " AND (message LIKE ? OR log_id LIKE ? OR user_identifier LIKE ?)";
         $searchParam = "%$search%";
         $params[] = $searchParam;
         $params[] = $searchParam;
         $params[] = $searchParam;
     }
 
-    $query .= " ORDER BY timestamp DESC LIMIT 50";
-    
+    // Get Total Count
+    $countStmt = $pdo->prepare("SELECT COUNT(*) " . $queryBase);
+    $countStmt->execute($params);
+    $totalCount = $countStmt->fetchColumn();
+
+    // Get Data
+    $query = "SELECT * " . $queryBase . " ORDER BY timestamp DESC LIMIT ? OFFSET ?";
     $stmt = $pdo->prepare($query);
-    $stmt->execute($params);
+    $stmt->bindValue(count($params) + 1, $limit, PDO::PARAM_INT);
+    $stmt->bindValue(count($params) + 2, $offset, PDO::PARAM_INT);
+    
+    // Bind previous params
+    for ($i = 0; $i < count($params); $i++) {
+        $stmt->bindValue($i + 1, $params[$i]);
+    }
+    
+    $stmt->execute();
     $logs = $stmt->fetchAll();
 
     echo json_encode([
         'status' => 'success',
-        'data' => $logs
+        'data' => $logs,
+        'total' => (int)$totalCount,
+        'limit' => $limit,
+        'offset' => $offset
     ]);
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

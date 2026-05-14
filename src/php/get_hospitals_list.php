@@ -9,7 +9,7 @@ try {
                COUNT(r.id) as review_count 
         FROM hospitals h 
         LEFT JOIN hospital_reviews r ON h.id = r.hospital_id 
-        WHERE h.approval_status = 'approved'
+        WHERE h.approval_status = 'approved' AND h.is_verified = 1
         GROUP BY h.id
         ORDER BY h.hosp_name ASC
     ");

@@ -1,6 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="../../assets/js/theme-init.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Appointment — PCOS Care Hub</title>
@@ -296,20 +298,8 @@
         const user = Auth.getUser();
         const isLoggedIn = Auth.isLoggedIn();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // Set min date to today
-            const today = new Date().toISOString().split('T')[0];
-            const dateInputEl = document.getElementById('appointmentDate');
-            dateInputEl.min = today;
-            dateInputEl.value = today; // default to today
-            // Ensure slots generate on date change or input
-            dateInputEl.addEventListener('change', generateTimeSlots);
-            dateInputEl.addEventListener('input', generateTimeSlots);
-            // Generate slots for default date
-            generateTimeSlots();
-
-            // Parse URL params
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Parse URL params first so we have data
             const params = new URLSearchParams(window.location.search);
             selectedHospital = params.get('hospital') || 'Selected Hospital';
             
@@ -325,16 +315,66 @@
                 img: docImg
             };
 
-            // Initialize L10n
-            L10n.init();
+            // Initialize UI elements with parsed data immediately
+            const hospDisplay = document.getElementById('hospNameDisplay');
+            const docNameDisplay = document.getElementById('docNameDisplay');
+            const docSpecDisplay = document.getElementById('docSpecDisplay');
+            const docExpDisplay = document.getElementById('docExpDisplay');
+            const docImgDisplay = document.getElementById('docImgDisplay');
 
-            document.getElementById('hospNameDisplay').textContent = (L10n.get() === 'en' ? "At " : (L10n.get() === 'si' ? "ස්ථානය: " : "இடம்: ")) + selectedHospital;
-            document.getElementById('docNameDisplay').textContent = selectedDoctor.name;
-            document.getElementById('docSpecDisplay').textContent = selectedDoctor.spec;
-            document.getElementById('docExpDisplay').textContent = selectedDoctor.exp;
-            document.getElementById('docImgDisplay').textContent = selectedDoctor.img;
-            
-            initReveal();
+            function updateDisplay() {
+                if (hospDisplay) {
+                    const prefix = (typeof L10n !== 'undefined' && L10n.get() === 'si' ? "ස්ථානය: " : (typeof L10n !== 'undefined' && L10n.get() === 'ta' ? "இடம்: " : "At "));
+                    hospDisplay.textContent = prefix + selectedHospital;
+                    hospDisplay.removeAttribute('data-i18n');
+                }
+                if (docNameDisplay) {
+                    docNameDisplay.textContent = selectedDoctor.name;
+                    docNameDisplay.removeAttribute('data-i18n');
+                }
+                if (docSpecDisplay) {
+                    docSpecDisplay.textContent = selectedDoctor.spec;
+                    docSpecDisplay.removeAttribute('data-i18n');
+                }
+                if (docExpDisplay) {
+                    docExpDisplay.textContent = selectedDoctor.exp;
+                    docExpDisplay.removeAttribute('data-i18n');
+                }
+                if (docImgDisplay) {
+                    docImgDisplay.textContent = selectedDoctor.img;
+                    docImgDisplay.removeAttribute('data-i18n');
+                }
+            }
+
+            // Initial update
+            updateDisplay();
+
+            // Global Inits
+            try {
+                if (typeof L10n !== 'undefined') {
+                    L10n.init();
+                    // Update again after L10n init in case language changed
+                    updateDisplay();
+                }
+            } catch (e) { console.error('L10n init failed', e); }
+
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            const dateInputEl = document.getElementById('appointmentDate');
+            if (dateInputEl) {
+                dateInputEl.min = today;
+                dateInputEl.value = today;
+                dateInputEl.addEventListener('change', generateTimeSlots);
+                dateInputEl.addEventListener('input', generateTimeSlots);
+            }
+
+            // Generate slots for default date
+            await generateTimeSlots();
+
+            // One final update to be absolutely sure
+            updateDisplay();
+
+            if (typeof initReveal === 'function') initReveal();
 
             // Auto-restore pending booking if user just logged in
             if (user) {
@@ -347,25 +387,23 @@
                         document.getElementById('appointmentContact').value = data.contact;
                         document.getElementById('appointmentReason').value = data.reason;
                         
-                        // We must wait for slots to generate before we can select the time
-                        generateTimeSlots().then(() => {
-                            const timeElements = document.querySelectorAll('.time-slot');
-                            let found = false;
-                            timeElements.forEach(el => {
-                                // Extract time text and convert or simply use the fact we matched it
-                                // It's easier to just match against selectedTime in bookAppointment since we can set it manually
-                            });
-                            
-                            // Let's just set the selectedTime variable directly and update UI manually
-                            selectedTime = data.time;
-                            document.getElementById('bookBtn').disabled = false;
-                            
-                            // Automatically submit the booking after restoring state
-                            Toast.info('Restoring and confirming your booking...');
-                            setTimeout(() => {
-                                bookAppointment();
-                            }, 500);
+                        await generateTimeSlots();
+                        
+                        selectedTime = data.time;
+                        // Find the matching slot and highlight it
+                        const slots = document.querySelectorAll('.time-slot');
+                        slots.forEach(slot => {
+                            if (slot.getAttribute('onclick')?.includes(selectedTime)) {
+                                slot.classList.add('selected');
+                            }
                         });
+
+                        document.getElementById('bookBtn').disabled = false;
+                        
+                        Toast.info('Restoring and confirming your booking...');
+                        setTimeout(() => {
+                            bookAppointment();
+                        }, 500);
                         
                         sessionStorage.removeItem('pendingBooking');
                     } catch (e) {
@@ -379,18 +417,23 @@
         let takenSlotsCache = {};
 
         async function fetchTakenSlots(date) {
-            // Ideally call API to check booked slots for this doctor on this date
-            // For now, let's randomly mock a few booked slots to demonstrate UI
-            if (takenSlotsCache[date]) return takenSlotsCache[date];
-            
-            // Just randomly selecting 2 slots to be "booked" for UI testing
-            const possible = ['09:30', '10:00', '11:30', '14:00', '15:30'];
-            const booked = [];
-            if(Math.random() > 0.3) booked.push(possible[Math.floor(Math.random() * possible.length)]);
-            if(Math.random() > 0.5) booked.push(possible[Math.floor(Math.random() * possible.length)]);
-            
-            takenSlotsCache[date] = booked;
-            return booked;
+            try {
+                const res = await API.call('components/appointment_handler.php', {
+                    action: 'get_taken_slots',
+                    doctor_name: selectedDoctor.name,
+                    hospital_name: selectedHospital,
+                    appointment_date: date
+                });
+
+                if (res.status === 'success') {
+                    // Normalize times (HH:MM:SS to HH:MM)
+                    return (res.data || []).map(t => t.substring(0, 5));
+                }
+                return [];
+            } catch (err) {
+                console.error('Failed to fetch taken slots', err);
+                return [];
+            }
         }
 
         async function generateTimeSlots() {
@@ -518,15 +561,20 @@
             try {
                 const res = await API.call('components/appointment_handler.php', payload);
                 if (res.status === 'success') {
-                    // Show custom success modal
-                    document.getElementById('successModal').style.display = 'flex';
+                    // If user is logged in, redirect to dashboard
+                    if (user && user.id) {
+                        window.location.href = 'appointments.html';
+                    } else {
+                        // Show custom success modal for guest users
+                        document.getElementById('successModal').style.display = 'flex';
+                    }
                 } else {
                     // Show error from backend (concurrency check or daily limit)
                     Toast.error(res.message || 'Failed to book appointment.');
                     btn.disabled = false;
                     btn.textContent = 'Confirm Booking';
                     // Re-fetch slots to update UI if it was booked
-                    generateTimeSlots(); 
+                    generateTimeSlots();
                 }
             } catch (e) {
                 Toast.error('An error occurred while booking.');

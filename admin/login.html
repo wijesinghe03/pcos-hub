@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="../assets/js/theme-init.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Login — PCOS Care Hub</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♥</text></svg>">
+    <style>
+        body { 
+            background: var(--bg-light); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            font-family: var(--font-body); 
+        }
+        .super-admin-card { 
+            background: var(--white); 
+            padding: 3rem; 
+            border-radius: var(--radius-xl); 
+            box-shadow: var(--shadow-xl); 
+            text-align: center; 
+            max-width: 440px; 
+            width: 90%; 
+            border: 1.5px solid var(--border); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .admin-icon-wrap { 
+            width: 80px; 
+            height: 80px; 
+            background: var(--purple-ghost); 
+            border-radius: var(--radius-lg); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 1.5rem; 
+        }
+        .brand-logo-text {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--purple-deep);
+            margin-bottom: 0.5rem;
+        }
+        .brand-logo-text span {
+            color: var(--purple-primary);
+        }
+        .subtitle { 
+            color: var(--text-mid); 
+            margin-bottom: 2.5rem; 
+            font-size: 0.95rem; 
+        }
+        .form-group { text-align: left; margin-bottom: 1.5rem; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
+        .input-wrap { position: relative; }
+        .input-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 1.1rem; }
+        .form-control { 
+            width: 100%; 
+            padding: 0.85rem 1rem 0.85rem 2.8rem; 
+            border: 2px solid var(--border); 
+            border-radius: var(--radius-md); 
+            font-size: 1rem; 
+            transition: var(--transition); 
+            box-sizing: border-box; 
+            background: var(--bg-light); 
+        }
+        .form-control:focus { 
+            outline: none; 
+            border-color: var(--purple-primary); 
+            background: var(--white); 
+            box-shadow: 0 0 0 4px var(--purple-pale); 
+        }
+        .login-btn { 
+            background: linear-gradient(135deg, var(--purple-primary), var(--purple-deep)); 
+            color: var(--white); 
+            border: none; 
+            padding: 1rem; 
+            border-radius: var(--radius-md); 
+            font-size: 1rem; 
+            font-weight: 800; 
+            width: 100%; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            margin-top: 1rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            box-shadow: var(--shadow-md);
+        }
+        .login-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--purple-mid), var(--purple-primary));
+        }
+        .login-btn:active { transform: translateY(0); }
+        .login-btn:disabled { background: var(--text-light); cursor: not-allowed; opacity: 0.7; }
+        .back-link { margin-top: 2rem; display: block; color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: var(--transition); }
+        .back-link:hover { color: var(--purple-primary); text-decoration: underline; }
+        .footer-note { margin-top: 2.5rem; font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+        
+        /* MFA UI */
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .mfa-code-inputs { display: flex; justify-content: center; gap: 10px; margin: 1.5rem 0; }
+        .mfa-input { width: 48px; height: 58px; text-align: center; font-size: 1.6rem; font-weight: 800; border: 2px solid var(--border); border-radius: var(--radius-md); background: var(--bg-light); color: var(--purple-deep); }
+        .mfa-input:focus { border-color: var(--purple-primary); outline: none; box-shadow: 0 0 0 4px var(--purple-pale); background: var(--white); }
+        .resend-link { font-size: 0.85rem; color: var(--purple-primary); cursor: pointer; display: inline-block; margin-top: 1rem; font-weight: 700; }
+    </style>
+</head>
+
+<body>
+    <div class="super-admin-card">
+        <div class="admin-icon-wrap">
+            <div style="font-size:2.5rem; color:var(--purple-primary); line-height:1;">♥</div>
+        </div>
+        <div class="brand-logo-text"><span>PCOS</span> Care Hub</div>
+        <p class="subtitle" id="formSubtitle">Super Administrator Authentication</p>
+
+        <!-- Step 1: Credentials -->
+        <div id="step1" class="step active">
+            <form id="adminLoginForm" onsubmit="handleSuperAdminLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="username" class="form-control" placeholder="Enter username" required autocomplete="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                </div>
+                <button type="submit" id="submitBtn" class="login-btn">
+                    <span>Access Management</span>
+                    <span>➜</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Step 2: MFA Code -->
+        <div id="step2" class="step">
+            <div style="margin-bottom: 2rem;">
+                <p style="font-size: 0.9rem; color: var(--text-mid);">We've sent a 6-digit verification code to your registered email address.</p>
+            </div>
+            <form id="mfaForm" onsubmit="handleMfaVerify(event)">
+                <div class="mfa-code-inputs">
+                    <input type="text" maxlength="1" class="mfa-input" id="m1" onkeyup="moveFocus(this, 'm2')">
+                    <input type="text" maxlength="1" class="mfa-input" id="m2" onkeyup="moveFocus(this, 'm3')">
+                    <input type="text" maxlength="1" class="mfa-input" id="m3" onkeyup="moveFocus(this, 'm4')">
+                    <input type="text" maxlength="1" class="mfa-input" id="m4" onkeyup="moveFocus(this, 'm5')">
+                    <input type="text" maxlength="1" class="mfa-input" id="m5" onkeyup="moveFocus(this, 'm6')">
+                    <input type="text" maxlength="1" class="mfa-input" id="m6" onkeyup="moveFocus(this, null)">
+                </div>
+                <button type="submit" id="verifyBtn" class="login-btn">
+                    <span>Verify & Continue</span>
+                    <span>✓</span>
+                </button>
+            </form>
+            <div class="resend-link" onclick="resendCode()">Resend Verification Code</div>
+            <div style="margin-top: 15px;">
+                <a href="#" onclick="toggleStep(1)" style="font-size: 0.85rem; color: var(--text-light); text-decoration: none; font-weight: 600;">← Back to login</a>
+            </div>
+        </div>
+
+        <a href="../src/pages/index.html" class="back-link">← Return to Main Site</a>
+        <div class="footer-note">Secure Administrative Layer</div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script>
+        let currentAdminId = null;
+
+        function toggleStep(stepNum) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
+            if (stepNum === 2) {
+                document.getElementById('formSubtitle').textContent = 'Two-Factor Authentication';
+                setTimeout(() => document.getElementById('m1').focus(), 300);
+            } else {
+                document.getElementById('formSubtitle').textContent = 'Super Administrator Authentication';
+            }
+        }
+
+        function moveFocus(current, nextId) {
+            if (current.value.length >= 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        async function handleSuperAdminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('submitBtn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<span>Verifying...</span>';
+            btn.disabled = true;
+
+            try {
+                const response = await API.call('components/login_handler.php', {
+                    identity: username,
+                    password: password,
+                    role: 'admin'
+                });
+
+                if (response.status === 'mfa_required') {
+                    currentAdminId = response.admin_id;
+                    Toast.success(response.message);
+                    toggleStep(2);
+                } else if (response.status === 'success') {
+                    Auth.login(response.user);
+                    Toast.success('Login Successful.');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1000);
+                } else {
+                    Toast.error(response.message || 'Invalid credentials');
+                }
+            } catch (error) {
+                Toast.error('System error. Access denied.');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+
+        async function handleMfaVerify(e) {
+            e.preventDefault();
+            const code = ['m1','m2','m3','m4','m5','m6'].map(id => document.getElementById(id).value).join('');
+            if (code.length < 6) {
+                Toast.warning('Please enter the full 6-digit code.');
+                return;
+            }
+
+            const btn = document.getElementById('verifyBtn');
+            btn.innerHTML = '<span>Verifying Code...</span>';
+            btn.disabled = true;
+
+            try {
+                const res = await API.call('components/mfa_handler.php', {
+                    admin_id: currentAdminId,
+                    code: code
+                });
+
+                if (res.status === 'success') {
+                    Auth.login(res.user);
+                    Toast.success('Authentication Verified. Access Granted.');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1000);
+                } else {
+                    Toast.error(res.message || 'Invalid verification code.');
+                    ['m1','m2','m3','m4','m5','m6'].forEach(id => document.getElementById(id).value = '');
+                    document.getElementById('m1').focus();
+                }
+            } catch (e) {
+                Toast.error('Verification failed. Try again.');
+            } finally {
+                btn.innerHTML = '<span>Verify & Continue</span><span>✓</span>';
+                btn.disabled = false;
+            }
+        }
+
+        function resendCode() {
+            Toast.info('Sending new code...');
+            handleSuperAdminLogin({ preventDefault: () => {} });
+        }
+    </script>
+    <script src="../assets/js/admin-ui.js"></script>
+</body>
+
+</html>
