@@ -1,9 +1,11 @@
 <?php
 
+session_start();
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
-
+require_once 'utils/AuthHelper.php';
+\App\Utils\AuthHelper::requireAdmin();
 try {
     \App\Utils\Logger::log('system', 'info', 'System activity logs viewed by administrator', 'LogViewer');
     $severity = $_GET['severity'] ?? 'all';
@@ -11,10 +13,8 @@ try {
     $search = $_GET['search'] ?? '';
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 15;
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
-
     $queryBase = "FROM system_logs WHERE 1=1";
     $params = [];
-
     if ($severity !== 'all') {
         $queryBase .= " AND severity = ?";
         $params[] = $severity;
@@ -35,8 +35,7 @@ try {
     $countStmt = $pdo->prepare("SELECT COUNT(*) " . $queryBase);
     $countStmt->execute($params);
     $totalCount = $countStmt->fetchColumn();
-
-    // Get Data
+// Get Data
     $query = "SELECT * " . $queryBase . " ORDER BY timestamp DESC LIMIT ? OFFSET ?";
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(count($params) + 1, $limit, PDO::PARAM_INT);
@@ -49,7 +48,6 @@ try {
 
     $stmt->execute();
     $logs = $stmt->fetchAll();
-
     echo json_encode([
         'status' => 'success',
         'data' => $logs,

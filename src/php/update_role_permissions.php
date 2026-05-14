@@ -1,8 +1,13 @@
 <?php
 
+session_start();
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
+
 header('Content-Type: application/json');
+
+require_once 'utils/AuthHelper.php';
+\App\Utils\AuthHelper::requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);

@@ -6,7 +6,7 @@ class Logger
 {
     private static $pdo = null;
 
-    private static function init()
+    private static function init(): void
     {
         if (self::$pdo === null) {
             $host = 'localhost';
@@ -28,7 +28,7 @@ class Logger
         }
     }
 
-    public static function log($category, $severity, $message, $user = 'System')
+    public static function log(string $category, string $severity, string $message, string $user = 'System'): void
     {
         self::init();
         if (self::$pdo === null) {

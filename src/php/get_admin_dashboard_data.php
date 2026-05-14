@@ -1,13 +1,15 @@
 <?php
 
+session_start();
 require_once 'db_connect.php';
 header('Content-Type: application/json');
+require_once 'utils/AuthHelper.php';
+\App\Utils\AuthHelper::requireAdmin();
 try {
-    // 1. Pending Hospital Approvals (from staging table)
+// 1. Pending Hospital Approvals (from staging table)
     $stmt = $pdo->query("SELECT id, hosp_name, location, approval_status FROM registered_hospitals WHERE approval_status = 'pending' ORDER BY id DESC LIMIT 5");
     $pending_hospitals = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // 2. Recent Users (Patients + Registered Hospitals)
+// 2. Recent Users (Patients + Registered Hospitals)
     $stmt = $pdo->query("
         (SELECT 'Patient' as role, full_name COLLATE utf8mb4_unicode_ci as name, email COLLATE utf8mb4_unicode_ci as email, created_at, 'active' as status FROM patients)
         UNION
@@ -15,8 +17,7 @@ try {
         ORDER BY created_at DESC LIMIT 5
     ");
     $recent_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // 3. All Approved Hospitals (unified view)
+// 3. All Approved Hospitals (unified view)
     $stmt = $pdo->query("
         SELECT id, hosp_name, location, created_at, approval_status 
         FROM registered_hospitals 
@@ -24,11 +25,9 @@ try {
         ORDER BY hosp_name ASC LIMIT 10
     ");
     $all_hospitals = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // 4. Recent System Logs
+// 4. Recent System Logs
     $stmt = $pdo->query("SELECT * FROM system_logs ORDER BY timestamp DESC LIMIT 10");
     $recent_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     echo json_encode([
         'status' => 'success',
         'data' => [

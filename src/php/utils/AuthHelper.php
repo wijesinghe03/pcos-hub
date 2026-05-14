@@ -13,17 +13,17 @@ class AuthHelper
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+
         $role = $_SESSION['user_role'] ?? '';
         $adminRoles = ['admin', 'superadmin', 'Super Admin', 'Admin'];
-        
+
         return in_array($role, $adminRoles);
     }
 
     /**
      * Rejects the request if the user is not an admin.
      */
-    public static function requireAdmin()
+    public static function requireAdmin(): void
     {
         if (!self::isAdmin()) {
             header('Content-Type: application/json');

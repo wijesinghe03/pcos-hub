@@ -1,8 +1,11 @@
 <?php
 
+session_start();
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
+require_once 'utils/AuthHelper.php';
+\App\Utils\AuthHelper::requireAdmin();
 try {
     \App\Utils\Logger::log('system', 'info', 'Analytics data engine queried for dashboard metrics', 'AnalyticsEngine');
 // 1. User Growth (Last 6 Months)
