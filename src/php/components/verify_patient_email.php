@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Verify Patient Email OTP (verify_patient_email.php)
  * Validates the OTP, creates the patient account, and returns a session.

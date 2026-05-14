@@ -1,20 +1,18 @@
 <?php
+
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
-
 try {
     \App\Utils\Logger::log('system', 'info', 'Analytics data engine queried for dashboard metrics', 'AnalyticsEngine');
-    // 1. User Growth (Last 6 Months)
+// 1. User Growth (Last 6 Months)
     $growth_data = [];
     for ($i = 5; $i >= 0; $i--) {
         $month = date('Y-m', strtotime("-$i months"));
         $month_label = date('M', strtotime("-$i months"));
-        
         $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM patients WHERE created_at <= LAST_DAY(STR_TO_DATE(?, '%Y-%m-01'))");
         $stmt->execute([$month]);
         $count = $stmt->fetch()['count'];
-        
         $growth_data[] = [
             'label' => $month_label,
             'count' => (int)$count
@@ -24,18 +22,14 @@ try {
     // 2. User Distribution
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM patients");
     $p_count = $stmt->fetch()['count'];
-    
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals");
     $h_count = $stmt->fetch()['count'];
-    
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM admin_users");
     $a_count = $stmt->fetch()['count'];
-
-    // 3. Regional Distribution (Mocking based on locations if data exists, otherwise spreading)
+// 3. Regional Distribution (Mocking based on locations if data exists, otherwise spreading)
     $stmt = $pdo->query("SELECT location, COUNT(*) as count FROM hospitals GROUP BY location ORDER BY count DESC LIMIT 5");
     $locations = $stmt->fetchAll();
-
-    // 4. Hospital Performance Directory (All hospitals with reviews/appointments)
+// 4. Hospital Performance Directory (All hospitals with reviews/appointments)
     $stmt = $pdo->query("
         SELECT 
             h.id, 
@@ -52,21 +46,17 @@ try {
         LIMIT 20
     ");
     $top_hospitals = $stmt->fetchAll();
-
-    // 5. Engagement Metrics (Appointments vs Reviews over time)
+// 5. Engagement Metrics (Appointments vs Reviews over time)
     $engagement_data = [];
     for ($i = 5; $i >= 0; $i--) {
         $month = date('Y-m', strtotime("-$i months"));
         $month_label = date('M', strtotime("-$i months"));
-        
         $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM patient_appointments WHERE DATE_FORMAT(created_at, '%Y-%m') = ?");
         $stmt->execute([$month]);
         $apps = $stmt->fetch()['count'];
-
         $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM hospital_reviews WHERE DATE_FORMAT(created_at, '%Y-%m') = ?");
         $stmt->execute([$month]);
         $revs = $stmt->fetch()['count'];
-        
         $engagement_data[] = [
             'label' => $month_label,
             'appointments' => (int)$apps,
@@ -77,10 +67,8 @@ try {
     // 6. High-level Summary Metrics
     $stmt = $pdo->query("SELECT COUNT(*) FROM hospital_reviews");
     $total_reviews = $stmt->fetchColumn();
-    
     $stmt = $pdo->query("SELECT COUNT(DISTINCT patient_id) FROM patient_appointments");
     $active_engaged_patients = $stmt->fetchColumn();
-
     echo json_encode([
         'status' => 'success',
         'data' => [

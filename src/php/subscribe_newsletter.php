@@ -75,10 +75,9 @@ try {
     if ($sent) {
         echo json_encode(['status' => 'success', 'message' => 'Subscribed successfully! Check your inbox for a welcome email.']);
     } else {
-        // Even if email fails, they are saved in the DB now. 
+        // Even if email fails, they are saved in the DB now.
         echo json_encode(['status' => 'success', 'message' => 'Subscribed successfully! (Note: Welcome email could not be sent)']);
     }
-
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
 } catch (Error $e) {

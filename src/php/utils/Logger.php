@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Utils;
 
-class Logger {
+class Logger
+{
     private static $pdo = null;
 
-    private static function init() {
+    private static function init()
+    {
         if (self::$pdo === null) {
             $host = 'localhost';
             $db   = 'pcos_hub';
@@ -25,9 +28,12 @@ class Logger {
         }
     }
 
-    public static function log($category, $severity, $message, $user = 'System') {
+    public static function log($category, $severity, $message, $user = 'System')
+    {
         self::init();
-        if (self::$pdo === null) return;
+        if (self::$pdo === null) {
+            return;
+        }
 
         $log_id = 'LOG-' . mt_rand(1000, 9999);
         $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';

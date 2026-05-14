@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Session Logout Handler (logout_handler.php)
  * Destroys the PHP session on the server side.

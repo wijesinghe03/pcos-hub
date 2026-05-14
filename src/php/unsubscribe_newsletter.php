@@ -38,7 +38,6 @@ try {
     $stmt->execute([$email]);
 
     echo json_encode(['status' => 'success', 'message' => 'You have been successfully unsubscribed.']);
-
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'An error occurred. Please try again.']);
 }

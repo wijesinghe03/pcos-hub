@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: application/json');
 require_once '../db_connect.php';
 
@@ -24,13 +25,15 @@ try {
 
             $stmt = $pdo->prepare("INSERT INTO hospitals (hosp_name, location, email, username, password, reg_number, description, phone, hospital_type, specialties, address, approval_status, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved', 1)");
             $stmt->execute([$name, $location, $email, $username, $password, $reg, $desc, $phone, $type, $specs, $address]);
-            
+
             echo json_encode(['status' => 'success', 'message' => 'Hospital added successfully']);
             break;
 
         case 'update':
             $id = $data['id'] ?? null;
-            if (!$id) throw new Exception('Hospital ID missing');
+            if (!$id) {
+                throw new Exception('Hospital ID missing');
+            }
 
             $name = $data['hosp_name'] ?? '';
             $location = $data['location'] ?? '';
@@ -48,7 +51,9 @@ try {
 
         case 'delete':
             $id = $data['id'] ?? null;
-            if (!$id) throw new Exception('Hospital ID missing');
+            if (!$id) {
+                throw new Exception('Hospital ID missing');
+            }
 
             $stmt = $pdo->prepare("DELETE FROM hospitals WHERE id = ?");
             $stmt->execute([$id]);

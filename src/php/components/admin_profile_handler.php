@@ -98,7 +98,9 @@ if ($method === 'GET') {
         $fileName = 'admin_' . $adminId . '_' . time() . '.' . $ext;
         $baseDir = dirname(dirname(dirname(__DIR__)));
         $targetDir = $baseDir . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'profiles' . DIRECTORY_SEPARATOR;
-        if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
         $targetPath = $targetDir . $fileName;
         $dbPath = 'uploads/profiles/' . $fileName;
         if (move_uploaded_file($file['tmp_name'], $targetPath)) {

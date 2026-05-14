@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Send Patient Email Verification (send_verification.php)
  * Saves pending signup data and sends a 6-digit OTP to the patient's email.

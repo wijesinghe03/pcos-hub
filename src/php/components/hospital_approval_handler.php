@@ -50,7 +50,7 @@ try {
 
         if ($hosp) {
             \App\Utils\Logger::log('hospital', 'info', "Hospital approved: " . $hosp['hosp_name'], 'Admin');
-            
+
             try {
                 require_once '../utils/Mailer.php';
                 $emailBody = "

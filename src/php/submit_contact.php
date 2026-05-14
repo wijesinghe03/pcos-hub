@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><strong>Subject:</strong> $subject</p>
             <p><strong>Message:</strong><br>$message</p>
         ";
-        
+
         $adminSent = Mailer::send($adminEmail, "New Contact Message: $subject", $adminBody);
         if (!$adminSent) {
             error_log("Failed to send admin notification email for contact submission from $email");

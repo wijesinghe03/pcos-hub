@@ -1,4 +1,5 @@
 <?php
+
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
@@ -32,12 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $role_name_stmt = $pdo->prepare("SELECT name FROM roles WHERE id = ?");
         $role_name_stmt->execute([$role_id]);
         $role_name = $role_name_stmt->fetchColumn();
-        
+
         \App\Utils\Logger::log('system', 'info', "Updated permissions for role: $role_name", 'PermissionManager');
 
         $pdo->commit();
         echo json_encode(['status' => 'success', 'message' => 'Permissions updated successfully.']);
-
     } catch (Exception $e) {
         $pdo->rollBack();
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

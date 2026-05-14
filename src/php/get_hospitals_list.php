@@ -1,7 +1,7 @@
 <?php
+
 require_once 'db_connect.php';
 header('Content-Type: application/json');
-
 try {
     $stmt = $pdo->query("
         SELECT h.*, 
@@ -14,7 +14,6 @@ try {
         ORDER BY h.hosp_name ASC
     ");
     $hospitals = $stmt->fetchAll();
-
     echo json_encode([
         'status' => 'success',
         'data' => $hospitals

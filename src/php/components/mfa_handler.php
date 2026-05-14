@@ -1,4 +1,5 @@
 <?php
+
 /**
  * mfa_handler.php
  * Handles verification of 2FA codes for administrators.

@@ -1,4 +1,5 @@
 <?php
+
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
@@ -17,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'delete') {
             $stmt = $pdo->prepare("DELETE FROM patients WHERE id = ?");
             $stmt->execute([$id]);
-            
+
             \App\Utils\Logger::log('patient', 'warning', "Patient ID $id has been deleted from the system", 'PatientManager');
-            
+
             echo json_encode(['status' => 'success', 'message' => 'Patient record removed successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid action.']);

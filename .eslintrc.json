@@ -9,11 +9,13 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "globals": {
+    "globals": {
     "Theme": "readonly",
     "Auth": "readonly",
     "Toast": "readonly",
     "L10n": "readonly",
+    "API": "readonly",
+    "Icons": "readonly",
     "PageLoader": "readonly",
     "Stats": "readonly",
     "initNavbar": "readonly",

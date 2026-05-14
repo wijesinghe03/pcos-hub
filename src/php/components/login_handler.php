@@ -62,7 +62,7 @@ function handleLogin($pdo)
                               <p>You recently attempted to sign in to the PCOS Care Hub Administrative Portal.</p>
                               <p style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #6a11cb; text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;'>$mfaCode</p>
                               <p>This code will expire in 10 minutes. If you did not attempt to sign in, please contact system security immediately.</p>";
-                
+
                 \App\Utils\Mailer::send($user['email'], $emailSubject, $emailBody);
 
                 echo json_encode([
@@ -132,10 +132,10 @@ function handleLogin($pdo)
             ]);
         } else {
             $reason = !$user ? 'User not found' : 'Password mismatch';
-            
+
             // Log Failure
             Logger::log('auth', 'warning', "Failed login attempt for " . $role . " (" . $identity . "): " . $reason, 'AuthGuard');
-            
+
             echo json_encode(['status' => 'error', 'message' => 'Invalid credentials for ' . $role . ' portal. (Reason: ' . $reason . ')']);
         }
     } catch (PDOException $e) {

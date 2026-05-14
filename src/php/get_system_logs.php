@@ -1,4 +1,5 @@
 <?php
+
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
@@ -40,12 +41,12 @@ try {
     $stmt = $pdo->prepare($query);
     $stmt->bindValue(count($params) + 1, $limit, PDO::PARAM_INT);
     $stmt->bindValue(count($params) + 2, $offset, PDO::PARAM_INT);
-    
+
     // Bind previous params
     for ($i = 0; $i < count($params); $i++) {
         $stmt->bindValue($i + 1, $params[$i]);
     }
-    
+
     $stmt->execute();
     $logs = $stmt->fetchAll();
 

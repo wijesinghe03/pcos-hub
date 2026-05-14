@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Fetch Blogs (get_blogs.php)
  * Fetches all blogs or a specific blog by ID.
@@ -14,7 +15,7 @@ try {
         $stmt = $pdo->prepare("SELECT * FROM blogs WHERE id = ?");
         $stmt->execute([$id]);
         $blog = $stmt->fetch();
-        
+
         if ($blog) {
             echo json_encode(['status' => 'success', 'data' => $blog]);
         } else {

@@ -15,7 +15,8 @@ require_once __DIR__ . '/../db_connect.php';
 $method = $_SERVER['REQUEST_METHOD'];
 
 /* ── Helper: find patient by id or email ── */
-function resolvePatient($pdo, $patientId, $patientEmail): ?array {
+function resolvePatient($pdo, $patientId, $patientEmail): ?array
+{
     if ($patientId) {
         $s = $pdo->prepare("SELECT id, full_name, email FROM patients WHERE id = ? LIMIT 1");
         $s->execute([$patientId]);
@@ -27,7 +28,8 @@ function resolvePatient($pdo, $patientId, $patientEmail): ?array {
 }
 
 /* ── Helper: ensure prefs row exists ── */
-function ensurePrefsRow($pdo, $patientId): void {
+function ensurePrefsRow($pdo, $patientId): void
+{
     $pdo->prepare(
         "INSERT IGNORE INTO patient_notification_prefs (patient_id) VALUES (?)"
     )->execute([$patientId]);

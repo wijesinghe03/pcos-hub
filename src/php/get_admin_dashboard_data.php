@@ -1,13 +1,12 @@
 <?php
+
 require_once 'db_connect.php';
 header('Content-Type: application/json');
-
 try {
-    // 1. Pending Hospital Approvals
+// 1. Pending Hospital Approvals
     $stmt = $pdo->query("SELECT id, hosp_name, location, approval_status FROM hospitals WHERE approval_status = 'pending' ORDER BY id DESC LIMIT 5");
     $pending_hospitals = $stmt->fetchAll();
-
-    // 2. Recent Users (Patients + Hospitals)
+// 2. Recent Users (Patients + Hospitals)
     // We combine them for the dashboard view
     $stmt = $pdo->query("
         (SELECT 'Patient' as role, full_name as name, email, created_at, status FROM patients)
@@ -16,15 +15,12 @@ try {
         ORDER BY created_at DESC LIMIT 5
     ");
     $recent_users = $stmt->fetchAll();
-
-    // 3. Registered Hospitals (Approved)
+// 3. Registered Hospitals (Approved)
     $stmt = $pdo->query("SELECT id, hosp_name, location, created_at, approval_status FROM hospitals WHERE approval_status = 'approved' ORDER BY hosp_name ASC LIMIT 10");
     $all_hospitals = $stmt->fetchAll();
-
-    // 4. Recent System Logs
+// 4. Recent System Logs
     $stmt = $pdo->query("SELECT * FROM system_logs ORDER BY timestamp DESC LIMIT 10");
     $recent_logs = $stmt->fetchAll();
-
     echo json_encode([
         'status' => 'success',
         'data' => [

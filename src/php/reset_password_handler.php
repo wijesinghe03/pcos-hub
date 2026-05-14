@@ -30,9 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Determine target table
         $table = '';
         switch ($role) {
-            case 'patient': $table = 'patients'; break;
-            case 'hospital': $table = 'hospitals'; break;
-            case 'admin': $table = 'admin_users'; break;
+            case 'patient':
+                $table = 'patients';
+                break;
+            case 'hospital':
+                $table = 'hospitals';
+                break;
+            case 'admin':
+                $table = 'admin_users';
+                break;
             default:
                 echo json_encode(['status' => 'error', 'message' => 'Invalid role.']);
                 exit;
@@ -53,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to update password. Please try again.']);
         }
-
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => 'An error occurred: ' . $e->getMessage()]);
     }

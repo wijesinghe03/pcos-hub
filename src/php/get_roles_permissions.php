@@ -1,4 +1,5 @@
 <?php
+
 require_once 'db_connect.php';
 header('Content-Type: application/json');
 
@@ -20,7 +21,7 @@ try {
     // 2. Get all permissions grouped by category
     $perms_stmt = $pdo->query("SELECT * FROM permissions ORDER BY category ASC, id ASC");
     $all_permissions = $perms_stmt->fetchAll();
-    
+
     $grouped_permissions = [];
     foreach ($all_permissions as $p) {
         $grouped_permissions[$p['category']][] = $p;
@@ -29,7 +30,7 @@ try {
     // 3. Get mapping of role_id to permission_id
     $mapping_stmt = $pdo->query("SELECT role_id, permission_id FROM role_permissions");
     $mapping = $mapping_stmt->fetchAll();
-    
+
     $role_perms_map = [];
     foreach ($mapping as $m) {
         $role_perms_map[$m['role_id']][] = (int)$m['permission_id'];
@@ -43,7 +44,6 @@ try {
             'role_permissions' => $role_perms_map
         ]
     ]);
-
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }

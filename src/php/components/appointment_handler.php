@@ -1,8 +1,9 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-ini_set('error_log', __DIR__.'/error.log');
+ini_set('error_log', __DIR__ . '/error.log');
 
 /**
  * PCOS CARE HUB — Appointment Handler (appointment_handler.php)
@@ -107,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $stmt = $pdo->prepare("SELECT appointment_time FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
             $stmt->execute([$doctor, $hosp, $date]);
             $taken = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            
+
             echo json_encode(['status' => 'success', 'data' => $taken]);
         } catch (PDOException $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

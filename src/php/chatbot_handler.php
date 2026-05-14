@@ -1,4 +1,5 @@
 <?php
+
 // ============================================================
 // PCOS CARE HUB — AI Chatbot Handler (chatbot_handler.php)
 // ============================================================
@@ -46,7 +47,7 @@ if ($userId) {
         $stmt = $pdo->prepare("SELECT message, sender FROM chatbot_history WHERE user_id = ? AND user_role = ? ORDER BY created_at DESC LIMIT 10");
         $stmt->execute([$userId, $userRole]);
         $history = array_reverse($stmt->fetchAll());
-        
+
         foreach ($history as $chat) {
             $contents[] = [
                 "role" => ($chat['sender'] === 'user' ? 'user' : 'model'),
@@ -95,8 +96,8 @@ curl_close($ch);
 if ($httpCode !== 200) {
     $errRes = json_decode($response, true);
     echo json_encode([
-        'status' => 'error', 
-        'message' => 'AI Service unavailable.', 
+        'status' => 'error',
+        'message' => 'AI Service unavailable.',
         'error' => $errRes['error']['message'] ?? 'Unknown error'
     ]);
     exit;
@@ -110,7 +111,7 @@ if ($userId) {
     try {
         $stmt = $pdo->prepare("INSERT INTO chatbot_history (user_id, user_role, message, sender) VALUES (?, ?, ?, 'user')");
         $stmt->execute([$userId, $userRole, $userMessage]);
-        
+
         $stmt = $pdo->prepare("INSERT INTO chatbot_history (user_id, user_role, message, sender) VALUES (?, ?, ?, 'bot')");
         $stmt->execute([$userId, $userRole, $botResponse]);
     } catch (Exception $e) {

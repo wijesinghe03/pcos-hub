@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PCOS CARE HUB — Admin Blog Management (manage_blogs.php)
  * Handles Create, Update, and Delete operations for blogs, including image uploads.
@@ -48,9 +49,11 @@ if ($method === 'POST') {
                 if (in_array($ext, $allowed)) {
                     $fileName = 'blog_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
                     $targetDir = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'blog' . DIRECTORY_SEPARATOR;
-                    
-                    if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
-                    
+
+                    if (!is_dir($targetDir)) {
+                        mkdir($targetDir, 0777, true);
+                    }
+
                     if (move_uploaded_file($file['tmp_name'], $targetDir . $fileName)) {
                         $imageUrl = 'uploads/blog/' . $fileName;
                     }
@@ -108,4 +111,3 @@ if ($method === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-

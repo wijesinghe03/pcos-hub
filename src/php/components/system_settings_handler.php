@@ -1,4 +1,5 @@
 <?php
+
 /**
  * system_settings_handler.php
  * Handles retrieving and updating global system settings.
@@ -39,15 +40,15 @@ if ($method === 'GET') {
     try {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("UPDATE system_settings SET setting_value = ? WHERE setting_key = ?");
-        
+
         foreach ($data['settings'] as $key => $value) {
             $stmt->execute([$value, $key]);
         }
-        
+
         $pdo->commit();
-        
+
         Logger::log('system', 'info', 'System settings updated by Admin ID: ' . $_SESSION['user_id'], $_SESSION['user_name']);
-        
+
         echo json_encode(['status' => 'success', 'message' => 'Settings updated successfully.']);
     } catch (PDOException $e) {
         $pdo->rollBack();

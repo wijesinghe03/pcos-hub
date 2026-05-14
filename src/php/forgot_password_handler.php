@@ -20,9 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Determine target table and column
     $table = '';
     switch ($role) {
-        case 'patient': $table = 'patients'; break;
-        case 'hospital': $table = 'hospitals'; break;
-        case 'admin': $table = 'admin_users'; break;
+        case 'patient':
+            $table = 'patients';
+            break;
+        case 'hospital':
+            $table = 'hospitals';
+            break;
+        case 'admin':
+            $table = 'admin_users';
+            break;
         default:
             echo json_encode(['status' => 'error', 'message' => 'Invalid role selected.']);
             exit;
@@ -35,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if (!$user) {
-            // For security, don't reveal if user exists. 
-            // But usually for UX, we might say if it's not found. 
+            // For security, don't reveal if user exists.
+            // But usually for UX, we might say if it's not found.
             // The requirement says "recognize the email address" if username is entered.
             echo json_encode(['status' => 'error', 'message' => 'No account found with that email or username.']);
             exit;
@@ -55,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Send Email
         $resetLink = "http://" . $_SERVER['HTTP_HOST'] . "/pcos-hub/src/pages/reset-password.html?token=$token&email=" . urlencode($email) . "&role=$role";
-        
+
         $subject = "Reset Your PCOS Care Hub Password";
         $body = "
             <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
@@ -79,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to send email. Please contact support.']);
         }
-
     } catch (Exception $e) {
         echo json_encode(['status' => 'error', 'message' => 'An error occurred: ' . $e->getMessage()]);
     }

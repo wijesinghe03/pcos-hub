@@ -1,4 +1,5 @@
 <?php
+
 require_once 'db_connect.php';
 require_once __DIR__ . '/utils/Logger.php';
 header('Content-Type: application/json');
@@ -19,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // For now, simple delete
             $stmt = $pdo->prepare("DELETE FROM hospitals WHERE id = ?");
             $stmt->execute([$id]);
-            
+
             \App\Utils\Logger::log('hospital', 'warning', "Hospital ID $id has been removed from the platform by administrator", 'HospitalManager');
-            
+
             echo json_encode(['status' => 'success', 'message' => 'Hospital record removed successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid action requested.']);
