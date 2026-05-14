@@ -181,6 +181,10 @@
         });
 
         if (response.status === 'success') {
+          // Store hospital data in localStorage for dashboard hydration
+          if (role === 'hospital' && response.user) {
+            try { localStorage.setItem('hospitalUser', JSON.stringify(response.user)); } catch(e) {}
+          }
           Auth.login(response.user);
           Toast.success(response.message || 'Login successful! Redirecting...');
           setTimeout(() => {
@@ -198,9 +202,14 @@
               window.location.href = pages[response.user.role] || 'patient-dashboard.html';
             }
           }, 1000);
+        } else if (response.status === 'pending_approval') {
+          Toast.warning(response.message || 'Your hospital account is pending admin approval.');
+        } else if (response.status === 'rejected') {
+          Toast.error(response.message || 'Your hospital application was not approved.');
         } else {
           Toast.error(response.message || 'Invalid credentials');
         }
+
       } catch (error) {
         Toast.error('Server error. Please try again later.');
       } finally {

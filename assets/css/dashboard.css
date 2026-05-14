@@ -37,20 +37,45 @@
 [data-theme="dark"] .topbar-search,
 [data-theme="dark"] .sidebar-profile,
 [data-theme="dark"] .settings-section,
-[data-theme="dark"] .card {
-  background: var(--bg-card);
-  border-color: var(--border);
+[data-theme="dark"] .card,
+[data-theme="dark"] .filter-bar,
+[data-theme="dark"] .logs-filter-bar,
+[data-theme="dark"] .hospital-card,
+[data-theme="dark"] .approval-detail-panel,
+[data-theme="dark"] .config-section {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
   color: var(--text-dark);
 }
 
 [data-theme="dark"] .dash-table th {
-  background: var(--purple-ghost);
+  background: rgba(123, 63, 190, 0.1);
   color: var(--text-mid);
 }
 
 [data-theme="dark"] .dash-table td {
   border-bottom-color: var(--border);
   color: var(--text-dark);
+}
+
+[data-theme="dark"] .dash-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .panel-header {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .activity-item {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .activity-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .stat-card-value {
+  color: white;
 }
 
 .sidebar-logo {

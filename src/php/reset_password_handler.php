@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $table = 'patients';
                 break;
             case 'hospital':
-                $table = 'hospitals';
+                $table = 'registered_hospitals';
                 break;
             case 'admin':
                 $table = 'admin_users';

@@ -17,6 +17,13 @@
         .user-avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: var(--purple-mid); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
         .filter-bar { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; background: white; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid var(--border); }
         .filter-item { flex: 1; min-width: 200px; }
+
+        /* Dark Mode Overrides */
+        [data-theme="dark"] .filter-bar {
+            background: var(--bg-card);
+            border-color: rgba(255,255,255,0.1);
+        }
+        [data-theme="dark"] .user-avatar-sm { background: rgba(123, 63, 190, 0.2); }
     </style>
 </head>
 
@@ -29,7 +36,7 @@
 
     <div class="dashboard-layout">
         <!-- SIDEBAR -->
-                <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar">
             <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
@@ -58,7 +65,6 @@
                 <span class="sidebar-section-label">System</span>
                 <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
                 <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
-                
                 <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
             </div>
         </aside>
@@ -71,7 +77,7 @@
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" onclick="Toast.info('Patients can register via the main sign-up page.')"><i>➕</i> Registration Info</button>
+                    <!-- Removed Registration Info button -->
                 </div>
             </div>
 
@@ -220,4 +226,3 @@
     <script src="../assets/js/admin-ui.js"></script>
 </body>
 </html>
-

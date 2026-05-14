@@ -28,9 +28,9 @@ function handleLogin($pdo)
 
     // Determine which table to search based on Role
     $tableMap = [
-        'patient' => 'patients',
-        'hospital' => 'hospitals',
-        'admin' => 'admin_users'
+        'patient'  => 'patients',
+        'hospital' => 'registered_hospitals',
+        'admin'    => 'admin_users'
     ];
     if (!isset($tableMap[$role])) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid role path.']);
@@ -73,6 +73,18 @@ function handleLogin($pdo)
                 return;
             }
 
+            // Hospital-specific: block if rejected only; pending hospitals can still access their dashboard
+            if ($role === 'hospital') {
+                $approvalStatus = $user['approval_status'] ?? 'pending';
+                if ($approvalStatus === 'rejected') {
+                    $reason = !empty($user['rejection_reason']) ? ' Reason: ' . $user['rejection_reason'] : '';
+                    echo json_encode(['status' => 'rejected', 'message' => 'Your hospital application was not approved.' . $reason]);
+                    return;
+                }
+                // 'pending' hospitals can log in — they just won't appear in the public directory yet
+            }
+
+
             // Determine display name based on role
             $displayName = '';
             if ($role === 'hospital') {
@@ -82,9 +94,14 @@ function handleLogin($pdo)
             }
 
             // Set PHP Session for backend security
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id']   = $user['id'];
             $_SESSION['user_role'] = $role;
             $_SESSION['user_name'] = $displayName;
+            // Extra hospital session keys
+            if ($role === 'hospital') {
+                $_SESSION['hospital_id']   = $user['id'];
+                $_SESSION['hospital_name'] = $user['hosp_name'] ?? $displayName;
+            }
 
             // NEW: 30-Day Deactivation / Reactivation Logic for Patients
             if ($role === 'patient' && $user['status'] === 'deactivated') {

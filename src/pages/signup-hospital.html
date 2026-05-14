@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -108,12 +108,122 @@
       transform: translateY(-2px);
       box-shadow: 0 10px 24px rgba(123,63,190,.5);
     }
+
+    /* ── OTP Overlay ──────────────────────────────────────── */
+    .otp-overlay {
+      position: fixed; inset: 0;
+      background: rgba(15,9,26,.78);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    .otp-overlay.active { opacity: 1; pointer-events: all; }
+    .otp-card {
+      background: var(--bg-card, #fff);
+      border-radius: 24px;
+      padding: 48px 40px 40px;
+      max-width: 440px; width: 90%;
+      box-shadow: 0 24px 80px rgba(52,152,219,.4);
+      border: 1px solid var(--border, #e5e7eb);
+      text-align: center;
+      transform: translateY(30px) scale(.97);
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
+      position: relative;
+    }
+    .otp-overlay.active .otp-card { transform: translateY(0) scale(1); }
+    .otp-icon-wrap {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg,#3498db,#2980b9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 22px;
+      box-shadow: 0 8px 24px rgba(52,152,219,.35);
+    }
+    .otp-card h2 { font-size: 1.5rem; color: var(--text-dark,#1f2937); margin-bottom: 10px; }
+    .otp-card p  { font-size: .92rem; color: var(--text-mid,#6b7280); margin-bottom: 8px; line-height:1.6; }
+    .otp-email-badge {
+      display: inline-block;
+      background: rgba(52,152,219,.12); color: #1a5f8a;
+      font-weight: 700; font-size: .85rem;
+      padding: 5px 16px; border-radius: 20px; margin-bottom: 28px;
+    }
+    .otp-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; }
+    .otp-digit {
+      width: 52px; height: 58px;
+      border: 2px solid var(--border,#e5e7eb);
+      border-radius: 12px; font-size: 1.6rem; font-weight: 700;
+      text-align: center; background: var(--input-bg,#fff);
+      color: var(--text-dark,#1f2937);
+      transition: border-color .2s, box-shadow .2s; outline: none;
+    }
+    .otp-digit:focus { border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,.15); }
+    .otp-digit.filled { border-color: #3498db; background: rgba(52,152,219,.07); }
+    .otp-verify-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg,#3498db,#2980b9);
+      color: white; border: none; border-radius: 50px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: all .2s; box-shadow: 0 6px 20px rgba(52,152,219,.35);
+      margin-bottom: 16px; font-family: inherit;
+    }
+    .otp-verify-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(52,152,219,.45); }
+    .otp-verify-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .otp-footer { font-size: .85rem; color: var(--text-light,#9ca3af); }
+    .otp-resend-btn {
+      color: #3498db; font-weight: 700; cursor: pointer;
+      background: none; border: none; font-size: .85rem;
+      font-family: inherit; padding: 0; text-decoration: underline;
+    }
+    .otp-resend-btn:hover { color: #2980b9; }
+    .otp-timer { display: inline-block; color: #e67e22; font-weight: 700; font-size: .85rem; min-width: 36px; }
+    .otp-back-btn {
+      position: absolute; top: 18px; left: 20px;
+      background: none; border: none; color: var(--text-light,#9ca3af);
+      font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 4px;
+      transition: color .2s;
+    }
+    .otp-back-btn:hover { color: #3498db; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-8px); }
+      40%     { transform: translateX(8px); }
+      60%     { transform: translateX(-6px); }
+      80%     { transform: translateX(6px); }
+    }
   </style>
 </head>
 
 <body>
   <div id="page-loader" class="page-loader">
     <div class="loader-ring"></div>
+  </div>
+
+  <!-- ── OTP Verification Overlay ───────────────────────────── -->
+  <div class="otp-overlay" id="otpOverlay" role="dialog" aria-modal="true">
+    <div class="otp-card" id="otpCard">
+      <button class="otp-back-btn" id="otpBackBtn" onclick="closeOtpOverlay()" title="Go back">&#8592;</button>
+      <div class="otp-icon-wrap" id="otpIconWrap">✉️</div>
+      <h2>Verify Hospital Email</h2>
+      <p>We've sent a 6-digit verification code to:</p>
+      <div class="otp-email-badge" id="otpEmailDisplay">your@hospital.com</div>
+      <p style="font-size:.85rem;margin-bottom:22px;">Enter the code below to continue your registration.</p>
+      <div class="otp-inputs" id="otpInputsGroup">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp0" autocomplete="one-time-code" aria-label="Digit 1">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp1" aria-label="Digit 2">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp2" aria-label="Digit 3">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp3" aria-label="Digit 4">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp4" aria-label="Digit 5">
+        <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" id="hotp5" aria-label="Digit 6">
+      </div>
+      <button class="otp-verify-btn" id="otpVerifyBtn" onclick="verifyHospitalOtp()" disabled>Verify &amp; Continue</button>
+      <div id="otpMsg" style="display:none;font-size:.84rem;font-weight:600;margin:8px 0;padding:10px 14px;border-radius:10px;text-align:center;"></div>
+      <div class="otp-footer">
+        Code expires in <span class="otp-timer" id="otpTimer">15:00</span>&nbsp;|&nbsp;
+        Didn't receive it? <button class="otp-resend-btn" id="otpResendBtn" onclick="resendHospitalOtp()">Resend Code</button>
+      </div>
+    </div>
   </div>
 
   <!-- ── Pending Approval Overlay ─────────────────────────── -->
@@ -354,6 +464,10 @@
   <script>
     /* ── File selection helpers ─────────────────────────────── */
     var selectedFiles = [];
+    var pendingEmail = '';
+    var otpTimerInterval = null;
+    var resendCooldown  = null;
+    var timerSeconds    = 15 * 60;
 
     function handleFileSelect(input) {
       var newFiles = Array.from(input.files);
@@ -394,57 +508,202 @@
       renderFileList();
     });
 
-    /* ── Form submission ────────────────────────────────────── */
+    /* ── Form Submission → Send OTP ─────────────────────────── */
     async function handleHospitalSignup(e) {
       e.preventDefault();
-
       var pw1 = document.getElementById('pw1').value;
       var pw2 = document.getElementById('pw2').value;
       if (pw1 !== pw2) { Toast.error('Passwords do not match!'); return; }
 
+      if (selectedFiles.length === 0) {
+        Toast.error('Please upload at least one approval document.');
+        var zone = document.getElementById('uploadZone');
+        if (zone) {
+          zone.style.borderColor = '#e74c3c';
+          zone.scrollIntoView({behavior: 'smooth', block: 'center'});
+          setTimeout(function() { zone.style.borderColor = ''; }, 3000);
+        }
+        return;
+      }
+
       var submitBtn = document.getElementById('submitBtn');
-      submitBtn.textContent = 'Submitting Application…';
+      submitBtn.textContent = 'Sending Verification Code…';
       submitBtn.disabled = true;
 
-      // Build multipart FormData
       var fd = new FormData();
-      fd.append('hosp_name',      document.getElementById('hosp_name').value);
-      fd.append('username',       document.getElementById('username').value);
-      fd.append('email',          document.getElementById('email').value);
-      fd.append('password',       pw1);
-      fd.append('reg_number',     document.getElementById('reg_num').value);
-      fd.append('phone',          document.getElementById('phone').value);
-      fd.append('address',        document.getElementById('address').value);
-      fd.append('location',       document.getElementById('location').value);
-      fd.append('contact_person', document.getElementById('cfname').value + ' ' + document.getElementById('clname').value);
-      fd.append('hospital_type',  document.getElementById('hospital_type').value);
-      fd.append('specialties',    document.getElementById('specialties').value);
-
-      // Attach selected documents
+      fd.append('hosp_name',     document.getElementById('hosp_name').value);
+      fd.append('username',      document.getElementById('username').value);
+      fd.append('email',         document.getElementById('email').value);
+      fd.append('password',      pw1);
+      fd.append('reg_number',    document.getElementById('reg_num').value);
+      fd.append('phone',         document.getElementById('phone').value);
+      fd.append('address',       document.getElementById('address').value);
+      fd.append('location',      document.getElementById('location').value);
+      fd.append('contact_fname', document.getElementById('cfname').value);
+      fd.append('contact_lname', document.getElementById('clname').value);
+      fd.append('hospital_type', document.getElementById('hospital_type').value);
+      fd.append('specialties',   document.getElementById('specialties').value);
       selectedFiles.forEach(function(f) { fd.append('approval_documents[]', f); });
 
       try {
-        var res = await fetch('../../src/php/components/hospital_signup_handler.php', {
-          method: 'POST',
-          body: fd
-        });
+        var res  = await fetch('../../src/php/components/hospital_signup_handler.php', { method:'POST', body:fd });
         var data = await res.json();
-
-        if (data.status === 'pending') {
-          // Show the approval overlay instead of redirecting
-          document.getElementById('approvalOverlay').classList.add('show');
-        } else if (data.status === 'error') {
-          Toast.error(data.message || 'Registration failed.');
+        if (data.status === 'otp_sent') {
+          pendingEmail = document.getElementById('email').value;
+          openOtpOverlay(pendingEmail);
         } else {
-          Toast.success('Hospital registered successfully!');
+          Toast.error(data.message || 'Registration failed.');
         }
-      } catch (err) {
+      } catch(err) {
         Toast.error('Registration failed. Please check your connection.');
       } finally {
         submitBtn.textContent = 'Create Hospital Account';
         submitBtn.disabled = false;
       }
     }
+
+    /* ── OTP Overlay open/close ──────────────────────────────────────────────────────── */
+    function openOtpOverlay(email) {
+      pendingEmail = email;
+      document.getElementById('otpEmailDisplay').textContent = email;
+      document.getElementById('otpOverlay').classList.add('active');
+      initOtpDigits();
+      setTimeout(function(){ var el=document.getElementById('hotp0'); if(el) el.focus(); }, 100);
+      startOtpTimer();
+      enableResendAfterDelay();
+    }
+    function closeOtpOverlay() {
+      document.getElementById('otpOverlay').classList.remove('active');
+      clearInterval(otpTimerInterval);
+      clearInterval(resendCooldown);
+      resetOtpInputs();
+    }
+    var _otpInited = false;
+    function initOtpDigits() {
+      if(_otpInited) return; _otpInited = true;
+      var ids = ['hotp0','hotp1','hotp2','hotp3','hotp4','hotp5'];
+      ids.forEach(function(id, index) {
+        var input = document.getElementById(id); if(!input) return;
+        input.addEventListener('input', function() {
+          showOtpMsg('',''); // clear any previous errors when typing
+          this.value = this.value.replace(/\D/g,'').slice(-1);
+          this.classList.toggle('filled', !!this.value);
+          if(this.value && index < 5){ var n=document.getElementById(ids[index+1]); if(n) n.focus(); }
+          checkOtpComplete();
+        });
+        input.addEventListener('keydown', function(e) {
+          if(e.key==='Backspace' && !this.value && index > 0){
+            var p=document.getElementById(ids[index-1]);
+            if(p){ p.value=''; p.classList.remove('filled'); p.focus(); } checkOtpComplete();
+          }
+        });
+        input.addEventListener('paste', function(e) {
+          e.preventDefault();
+          var pasted=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+          pasted.split('').forEach(function(ch,i){ var el=document.getElementById(ids[i]); if(el){el.value=ch;el.classList.add('filled');} });
+          var last=document.getElementById(ids[Math.min(pasted.length,5)]); if(last) last.focus();
+          checkOtpComplete();
+        });
+      });
+    }
+    function getOtpValue() {
+      return ['hotp0','hotp1','hotp2','hotp3','hotp4','hotp5']
+        .map(function(id){ var el=document.getElementById(id); return el ? el.value : ''; }).join('');
+    }
+    function checkOtpComplete() {
+      var btn=document.getElementById('otpVerifyBtn'); if(btn) btn.disabled = getOtpValue().length !== 6;
+    }
+    function resetOtpInputs() {
+      ['hotp0','hotp1','hotp2','hotp3','hotp4','hotp5'].forEach(function(id){
+        var el=document.getElementById(id); if(el){ el.value=''; el.classList.remove('filled'); }
+      });
+      var btn=document.getElementById('otpVerifyBtn');
+      if(btn){ btn.disabled=true; btn.textContent='Verify & Continue'; btn.style.background=''; }
+      var icon=document.getElementById('otpIconWrap'); if(icon) icon.textContent='✉️';
+    }
+    function showOtpMsg(msg, type) {
+      var el=document.getElementById('otpMsg'); if(!el) return;
+      if(!msg){ el.style.display='none'; return; }
+      el.textContent=msg;
+      el.style.color = type==='error' ? '#e74c3c' : '#27AE60';
+      el.style.background = type==='error' ? 'rgba(231,76,60,.1)' : 'rgba(39,174,96,.1)';
+      el.style.display='block';
+    }
+    /* ── Timer */
+    function startOtpTimer() {
+      timerSeconds=15*60; clearInterval(otpTimerInterval); updateTimerDisplay();
+      otpTimerInterval=setInterval(function(){
+        timerSeconds--; updateTimerDisplay();
+        if(timerSeconds<=0){
+          clearInterval(otpTimerInterval);
+          var el=document.getElementById('otpTimer'); if(el){el.textContent='Expired';el.style.color='#e74c3c';}
+          var btn=document.getElementById('otpVerifyBtn'); if(btn) btn.disabled=true;
+          showOtpMsg('Verification code expired. Please request a new one.','error');
+        }
+      },1000);
+    }
+    function updateTimerDisplay(){
+      var m=String(Math.floor(timerSeconds/60)).padStart(2,'0'), s=String(timerSeconds%60).padStart(2,'0');
+      var el=document.getElementById('otpTimer');
+      if(el){ el.textContent=m+':'+s; el.style.color=timerSeconds<60?'#e74c3c':'#e67e22'; }
+    }
+    /* ── Resend */
+    function enableResendAfterDelay(){
+      var btn=document.getElementById('otpResendBtn'); if(!btn) return;
+      btn.disabled=true; var secs=30; btn.textContent='Resend Code ('+secs+'s)';
+      resendCooldown=setInterval(function(){
+        secs--; btn.textContent='Resend Code ('+secs+'s)';
+        if(secs<=0){ clearInterval(resendCooldown); btn.disabled=false; btn.textContent='Resend Code'; }
+      },1000);
+    }
+    async function resendHospitalOtp(){
+      var btn=document.getElementById('otpResendBtn'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
+      var fd=new FormData();
+      ['hosp_name','username','reg_num','phone','address','location','cfname','clname','hospital_type','specialties'].forEach(function(id){
+        var el=document.getElementById(id); if(el) fd.append(id==='reg_num'?'reg_number':id==='cfname'?'contact_fname':id==='clname'?'contact_lname':id, el.value);
+      });
+      fd.append('email', pendingEmail);
+      fd.append('password', (document.getElementById('pw1')||{}).value||'');
+      try{
+        var res=await fetch('../../src/php/components/hospital_signup_handler.php',{method:'POST',body:fd});
+        var data=await res.json();
+        if(data.status==='otp_sent'){ showOtpMsg('New code sent! Check your email.','success'); resetOtpInputs(); startOtpTimer(); enableResendAfterDelay(); }
+        else{ showOtpMsg(data.message||'Failed to resend. Try again.','error'); if(btn){btn.disabled=false;btn.textContent='Resend Code';} }
+      }catch(err){ showOtpMsg('Network error. Please try again.','error'); if(btn){btn.disabled=false;btn.textContent='Resend Code';} }
+    }
+    /* ── Verify OTP */
+    async function verifyHospitalOtp(){
+      var otp=getOtpValue();
+      if(otp.length!==6){ showOtpMsg('Please enter all 6 digits.','error'); return; }
+      var btn=document.getElementById('otpVerifyBtn');
+      if(btn){ btn.textContent='Verifying…'; btn.disabled=true; }
+      showOtpMsg('','');
+      try{
+        var res=await fetch('../../src/php/components/verify_hospital_email.php',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({email:pendingEmail, otp:otp})
+        });
+        var data=await res.json();
+        if(data.status==='success'){
+          clearInterval(otpTimerInterval);
+          var icon=document.getElementById('otpIconWrap'); if(icon) icon.textContent='✅';
+          if(btn){ btn.textContent='✓ Verified! Opening Dashboard…'; btn.style.background='linear-gradient(135deg,#27AE60,#1a7a42)'; btn.disabled=false; }
+          if(data.hospital){ try{localStorage.setItem('hospitalUser',JSON.stringify(data.hospital));}catch(e){} }
+          showOtpMsg('Email verified! Redirecting to your dashboard…','success');
+          setTimeout(function(){ window.location.href='hospital-dashboard.html'; },1500);
+        }else if(data.status==='expired'){
+          showOtpMsg('Verification code expired. Please sign up again.','error');
+          if(btn){ btn.textContent='Verify & Continue'; btn.disabled=true; }
+        }else{
+          showOtpMsg(data.message||'Incorrect code. Please try again.','error');
+          var g=document.getElementById('otpInputsGroup');
+          if(g){ g.style.animation='none'; void g.offsetHeight; g.style.animation='shake .4s ease'; }
+          resetOtpInputs();
+          setTimeout(function(){ var el=document.getElementById('hotp0'); if(el) el.focus(); },50);
+        }
+      }catch(err){ showOtpMsg('Network error. Please check your connection.','error'); if(btn){btn.textContent='Verify & Continue';btn.disabled=false;} }
+    }
+
 
     function togglePw(id, btn) {
       var input = document.getElementById(id);

@@ -17,6 +17,38 @@
         .hospital-icon-sm { width: 36px; height: 36px; border-radius: 8px; background: var(--purple-ghost); color: var(--purple-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
         .filter-bar { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; background: white; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid var(--border); }
         .filter-item { flex: 1; min-width: 200px; }
+
+        /* Modal Styles */
+        .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 9999; align-items: center; justify-content: center; }
+        .modal-backdrop.show { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 32px; width: 92%; max-width: 600px; box-shadow: 0 20px 50px rgba(0,0,0,.2); animation: slideUp .3s ease; max-height: 90vh; overflow-y: auto; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .modal-title { font-size: 1.25rem; font-weight: 700; color: var(--purple-deep); }
+        .close-modal { cursor: pointer; font-size: 1.5rem; color: var(--text-light); }
+        .detail-row { display: flex; margin-bottom: 12px; gap: 15px; }
+        .detail-label { width: 130px; font-weight: 600; color: var(--text-mid); font-size: 0.9rem; }
+        .detail-val { flex: 1; color: var(--text-dark); font-size: 0.9rem; }
+        .tag-source { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; font-weight: 700; }
+        .tag-directory { background: #e0f2fe; color: #0369a1; }
+        .tag-registered { background: #fef3c7; color: #92400e; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
+
+        /* Dark Mode Overrides */
+        [data-theme="dark"] .filter-bar,
+        [data-theme="dark"] .modal-box {
+            background: var(--bg-card);
+            border-color: rgba(255,255,255,0.1);
+        }
+        [data-theme="dark"] .hospital-icon-sm { background: rgba(123, 63, 190, 0.1); color: white; }
+        [data-theme="dark"] .modal-title,
+        [data-theme="dark"] .detail-val,
+        [data-theme="dark"] .form-label { color: white; }
+        [data-theme="dark"] .detail-label { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .modal-header { border-color: rgba(255,255,255,0.1); }
+        [data-theme="dark"] .tag-source.tag-directory { background: rgba(14, 165, 233, 0.1); color: #7dd3fc; }
+        [data-theme="dark"] .tag-source.tag-registered { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
     </style>
 </head>
 
@@ -29,7 +61,7 @@
 
     <div class="dashboard-layout">
         <!-- SIDEBAR -->
-                <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar">
             <a href="../index.html" class="sidebar-logo" title="Go to PCOS Care Hub homepage">
                 <div class="sidebar-logo-icon">♥</div>
                 <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
@@ -58,7 +90,6 @@
                 <span class="sidebar-section-label">System</span>
                 <a class="sidebar-item" href="profile.html"><i data-icon="user"></i> My Profile</a>
                 <a class="sidebar-item" href="configuration.html"><i data-icon="settings"></i> Configuration</a>
-                
                 <a class="sidebar-item" href="logout.html"><i data-icon="logout"></i> Logout</a>
             </div>
         </aside>
@@ -71,7 +102,7 @@
                     <p id="dateDisplay">Loading...</p>
                 </div>
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" onclick="Toast.info('New hospitals can apply via the partner registration page.')"><i>➕</i> Registration Info</button>
+                    <button class="btn btn-primary" onclick="openAddModal()"><i>➕</i> Add New Hospital</button>
                 </div>
             </div>
 
@@ -104,6 +135,7 @@
                         <thead>
                             <tr>
                                 <th>Hospital Details</th>
+                                <th>Source</th>
                                 <th>Joined Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -116,6 +148,55 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal-backdrop" id="detailsModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title">Hospital Details</div>
+                <div class="close-modal" onclick="closeModal()">×</div>
+            </div>
+            <div id="modalContent">
+                <!-- Dynamic Content -->
+            </div>
+            <div style="margin-top:20px; display:flex; gap:10px;">
+                <button class="btn btn-outline" style="flex:1" onclick="closeModal()">Close</button>
+                <button class="btn btn-danger" id="modalDeleteBtn" style="flex:1; background:var(--red-accent); color:white; border:none;">Delete Hospital</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Hospital Modal -->
+    <div class="modal-backdrop" id="addModal">
+        <div class="modal-box" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title">Add New Hospital</div>
+                <div class="close-modal" onclick="closeAddModal()">×</div>
+            </div>
+            <form id="addHospitalForm">
+                <div class="form-group">
+                    <label class="form-label">Hospital Name</label>
+                    <input type="text" class="form-control" name="hosp_name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location / City</label>
+                    <input type="text" class="form-control" name="location" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Registration Number</label>
+                    <input type="text" class="form-control" name="reg_number" required>
+                </div>
+                <div style="margin-top:20px; display:flex; gap:10px;">
+                    <button type="button" class="btn btn-outline" style="flex:1" onclick="closeAddModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex:1">Add Hospital</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="toast-container" id="toast-container"></div>
@@ -139,14 +220,15 @@
             const tableBody = document.getElementById('hospitalTableBody');
             tableBody.innerHTML = '';
 
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-light);">No hospitals found.</td></tr>';
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-light);">No hospitals found.</td></tr>';
                 return;
             }
 
             data.forEach(h => {
-                const date = new Date(h.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+                const date = h.created_at ? new Date(h.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : 'N/A';
                 const statusClass = h.approval_status === 'approved' ? 'badge-green' : (h.approval_status === 'pending' ? 'badge-orange' : 'badge-red');
+                const sourceTag = h.source === 'directory' ? '<span class="tag-source tag-directory">Public</span>' : '<span class="tag-source tag-registered">Staging</span>';
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -159,24 +241,50 @@
                             </div>
                         </div>
                     </td>
+                    <td>${sourceTag}</td>
                     <td class="td-light">${date}</td>
                     <td><span class="badge ${statusClass}">${h.approval_status}</span></td>
                     <td>
-                        <button class="btn btn-outline btn-sm" onclick="Toast.info('Hospital Details: ${h.hosp_name}')">Manage</button>
-                        <button class="btn btn-icon btn-sm" style="color:var(--red-accent)" onclick="deleteHospital(${h.id})">🗑️</button>
+                        <button class="btn btn-outline btn-sm" onclick="viewDetails(${h.id}, '${h.source}')">Manage</button>
+                        <button class="btn btn-icon btn-sm" style="color:var(--red-accent)" onclick="deleteHospital(${h.id}, '${h.source}')">🗑️</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        async function deleteHospital(id) {
+        function viewDetails(id, source) {
+            const h = hospitalList.find(x => x.id == id && x.source == source);
+            if (!h) return;
+
+            const content = `
+                <div class="detail-row"><div class="detail-label">Hospital Name</div><div class="detail-val" style="font-weight:700">${h.hosp_name}</div></div>
+                <div class="detail-row"><div class="detail-label">Email</div><div class="detail-val">${h.email}</div></div>
+                <div class="detail-row"><div class="detail-label">Phone</div><div class="detail-val">${h.phone || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">License No.</div><div class="detail-val">${h.reg_number}</div></div>
+                <div class="detail-row"><div class="detail-label">Location</div><div class="detail-val">${h.location || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">Address</div><div class="detail-val">${h.address || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">Contact Person</div><div class="detail-val">${h.contact_person || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">Type</div><div class="detail-val">${h.hospital_type || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">Specialties</div><div class="detail-val">${h.specialties || 'N/A'}</div></div>
+                <div class="detail-row"><div class="detail-label">System Source</div><div class="detail-val"><span class="tag-source tag-${h.source}">${h.source}</span></div></div>
+            `;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalDeleteBtn').onclick = () => { closeModal(); deleteHospital(id, source); };
+            document.getElementById('detailsModal').classList.add('show');
+        }
+
+        function closeModal() { document.getElementById('detailsModal').classList.remove('show'); }
+        function openAddModal() { document.getElementById('addModal').classList.add('show'); }
+        function closeAddModal() { document.getElementById('addModal').classList.remove('show'); }
+
+        async function deleteHospital(id, source) {
             if (confirm('Are you sure you want to PERMANENTLY remove this hospital from the directory?')) {
                 try {
                     const res = await fetch('../src/php/manage_hospital_actions.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: id, action: 'delete' })
+                        body: JSON.stringify({ id: id, action: 'delete', source: source })
                     });
                     const json = await res.json();
                     if (json.status === 'success') {
@@ -190,13 +298,14 @@
         function filterHospitals() {
             const search = document.getElementById('hospitalSearch').value.toLowerCase();
             const status = document.getElementById('statusFilter').value;
-
             const filtered = hospitalList.filter(h => {
-                const matchSearch = h.hosp_name.toLowerCase().includes(search) || (h.location && h.location.toLowerCase().includes(search)) || String(h.id).includes(search);
+                const matchSearch = h.hosp_name.toLowerCase().includes(search) || 
+                                    (h.location && h.location.toLowerCase().includes(search)) || 
+                                    String(h.id).includes(search) ||
+                                    (h.email && h.email.toLowerCase().includes(search));
                 const matchStatus = status === 'all' || h.approval_status === status;
                 return matchSearch && matchStatus;
             });
-
             renderHospitals(filtered);
         }
 
@@ -206,19 +315,51 @@
             renderHospitals(hospitalList);
         }
 
+        document.getElementById('addHospitalForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.from_rows(formData); // Note: I'll use a simple conversion
+            const payload = {};
+            formData.forEach((value, key) => payload[key] = value);
+            payload.action = 'add';
+
+            try {
+                const res = await fetch('../src/php/manage_hospital_actions.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+                if (json.status === 'success') {
+                    Toast.success('Hospital added successfully!');
+                    closeAddModal();
+                    loadHospitals();
+                    e.target.reset();
+                } else { Toast.error(json.message); }
+            } catch (err) { Toast.error('Failed to add hospital'); }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             loadHospitals();
             
+            // Check for action=add in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'add') {
+                openAddModal();
+            }
+
             const spCard = document.getElementById('sidebarProfileCard');
             if (spCard) {
                 spCard.addEventListener('click', function() {
                     window.location.href = 'profile.html';
                 }, true);
             }
+            
+            document.getElementById('detailsModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+            document.getElementById('addModal').addEventListener('click', function(e) { if (e.target === this) closeAddModal(); });
         });
     </script>
     <script src="../assets/js/icons.js"></script>
     <script src="../assets/js/admin-ui.js"></script>
 </body>
 </html>
-

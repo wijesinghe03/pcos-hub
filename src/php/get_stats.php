@@ -33,23 +33,28 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM admin_users");
     $admin_count = $stmt->fetch()['count'];
 
-    // 5. Count Pending Hospitals
-    $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals WHERE approval_status = 'pending'");
+    // 5. Count Pending Hospital Applications (self-signup, awaiting admin review)
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM registered_hospitals WHERE approval_status = 'pending'");
     $pending_count = $stmt->fetch()['count'];
 
-    // 6. Count Total Hospitals (any status)
+    // 6. Count Total Hospitals (public directory only, approved)
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM hospitals");
     $total_hospitals = $stmt->fetch()['count'];
+
+    // 7. Count total registered applications (all statuses)
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM registered_hospitals");
+    $total_registered = $stmt->fetch()['count'];
 
     echo json_encode([
         'status' => 'success',
         'data' => [
-            'patients' => (int)$patient_count,
-            'hospitals' => (int)$hospital_count,
-            'total_hospitals' => (int)$total_hospitals,
-            'reports' => (int)$total_reports,
-            'admins' => (int)$admin_count,
-            'pending_hospitals' => (int)$pending_count
+            'patients'           => (int)$patient_count,
+            'hospitals'          => (int)$hospital_count,
+            'total_hospitals'    => (int)$total_hospitals,
+            'total_registered'   => (int)$total_registered,
+            'reports'            => (int)$total_reports,
+            'admins'             => (int)$admin_count,
+            'pending_hospitals'  => (int)$pending_count
         ]
     ]);
 } catch (Exception $e) {

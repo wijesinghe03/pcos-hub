@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -115,6 +115,28 @@
         .mfa-input { width: 48px; height: 58px; text-align: center; font-size: 1.6rem; font-weight: 800; border: 2px solid var(--border); border-radius: var(--radius-md); background: var(--bg-light); color: var(--purple-deep); }
         .mfa-input:focus { border-color: var(--purple-primary); outline: none; box-shadow: 0 0 0 4px var(--purple-pale); background: var(--white); }
         .resend-link { font-size: 0.85rem; color: var(--purple-primary); cursor: pointer; display: inline-block; margin-top: 1rem; font-weight: 700; }
+
+        /* Dark Mode Overrides */
+        [data-theme="dark"] .super-admin-card {
+            background: var(--bg-card);
+            border-color: rgba(255,255,255,0.1);
+        }
+        [data-theme="dark"] .admin-icon-wrap { background: rgba(123, 63, 190, 0.1); }
+        [data-theme="dark"] .brand-logo-text { color: white; }
+        [data-theme="dark"] .brand-logo-text span { color: var(--purple-light); }
+        [data-theme="dark"] .subtitle { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .form-label { color: rgba(255,255,255,0.8); }
+        [data-theme="dark"] .form-control { 
+            background: rgba(0,0,0,0.2); 
+            border-color: rgba(255,255,255,0.1); 
+            color: white; 
+        }
+        [data-theme="dark"] .form-control:focus { background: rgba(0,0,0,0.3); }
+        [data-theme="dark"] .mfa-input { background: rgba(0,0,0,0.2); color: white; border-color: rgba(255,255,255,0.1); }
+        [data-theme="dark"] .mfa-input:focus { background: rgba(0,0,0,0.3); }
+        [data-theme="dark"] .back-link { color: rgba(255,255,255,0.4); }
+        [data-theme="dark"] .back-link:hover { color: var(--purple-light); }
+        [data-theme="dark"] .footer-note { color: rgba(255,255,255,0.3); }
     </style>
 </head>
 

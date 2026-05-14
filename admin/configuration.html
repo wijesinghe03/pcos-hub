@@ -166,7 +166,7 @@
                     </div>
 
                     <!-- Notification Settings -->
-                    <div class="config-section reveal reveal-delay-2">
+                    <div class="config-section reveal reveal-delay-2" id="notification-settings">
                         <div class="section-title"><i>🔔</i> Notification Settings</div>
                         <div class="form-group-flex">
                             <div class="config-row">
@@ -239,7 +239,24 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             loadSettings();
-            setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')), 100);
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                
+                // Handle hash navigation
+                if (window.location.hash) {
+                    const target = document.querySelector(window.location.hash);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        target.style.outline = '2px solid var(--purple-primary)';
+                        target.style.boxShadow = '0 0 20px rgba(139, 92, 246, 0.3)';
+                        setTimeout(() => {
+                            target.style.outline = 'none';
+                            target.style.boxShadow = 'none';
+                            target.style.transition = 'all 1s ease';
+                        }, 3000);
+                    }
+                }
+            }, 100);
         });
 
         async function loadSettings() {

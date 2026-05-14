@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1087,31 +1087,82 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
+      // Set date display
+      var now = new Date();
+      var dateEl = document.getElementById('dateDisplay');
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('en-US', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+      }
+
+      // ── Load real hospital session data ──────────────────────
+      fetch('../../src/php/get_hospital_session.php')
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+          if (data.status === 'unauthenticated') {
+            // No session — check localStorage fallback (set by login page)
+            var stored = null;
+            try { stored = JSON.parse(localStorage.getItem('hospitalUser') || localStorage.getItem('currentUser') || 'null'); } catch(e){}
+            if (stored && (stored.role === 'hospital' || stored.hosp_name)) {
+              populateSidebar(stored);
+            }
+            return;
+          }
+          if (data.status === 'success' && data.hospital) {
+            populateSidebar(data.hospital);
+          }
+        })
+        .catch(function() {
+          // Fallback: use localStorage if available
+          try {
+            var stored = JSON.parse(localStorage.getItem('hospitalUser') || localStorage.getItem('currentUser') || 'null');
+            if (stored && stored.hosp_name) populateSidebar(stored);
+          } catch(e) {}
+        });
+
       console.log('Hospital Dashboard initialized');
-      console.log('Checking if All Patients section exists...');
-
-      const allPatientsSection = document.getElementById('allPatientsSection');
-      const dashboardContent = document.getElementById('dashboardContent');
-      const allPatientsTableBody = document.getElementById('allPatientsTableBody');
-
-      if (!allPatientsSection) {
-        console.error('allPatientsSection not found!');
-      }
-      if (!dashboardContent) {
-        console.error('dashboardContent not found!');
-      }
-      if (!allPatientsTableBody) {
-        console.error('allPatientsTableBody not found!');
-      }
-
-      // Verify patientsDatabase
-      if (!patientsDatabase || patientsDatabase.length === 0) {
-        console.error('patientsDatabase is empty or not defined!');
-      } else {
-        console.log('patientsDatabase loaded with ' + patientsDatabase.length + ' patients');
-      }
     });
+
+    function populateSidebar(h) {
+      var name  = h.hosp_name || h.name || 'Hospital';
+      var type  = h.hospital_type || '';
+      var loc   = h.location || '';
+      var phone = h.phone || '';
+      var email = h.email || '';
+      var reg   = h.reg_number || '';
+
+      var initials = name.split(' ').map(function(w){ return w[0]||''; }).slice(0,2).join('').toUpperCase();
+      var avatarEl = document.getElementById('sidebarAvatar');
+      if (avatarEl) avatarEl.textContent = initials;
+
+      var nameEl = document.getElementById('sidebarName');
+      if (nameEl) nameEl.textContent = name;
+
+      var shaName = document.getElementById('shaHospitalName');
+      if (shaName) shaName.textContent = name;
+
+      var shaType = document.getElementById('shaHospitalType');
+      if (shaType) {
+        var labels = { government:'🏥 Government Hospital', private:'🏥 Private Hospital',
+          clinic:'🏥 Clinic', diagnostic:'🔬 Diagnostic Center' };
+        shaType.textContent = labels[type] || ('🏥 ' + (type || 'Healthcare Institution'));
+      }
+
+      var shaLoc = document.getElementById('shaLocation');
+      if (shaLoc && loc) shaLoc.textContent = loc;
+
+      var shaPhone = document.getElementById('shaPhone');
+      if (shaPhone && phone) shaPhone.textContent = phone;
+
+      var shaEmail = document.getElementById('shaEmail');
+      if (shaEmail && email) shaEmail.textContent = email;
+
+      var shaReg = document.getElementById('shaRegNo');
+      if (shaReg && reg) shaReg.textContent = 'Reg: ' + reg;
+    }
   </script>
+
 </body>
 
 </html>

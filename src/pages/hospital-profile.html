@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -683,13 +683,13 @@
                 <span class="sidebar-section-label">Hospital Account</span>
             </div>
             <div class="sidebar-hospital-account">
-                <div class="sha-badge dot">Verified</div>
-                <div class="sha-hname">City Hospital</div>
-                <div class="sha-htype">🏥 General Hospital</div>
-                <div class="sha-row"><i>📍</i><span>Colombo, Sri Lanka</span></div>
-                <div class="sha-row"><i>📞</i><span>+94 11 234 5678</span></div>
-                <div class="sha-row"><i>✉️</i><span>info@cityhospital.lk</span></div>
-                <div class="sha-row"><i>🪪</i><span>Reg: MOH-LK-2019-0042</span></div>
+                <div class="sha-badge" id="sbBadge">Loading…</div>
+                <div class="sha-hname" id="sbName">—</div>
+                <div class="sha-htype" id="sbType">🏥 —</div>
+                <div class="sha-row"><i>📍</i><span id="sbLoc">—</span></div>
+                <div class="sha-row"><i>📞</i><span id="sbPhone">—</span></div>
+                <div class="sha-row"><i>✉️</i><span id="sbEmail">—</span></div>
+                <div class="sha-row"><i>🪪</i><span id="sbReg">—</span></div>
                 <hr class="sha-hr">
                 <div class="sha-acts">
                     <a href="hospital-profile.html" class="sha-btn"
@@ -712,13 +712,12 @@
                 </div>
             </div>
 
-            <!-- Verified strip -->
-            <div class="verify-strip">
-                <div class="verify-ico">✅</div>
+            <!-- Verification Status Strip (dynamic) -->
+            <div class="verify-strip" id="verifyStrip" style="display:none">
+                <div class="verify-ico" id="verifyIco">✅</div>
                 <div class="verify-text">
-                    <strong>Verified & Active Hospital Account</strong>
-                    <span>Your hospital is registered and verified with the Ministry of Health Sri Lanka. Registration
-                        No: MOH-LK-2019-0042</span>
+                    <strong id="verifyTitle">Loading…</strong>
+                    <span id="verifyDesc"></span>
                 </div>
             </div>
 
@@ -726,13 +725,10 @@
             <div class="profile-hero">
                 <div class="hero-logo">🏥</div>
                 <div class="hero-info">
-                    <div class="hero-name" id="heroName">City Hospital</div>
-                    <div class="hero-type" id="heroType">General Hospital · Colombo, Sri Lanka</div>
-                    <div class="hero-badges">
-                        <span class="hero-badge green">✅ Verified</span>
-                        <span class="hero-badge">🩺 PCOS Specialist Centre</span>
-                        <span class="hero-badge">🔬 Diagnostic Lab</span>
-                        <span class="hero-badge">🖼️ Imaging Unit</span>
+                    <div class="hero-name" id="heroName">Loading…</div>
+                    <div class="hero-type" id="heroType"></div>
+                    <div class="hero-badges" id="heroBadges">
+                        <span class="hero-badge" id="verifyBadge">⏳ Pending Review</span>
                     </div>
                 </div>
                 <div class="hero-actions">
@@ -745,28 +741,23 @@
             <div class="pstat-row">
                 <div class="pstat-box">
                     <div class="pstat-ico">👥</div>
-                    <div class="pstat-num">1,240</div>
+                    <div class="pstat-num" id="statPatients">0</div>
                     <div class="pstat-lbl">Total Patients</div>
                 </div>
                 <div class="pstat-box">
                     <div class="pstat-ico">📅</div>
-                    <div class="pstat-num">86</div>
+                    <div class="pstat-num" id="statAppts">0</div>
                     <div class="pstat-lbl">This Month Appts</div>
                 </div>
                 <div class="pstat-box">
                     <div class="pstat-ico">🩺</div>
-                    <div class="pstat-num">12</div>
+                    <div class="pstat-num" id="statDocs">0</div>
                     <div class="pstat-lbl">Doctors</div>
                 </div>
                 <div class="pstat-box">
                     <div class="pstat-ico">⭐</div>
-                    <div class="pstat-num">4.8</div>
+                    <div class="pstat-num" id="statRating">0.0</div>
                     <div class="pstat-lbl">Rating</div>
-                </div>
-                <div class="pstat-box">
-                    <div class="pstat-ico">📊</div>
-                    <div class="pstat-num">342</div>
-                    <div class="pstat-lbl">Reports Issued</div>
                 </div>
             </div>
 
@@ -782,19 +773,19 @@
                         <div class="info-grid">
                             <div class="info-item">
                                 <label>Hospital Name</label>
-                                <p id="vName">City Hospital</p>
+                                <p id="vName">—</p>
                             </div>
                             <div class="info-item">
                                 <label>Hospital Type</label>
-                                <p id="vType">General Hospital</p>
+                                <p id="vType">—</p>
                             </div>
                             <div class="info-item">
-                                <label>Registration No.</label>
-                                <p id="vReg">MOH-LK-2019-0042</p>
+                                <label>License Number</label>
+                                <p id="vReg">—</p>
                             </div>
                             <div class="info-item">
-                                <label>Status</label>
-                                <p><span class="tag">✅ Active & Verified</span></p>
+                                <label>Approval Status</label>
+                                <p id="vStatus"><span class="tag" style="background:#fef3c7;color:#92400e">⏳ Pending Review</span></p>
                             </div>
                             <div class="info-item">
                                 <label>Year Established</label>
@@ -874,22 +865,16 @@
                     <div id="contactView">
                         <div class="info-grid">
                             <div class="info-item"><label>Phone</label>
-                                <p id="vPhone">📞 +94 11 234 5678</p>
-                            </div>
-                            <div class="info-item"><label>Emergency Line</label>
-                                <p id="vEmerg">🚨 +94 11 234 9999</p>
+                                <p id="vPhone">—</p>
                             </div>
                             <div class="info-item"><label>Email</label>
-                                <p id="vEmail">✉️ info@cityhospital.lk</p>
-                            </div>
-                            <div class="info-item"><label>Website</label>
-                                <p id="vWeb">🌐 www.cityhospital.lk</p>
+                                <p id="vEmail">—</p>
                             </div>
                             <div class="info-item"><label>Address</label>
-                                <p id="vAddr">📍 45 Hospital Road, Colombo 07</p>
+                                <p id="vAddr">—</p>
                             </div>
-                            <div class="info-item"><label>District / Province</label>
-                                <p id="vDist">Western Province, Sri Lanka</p>
+                            <div class="info-item"><label>Location / City</label>
+                                <p id="vDist">—</p>
                             </div>
                         </div>
                     </div>
@@ -1040,6 +1025,136 @@
 
     <script src="../../assets/js/utils.js"></script>
     <script>
+        /* ── Load hospital session data ── */
+        async function loadHospitalProfile() {
+            try {
+                var res  = await fetch('../../src/php/get_hospital_session.php');
+                var data = await res.json();
+                if (data.status !== 'success') return;
+                var h = data.hospital;
+
+                /* ─ Sidebar ─ */
+                var sbBadge = document.getElementById('sbBadge');
+                if (h.is_verified == 1 && h.approval_status === 'approved') {
+                    sbBadge.textContent = '✅ Verified';
+                    sbBadge.className = 'sha-badge dot';
+                    sbBadge.style.cssText = '';
+                } else if (h.approval_status === 'pending') {
+                    sbBadge.textContent = '⏳ Pending Review';
+                    sbBadge.className = 'sha-badge';
+                    sbBadge.style.cssText = 'background:rgba(234,179,8,.15);color:#78350f;border-color:rgba(234,179,8,.4)';
+                } else {
+                    sbBadge.textContent = '❌ Not Verified';
+                    sbBadge.className = 'sha-badge';
+                    sbBadge.style.cssText = 'background:rgba(239,68,68,.12);color:#991b1b;border-color:rgba(239,68,68,.35)';
+                }
+                var initials = (h.hosp_name || 'H').split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+                document.getElementById('sbName').textContent  = h.hosp_name  || '—';
+                document.getElementById('sbType').textContent  = '🏥 ' + (h.hospital_type || 'Hospital');
+                document.getElementById('sbLoc').textContent   = h.location   || '—';
+                document.getElementById('sbPhone').textContent = h.phone      || '—';
+                document.getElementById('sbEmail').textContent = h.email      || '—';
+                document.getElementById('sbReg').textContent   = 'License: ' + (h.reg_number || '—');
+
+                /* ─ Sidebar top avatar ─ */
+                var av = document.querySelector('.sidebar-avatar');
+                if (av) av.textContent = initials;
+                var sn = document.querySelector('.sidebar-name');
+                if (sn) sn.textContent = h.hosp_name || '—';
+
+                /* ─ Verify Strip ─ */
+                var strip = document.getElementById('verifyStrip');
+                strip.style.display = 'flex';
+                if (h.is_verified == 1 && h.approval_status === 'approved') {
+                    strip.style.background = 'linear-gradient(135deg,rgba(39,174,96,.08),rgba(39,174,96,.04))';
+                    strip.style.borderColor = 'rgba(39,174,96,.25)';
+                    document.getElementById('verifyIco').textContent = '✅';
+                    document.getElementById('verifyTitle').textContent = 'Verified & Active Hospital Account';
+                    document.getElementById('verifyTitle').style.color = '#065f46';
+                    document.getElementById('verifyDesc').textContent  = 'Your hospital is approved and listed in the public directory. Registration No: ' + (h.reg_number || '—');
+                } else if (h.approval_status === 'pending') {
+                    strip.style.background = 'linear-gradient(135deg,rgba(234,179,8,.08),rgba(234,179,8,.04))';
+                    strip.style.borderColor = 'rgba(234,179,8,.35)';
+                    document.getElementById('verifyIco').textContent = '⏳';
+                    document.getElementById('verifyTitle').textContent = 'Pending Admin Review';
+                    document.getElementById('verifyTitle').style.color = '#78350f';
+                    document.getElementById('verifyDesc').textContent  = 'Your hospital application is under review. You will receive an email once approved. Registration No: ' + (h.reg_number || '—');
+                } else {
+                    strip.style.background = 'linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.04))';
+                    strip.style.borderColor = 'rgba(239,68,68,.3)';
+                    document.getElementById('verifyIco').textContent = '❌';
+                    document.getElementById('verifyTitle').textContent = 'Account Not Verified';
+                    document.getElementById('verifyTitle').style.color = '#991b1b';
+                    document.getElementById('verifyDesc').textContent  = 'Your hospital account has not been verified. Please contact support.';
+                }
+
+                /* ─ Hero Card ─ */
+                document.getElementById('heroName').textContent = h.hosp_name || '—';
+                document.getElementById('heroType').textContent = (h.hospital_type || 'Hospital') + (h.location ? ' · ' + h.location : '');
+                var badge = document.getElementById('verifyBadge');
+                if (h.is_verified == 1 && h.approval_status === 'approved') {
+                    badge.textContent = '✅ Verified';
+                    badge.className = 'hero-badge green';
+                } else if (h.approval_status === 'pending') {
+                    badge.textContent = '⏳ Pending Review';
+                    badge.className = 'hero-badge';
+                    badge.style.background = 'rgba(234,179,8,.25)';
+                    badge.style.borderColor = 'rgba(234,179,8,.5)';
+                } else {
+                    badge.textContent = '❌ Not Verified';
+                    badge.className = 'hero-badge';
+                    badge.style.background = 'rgba(239,68,68,.25)';
+                    badge.style.borderColor = 'rgba(239,68,68,.5)';
+                }
+
+                /* ─ Basic Info section ─ */
+                document.getElementById('vName').textContent = h.hosp_name     || '—';
+                document.getElementById('vType').textContent = h.hospital_type || '—';
+                document.getElementById('vReg').textContent  = h.reg_number    || '—';
+                var statusEl = document.getElementById('vStatus');
+                if (h.is_verified == 1 && h.approval_status === 'approved') {
+                    statusEl.innerHTML = '<span class="tag">✅ Approved &amp; Verified</span>';
+                } else if (h.approval_status === 'pending') {
+                    statusEl.innerHTML = '<span class="tag" style="background:#fef3c7;color:#92400e">⏳ Pending Admin Approval</span>';
+                } else {
+                    statusEl.innerHTML = '<span class="tag" style="background:#fee2e2;color:#991b1b">❌ Not Verified</span>';
+                }
+
+                /* ─ Edit form prefill ─ */
+                var eHName = document.getElementById('eHName');
+                if (eHName) eHName.value = h.hosp_name || '';
+                var eHType = document.getElementById('eHType');
+                if (eHType) { for(var o of eHType.options) { if(o.value===h.hospital_type||o.text===h.hospital_type){o.selected=true;break;} } }
+                var eReg = document.getElementById('eReg');
+                if (eReg) eReg.value = h.reg_number || '';
+
+                /* ─ Contact Info section ─ */
+                document.getElementById('vPhone').textContent = h.phone   ? '📞 ' + h.phone   : '—';
+                document.getElementById('vEmail').textContent = h.email   ? '✉️ ' + h.email   : '—';
+                document.getElementById('vAddr').textContent  = h.address ? '📍 ' + h.address : '—';
+                document.getElementById('vDist').textContent  = h.location || '—';
+
+                var ePhone = document.getElementById('ePhone');
+                if (ePhone) ePhone.value = h.phone   || '';
+                var eEmail2 = document.getElementById('eEmail');
+                if (eEmail2) eEmail2.value = h.email   || '';
+                var eAddr = document.getElementById('eAddr');
+                if (eAddr) eAddr.value = h.address || '';
+                var eDist = document.getElementById('eDist');
+                if (eDist) eDist.value = h.location || '';
+
+                /* ─ Security section ─ */
+                var loginEmailEl = document.querySelector('.pwd-val');
+                if (loginEmailEl) loginEmailEl.textContent = h.email || '—';
+                var createdEl = document.querySelectorAll('.pwd-val')[1];
+                if (createdEl && h.created_at) {
+                    createdEl.textContent = new Date(h.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+                }
+            } catch(e) {
+                console.error('Profile load error:', e);
+            }
+        }
+
         /* ── Edit toggle ── */
         function toggleEdit(id) {
             var form = document.getElementById(id);
@@ -1114,6 +1229,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var dateEl = document.getElementById('dateDisplay');
             if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            loadHospitalProfile();
 
             var toggle = document.getElementById('sidebarToggle');
             var sidebar = document.getElementById('sidebar');

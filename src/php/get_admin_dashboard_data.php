@@ -3,24 +3,32 @@
 require_once 'db_connect.php';
 header('Content-Type: application/json');
 try {
-// 1. Pending Hospital Approvals
-    $stmt = $pdo->query("SELECT id, hosp_name, location, approval_status FROM hospitals WHERE approval_status = 'pending' ORDER BY id DESC LIMIT 5");
-    $pending_hospitals = $stmt->fetchAll();
-// 2. Recent Users (Patients + Hospitals)
-    // We combine them for the dashboard view
+    // 1. Pending Hospital Approvals (from staging table)
+    $stmt = $pdo->query("SELECT id, hosp_name, location, approval_status FROM registered_hospitals WHERE approval_status = 'pending' ORDER BY id DESC LIMIT 5");
+    $pending_hospitals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 2. Recent Users (Patients + Registered Hospitals)
     $stmt = $pdo->query("
-        (SELECT 'Patient' as role, full_name as name, email, created_at, status FROM patients)
+        (SELECT 'Patient' as role, full_name COLLATE utf8mb4_unicode_ci as name, email COLLATE utf8mb4_unicode_ci as email, created_at, 'active' as status FROM patients)
         UNION
-        (SELECT 'Hospital' as role, hosp_name as name, email, created_at, approval_status as status FROM hospitals)
+        (SELECT 'Hospital' as role, hosp_name COLLATE utf8mb4_unicode_ci as name, email COLLATE utf8mb4_unicode_ci as email, created_at, approval_status as status FROM registered_hospitals)
         ORDER BY created_at DESC LIMIT 5
     ");
-    $recent_users = $stmt->fetchAll();
-// 3. Registered Hospitals (Approved)
-    $stmt = $pdo->query("SELECT id, hosp_name, location, created_at, approval_status FROM hospitals WHERE approval_status = 'approved' ORDER BY hosp_name ASC LIMIT 10");
-    $all_hospitals = $stmt->fetchAll();
-// 4. Recent System Logs
+    $recent_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 3. All Approved Hospitals (unified view)
+    $stmt = $pdo->query("
+        SELECT id, hosp_name, location, created_at, approval_status 
+        FROM registered_hospitals 
+        WHERE approval_status = 'approved' 
+        ORDER BY hosp_name ASC LIMIT 10
+    ");
+    $all_hospitals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 4. Recent System Logs
     $stmt = $pdo->query("SELECT * FROM system_logs ORDER BY timestamp DESC LIMIT 10");
-    $recent_logs = $stmt->fetchAll();
+    $recent_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     echo json_encode([
         'status' => 'success',
         'data' => [
