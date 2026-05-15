@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <script src="../../assets/js/theme-init.js"></script>
@@ -203,8 +203,6 @@
                         <p id="topbarDate" data-i18n="manage_healthcare">Manage your healthcare providers</p>
                     </div>
                 <div class="topbar-actions">
-                    <button class="topbar-icon-btn" data-i18n-title="notifications" title="Notifications">🔔</button>
-                    <button class="topbar-icon-btn" data-i18n-title="messages" title="Messages">💬</button>
                 </div>
             </header>
 
@@ -285,6 +283,7 @@
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         const user = Auth.checkSession();
         if (!user) window.location.href = 'login.html';

@@ -284,6 +284,12 @@
   gap: 12px;
 }
 
+.topbar-icon-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .topbar-search {
   display: flex;
   align-items: center;

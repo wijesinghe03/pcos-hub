@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -266,12 +266,8 @@
                 <div class="topbar-actions">
                     <div class="topbar-search">
                         <i>🔍</i>
-                        <input type="text" data-i18n="search_placeholder" placeholder="Search symptoms…">
+                        <input type="text" id="symptomSearch" name="symptomSearch" data-i18n="search_placeholder" placeholder="Search symptoms…">
                     </div>
-                    <button class="topbar-icon-btn" title="Notifications">
-                        🔔<span class="notif-dot"></span>
-                    </button>
-                    <button class="topbar-icon-btn" title="Messages">💬</button>
                 </div>
             </div>
 
@@ -460,6 +456,7 @@
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         // ── Init date/time inputs ──────────────────────────────────
         const dateInput = document.getElementById('symptomDate');

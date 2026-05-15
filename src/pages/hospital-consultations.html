@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -541,6 +541,13 @@
 
         // Initialize page on load
         document.addEventListener('DOMContentLoaded', function () {
+            // Populate date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                dateEl.textContent = new Date().toLocaleDateString('en-GB', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+            }
             displayConsultations(consultationsDatabase);
             displayActivityFeed(consultationsDatabase);
         });

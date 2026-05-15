@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -408,12 +408,6 @@
                     <p id="dateDisplay">Loading…</p>
                 </div>
                 <div class="topbar-actions">
-                    <div class="topbar-search">
-                        <i>🔍</i>
-                        <input type="text" data-i18n="search_logs_placeholder" placeholder="Search logs…" id="historySearch">
-                    </div>
-                    <button class="topbar-icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
-                    <button class="topbar-icon-btn" title="Messages">💬</button>
                 </div>
             </div>
 
@@ -708,6 +702,7 @@
         </main>
     </div>
 
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/dashboard.js"></script>
@@ -717,7 +712,7 @@
            API base: ../../src/php/components/lifestyle_handler.php
         ================================================================ */
 
-        const API = '../../src/php/components/lifestyle_handler.php';
+        const LIFESTYLE_API = '../../src/php/components/lifestyle_handler.php';
         const localNow = new Date();
         const TODAY    = [localNow.getFullYear(), String(localNow.getMonth()+1).padStart(2,'0'), String(localNow.getDate()).padStart(2,'0')].join('-');
 
@@ -938,7 +933,7 @@
             if (!confirm(t('delete_confirm'))) return;
             const payload = { ...apiParams(), id };
             try {
-                const res = await fetch(`${API}?type=${type}`, {
+                const res = await fetch(`${LIFESTYLE_API}?type=${type}`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
@@ -977,7 +972,7 @@
             const params = new URLSearchParams({ ...apiParams(), type: 'meals', limit: 30 });
             const wrap   = document.getElementById('mealsTableWrap');
             try {
-                const res  = await fetch(`${API}?${params}`);
+                const res  = await fetch(`${LIFESTYLE_API}?${params}`);
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderMealsTable(data.data, wrap);
@@ -993,7 +988,7 @@
             const params = new URLSearchParams({ ...apiParams(), type: 'exercises', limit: 30 });
             const wrap   = document.getElementById('exercisesTableWrap');
             try {
-                const res  = await fetch(`${API}?${params}`);
+                const res  = await fetch(`${LIFESTYLE_API}?${params}`);
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderExercisesTable(data.data, wrap);
@@ -1009,7 +1004,7 @@
             const params = new URLSearchParams({ ...apiParams(), type: 'water', limit: 50 });
             const wrap   = document.getElementById('waterTableWrap');
             try {
-                const res  = await fetch(`${API}?${params}`);
+                const res  = await fetch(`${LIFESTYLE_API}?${params}`);
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderWaterTable(data.data, wrap);
@@ -1027,7 +1022,7 @@
             const params = new URLSearchParams({ ...apiParams(), type: 'sleep', limit: 30 });
             const wrap   = document.getElementById('sleepTableWrap');
             try {
-                const res  = await fetch(`${API}?${params}`);
+                const res  = await fetch(`${LIFESTYLE_API}?${params}`);
                 const data = await res.json();
                 if (data.status === 'success' && data.data.length > 0) {
                     renderSleepTable(data.data, wrap);
@@ -1213,7 +1208,7 @@
             const p = new URLSearchParams({ ...apiParams(), type, limit: 50 });
             if (date) p.set('log_date', date);
             try {
-                const res  = await fetch(`${API}?${p}`);
+                const res  = await fetch(`${LIFESTYLE_API}?${p}`);
                 const data = await res.json();
                 if (data.status === 'success') {
                     document.getElementById(elId).textContent = fn(data.data);
@@ -1224,7 +1219,7 @@
         // ══════════════════ HELPERS ══════════════════════════════════
 
         async function postAPI(type, payload) {
-            const res = await fetch(`${API}?type=${type}`, {
+            const res = await fetch(`${LIFESTYLE_API}?type=${type}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -581,6 +581,13 @@
 
         // Initialize table on page load
         document.addEventListener('DOMContentLoaded', function () {
+            // Populate date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                dateEl.textContent = new Date().toLocaleDateString('en-GB', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+            }
             displayLabResults(labResultsDatabase);
         });
 

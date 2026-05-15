@@ -122,6 +122,11 @@ const Theme = {
 
     // Initial injection of theme toggle if topbar exists
     this.injectToggle();
+    
+    // Attach click handler to any existing theme toggle buttons (whether injected or hardcoded)
+    document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+      btn.onclick = () => this.toggle();
+    });
 
     // Listen for system theme changes if in auto mode
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (localStorage.getItem('pcos_theme') === 'auto') {
@@ -139,24 +144,36 @@ const Theme = {
     }
   },
   injectToggle() {
-    // Look for topbar actions to inject the toggle button
     const topActions = document.querySelector('.topbar-actions');
-    if (topActions && !document.getElementById('globalThemeToggle')) {
-      const toggleBtn = document.createElement('button');
-      toggleBtn.id = 'globalThemeToggle';
-      toggleBtn.className = 'theme-toggle-btn';
-      toggleBtn.title = 'Switch Theme';
-      toggleBtn.innerHTML = this.getIcon();
-      toggleBtn.onclick = () => this.toggle();
+    if (!topActions || document.getElementById('globalThemeToggle')) return;
+
+    // 1. Create or find the icon group
+    let iconGroup = topActions.querySelector('.topbar-icon-group');
+    if (!iconGroup) {
+      iconGroup = document.createElement('div');
+      iconGroup.className = 'topbar-icon-group';
       
-      // Insert before notifications button if possible
-      const notifBtn = topActions.querySelector('.topbar-icon-btn');
-      if (notifBtn) {
-        notifBtn.parentNode.insertBefore(toggleBtn, notifBtn);
-      } else {
-        topActions.appendChild(toggleBtn);
-      }
+      // Move existing icon buttons and their wrappers into the group
+      // We look for elements that are NOT the search bar
+      const children = Array.from(topActions.children);
+      children.forEach(child => {
+        if (child.classList.contains('topbar-search')) return;
+        iconGroup.appendChild(child);
+      });
+      
+      topActions.appendChild(iconGroup);
     }
+
+    // 2. Create the toggle button
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'globalThemeToggle';
+    toggleBtn.className = 'theme-toggle-btn';
+    toggleBtn.title = 'Switch Theme';
+    toggleBtn.innerHTML = this.getIcon();
+    toggleBtn.onclick = () => this.toggle();
+    
+    // 3. Insert it at the start of the group to follow the order: Theme, Notifications, Messages
+    iconGroup.insertBefore(toggleBtn, iconGroup.firstChild);
   },
   toggle() {
     const current = this.get();
@@ -204,6 +221,68 @@ const Theme = {
   },
   get() {
     return localStorage.getItem('pcos_theme') || 'auto';
+  }
+};
+
+// ── Notifications Utility ──
+const Notifications = {
+  async init() {
+    const user = typeof Auth !== 'undefined' ? Auth.getUser() : null;
+    if (!user || !user.id) return;
+
+    const notifBtn = document.getElementById('notifBellBtn');
+    const dropdown = document.getElementById('notifDropdown');
+    const list = document.getElementById('notifList');
+    const dot = document.querySelector('.notif-dot');
+
+    if (!notifBtn || !dropdown || !list) return;
+
+    // Toggle dropdown
+    notifBtn.onclick = (e) => {
+      e.stopPropagation();
+      const isVisible = dropdown.style.display === 'block';
+      dropdown.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible && dot) {
+        dot.style.display = 'none';
+      }
+    };
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && e.target !== notifBtn) {
+        dropdown.style.display = 'none';
+      }
+    });
+
+    // Fetch data
+    try {
+      // Determine correct path to src/php/
+      const path = window.location.pathname;
+      let phpPath = '../../src/php/get_notifications.php';
+      if (path.includes('/admin/')) phpPath = '../php/get_notifications.php';
+      else if (path.includes('/index.html') && !path.includes('/src/pages/')) phpPath = 'src/php/get_notifications.php';
+
+      const res = await fetch(`${phpPath}?patient_id=${user.id}`);
+      const data = await res.json();
+
+      if (data.status === 'success' && data.notifications && data.notifications.length > 0) {
+        if (dot) dot.style.display = 'block';
+        
+        list.innerHTML = data.notifications.map(n => `
+          <div class="notif-item" style="padding:12px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='var(--purple-ghost)'" onmouseout="this.style.background='none'" onclick="window.location.href='${n.type === 'appointment' ? 'appointments.html' : 'menstrual-cycle.html'}'">
+            <div style="font-weight:700; font-size:0.85rem; color:var(--purple-primary); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+              ${n.type === 'appointment' ? '📅' : '🩸'} ${n.title}
+            </div>
+            <div style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;">${n.message}</div>
+          </div>
+        `).join('');
+      } else {
+        list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-light); font-size:0.9rem;">No new notifications</div>`;
+        if (dot) dot.style.display = 'none';
+      }
+    } catch (e) {
+      console.warn('Failed to fetch notifications:', e);
+    }
   }
 };
 
@@ -300,6 +379,17 @@ const L10n = {
         "Oral Glucose Tolerance Test (OGTT)": "Oral Glucose Tolerance Test (OGTT)",
         "HbA1c Test": "HbA1c Test",
         "Lipid Profile (Cholesterol Test)": "Lipid Profile (Cholesterol Test)",
+        "FBC (Full Blood Count / CBC)": "FBC (Full Blood Count / CBC)",
+        "Vitamin D Test": "Vitamin D Test",
+        "Vitamin B12 Test": "Vitamin B12 Test",
+        "Ferritin (Iron Stores Test)": "Ferritin (Iron Stores Test)",
+        "Serum Insulin Test": "Serum Insulin Test",
+        "DHEA-S Test (Dehydroepiandrosterone Sulfate)": "DHEA-S Test (Dehydroepiandrosterone Sulfate)",
+        "Cortisol Test": "Cortisol Test",
+        "Liver Function Test (LFT)": "Liver Function Test (LFT)",
+        "Kidney Function Test (KFT)": "Kidney Function Test (KFT)",
+        "Sex Hormone Binding Globulin (SHBG) Test": "Sex Hormone Binding Globulin (SHBG) Test",
+        select_quality: "Select quality\u2026",
         last_cycle: "Last Cycle",
         next_period: "Next Period",
         lifestyle_score: "Lifestyle Score",
@@ -4037,6 +4127,33 @@ function initGlobal() {
   });
   
   Auth.initInactivityTimer(15); // Auto-logout after 15 mins of inactivity
+
+  // ── Initialize Notifications ──
+  Notifications.init();
+
+  // ── Link Messages Icon to Chatbot Assistant ──
+  const setupChatbotLink = () => {
+    document.querySelectorAll('[data-i18n-title="messages"], [title="Messages"]').forEach(btn => {
+      // Remove any existing onclick to prevent duplicates or "coming soon" toasts
+      btn.onclick = null; 
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        if (chatbotWindow) {
+          chatbotWindow.classList.add('active');
+          const input = document.getElementById('chatbotInput');
+          if (input) input.focus();
+        } else {
+          Toast.info("AI Assistant is loading...");
+        }
+      }, { once: false });
+    });
+  };
+
+  setupChatbotLink();
+  // Call again after a short delay in case of dynamic injection/grouping
+  setTimeout(setupChatbotLink, 600);
 }
 
 if (document.readyState === 'loading') {

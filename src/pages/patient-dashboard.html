@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -111,18 +111,23 @@
             <i>🔍</i>
             <input type="text" id="dashSearchInput" data-i18n="search_placeholder" placeholder="Search records…">
           </div>
-          <div style="position: relative;">
-            <button class="topbar-icon-btn" id="notifBellBtn" data-i18n-title="notifications" title="Notifications">
-              🔔<span class="notif-dot" style="display:none"></span>
+          <div class="topbar-icon-group">
+            <button id="globalThemeToggle" class="theme-toggle-btn" onclick="Theme.toggle()" title="Switch Theme">
+              <i>🌙</i>
             </button>
-            <div id="notifDropdown" class="dash-panel" style="display:none; position:absolute; top:50px; right:0; width:300px; z-index:1001; padding:20px; box-shadow:0 15px 50px rgba(0,0,0,0.2); border-radius:20px;">
-              <h4 style="margin-bottom:15px; font-weight:800; color:var(--purple-deep);" data-i18n="notifications">Notifications</h4>
-              <div id="notifList" style="display:flex; flex-direction:column; gap:12px;">
-                <div style="text-align:center; padding:10px; color:var(--text-light); font-size:0.9rem;" data-i18n="no_new_notifications">No new notifications</div>
+            <div style="position: relative;">
+              <button class="topbar-icon-btn" id="notifBellBtn" data-i18n-title="notifications" title="Notifications">
+                🔔<span class="notif-dot" style="display:none"></span>
+              </button>
+              <div id="notifDropdown" class="dash-panel" style="display:none; position:absolute; top:50px; right:0; width:300px; z-index:1001; padding:20px; box-shadow:0 15px 50px rgba(0,0,0,0.2); border-radius:20px;">
+                <h4 style="margin-bottom:15px; font-weight:800; color:var(--purple-deep);" data-i18n="notifications">Notifications</h4>
+                <div id="notifList" style="display:flex; flex-direction:column; gap:12px;">
+                  <div style="text-align:center; padding:10px; color:var(--text-light); font-size:0.9rem;" data-i18n="no_new_notifications">No new notifications</div>
+                </div>
               </div>
             </div>
+
           </div>
-          <button class="topbar-icon-btn" data-i18n-title="messages" title="Messages">💬</button>
         </div>
       </div>
 
@@ -417,6 +422,7 @@
 
   <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/components.js"></script>
   <script src="../../assets/js/dashboard.js"></script>
   <script>
     // ── Symptom emoji map ────────────────────────────────────────────
@@ -637,31 +643,8 @@
 
     // ── Main dashboard data loader ───────────────────────────────────
     document.addEventListener('DOMContentLoaded', async function() {
-      // ── Initialize Localization ──
+      // ── Localization ──
       if (typeof L10n !== 'undefined') L10n.init();
-
-      // ── Notification Click Handler ──
-      const notifBtn = document.getElementById('notifBellBtn');
-      if (notifBtn) {
-        notifBtn.addEventListener('click', () => {
-          const hasNotif = window.dashNotifState && window.dashNotifState.hasNotification;
-          const messages = window.dashNotifState && window.dashNotifState.messages;
-
-          if (!hasNotif) {
-            Toast.info(t('no_new_notifications') || 'No new notifications');
-            return;
-          }
-          Toast.show(messages.join(' & ') + '!', 'info', 5000);
-        });
-      }
-      
-      // ── Messages Click Handler ──
-      const msgBtn = document.querySelector('[data-i18n-title="messages"]');
-      if (msgBtn) {
-        msgBtn.addEventListener('click', () => {
-          Toast.info('Messaging feature coming soon!');
-        });
-      }
 
       // ── Dashboard Search Functionality ──
       const searchInput = document.getElementById('dashSearchInput');

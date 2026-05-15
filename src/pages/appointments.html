@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <script src="../../assets/js/theme-init.js"></script>
@@ -298,8 +298,8 @@
 
             <div class="sidebar-section">
                 <span class="sidebar-section-label" data-i18n="section_main">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>📊</i> Dashboard</a>
-                <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>🌡️</i> Track Symptoms</a>
+                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
                 <a class="sidebar-item" href="reports.html">
                     <i>📁</i> <span data-i18n="reports">My Reports</span>
@@ -336,10 +336,6 @@
                         <i>🔍</i>
                         <input type="text" id="apptSearch" data-i18n="search_appts" placeholder="Search by hospital/doctor..." oninput="debounceFilter()">
                     </div>
-                    <button class="topbar-icon-btn" data-i18n-title="notifications" title="Notifications">
-                        🔔<span class="notif-dot" id="notifBadge" style="display:none"></span>
-                    </button>
-                    <button class="topbar-icon-btn" data-i18n-title="settings" title="Settings">⚙️</button>
                 </div>
             </header>
 
@@ -464,6 +460,7 @@
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         // ── Navigation & Session ──
         const user = Auth.checkSession();
@@ -596,10 +593,12 @@
             document.getElementById('statUpcomingCount').textContent = upcoming;
             document.getElementById('statTotalCount').textContent = ALL_APPTS.length;
             const badge = document.getElementById('notifBadge');
-            if (upcoming > 0) {
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
+            if (badge) {
+                if (upcoming > 0) {
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -437,6 +437,7 @@
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         function t(key) {
             if (typeof L10n === 'undefined') return key;
@@ -682,7 +683,17 @@
 
         function initPage() {
             if (typeof L10n !== 'undefined') L10n.init();
-            
+
+            // Populate date display
+            const dateEl = document.getElementById('dateDisplay');
+            if (dateEl) {
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                dateEl.textContent = new Date().toLocaleDateString(localeMap[lang] || 'en-GB', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+            }
+
             loadLabResults();
 
             document.getElementById('searchInput').addEventListener('input', (e) => {

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -293,8 +293,8 @@
 
             <div class="sidebar-section">
                 <span class="sidebar-section-label" data-i18n="section_main">Main</span>
-                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>📊</i> Dashboard</a>
-                <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>🌡️</i> Track Symptoms</a>
+                <a class="sidebar-item" href="patient-dashboard.html" data-i18n="dashboard"><i>🏠</i> Dashboard</a>
+                <a class="sidebar-item" href="track-symptoms.html" data-i18n="symptoms"><i>📊</i> Track Symptoms</a>
                 <a class="sidebar-item" href="menstrual-cycle.html" data-i18n="cycle"><i>🩸</i> Menstrual Cycle</a>
                 <a class="sidebar-item" href="reports.html">
                     <i>📁</i> <span data-i18n="reports">My Reports</span>
@@ -420,36 +420,7 @@
                         </form>
                     </section>
 
-                    <!-- Data Management -->
-                    <section class="profile-section reveal">
-                        <div class="profile-section-title"><i data-i18n="data_management">📂 Data & Portability</i></div>
-                        <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
-                            Download a copy of your personal health data or export a medical summary for your records.
-                        </p>
-                        <div class="account-actions-list">
-                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadJSONData()">
-                                <i>📥</i> 
-                                <div style="display:grid;">
-                                    <span class="setting-name" data-i18n="download_data_json">Download My Data (JSON)</span>
-                                    <span class="setting-description">Full archive of symptoms, cycle, and lifestyle logs.</span>
-                                </div>
-                            </button>
-                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="exportMedicalSummary()">
-                                <i>📄</i> 
-                                <div style="display:grid;">
-                                    <span class="setting-name" data-i18n="export_summary_csv">Export Medical Summary (CSV)</span>
-                                    <span class="setting-description">Structured list of all uploaded lab reports and scans.</span>
-                                </div>
-                            </button>
-                            <button class="action-btn" style="color:var(--purple-primary); border-left: 4px solid var(--purple-primary);" onclick="downloadHealthDocument()">
-                                <i>📝</i> 
-                                <div style="display:grid;">
-                                    <span class="setting-name" data-i18n="download_health_doc">Personalized Health Document (TXT)</span>
-                                    <span class="setting-description">A human-readable report with your name, symptoms, and medical background.</span>
-                                </div>
-                            </button>
-                        </div>
-                    </section>
+
 
                     <!-- Danger Zone -->
                     <section class="profile-section reveal" style="border-color: #fca5a5; background: #fff5f5;">
@@ -473,6 +444,7 @@
 
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         const user = Auth.checkSession();
         if (!user) window.location.href = 'login.html';
@@ -737,51 +709,9 @@
             toggleDeactivateModal(true);
         }
 
-        function downloadJSONData() {
-            if (!user || !user.id) return;
-            Toast.info('Preparing your secure data vault...');
-            const url = API.getPHPPath('components/export_handler.php?patient_id=' + user.id);
-            window.location.href = url;
-        }
 
-        async function exportMedicalSummary() {
-            if (!user || !user.id) return;
-            Toast.info('Generating medical summary...');
-            try {
-                const res = await fetch(API.getPHPPath('components/report_handler.php?patient_id=' + user.id + '&filter=all'));
-                const json = await res.json();
-                
-                if (json.status === 'success' && json.data.length > 0) {
-                    // Create CSV
-                    let csv = 'Report Name,Type,Hospital/Clinic,Date,Status\n';
-                    json.data.forEach(r => {
-                        csv += `"${r.report_name}","${r.report_type}","${r.hospital_name || ''}","${r.report_date}","${r.status}"\n`;
-                    });
-                    
-                    const blob = new Blob([csv], { type: 'text/csv' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.setAttribute('hidden', '');
-                    a.setAttribute('href', url);
-                    a.setAttribute('download', `PCOS_Medical_Summary_${new Date().toISOString().split('T')[0]}.csv`);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    Toast.success('Medical summary exported!');
-                } else {
-                    Toast.warn('No reports found to export.');
-                }
-            } catch (err) {
-                Toast.error('Export failed. Check connection.');
-            }
-        }
 
-        function downloadHealthDocument() {
-            if (!user || !user.id) return;
-            Toast.info('Generating your personalized health document...');
-            const url = API.getPHPPath('components/document_export_handler.php?patient_id=' + user.id);
-            window.location.href = url;
-        }
+
 
         async function executeDeactivation() {
             const pwd = document.getElementById('deactivatePassword').value;
