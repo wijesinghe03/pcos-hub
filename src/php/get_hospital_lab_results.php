@@ -9,7 +9,7 @@ session_start();
 header('Content-Type: application/json');
 
 $hospitalId = $_SESSION['hospital_id'] ?? null;
-$hospitalName = 'City Hospital Colombo'; // Default fallback
+$hospitalName = 'City Hospital Colombo'; 
 
 if ($hospitalId) {
     try {
@@ -19,11 +19,10 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (PDOException $e) { }
+    } catch (\Exception $e) { }
 }
 
 try {
-    // Fetch all lab results for this hospital, joined with patient info
     $stmt = $pdo->prepare("
         SELECT lr.*, p.full_name, p.email, p.phone, p.nic
         FROM patient_labresults lr
@@ -34,7 +33,7 @@ try {
     $stmt->execute([$hospitalName]);
     $results = [];
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         $results[] = [
             'id'            => $row['id'],
             'patient_id'    => 'P-' . str_pad($row['patient_id'], 4, '0', STR_PAD_LEFT),
@@ -58,7 +57,7 @@ try {
         'hospital_name' => $hospitalName
     ]);
 
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo json_encode([
         'status'  => 'error',
         'message' => 'Failed to fetch lab results: ' . $e->getMessage()

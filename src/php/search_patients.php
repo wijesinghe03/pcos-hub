@@ -2,15 +2,14 @@
 
 // ============================================================
 // PCOS CARE HUB — Hospital Patient Search API (Robust)
-// Returns patients associated with the logged-in hospital
 // ============================================================
 
-header('Content-Type: application/json');
-require_once 'db_connect.php';
+require_once __DIR__ . '/db_connect.php';
 session_start();
+header('Content-Type: application/json');
 
 $hospitalId = $_SESSION['hospital_id'] ?? null;
-$hospitalName = 'City Hospital Colombo'; // Fallback for testing
+$hospitalName = 'City Hospital Colombo';
 
 if ($hospitalId) {
     try {
@@ -20,9 +19,7 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (PDOException $e) {
-        // Fallback
-    }
+    } catch (\Exception $e) { }
 }
 
 $searchId = $_GET['id'] ?? '';
@@ -31,8 +28,6 @@ $statusFilter = $_GET['status'] ?? '';
 $exact = isset($_GET['exact']) && $_GET['exact'] === 'true';
 
 try {
-    // ── 1. Base Query ───────────────────────────────────────
-    // We select patients who have at least one record (appointment, report, or lab result) at this hospital
     $sql = "
         SELECT DISTINCT p.id, p.full_name, p.username, p.email, p.phone, p.status, p.nic, p.created_at,
                (SELECT MAX(appointment_date) FROM patient_appointments WHERE patient_id = p.id AND (hospital_name = ? OR hospital_name = 'Selected Hospital')) as last_visit,
@@ -49,14 +44,12 @@ try {
     
     $params = [$hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName];
 
-    // ── 2. Filters ──────────────────────────────────────────
     if (!empty($searchId)) {
         $cleanId = ltrim(strtoupper($searchId), 'P-');
         if ($exact) {
             $sql .= " AND p.id = ?";
             $params[] = $cleanId;
         } else {
-            // Search by Patient ID (formatted P-0000 or raw), NIC, or Username
             $sql .= " AND (p.id LIKE ? OR p.username LIKE ? OR p.nic LIKE ?)";
             $params[] = "%$cleanId%";
             $params[] = "%$searchId%";
@@ -78,19 +71,18 @@ try {
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-    $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $patients = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-    // ── 3. Format Results ───────────────────────────────────
     $results = [];
     foreach ($patients as $p) {
         $results[] = [
-            'id' => 'P-' . str_pad($p['id'], 4, '0', STR_PAD_LEFT), // Unique Patient Number
+            'id' => 'P-' . str_pad($p['id'], 4, '0', STR_PAD_LEFT),
             'raw_id' => $p['id'],
             'name' => $p['full_name'],
             'nic' => $p['nic'] ?: $p['username'],
             'status' => $p['status'] ?: 'active',
             'lastVisit' => $p['last_visit'] ? date('d M Y', strtotime($p['last_visit'])) : 'N/A',
-            'diagnosis' => 'PCOS', // In real app, fetch from medical_records table
+            'diagnosis' => 'PCOS',
             'reports' => (int)$p['report_count'],
             'email' => $p['email'],
             'phone' => $p['phone'] ?: 'N/A'
@@ -98,6 +90,6 @@ try {
     }
 
     echo json_encode(['status' => 'success', 'data' => $results]);
-} catch (PDOException $e) {
+} catch (\Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Query error: ' . $e->getMessage()]);
 }

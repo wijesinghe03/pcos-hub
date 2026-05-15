@@ -26,7 +26,7 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (PDOException $e) { }
+    } catch (\Exception $e) { }
 }
 
 $patient_id = $_POST['patient_id'] ?? '';
@@ -34,7 +34,6 @@ $test_name = $_POST['test_name'] ?? '';
 $test_type = $_POST['test_type'] ?? 'General';
 $report_date = $_POST['report_date'] ?? date('Y-m-d');
 
-// Extract numeric ID from P-XXXX format if needed
 if (stripos($patient_id, 'P-') === 0) {
     $patient_id = (int)substr($patient_id, 2);
 }
@@ -45,9 +44,8 @@ if (!$patient_id || !$test_name) {
 }
 
 try {
-    // Verify patient exists
     $stmt = $pdo->prepare("SELECT id FROM patients WHERE id = ?");
-    $stmt->execute([$patient_id]);
+    $stmt->execute([(int)$patient_id]);
     if (!$stmt->fetch()) {
         echo json_encode(['status' => 'error', 'message' => 'Patient not found.']);
         exit;
@@ -66,6 +64,6 @@ try {
         'id' => $pdo->lastInsertId()
     ]);
 
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }

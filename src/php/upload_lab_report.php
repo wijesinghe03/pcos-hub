@@ -10,10 +10,9 @@ ini_set('display_errors', 0);
 
 require_once __DIR__ . '/db_connect.php';
 require_once __DIR__ . '/utils/Mailer.php';
+
 session_start();
 header('Content-Type: application/json');
-
-use App\Utils\Mailer;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Invalid method.']);
@@ -40,7 +39,7 @@ try {
         WHERE lr.id = ?
     ");
     $stmt->execute([$lab_id]);
-    $labRecord = $stmt->fetch(PDO::FETCH_ASSOC);
+    $labRecord = $stmt->fetch(\PDO::FETCH_ASSOC);
 
     if (!$labRecord) {
         echo json_encode(['status' => 'error', 'message' => 'Lab record not found.']);
@@ -59,7 +58,7 @@ try {
     }
 
     if (!@move_uploaded_file($file['tmp_name'], $upload_dir . $safe_name)) {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to save file to ' . $upload_dir]);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to save file.']);
         exit;
     }
 
@@ -68,50 +67,46 @@ try {
     // 3. Update database
     $pdo->beginTransaction();
 
-    // Update lab results status and file - Use 'sent' to match frontend
     $stmt = $pdo->prepare("UPDATE patient_labresults SET file_path = ?, status = 'sent' WHERE id = ?");
     $stmt->execute([$file_path, $lab_id]);
 
-    // Also sync to patient_reports (Master record)
     $stmt = $pdo->prepare("
         INSERT INTO patient_reports 
         (patient_id, report_name, report_type, hospital_name, doctor_name, file_name, file_path, status, report_date) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, 'Hospital Staff', ?, ?, 'uploaded', ?)
     ");
     $stmt->execute([
         $labRecord['patient_id'], 
         $labRecord['test_name'], 
         $labRecord['test_type'] ?: 'Lab Report', 
         $labRecord['hospital_name'],
-        'Hospital Staff',
         $orig_name,
         $file_path,
-        'uploaded',
         $labRecord['report_date'] ?: date('Y-m-d')
     ]);
 
     $pdo->commit();
 
     // 4. Send Email Notification
-    $subject = "Your Lab Report is Ready - {$labRecord['test_name']}";
+    $subject = "Your Lab Report is Ready - " . $labRecord['test_name'];
     $emailBody = "
-        <h2>Hello {$labRecord['full_name']},</h2>
-        <p>Your lab report for the test <strong>'{$labRecord['test_name']}'</strong> conducted at <strong>{$labRecord['hospital_name']}</strong> is now available.</p>
+        <h2>Hello " . $labRecord['full_name'] . ",</h2>
+        <p>Your lab report for the test <strong>'" . $labRecord['test_name'] . "'</strong> conducted at <strong>" . $labRecord['hospital_name'] . "</strong> is now available.</p>
         <p>You can view and download it directly from your PCOS Care Hub dashboard.</p>
         <br>
         <p>Regards,<br>PCOS Care Hub Team</p>
     ";
     
-    // We try to send, but we don't want a mail failure to break the response
-    @Mailer::send($labRecord['email'], $subject, $emailBody);
+    @\App\Utils\Mailer::send($labRecord['email'], $subject, $emailBody);
 
     echo json_encode([
         'status' => 'success', 
-        'message' => 'Report uploaded and patient notified successfully!',
-        'file_path' => $file_path
+        'message' => 'Report uploaded and patient notified successfully!'
     ]);
 
-} catch (Exception $e) {
-    if ($pdo && $pdo->inTransaction()) $pdo->rollBack();
+} catch (\Exception $e) {
+    if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     echo json_encode(['status' => 'error', 'message' => 'Server error: ' . $e->getMessage()]);
 }
