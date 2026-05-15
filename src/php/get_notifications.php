@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Get Notifications Handler
  * Returns upcoming appointments and predicted periods for the logged-in patient.
  */
+
 header('Content-Type: application/json');
 require_once __DIR__ . '/db_connect.php';
 
@@ -98,10 +100,9 @@ try {
     }
 
     // Sort all by date
-    usort($response['notifications'], function($a, $b) {
+    usort($response['notifications'], function ($a, $b) {
         return strtotime($a['date']) - strtotime($b['date']);
     });
-
 } catch (Exception $e) {
     $response = ['status' => 'error', 'message' => $e->getMessage()];
 }
