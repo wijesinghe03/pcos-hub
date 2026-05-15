@@ -58,7 +58,7 @@ try {
     $orig_name = basename($file['name']);
     $ext = pathinfo($orig_name, PATHINFO_EXTENSION);
     $safe_name = $labRecord['patient_id'] . '_lab_' . time() . '.' . $ext;
-    
+
     $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
@@ -84,9 +84,9 @@ try {
         VALUES (?, ?, ?, ?, 'Hospital Staff', ?, ?, 'uploaded', ?)
     ");
     $stmt2->execute([
-        $labRecord['patient_id'], 
-        $labRecord['test_name'], 
-        $labRecord['test_type'] ? $labRecord['test_type'] : 'Lab Report', 
+        $labRecord['patient_id'],
+        $labRecord['test_name'],
+        $labRecord['test_type'] ? $labRecord['test_type'] : 'Lab Report',
         $labRecord['hospital_name'],
         $orig_name,
         $file_path,
@@ -104,7 +104,7 @@ try {
         <br>
         <p>Regards,<br>PCOS Care Hub Team</p>
     ";
-    
+
     try {
         \App\Utils\Mailer::send($labRecord['email'], $subject, $emailBody);
     } catch (\Exception $mailErr) {
@@ -112,10 +112,9 @@ try {
     }
 
     echo json_encode([
-        'status' => 'success', 
+        'status' => 'success',
         'message' => 'Report uploaded and patient notified successfully!'
     ]);
-
 } catch (\Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

@@ -26,7 +26,8 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 
 $patient_id = $_POST['patient_id'] ?? '';
@@ -63,7 +64,6 @@ try {
         'message' => 'Lab request registered successfully!',
         'id' => $pdo->lastInsertId()
     ]);
-
 } catch (\Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }

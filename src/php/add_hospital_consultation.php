@@ -63,7 +63,7 @@ try {
     $subject = "Consultation Scheduled: $hosp";
     $formattedDate = date('d M Y', strtotime($date));
     $formattedTime = date('g:i A', strtotime($time));
-    
+
     $emailBody = "
         <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>
             <h2 style='color: #6366f1;'>Consultation Confirmed</h2>
@@ -79,7 +79,7 @@ try {
             <p>Best regards,<br>PCOS Care Hub Team</p>
         </div>
     ";
-    
+
     try {
         \App\Utils\Mailer::send($email, $subject, $emailBody);
     } catch (\Exception $e) {
@@ -87,11 +87,10 @@ try {
     }
 
     echo json_encode([
-        'status' => 'success', 
+        'status' => 'success',
         'message' => 'Consultation added and patient notified.',
         'id' => $consultation_id
     ]);
-
 } catch (\Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

@@ -237,32 +237,44 @@ try {
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `description` TEXT DEFAULT NULL");
     $migrations[] = "✅ Added 'description' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `phone` VARCHAR(25) DEFAULT NULL");
     $migrations[] = "✅ Added 'phone' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `hospital_type` VARCHAR(50) DEFAULT NULL");
     $migrations[] = "✅ Added 'hospital_type' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `specialties` TEXT DEFAULT NULL");
     $migrations[] = "✅ Added 'specialties' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `address` TEXT DEFAULT NULL");
     $migrations[] = "✅ Added 'address' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 try {
     $pdo->exec("ALTER TABLE `hospitals` ADD COLUMN `approval_status` ENUM('pending','approved','rejected') DEFAULT 'approved'");
     $migrations[] = "✅ Added 'approval_status' to hospitals.";
-} catch (PDOException $e) { /* Ignore if column exists */ }
+} catch (PDOException $e) {
+/* Ignore if column exists */
+}
 
 
 echo "\n=== Migration Results ===\n";

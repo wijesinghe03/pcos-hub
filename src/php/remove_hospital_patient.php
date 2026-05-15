@@ -27,32 +27,34 @@ try {
     $stmt = $pdo->prepare("SELECT hosp_name FROM registered_hospitals WHERE id = ? LIMIT 1");
     $stmt->execute([$hospitalId]);
     $hospital = $stmt->fetch();
-    
+
     if (!$hospital) {
         echo json_encode(['status' => 'error', 'message' => 'Hospital not found.']);
         exit;
     }
-    
+
     $hospitalName = $hospital['hosp_name'];
-    
+
     $pdo->beginTransaction();
-    
+
     // Remove appointments
     $stmt = $pdo->prepare("DELETE FROM patient_appointments WHERE patient_id = ? AND (hospital_name = ? OR hospital_name = 'Selected Hospital')");
     $stmt->execute([$patientId, $hospitalName]);
-    
+
     // Remove reports
     $stmt = $pdo->prepare("DELETE FROM patient_reports WHERE patient_id = ? AND (hospital_name = ? OR hospital_name = 'Selected Hospital')");
     $stmt->execute([$patientId, $hospitalName]);
-    
+
     // Remove lab results
     $stmt = $pdo->prepare("DELETE FROM patient_labresults WHERE patient_id = ? AND (hospital_name = ? OR hospital_name = 'Selected Hospital')");
     $stmt->execute([$patientId, $hospitalName]);
-    
+
     $pdo->commit();
-    
+
     echo json_encode(['status' => 'success', 'message' => 'Patient removed from hospital records.']);
 } catch (PDOException $e) {
-    if ($pdo->inTransaction()) $pdo->rollBack();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }

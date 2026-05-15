@@ -9,7 +9,7 @@ session_start();
 header('Content-Type: application/json');
 
 $hospitalId = $_SESSION['hospital_id'] ?? null;
-$hospitalName = 'City Hospital Colombo'; 
+$hospitalName = 'City Hospital Colombo';
 
 if ($hospitalId) {
     try {
@@ -19,7 +19,8 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 
 try {
@@ -37,7 +38,7 @@ try {
         $results[] = [
             'id'            => $row['id'],
             'patient_id'    => 'P-' . str_pad($row['patient_id'], 4, '0', STR_PAD_LEFT),
-            'raw_patient_id'=> $row['patient_id'],
+            'raw_patient_id' => $row['patient_id'],
             'patient_name'  => $row['full_name'],
             'email'         => $row['email'],
             'phone'         => $row['phone'] ?: 'N/A',
@@ -56,7 +57,6 @@ try {
         'data'   => $results,
         'hospital_name' => $hospitalName
     ]);
-
 } catch (\Exception $e) {
     echo json_encode([
         'status'  => 'error',

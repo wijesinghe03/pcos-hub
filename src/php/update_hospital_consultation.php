@@ -30,15 +30,15 @@ if (!$id) {
 try {
     if ($action === 'complete') {
         $pdo->beginTransaction();
-        
+
         $stmt1 = $pdo->prepare("UPDATE consultations SET status = 'completed' WHERE id = ?");
         $stmt1->execute([$id]);
-        
+
         // Fetch details to sync with patient_appointments
         $hStmt = $pdo->prepare("SELECT * FROM consultations WHERE id = ?");
         $hStmt->execute([$id]);
         $hAppt = $hStmt->fetch(\PDO::FETCH_ASSOC);
-        
+
         if ($hAppt && $hAppt['patient_id']) {
             $stmt2 = $pdo->prepare("
                 UPDATE patient_appointments 
@@ -47,20 +47,19 @@ try {
             ");
             $stmt2->execute([$hAppt['patient_id'], $hAppt['appointment_date'], $hAppt['appointment_time'], $hAppt['hospital_name']]);
         }
-        
+
         $pdo->commit();
         echo json_encode(['status' => 'success', 'message' => 'Consultation marked as completed.']);
-
     } elseif ($action === 'delete') {
         $pdo->beginTransaction();
-        
+
         $hStmt = $pdo->prepare("SELECT * FROM consultations WHERE id = ?");
         $hStmt->execute([$id]);
         $hAppt = $hStmt->fetch(\PDO::FETCH_ASSOC);
-        
+
         $stmt1 = $pdo->prepare("DELETE FROM consultations WHERE id = ?");
         $stmt1->execute([$id]);
-        
+
         if ($hAppt && $hAppt['patient_id']) {
             $stmt2 = $pdo->prepare("
                 DELETE FROM patient_appointments 
@@ -68,29 +67,28 @@ try {
             ");
             $stmt2->execute([$hAppt['patient_id'], $hAppt['appointment_date'], $hAppt['appointment_time'], $hAppt['hospital_name']]);
         }
-        
+
         $pdo->commit();
         echo json_encode(['status' => 'success', 'message' => 'Consultation record removed permanently.']);
-
     } elseif ($action === 'edit') {
         $date = $data['appointment_date'] ?? '';
         $time = $data['appointment_time'] ?? '';
         $notes = $data['reason'] ?? '';
-        
+
         if (!$date || !$time) {
             echo json_encode(['status' => 'error', 'message' => 'Date and Time are required.']);
             exit;
         }
 
         $pdo->beginTransaction();
-        
+
         $hStmt = $pdo->prepare("SELECT * FROM consultations WHERE id = ?");
         $hStmt->execute([$id]);
         $oldAppt = $hStmt->fetch(\PDO::FETCH_ASSOC);
 
         $stmt1 = $pdo->prepare("UPDATE consultations SET appointment_date = ?, appointment_time = ?, notes = ? WHERE id = ?");
         $stmt1->execute([$date, $time, $notes, $id]);
-        
+
         if ($oldAppt && $oldAppt['patient_id']) {
             $stmt2 = $pdo->prepare("
                 UPDATE patient_appointments 
@@ -99,14 +97,12 @@ try {
             ");
             $stmt2->execute([$date, $time, $notes, $oldAppt['patient_id'], $oldAppt['hospital_name'], $oldAppt['appointment_date'], $oldAppt['appointment_time']]);
         }
-        
+
         $pdo->commit();
         echo json_encode(['status' => 'success', 'message' => 'Consultation updated successfully.']);
-
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Unknown action.']);
     }
-
 } catch (\Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();

@@ -29,7 +29,8 @@ if ($hospitalId) {
         if ($row) {
             $hospitalInfo = $row;
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 $hospitalName = $hospitalInfo['hosp_name'];
 
@@ -73,12 +74,11 @@ try {
     }
 
     echo json_encode([
-        'status' => 'success', 
-        'data' => $results, 
+        'status' => 'success',
+        'data' => $results,
         'hospital_name' => $hospitalName,
         'hospital' => $hospitalInfo
     ]);
-
 } catch (\Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Query error: ' . $e->getMessage()]);
 }

@@ -1,4 +1,5 @@
 <?php
+
 $host = 'localhost';
 $db   = 'pcos_hub';
 $user = 'root';
@@ -14,7 +15,7 @@ $options = [
 
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
-    
+
     // Create consultations table
     $sql = "CREATE TABLE IF NOT EXISTS consultations (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,10 +35,9 @@ try {
         INDEX (patient_email),
         INDEX (hospital_name)
     ) ENGINE=InnoDB;";
-    
+
     $pdo->exec($sql);
     echo "Table 'consultations' created successfully.\n";
-    
 } catch (\PDOException $e) {
     echo "Error: " . $e->getMessage() . "\n";
 }

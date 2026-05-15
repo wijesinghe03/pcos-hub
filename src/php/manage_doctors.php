@@ -22,7 +22,9 @@ try {
     $pdo->exec("ALTER TABLE hospital_doctors ADD COLUMN IF NOT EXISTS consultation_fee DECIMAL(10,2) DEFAULT 0.00 AFTER experience");
     $pdo->exec("ALTER TABLE hospital_doctors ADD COLUMN IF NOT EXISTS availability_json TEXT DEFAULT NULL AFTER consultation_fee");
     $pdo->exec("ALTER TABLE hospital_doctors ADD COLUMN IF NOT EXISTS status ENUM('active','inactive') DEFAULT 'active' AFTER avatar");
-} catch (Exception $e) { /* Ignore if already exists */ }
+} catch (Exception $e) {
+/* Ignore if already exists */
+}
 
 
 
@@ -38,8 +40,7 @@ try {
         $stmt->execute([$hospitalId]);
         $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['status' => 'success', 'data' => $doctors]);
-    } 
-    else if ($action === 'add') {
+    } elseif ($action === 'add') {
         $name = $data['name'] ?? '';
         $spec = $data['spec'] ?? '';
         $qual = $data['qual'] ?? '';
@@ -61,8 +62,7 @@ try {
         $stmt = $pdo->prepare("INSERT INTO hospital_doctors (hospital_id, doctor_name, specialization, qualification, experience, consultation_fee, availability_json, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$hospitalId, $name, $spec, $qual, $exp, $fee, $avail, $avatar]);
         echo json_encode(['status' => 'success', 'message' => 'Doctor added successfully!']);
-    } 
-    else if ($action === 'update') {
+    } elseif ($action === 'update') {
         $id = (int)$data['id'];
         $name = $data['name'] ?? '';
         $spec = $data['spec'] ?? '';
@@ -76,8 +76,7 @@ try {
         $stmt = $pdo->prepare("UPDATE hospital_doctors SET doctor_name = ?, specialization = ?, qualification = ?, experience = ?, consultation_fee = ?, availability_json = ?, avatar = ?, status = ? WHERE id = ? AND hospital_id = ?");
         $stmt->execute([$name, $spec, $qual, $exp, $fee, $avail, $avatar, $status, $id, $hospitalId]);
         echo json_encode(['status' => 'success', 'message' => 'Doctor updated successfully!']);
-    } 
-    else if ($action === 'delete') {
+    } elseif ($action === 'delete') {
         $id = (int)($_GET['id'] ?? $data['id'] ?? 0);
         $stmt = $pdo->prepare("DELETE FROM hospital_doctors WHERE id = ? AND hospital_id = ?");
         $stmt->execute([$id, $hospitalId]);

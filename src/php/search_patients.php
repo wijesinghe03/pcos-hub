@@ -19,7 +19,8 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 
 $searchId = $_GET['id'] ?? '';
@@ -43,7 +44,7 @@ try {
             SELECT patient_id FROM consultations WHERE hospital_name = ?
         )
     ";
-    
+
     $params = [$hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName];
 
     if (!empty($searchId)) {

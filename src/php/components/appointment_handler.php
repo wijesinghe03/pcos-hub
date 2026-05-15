@@ -24,7 +24,9 @@ try {
     // Ensure hospital_appointments has status
 
     $pdo->exec("ALTER TABLE hospital_appointments ADD COLUMN IF NOT EXISTS status ENUM('pending','confirmed','cancelled','completed') DEFAULT 'pending' AFTER appointment_time");
-} catch (Exception $e) { /* Ignore if already exists */ }
+} catch (Exception $e) {
+/* Ignore if already exists */
+}
 
 
 function resolvePatient($pdo, $data)
@@ -307,10 +309,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             echo json_encode(['status' => 'success', 'message' => 'Appointment scheduled successfully!', 'id' => $appt_id]);
         } catch (PDOException $e) {
-            if ($pdo->inTransaction()) $pdo->rollBack();
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
-
     }
 
     if ($action === 'save_hospital_appointment') {
@@ -400,10 +403,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             echo json_encode(['status' => 'success', 'message' => 'Appointment booked! Confirmation email sent.', 'id' => $appt_id]);
         } catch (PDOException $e) {
-            if ($pdo->inTransaction()) $pdo->rollBack();
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
-
     }
     exit;
 }

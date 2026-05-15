@@ -9,7 +9,7 @@ session_start();
 header('Content-Type: application/json');
 
 $hospitalId = $_SESSION['hospital_id'] ?? null;
-$hospitalName = 'City Hospital Colombo'; 
+$hospitalName = 'City Hospital Colombo';
 
 if ($hospitalId) {
     try {
@@ -19,7 +19,8 @@ if ($hospitalId) {
         if ($row) {
             $hospitalName = $row['hosp_name'];
         }
-    } catch (\Exception $e) { }
+    } catch (\Exception $e) {
+    }
 }
 
 try {
@@ -42,7 +43,7 @@ try {
         ORDER BY p.full_name ASC
     ");
     $stmt->execute([$hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName]);
-    
+
     $patients = [];
     while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
         $patients[] = [
@@ -64,7 +65,6 @@ try {
         'status' => 'success',
         'data'   => $patients
     ]);
-
 } catch (\Exception $e) {
     echo json_encode([
         'status'  => 'error',

@@ -49,7 +49,7 @@ try {
         $stmt->execute([$name, $type, $reg, $year, $beds, $desc, $hospitalId]);
 
         echo json_encode(['status' => 'success', 'message' => 'Basic profile updated successfully!']);
-    } else if ($action === 'contact') {
+    } elseif ($action === 'contact') {
         $phone = $data['phone'] ?? '';
         $email = $data['email'] ?? '';
         $addr  = $data['address'] ?? '';
