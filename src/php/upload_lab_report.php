@@ -11,7 +11,9 @@ ini_set('display_errors', 0);
 require_once __DIR__ . '/db_connect.php';
 require_once __DIR__ . '/utils/Mailer.php';
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -19,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$lab_id = $_POST['lab_id'] ?? null;
+$lab_id = isset($_POST['lab_id']) ? $_POST['lab_id'] : null;
 if (!$lab_id) {
     echo json_encode(['status' => 'error', 'message' => 'Lab record ID is required.']);
     exit;
@@ -31,6 +33,11 @@ if (!isset($_FILES['report_file']) || $_FILES['report_file']['error'] !== UPLOAD
 }
 
 try {
+    // Check if $pdo is available (from db_connect.php or test bootstrap)
+    if (!isset($pdo)) {
+        throw new \Exception("Database connection not available.");
+    }
+
     // 1. Fetch lab record details
     $stmt = $pdo->prepare("
         SELECT lr.*, p.full_name, p.email 
@@ -54,10 +61,10 @@ try {
     
     $upload_dir = dirname(__FILE__, 3) . '/uploads/reports/';
     if (!is_dir($upload_dir)) {
-        @mkdir($upload_dir, 0755, true);
+        mkdir($upload_dir, 0755, true);
     }
 
-    if (!@move_uploaded_file($file['tmp_name'], $upload_dir . $safe_name)) {
+    if (!move_uploaded_file($file['tmp_name'], $upload_dir . $safe_name)) {
         echo json_encode(['status' => 'error', 'message' => 'Failed to save file.']);
         exit;
     }
@@ -67,22 +74,22 @@ try {
     // 3. Update database
     $pdo->beginTransaction();
 
-    $stmt = $pdo->prepare("UPDATE patient_labresults SET file_path = ?, status = 'sent' WHERE id = ?");
-    $stmt->execute([$file_path, $lab_id]);
+    $stmt1 = $pdo->prepare("UPDATE patient_labresults SET file_path = ?, status = 'sent' WHERE id = ?");
+    $stmt1->execute([$file_path, $lab_id]);
 
-    $stmt = $pdo->prepare("
+    $stmt2 = $pdo->prepare("
         INSERT INTO patient_reports 
         (patient_id, report_name, report_type, hospital_name, doctor_name, file_name, file_path, status, report_date) 
         VALUES (?, ?, ?, ?, 'Hospital Staff', ?, ?, 'uploaded', ?)
     ");
-    $stmt->execute([
+    $stmt2->execute([
         $labRecord['patient_id'], 
         $labRecord['test_name'], 
-        $labRecord['test_type'] ?: 'Lab Report', 
+        $labRecord['test_type'] ? $labRecord['test_type'] : 'Lab Report', 
         $labRecord['hospital_name'],
         $orig_name,
         $file_path,
-        $labRecord['report_date'] ?: date('Y-m-d')
+        $labRecord['report_date'] ? $labRecord['report_date'] : date('Y-m-d')
     ]);
 
     $pdo->commit();
@@ -97,7 +104,12 @@ try {
         <p>Regards,<br>PCOS Care Hub Team</p>
     ";
     
-    @\App\Utils\Mailer::send($labRecord['email'], $subject, $emailBody);
+    // Attempt mail but don't fail on failure
+    try {
+        \App\Utils\Mailer::send($labRecord['email'], $subject, $emailBody);
+    } catch (\Exception $mailErr) {
+        error_log("Mail error: " . $mailErr->getMessage());
+    }
 
     echo json_encode([
         'status' => 'success', 
