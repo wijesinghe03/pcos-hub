@@ -202,16 +202,17 @@
       </a>
       <div class="sidebar-section">
         <span class="sidebar-section-label">Main</span>
-        <a class="sidebar-item active" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+        <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
         <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
-        <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
+        <a class="sidebar-item" href="manage-doctors.html"><i>👩‍⚕️</i> Manage Doctors</a>
+        <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span
             class="sidebar-badge">8</span></a>
         <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations<span
             class="sidebar-badge">3</span></a>
       </div>
       <div class="sidebar-section">
         <span class="sidebar-section-label">Management</span>
-        <a class="sidebar-item" href="#" onclick="return showAllPatients(event);"><i>👥</i> All Patients</a>
+        <a class="sidebar-item" href="search-patients.html"><i>👥</i> All Patients</a>
         <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
         <a class="sidebar-item" href="hospital-reports.html"><i>📊</i> Reports</a>
       </div>
@@ -274,15 +275,15 @@
         <div class="dash-stat-card reveal">
           <div class="stat-card-icon blue">👥</div>
           <div>
-            <div class="stat-card-value">120</div>
+            <div class="stat-card-value" id="stat-total-patients">0</div>
             <div class="stat-card-label">Total Patients</div>
-            <div class="stat-card-change up">↑ 5 this week</div>
+            <div class="stat-card-change up" id="stat-patients-change">↑ 0 this week</div>
           </div>
         </div>
         <div class="dash-stat-card reveal reveal-delay-1">
           <div class="stat-card-icon orange">📋</div>
           <div>
-            <div class="stat-card-value">8</div>
+            <div class="stat-card-value" id="stat-pending-reports">0</div>
             <div class="stat-card-label">Pending Reports</div>
             <div class="stat-card-change down">↓ Action needed</div>
           </div>
@@ -290,7 +291,7 @@
         <div class="dash-stat-card reveal reveal-delay-2">
           <div class="stat-card-icon teal">💬</div>
           <div>
-            <div class="stat-card-value">3</div>
+            <div class="stat-card-value" id="stat-new-consultations">0</div>
             <div class="stat-card-label">New Consultations</div>
             <div class="stat-card-change up">↑ Today</div>
           </div>
@@ -298,9 +299,9 @@
         <div class="dash-stat-card reveal reveal-delay-3">
           <div class="stat-card-icon green">📅</div>
           <div>
-            <div class="stat-card-value">12</div>
+            <div class="stat-card-value" id="stat-today-appointments">0</div>
             <div class="stat-card-label">Appointments Today</div>
-            <div class="stat-card-change up">→ Next: 2 PM</div>
+            <div class="stat-card-change up" id="stat-next-appt">→ Next: None</div>
           </div>
         </div>
       </div>
@@ -379,7 +380,7 @@
           <div class="dash-panel reveal">
             <div class="panel-header">
               <div class="panel-title"><i>🔬</i> Recent Lab Results</div>
-              <a class="panel-action" href="#">Upload New →</a>
+              <a class="panel-action" href="hospital-lab-results.html">Upload New →</a>
             </div>
             <table class="dash-table">
               <thead>
@@ -390,34 +391,8 @@
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Nimesha R.</strong>
-                    <div class="td-light">P-0021</div>
-                  </td>
-                  <td>Blood Panel</td>
-                  <td><span class="badge badge-green">036 Normal</span></td>
-                  <td><button class="btn btn-primary btn-sm"
-                      onclick="Toast.success('Report sent to patient!')">Send</button></td>
-                </tr>
-                <tr>
-                  <td><strong>Sachini J.</strong>
-                    <div class="td-light">P-0035</div>
-                  </td>
-                  <td>Hormone Panel</td>
-                  <td><span class="badge badge-red">High LH</span></td>
-                  <td><button class="btn btn-primary btn-sm"
-                      onclick="Toast.warning('Urgent result — patient notified.')">Send</button></td>
-                </tr>
-                <tr>
-                  <td><strong>Amanda P.</strong>
-                    <div class="td-light">P-0009</div>
-                  </td>
-                  <td>Ultrasound</td>
-                  <td><span class="badge badge-orange">⟳ Pending</span></td>
-                  <td><button class="btn btn-outline btn-sm"
-                      onclick="Toast.success('Report uploaded successfully!')">Upload</button></td>
-                </tr>
+              <tbody id="recentLabResultsBody">
+                <tr><td colspan="4" style="text-align:center;padding:20px">Loading...</td></tr>
               </tbody>
             </table>
 
@@ -447,46 +422,10 @@
           <div class="dash-panel reveal reveal-delay-1">
             <div class="panel-header">
               <div class="panel-title"><i>💬</i> Consultations</div>
-              <a class="panel-action" href="#">Add New →</a>
+              <a class="panel-action" href="hospital-consultations.html">Add New →</a>
             </div>
-            <div class="activity-feed">
-              <div class="activity-item">
-                <div class="activity-dot-wrap">
-                  <div class="activity-dot" style="background:var(--purple-primary)"></div>
-                  <div class="activity-line"></div>
-                </div>
-                <div>
-                  <div class="activity-text"><strong>Amanda Perera</strong> — Follow-up consultation</div>
-                  <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-                    <span class="badge badge-purple">Today 2:00 PM</span>
-                    <span class="badge badge-green">Confirmed</span>
-                  </div>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-dot-wrap">
-                  <div class="activity-dot" style="background:var(--teal-accent)"></div>
-                  <div class="activity-line"></div>
-                </div>
-                <div>
-                  <div class="activity-text"><strong>Sachini Jayawardena</strong> — Hormone results review</div>
-                  <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-                    <span class="badge badge-orange">Tomorrow 10:30 AM</span>
-                  </div>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-dot-wrap">
-                  <div class="activity-dot" style="background:var(--pink-accent)"></div>
-                  <div class="activity-line"></div>
-                </div>
-                <div>
-                  <div class="activity-text"><strong>Nimesha Rathnayake</strong> — New patient intake</div>
-                  <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-                    <span class="badge badge-orange">27 Feb 3:00 PM</span>
-                  </div>
-                </div>
-              </div>
+            <div class="activity-feed" id="consultationsFeed">
+              <div style="text-align:center;padding:20px;color:#6b7280">Loading...</div>
             </div>
 
             <div style="margin-top:16px">
@@ -504,7 +443,7 @@
         <div class="dash-panel reveal">
           <div class="panel-header">
             <div class="panel-title"><i>👥</i> Recent Patients</div>
-            <a class="panel-action" href="#">View All →</a>
+            <a class="panel-action" href="search-patients.html">View All →</a>
           </div>
           <table class="dash-table">
             <thead>
@@ -517,34 +456,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><strong>Amanda Perera</strong></td>
-                <td class="td-light">960341256V</td>
-                <td class="td-light">20 Feb 2026</td>
-                <td><span class="badge badge-purple">PCOS</span></td>
-                <td>3</td>
-                <td><button class="btn btn-outline btn-sm"
-                    onclick="Toast.success('Opening patient profile...')">View</button></td>
-              </tr>
-              <tr>
-                <td><strong>Sachini Jayawardena</strong></td>
-                <td class="td-light">980123456V</td>
-                <td class="td-light">18 Feb 2026</td>
-                <td><span class="badge badge-purple">PCOS</span></td>
-                <td>1</td>
-                <td><button class="btn btn-outline btn-sm"
-                    onclick="Toast.success('Opening patient profile...')">View</button></td>
-              </tr>
-              <tr>
-                <td><strong>Nimesha Rathnayake</strong></td>
-                <td class="td-light">010234567V</td>
-                <td class="td-light">15 Feb 2026</td>
-                <td><span class="badge badge-orange">Under Review</span></td>
-                <td>2</td>
-                <td><button class="btn btn-outline btn-sm"
-                    onclick="Toast.success('Opening patient profile...')">View</button></td>
-              </tr>
+            <tbody id="recentPatientsBody">
+              <tr><td colspan="6" style="text-align:center;padding:20px">Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -554,11 +467,6 @@
 
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Search Patient Modal -->
-  <div id="searchPatientModal" class="modal"
-    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center">
-    <div class="modal-content"
-      style="background:white;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:600px;max-height:80vh;overflow-y:auto">
       <div class="modal-header"
         style="padding:20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center">
         <h3 style="margin:0;font-size:1.3rem;color:#1f2937">🔎 Search Patient</h3>
@@ -606,94 +514,9 @@
   <script src="../../assets/js/utils.js"></script>
   <script>
 
-    // Patient database (mock data - replace with API call in production)
-    const patientsDatabase = [
-      {
-        id: 'P-0001',
-        name: 'Amanda Perera',
-        nic: '960341256V',
-        status: 'active',
-        lastVisit: '20 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 3,
-        hospital: 'City Hospital'
-      },
-      {
-        id: 'P-0009',
-        name: 'Amanda P.',
-        nic: '960341256V',
-        status: 'active',
-        lastVisit: '20 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 3,
-        hospital: 'City Hospital'
-      },
-      {
-        id: 'P-0021',
-        name: 'Nimesha Rathnayake',
-        nic: '010234567V',
-        status: 'pending',
-        lastVisit: '15 Feb 2026',
-        diagnosis: 'Under Review',
-        reports: 2,
-        hospital: 'City Hospital'
-      },
-      {
-        id: 'P-0035',
-        name: 'Sachini Jayawardena',
-        nic: '980123456V',
-        status: 'active',
-        lastVisit: '18 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 1,
-        hospital: 'National Hospital'
-      },
-      {
-        id: 'P-0042',
-        name: 'Lakshmi Silva',
-        nic: '950456789V',
-        status: 'active',
-        lastVisit: '22 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 4,
-        hospital: 'City Hospital'
-      },
-      {
-        id: 'P-0055',
-        name: 'Deepa Kumari',
-        nic: '970789123V',
-        status: 'archived',
-        lastVisit: '10 Jan 2026',
-        diagnosis: 'PCOS',
-        reports: 5,
-        hospital: 'Central Medical'
-      },
-      {
-        id: 'P-0056',
-        name: 'Rajini Kumari',
-        nic: '975634211V',
-        status: 'active',
-        lastVisit: '25 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 2,
-        hospital: 'City Hospital'
-      },
-      {
-        id: 'P-0057',
-        name: 'Priya Mendis',
-        nic: '985123789V',
-        status: 'active',
-        lastVisit: '26 Feb 2026',
-        diagnosis: 'PCOS',
-        reports: 3,
-        hospital: 'City Hospital'
-      }
-    ];
+    // Patient database - populated by loadDashboardData()
+    var patientsDatabase = [];
 
-    function openSearchPatientModal() {
-      document.getElementById('searchPatientModal').style.display = 'flex';
-      document.getElementById('modalPatientSearch').focus();
-    }
 
     function closeSearchPatientModal() {
       document.getElementById('searchPatientModal').style.display = 'none';
@@ -807,9 +630,12 @@
     });
 
     function searchPatient() {
-      const val = document.getElementById('patientSearch').value;
-      if (val) Toast.success(`Searching for patient: ${val}`);
-      else Toast.warning('Please enter a Patient ID or NIC');
+      const val = document.getElementById('patientSearch').value.trim();
+      if (val) {
+        window.location.href = `search-patients.html?id=${encodeURIComponent(val)}`;
+      } else {
+        Toast.warning('Please enter a Patient ID or NIC');
+      }
     }
 
     // Main panel search function
@@ -1087,14 +913,17 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
-      // Set date display
+      // Set localized date display
       var now = new Date();
       var dateEl = document.getElementById('dateDisplay');
       if (dateEl) {
-        dateEl.textContent = now.toLocaleDateString('en-US', {
+        var lang = localStorage.getItem('pcos_lang') || 'en';
+        var localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+        dateEl.textContent = now.toLocaleDateString(localeMap[lang] || 'en-GB', {
           weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
       }
+
 
       // ── Load real hospital session data ──────────────────────
       fetch('../../src/php/get_hospital_session.php')
@@ -1122,7 +951,91 @@
         });
 
       console.log('Hospital Dashboard initialized');
+      loadDashboardData();
     });
+
+    function loadDashboardData() {
+      fetch('../../src/php/get_hospital_dashboard.php')
+        .then(r => r.json())
+        .then(res => {
+          if (res.status === 'success') {
+            const d = res.data;
+            
+            // Stats
+            document.getElementById('stat-total-patients').textContent = d.stats.total_patients;
+            document.getElementById('stat-patients-change').textContent = `↑ ${d.stats.new_patients_week} this week`;
+            document.getElementById('stat-pending-reports').textContent = d.stats.pending_reports;
+            document.getElementById('stat-new-consultations').textContent = d.stats.new_consultations;
+            document.getElementById('stat-today-appointments').textContent = d.stats.today_appointments;
+            document.getElementById('stat-next-appt').textContent = `→ Next: ${d.stats.next_appointment}`;
+
+            // Lab Results
+            const labBody = document.getElementById('recentLabResultsBody');
+            if (d.lab_results.length === 0) {
+              labBody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#6b7280">No recent results</td></tr>';
+            } else {
+              labBody.innerHTML = d.lab_results.map(r => `
+                <tr>
+                  <td><strong>${r.patient_name}</strong><div class="td-light">${r.patient_id}</div></td>
+                  <td>${r.test_name}</td>
+                  <td><span class="badge badge-${r.result_flag === 'high_lh' || r.result_flag === 'elevated' ? 'red' : r.result_flag === 'pending' ? 'orange' : 'green'}">${r.result_value}</span></td>
+                  <td><button class="btn btn-primary btn-sm" onclick="Toast.success('Opening report...')">View</button></td>
+                </tr>
+              `).join('');
+            }
+
+            // Consultations
+            const consultFeed = document.getElementById('consultationsFeed');
+            if (d.consultations.length === 0) {
+              consultFeed.innerHTML = '<div style="text-align:center;padding:20px;color:#6b7280">No upcoming consultations</div>';
+            } else {
+              const colors = ['var(--purple-primary)', 'var(--teal-accent)', 'var(--pink-accent)', 'var(--blue-primary)'];
+              consultFeed.innerHTML = d.consultations.map((c, i) => `
+                <div class="activity-item">
+                  <div class="activity-dot-wrap">
+                    <div class="activity-dot" style="background:${colors[i % colors.length]}"></div>
+                    <div class="activity-line"></div>
+                  </div>
+                  <div>
+                    <div class="activity-text"><strong>${c.patient_name}</strong> — ${c.type_label}</div>
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+                      <span class="badge badge-purple">${c.time}</span>
+                      <span class="badge badge-${c.status === 'confirmed' ? 'green' : 'orange'}">${c.status}</span>
+                    </div>
+                  </div>
+                </div>
+              `).join('');
+            }
+
+            // Recent Patients
+            const patientsBody = document.getElementById('recentPatientsBody');
+            if (d.patients.length === 0) {
+              patientsBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#6b7280">No patients found</td></tr>';
+            } else {
+              patientsBody.innerHTML = d.patients.map(p => `
+                <tr>
+                  <td><strong>${p.name}</strong></td>
+                  <td class="td-light">${p.nic}</td>
+                  <td class="td-light">${p.last_visit}</td>
+                  <td><span class="badge badge-purple">${p.diagnosis}</span></td>
+                  <td>${p.reports}</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="Toast.success('Opening profile...')">View</button></td>
+                </tr>
+              `).join('');
+              
+              // Sync local patientsDatabase for search
+              patientsDatabase = d.patients;
+            }
+          } else {
+            console.error('API Error:', res.message);
+            Toast.error('Failed to load real-time data.');
+          }
+        })
+        .catch(err => {
+          console.error('Fetch error:', err);
+          Toast.error('Network error while loading data.');
+        });
+    }
 
     function populateSidebar(h) {
       var name  = h.hosp_name || h.name || 'Hospital';

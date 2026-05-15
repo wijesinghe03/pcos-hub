@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -532,20 +532,13 @@
       } catch (err) { Toast.error('Submission failed.'); }
     }
 
-    const mockDoctors = [
-      { name: "Dr. Sarah Perera", spec: "Senior Consultant Gynaecologist", exp: "15+ Years Exp", img: "👩‍⚕️" },
-      { name: "Dr. Kamal Fernando", spec: "Obstetrician & Gynaecologist", exp: "12+ Years Exp", img: "👨‍⚕️" },
-      { name: "Dr. Anjalie Silva", spec: "Reproductive Endocrinologist", exp: "10+ Years Exp", img: "👩‍⚕️" },
-      { name: "Dr. Roshan de Silva", spec: "Fertility Specialist", exp: "8+ Years Exp", img: "👨‍⚕️" },
-      { name: "Dr. Nilmini Jayasinghe", spec: "Consultant Gynaecologist", exp: "20+ Years Exp", img: "👩‍⚕️" }
-    ];
-
     let currentHospitalKey = '';
-    let selectedDoctorIndex = -1;
+    let selectedDoctorId = -1;
+    let hospitalDoctors = [];
 
-    function openHospitalModal(id, name) {
+    async function openHospitalModal(id, name) {
       currentHospitalKey = id;
-      selectedDoctorIndex = -1;
+      selectedDoctorId = -1;
       const modal = document.getElementById('hospital-connect-modal');
       const nameEl = document.getElementById('modal-hospital-name');
       const container = document.getElementById('doctors-container');
@@ -553,24 +546,58 @@
       const welcomeTxt = (L10n.get() === 'en' ? "Welcome to " : (L10n.get() === 'si' ? "සාදරයෙන් පිළිගනිමු " : "வரவேற்கிறோம் "));
       nameEl.textContent = welcomeTxt + name;
       
-      // Render doctors
-      container.innerHTML = mockDoctors.map((doc, index) => `
-        <div class="doctor-card" id="doc-card-${index}" onclick="selectDoctor(${index})" style="animation: slideUp 0.3s ease-out ${index * 0.1}s forwards; opacity:0;">
-          <div class="doctor-avatar">${doc.img}</div>
-          <div class="doctor-name">${doc.name}</div>
-          <div class="doctor-spec">${doc.spec}</div>
-          <div class="doctor-exp">${doc.exp}</div>
-        </div>
-      `).join('');
-      
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><div class="loader-ring" style="margin:0 auto"></div><p>Loading available specialists...</p></div>`;
       modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; 
+      document.body.style.overflow = 'hidden';
+
+      try {
+        // We use a public version or a parameter to bypass hospital_id session if needed, 
+        // but for now let's assume manage_doctors.php can take a hospital_id param
+        const res = await fetch(`../../src/php/get_hospital_doctors.php?hospital_id=${id}`);
+        const data = await res.json();
+        
+        if (data.status === 'success' && data.data.length > 0) {
+          hospitalDoctors = data.data;
+          
+          // Update the badge count dynamically
+          const badge = modal.querySelector('[data-i18n="doctors_count"]');
+          if (badge) {
+            const label = L10n.get() === 'si' ? " වෛද්‍යවරු" : (L10n.get() === 'ta' ? " மருத்துவர்கள்" : " Doctors");
+            badge.textContent = hospitalDoctors.length + label;
+            badge.removeAttribute('data-i18n');
+          }
+
+          container.innerHTML = hospitalDoctors.map((doc, index) => `
+            <div class="doctor-card" id="doc-card-${doc.id}" onclick="selectDoctor(${doc.id})" style="animation: slideUp 0.3s ease-out ${index * 0.1}s forwards; opacity:0;">
+              <div class="doctor-avatar" style="overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--bg-light);">
+                ${doc.avatar ? `<img src="${doc.avatar}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='👩‍⚕️'">` : '👩‍⚕️'}
+              </div>
+              <div class="doctor-name">${doc.doctor_name}</div>
+              <div class="doctor-spec">${doc.specialization}</div>
+              <div class="doctor-exp">${doc.experience || 'Experienced'}</div>
+              <div style="font-size:0.75rem; color:var(--text-light); margin-top:5px;">LKR ${doc.consultation_fee}</div>
+            </div>
+          `).join('');
+        } else {
+          // Reset badge if no doctors
+          const badge = modal.querySelector('[data-i18n="doctors_count"]');
+          if (badge) badge.textContent = "0 Doctors";
+          
+          container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-mid); background:var(--bg-light); border-radius:12px; border:1px dashed var(--border);">
+            <div style="font-size:3rem; margin-bottom:15px; opacity:0.3;">🩺</div>
+            <p>No doctors currently available for booking at this hospital.</p>
+          </div>`;
+        }
+
+      } catch (err) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--red-accent);">Failed to load doctor list.</div>`;
+      }
     }
     
-    function selectDoctor(index) {
-      selectedDoctorIndex = index;
+    function selectDoctor(id) {
+      selectedDoctorId = id;
       document.querySelectorAll('.doctor-card').forEach(el => el.classList.remove('selected'));
-      document.getElementById('doc-card-' + index).classList.add('selected');
+      document.getElementById('doc-card-' + id).classList.add('selected');
     }
 
     function closeHospitalModal() {
@@ -580,26 +607,36 @@
     }
     
     function confirmConnection() {
-      if (selectedDoctorIndex === -1) {
+      // 1. Role Check: Admin and Hospitals cannot book appointments
+      if (typeof Auth !== 'undefined') {
+          const user = Auth.getUser();
+          if (user && (user.role === 'admin' || user.role === 'hospital' || user.role === 'superadmin')) {
+              Toast.info('Booking is only available for patients. Please log in as a patient to continue.');
+              return;
+          }
+      }
+
+      if (selectedDoctorId === -1) {
           Toast.warning('Please select a doctor to continue.');
           return;
       }
+
       
-      const doc = mockDoctors[selectedDoctorIndex];
+      const doc = hospitalDoctors.find(d => d.id === selectedDoctorId);
       const nameEl = document.getElementById('modal-hospital-name');
       let hospName = nameEl.textContent;
       
-      // Remove welcome prefix in all supported languages
+      // Remove welcome prefix
       hospName = hospName.replace(/Welcome to |සාදරයෙන් පිළිගනිමු |வரவேற்கிறோம் /g, '').trim();
       
       const params = new URLSearchParams();
       params.append('hospital', hospName);
-      params.append('docName', doc.name);
-      params.append('docSpec', doc.spec);
-      params.append('docExp', doc.exp);
-      params.append('docImg', doc.img);
+      params.append('hospId', currentHospitalKey);
+      params.append('docId', doc.id);
       
       window.location.href = 'doctor-appointment.html?' + params.toString();
+
+
     }
     
     document.getElementById('hospital-connect-modal').addEventListener('click', function(e) {

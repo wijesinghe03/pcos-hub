@@ -271,8 +271,8 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 10px;">
-                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--purple-primary); margin-bottom: 5px;">Rs. 2,500.00</div>
-                    <p style="font-size: 0.8rem; color: var(--text-mid);">Standard Consultation Fee</p>
+                    <div id="payModalAmount" style="font-size: 1.5rem; font-weight: 800; color: var(--purple-primary); margin-bottom: 5px;">Rs. 2,500.00</div>
+                    <p id="payModalBreakdown" style="font-size: 0.8rem; color: var(--text-mid);">Standard Consultation Fee</p>
                 </div>
 
                 <button class="btn btn-primary" id="payBtn" onclick="processPayment()">Complete Payment</button>
@@ -577,7 +577,7 @@
                     ${(appt.status==='upcoming'||appt.status==='rescheduled') ? `
                     <div class="appt-footer">
                         ${appt.payment_status === 'unpaid' ? 
-                            `<button class="btn btn-sm" style="background:var(--purple-primary); color:white; font-weight:800;" onclick="openPaymentModal(${appt.id}, '${appt.hospital_name}', '${appt.doctor_name}')">💳 Pay Now</button>` : 
+                            `<button class="btn btn-sm" style="background:var(--purple-primary); color:white; font-weight:800;" onclick="openPaymentModal(${appt.id}, '${appt.hospital_name}', '${appt.doctor_name}', ${appt.consultation_fee || 0})">💳 Pay Now</button>` : 
                             `<button class="btn btn-sm" style="background:var(--green-accent); color:white; pointer-events:none;">✅ Paid</button>`
                         }
                         <button class="btn btn-sm" style="background:var(--purple-ghost); color:var(--purple-primary);" onclick="openResched(${appt.id},'${appt.appointment_date}','${appt.appointment_time}')">${t('reschedule')}</button>
@@ -672,12 +672,19 @@
         const so = document.getElementById('sidebar-overlay');
         st.onclick = () => { sb.classList.toggle('active'); so.style.display = sb.classList.contains('active')?'block':'none'; };
         so.onclick = () => { sb.classList.remove('active'); so.style.display = 'none'; };
-        function openPaymentModal(id, hospital, doctor) {
+        function openPaymentModal(id, hospital, doctor, fee) {
+            const baseFee = parseFloat(fee) || 0;
+            const total = baseFee + 1500;
+            
             document.getElementById('payModalInfo').innerHTML = `
                 <strong>Hospital:</strong> ${hospital}<br>
                 <strong>Doctor:</strong> ${doctor}<br>
                 <strong>Service:</strong> Specialist Consultation
             `;
+            
+            document.getElementById('payModalAmount').textContent = `Rs. ${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('payModalBreakdown').textContent = `Doctor Charge: Rs. ${baseFee} + Service Charge: Rs. 1,500`;
+            
             window.activePayId = id;
             document.getElementById('paymentModal').classList.add('active');
         }

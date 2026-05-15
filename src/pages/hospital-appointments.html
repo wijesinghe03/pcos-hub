@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -966,12 +966,17 @@
 
         // Init
         document.addEventListener('DOMContentLoaded', function () {
-            // Date display
+            // Localized date display
             const dateEl = document.getElementById('dateDisplay');
             if (dateEl) {
                 const now = new Date();
-                dateEl.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                dateEl.textContent = now.toLocaleDateString(localeMap[lang] || 'en-GB', { 
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+                });
             }
+
 
             updateStats();
             renderTable();

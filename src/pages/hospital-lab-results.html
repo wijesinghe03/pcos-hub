@@ -301,40 +301,53 @@
                     <table class="dash-table">
                         <thead>
                             <tr style="background:#f9fafb">
-                                <th style="padding:12px;text-align:left">Patient</th>
-                                <th style="padding:12px;text-align:left">Test Type</th>
-                                <th style="padding:12px;text-align:left">Date</th>
-                                <th style="padding:12px;text-align:left">Result</th>
+                                <th style="padding:12px;text-align:left">Patient Details</th>
+                                <th style="padding:12px;text-align:left">Contact Info</th>
+                                <th style="padding:12px;text-align:left">Test Name</th>
+                                <th style="padding:12px;text-align:left">Request Date</th>
                                 <th style="padding:12px;text-align:left">Status</th>
                                 <th style="padding:12px;text-align:center">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="labResultsTableBody">
-                            <!-- Results will be populated by JavaScript -->
+                            <tr><td colspan="6" style="text-align:center;padding:40px"><div class="loader-ring" style="margin:0 auto;transform:scale(0.6)"></div></td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Upload Lab Result Section -->
-            <div class="dash-panel reveal" style="margin-top:20px">
+            <!-- Register New Lab Test -->
+            <div class="dash-panel reveal" style="margin-top:20px" id="registrationPanel">
                 <div class="panel-header">
-                    <div class="panel-title"><i>📤</i> Upload Lab Result</div>
+                    <div class="panel-title"><i>📝</i> Register New Lab Test</div>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
-                            ID</label>
-                        <input type="text" id="uploadPatientId" class="form-control" placeholder="e.g., P-0021"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient ID</label>
+                        <input type="text" id="regPatientId" class="form-control" placeholder="e.g., P-0001"
+                            onblur="fetchPatientDetails()"
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
                     </div>
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test
-                            Type</label>
-                        <select id="uploadTestType" class="form-control"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient Name</label>
+                        <input type="text" id="regPatientName" class="form-control" placeholder="e.g., Amanda Perera"
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient Email</label>
+                        <input type="email" id="regPatientEmail" class="form-control" placeholder="e.g., amanda@email.com"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Contact Number</label>
+                        <input type="text" id="regPatientPhone" class="form-control" placeholder="e.g., +94 77 123 4567"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                    <div>
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test Type</label>
+                        <select id="regTestType" class="form-control" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
                             <option>Blood Test</option>
                             <option>Hormone Panel</option>
                             <option>Ultrasound</option>
@@ -343,30 +356,20 @@
                             <option>Other</option>
                         </select>
                     </div>
-                </div>
-                <div style="margin-bottom:16px">
-                    <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Test
-                        Result Summary</label>
-                    <textarea id="uploadResultSummary" class="form-control" rows="3"
-                        placeholder="e.g., Blood test results show normal hormone levels..."
-                        style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;resize:vertical"></textarea>
-                </div>
-                <div class="upload-area"
-                    style="margin-bottom:16px;border:2px dashed #d1d5db;border-radius:8px;padding:30px;text-align:center;cursor:pointer"
-                    onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon" style="font-size:2.5rem;margin-bottom:10px">📄</div>
-                    <p class="upload-text" style="margin:0;font-weight:500;color:#374151"><span>Click to upload</span>
-                        lab report file</p>
-                    <p class="upload-hint" style="margin:5px 0 0 0;color:#6b7280;font-size:0.9rem">PDF, JPG, PNG up to
-                        10MB</p>
-                    <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.png,.jpeg">
+                    <div>
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Specific Test Name</label>
+                        <input type="text" id="regTestName" class="form-control" placeholder="e.g., Fasting Blood Sugar"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
                 </div>
                 <div style="display:flex;gap:12px">
-                    <button class="btn btn-primary" style="flex:1" onclick="uploadLabResult()">Upload & Notify
-                        Patient</button>
-                    <button class="btn btn-outline" style="flex:1" onclick="clearUploadForm()">Clear</button>
+                    <button id="btnRegister" class="btn btn-primary" style="flex:1" onclick="registerLabTest()">Register Request</button>
+                    <button class="btn btn-outline" style="flex:1" onclick="clearRegForm()">Clear</button>
                 </div>
             </div>
+
+            <!-- Hidden File Input for Uploads -->
+            <input type="file" id="labReportFileInput" style="display:none" accept=".pdf,.jpg,.png,.jpeg" onchange="handleFileSelection(event)">
         </main>
     </div>
 
@@ -420,176 +423,62 @@
 
     <script src="../../assets/js/utils.js"></script>
     <script>
-        // Lab Results database
-        const labResultsDatabase = [
-            {
-                id: 'LR-001',
-                patientId: 'P-0021',
-                patientName: 'Nimesha R.',
-                testType: 'blood',
-                testName: 'Blood Panel',
-                date: '28 Feb 2026',
-                result: 'Normal',
-                status: 'sent',
-                details: 'All values within normal range'
-            },
-            {
-                id: 'LR-002',
-                patientId: 'P-0035',
-                patientName: 'Sachini J.',
-                testType: 'hormone',
-                testName: 'Hormone Panel',
-                date: '27 Feb 2026',
-                result: 'High LH',
-                status: 'reviewed',
-                details: 'LH levels elevated, follow-up needed'
-            },
-            {
-                id: 'LR-003',
-                patientId: 'P-0009',
-                patientName: 'Amanda P.',
-                testType: 'ultrasound',
-                testName: 'Ultrasound',
-                date: '26 Feb 2026',
-                result: 'Pending',
-                status: 'pending',
-                details: 'Awaiting radiologist review'
-            },
-            {
-                id: 'LR-004',
-                patientId: 'P-0001',
-                patientName: 'Amanda Perera',
-                testType: 'thyroid',
-                testName: 'Thyroid Panel',
-                date: '25 Feb 2026',
-                result: 'Normal',
-                status: 'completed',
-                details: 'TSH and free T4 within normal range'
-            },
-            {
-                id: 'LR-005',
-                patientId: 'P-0042',
-                patientName: 'Lakshmi Silva',
-                testType: 'blood',
-                testName: 'Blood Test',
-                date: '24 Feb 2026',
-                result: 'Abnormal',
-                status: 'reviewed',
-                details: 'Glucose level slightly elevated'
-            },
-            {
-                id: 'LR-006',
-                patientId: 'P-0055',
-                patientName: 'Deepa Kumari',
-                testType: 'imaging',
-                testName: 'Imaging',
-                date: '23 Feb 2026',
-                result: 'Normal',
-                status: 'sent',
-                details: 'CT scan shows no abnormalities'
-            },
-            {
-                id: 'LR-007',
-                patientId: 'P-0068',
-                patientName: 'Priya Sharma',
-                testType: 'hormone',
-                testName: 'Hormone Panel',
-                date: '22 Feb 2026',
-                result: 'Normal',
-                status: 'completed',
-                details: 'Hormone levels balanced'
-            },
-            {
-                id: 'LR-008',
-                patientId: 'P-0001',
-                patientName: 'Amanda Perera',
-                testType: 'blood',
-                testName: 'Blood Panel',
-                date: '20 Feb 2026',
-                result: 'Normal',
-                status: 'sent',
-                details: 'Complete blood count normal'
-            }
-        ];
+        let currentLabResults = [];
+        let selectedLabId = null;
 
-        // Patient database
-        const patientsDatabase = [
-            {
-                id: 'P-0001',
-                name: 'Amanda Perera',
-                nic: '960341256V',
-                status: 'active',
-                lastVisit: '20 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 3
-            },
-            {
-                id: 'P-0009',
-                name: 'Amanda P.',
-                nic: '960341256V',
-                status: 'active',
-                lastVisit: '20 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 3
-            },
-            {
-                id: 'P-0021',
-                name: 'Nimesha Rathnayake',
-                nic: '010234567V',
-                status: 'pending',
-                lastVisit: '15 Feb 2026',
-                diagnosis: 'Under Review',
-                reports: 2
-            },
-            {
-                id: 'P-0035',
-                name: 'Sachini Jayawardena',
-                nic: '980123456V',
-                status: 'active',
-                lastVisit: '18 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 1
-            },
-            {
-                id: 'P-0042',
-                name: 'Lakshmi Silva',
-                nic: '950456789V',
-                status: 'active',
-                lastVisit: '22 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 4
-            },
-            {
-                id: 'P-0055',
-                name: 'Deepa Kumari',
-                nic: '970789123V',
-                status: 'archived',
-                lastVisit: '10 Jan 2026',
-                diagnosis: 'PCOS',
-                reports: 5
-            },
-            {
-                id: 'P-0068',
-                name: 'Priya Sharma',
-                nic: '920567890V',
-                status: 'active',
-                lastVisit: '25 Feb 2026',
-                diagnosis: 'PCOS',
-                reports: 2
-            }
-        ];
-
-        // Initialize table on page load
         document.addEventListener('DOMContentLoaded', function () {
-            // Populate date display
-            const dateEl = document.getElementById('dateDisplay');
-            if (dateEl) {
-                dateEl.textContent = new Date().toLocaleDateString('en-GB', {
-                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                });
+            // Sync dates
+            const dateDisplay = document.getElementById('dateDisplay');
+            if (dateDisplay) {
+                const now = new Date();
+                dateDisplay.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
             }
-            displayLabResults(labResultsDatabase);
+
+            fetchLabResults();
         });
+
+        async function fetchPatientDetails() {
+            let patientId = document.getElementById('regPatientId').value.trim();
+            if (!patientId) return;
+
+            // Extract numeric ID from P-XXXX format
+            if (patientId.toUpperCase().startsWith('P-')) {
+                patientId = patientId.substring(2);
+            }
+
+            try {
+                // We'll use the existing search_patients.php but with an exact ID match
+                const res = await fetch(`../php/search_patients.php?id=${patientId}&exact=true`);
+                const response = await res.json();
+                
+                if (response.status === 'success' && response.data.length > 0) {
+                    const patient = response.data[0];
+                    document.getElementById('regPatientName').value = patient.name || '';
+                    document.getElementById('regPatientEmail').value = patient.email || '';
+                    document.getElementById('regPatientPhone').value = patient.phone || '';
+                    Toast.success('Patient details found and filled.');
+                }
+            } catch (err) {
+                console.error('Failed to fetch patient details:', err);
+            }
+        }
+
+        async function fetchLabResults() {
+            try {
+                const res = await fetch('../php/get_hospital_lab_results.php');
+                const response = await res.json();
+                
+                if (response.status === 'success') {
+                    currentLabResults = response.data;
+                    displayLabResults(currentLabResults);
+                } else {
+                    Toast.error(response.message);
+                }
+            } catch (err) {
+                console.error(err);
+                Toast.error('Failed to load lab results');
+            }
+        }
 
         function displayLabResults(results) {
             const tableBody = document.getElementById('labResultsTableBody');
@@ -600,39 +489,35 @@
             }
 
             tableBody.innerHTML = results.map(result => `
-        <tr style="border-bottom:1px solid #e5e7eb;transition:all 0.2s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
-          <td style="padding:12px;cursor:pointer" onclick="viewPatientLabResults('${result.patientId}')">
-            <div style="font-weight:600;color:#1f2937">${result.patientName}</div>
-            <div style="font-size:0.85rem;color:#6b7280">${result.patientId}</div>
-          </td>
-          <td style="padding:12px">
-            <div style="font-weight:500;color:#374151">${result.testName}</div>
-          </td>
-          <td style="padding:12px;color:#6b7280">${result.date}</td>
-          <td style="padding:12px">
-            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${result.result === 'Normal' ? '#d1fae5;color:#065f46' :
-                    result.result === 'Pending' ? '#fef3c7;color:#92400e' :
-                        result.result === 'High LH' || result.result === 'Abnormal' ? '#fee2e2;color:#991b1b' :
-                            '#e0e7ff;color:#3730a3'
-                }">
-              ${result.result}
-            </span>
-          </td>
-          <td style="padding:12px">
-            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${result.status === 'sent' ? '#dbeafe;color:#0c4a6e' :
-                    result.status === 'reviewed' ? '#c7d2fe;color:#312e81' :
-                        result.status === 'completed' ? '#d1fae5;color:#065f46' :
-                            '#fef3c7;color:#92400e'
-                }">
-              ${result.status.charAt(0).toUpperCase() + result.status.slice(1)}
-            </span>
-          </td>
-          <td style="padding:12px;text-align:center">
-            <button class="btn btn-primary btn-sm" onclick="viewLabResult('${result.id}')">View</button>
-            <button class="btn btn-outline btn-sm" style="margin-left:4px" onclick="sendLabResult('${result.patientId}')">Send</button>
-          </td>
-        </tr>
-      `).join('');
+                <tr style="border-bottom:1px solid #e5e7eb;transition:all 0.2s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
+                    <td style="padding:12px">
+                        <div style="font-weight:700;color:#1f2937">${result.patient_name}</div>
+                        <div style="font-size:0.85rem;color:var(--purple-primary);font-weight:600">ID: ${result.patient_id}</div>
+                    </td>
+                    <td style="padding:12px">
+                        <div style="font-size:0.9rem;color:#374151">📧 ${result.email}</div>
+                        <div style="font-size:0.85rem;color:#6b7280">📞 ${result.phone}</div>
+                    </td>
+                    <td style="padding:12px">
+                        <div style="font-weight:600;color:#374151">${result.test_name}</div>
+                        <div style="font-size:0.8rem;color:#6b7280">${result.test_type}</div>
+                    </td>
+                    <td style="padding:12px;color:#6b7280;font-size:0.9rem">${result.report_date}</td>
+                    <td style="padding:12px">
+                        <span style="padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;background:${
+                            (result.status === 'sent' || result.status === 'completed') ? '#d1fae5;color:#065f46' : '#fef3c7;color:#92400e'
+                        }">
+                            ${(result.status === 'sent' || result.status === 'completed') ? '✅ Ready & Sent' : '⏳ Pending'}
+                        </span>
+                    </td>
+                    <td style="padding:12px;text-align:center">
+                        ${(result.status !== 'sent' && result.status !== 'completed') ? 
+                            `<button class="btn btn-primary btn-sm" onclick="triggerFileUpload(${result.id})">📤 Upload Report</button>` :
+                            `<button class="btn btn-outline btn-sm" onclick="window.open('../../${result.file_path}', '_blank')">📄 View Report</button>`
+                        }
+                    </td>
+                </tr>
+            `).join('');
         }
 
         function filterLabResults() {
@@ -640,62 +525,138 @@
             const testFilter = document.getElementById('labFilterTest').value;
             const statusFilter = document.getElementById('labFilterStatus').value;
 
-            const filtered = labResultsDatabase.filter(result => {
+            const filtered = currentLabResults.filter(result => {
                 const matchesPatient = patientFilter === '' ||
-                    result.patientName.toLowerCase().includes(patientFilter) ||
-                    result.patientId.toLowerCase().includes(patientFilter);
-                const matchesTest = testFilter === '' || result.testType === testFilter;
-                const matchesStatus = statusFilter === '' || result.status === statusFilter;
+                    result.patient_name.toLowerCase().includes(patientFilter) ||
+                    result.patient_id.toLowerCase().includes(patientFilter);
+                const matchesTest = testFilter === '' || result.test_type.toLowerCase().includes(testFilter.toLowerCase());
+                const matchesStatus = statusFilter === '' || 
+                    (statusFilter === 'sent' ? (result.status === 'sent' || result.status === 'completed') : (result.status !== 'sent' && result.status !== 'completed'));
                 return matchesPatient && matchesTest && matchesStatus;
             });
 
             displayLabResults(filtered);
         }
 
-        function viewLabResult(resultId) {
-            const result = labResultsDatabase.find(r => r.id === resultId);
-            if (result) {
-                Toast.success(`Opening result: ${result.testName} for ${result.patientName}`);
-            }
-        }
+        async function registerLabTest() {
+            const patientId = document.getElementById('regPatientId').value.trim();
+            const patientName = document.getElementById('regPatientName').value.trim();
+            const patientEmail = document.getElementById('regPatientEmail').value.trim();
+            const patientPhone = document.getElementById('regPatientPhone').value.trim();
+            const testType = document.getElementById('regTestType').value;
+            const testName = document.getElementById('regTestName').value.trim();
 
-        function sendLabResult(patientId) {
-            const patient = patientsDatabase.find(p => p.id === patientId);
-            if (patient) {
-                Toast.success(`Lab result sent to ${patient.name}!`);
-            }
-        }
-
-        function viewPatientLabResults(patientId) {
-            const patient = patientsDatabase.find(p => p.id === patientId);
-            if (patient) {
-                Toast.success(`Opening all results for ${patient.name}...`);
-            }
-        }
-
-        function uploadLabResult() {
-            const patientId = document.getElementById('uploadPatientId').value;
-            const testType = document.getElementById('uploadTestType').value;
-            const summary = document.getElementById('uploadResultSummary').value;
-
-            if (!patientId || !testType || !summary) {
-                Toast.warning('Please fill in all fields');
+            if (!patientId || !testName || !patientEmail) {
+                Toast.warning('Please enter Patient ID, Email, and Test Name');
                 return;
             }
 
-            Toast.success('Lab result uploaded and patient notified!');
-            clearUploadForm();
+            const btn = document.getElementById('btnRegister');
+            btn.disabled = true;
+            btn.textContent = 'Registering...';
+
+            try {
+                const formData = new FormData();
+                formData.append('patient_id', patientId);
+                formData.append('patient_name', patientName);
+                formData.append('patient_email', patientEmail);
+                formData.append('patient_phone', patientPhone);
+                formData.append('test_type', testType);
+                formData.append('test_name', testName);
+
+                const res = await fetch('../php/add_lab_request.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const response = await res.json();
+
+                if (response.status === 'success') {
+                    Toast.success(response.message);
+                    clearRegForm();
+                    fetchLabResults();
+                } else {
+                    Toast.error(response.message);
+                }
+            } catch (err) {
+                console.error(err);
+                Toast.error('An error occurred');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Register Request';
+            }
         }
 
-        function clearUploadForm() {
-            document.getElementById('uploadPatientId').value = '';
-            document.getElementById('uploadTestType').value = 'Blood Test';
-            document.getElementById('uploadResultSummary').value = '';
-            document.getElementById('fileInput').value = '';
+        function clearRegForm() {
+            document.getElementById('regPatientId').value = '';
+            document.getElementById('regPatientName').value = '';
+            document.getElementById('regPatientEmail').value = '';
+            document.getElementById('regPatientPhone').value = '';
+            document.getElementById('regTestName').value = '';
+        }
+
+        function triggerFileUpload(labId) {
+            console.log('Triggering upload for Lab ID:', labId);
+            selectedLabId = labId;
+            const fileInput = document.getElementById('labReportFileInput');
+            if (fileInput) {
+                fileInput.click();
+            } else {
+                console.error('File input element not found!');
+                Toast.error('System error: Upload element missing');
+            }
+        }
+
+        async function handleFileSelection(event) {
+            const file = event.target.files[0];
+            console.log('File selected:', file ? file.name : 'none', 'for Lab ID:', selectedLabId);
+            
+            if (!file) return;
+            if (!selectedLabId) {
+                Toast.error('Session error: No lab record selected');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('lab_id', selectedLabId);
+            formData.append('report_file', file);
+
+            Toast.info('Uploading report and notifying patient...');
+
+            try {
+                const res = await fetch('../php/upload_lab_report.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const text = await res.text();
+                console.log('Upload Response Text:', text);
+                
+                let response;
+                try {
+                    response = JSON.parse(text);
+                } catch (e) {
+                    console.error('JSON Parse Error:', e, 'Response text:', text);
+                    throw new Error('Invalid server response');
+                }
+
+                if (response.status === 'success') {
+                    Toast.success(response.message);
+                    fetchLabResults();
+                } else {
+                    Toast.error(response.message || 'Upload failed');
+                }
+            } catch (err) {
+                console.error('Upload Error:', err);
+                Toast.error('Upload failed: ' + err.message);
+            } finally {
+                document.getElementById('labReportFileInput').value = '';
+                selectedLabId = null;
+            }
         }
 
         function openUploadModal() {
-            document.querySelector('html').scrollTop = document.querySelector('.dash-panel:last-of-type').offsetTop;
+            document.getElementById('registrationPanel').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('regPatientId').focus();
         }
 
         // Modal functions for Account search

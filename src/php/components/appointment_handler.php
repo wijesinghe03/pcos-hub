@@ -16,6 +16,17 @@ session_start();
 
 header('Content-Type: application/json');
 
+// ── Auto-Migration Guard ──
+try {
+    // Ensure patient_appointments has status and fee
+    $pdo->exec("ALTER TABLE patient_appointments ADD COLUMN IF NOT EXISTS status ENUM('upcoming','completed','cancelled','rescheduled') DEFAULT 'upcoming' AFTER reason");
+    $pdo->exec("ALTER TABLE patient_appointments ADD COLUMN IF NOT EXISTS consultation_fee DECIMAL(10,2) DEFAULT 0.00 AFTER status");
+    // Ensure hospital_appointments has status
+
+    $pdo->exec("ALTER TABLE hospital_appointments ADD COLUMN IF NOT EXISTS status ENUM('pending','confirmed','cancelled','completed') DEFAULT 'pending' AFTER appointment_time");
+} catch (Exception $e) { /* Ignore if already exists */ }
+
+
 function resolvePatient($pdo, $data)
 {
     if (isset($_SESSION['patient_id'])) {
@@ -105,14 +116,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         try {
-            $stmt = $pdo->prepare("SELECT appointment_time FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
-            $stmt->execute([$doctor, $hosp, $date]);
+            $stmt = $pdo->prepare("
+                SELECT appointment_time FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled'
+                UNION
+                SELECT appointment_time FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled'
+            ");
+            $stmt->execute([$doctor, $hosp, $date, $doctor, $hosp, $date]);
             $taken = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
             echo json_encode(['status' => 'success', 'data' => $taken]);
         } catch (PDOException $e) {
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
+
         exit;
     }
 
@@ -192,7 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <p><strong>Time:</strong> " . $appt['appointment_time'] . "</p>
                         <p><strong>Status:</strong> <span style='color: #22c55e; font-weight: bold;'>PAID</span></p>
                     </div>
-                    <p>Amount Received: <strong>Rs. 2,500.00</strong></p>
+                    <p>Amount Received: <strong>Rs. " . number_format(($appt['consultation_fee'] ?? 0) + 1500, 2) . "</strong></p>
+
                     <p>Thank you for choosing PCOS Care Hub.</p>
                 ";
                 \App\Utils\Mailer::send($patient['email'], $subject, $emailBody);
@@ -221,30 +238,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         try {
-            // 1. Check Daily Limit (Max 30 per doctor per day)
-            $limitStmt = $pdo->prepare("SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled'");
-            $limitStmt->execute([$doctor, $hosp, $date]);
-            $dailyCount = $limitStmt->fetchColumn();
+            $pdo->beginTransaction();
 
-            if ($dailyCount >= 30) {
+            // 1. Check Unified Daily Limit (Max 30 per doctor per day across both tables)
+            $limitStmt = $pdo->prepare("
+                SELECT (
+                    (SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled') +
+                    (SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled')
+                ) as total_count
+            ");
+            $limitStmt->execute([$doctor, $hosp, $date, $doctor, $hosp, $date]);
+            $totalCount = (int)$limitStmt->fetchColumn();
+
+            if ($totalCount >= 30) {
+                $pdo->rollBack();
                 echo json_encode(['status' => 'error', 'message' => 'This doctor has reached the maximum of 30 appointments for this day. Please select another date.']);
                 exit;
             }
 
-            // 2. Check Double Booking (Concurrency check)
-            $dupStmt = $pdo->prepare("SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled'");
-            $dupStmt->execute([$doctor, $hosp, $date, $time]);
-            $isBooked = $dupStmt->fetchColumn();
+            // 2. Check Double Booking (Concurrency check across both tables)
+            $dupStmt = $pdo->prepare("
+                SELECT (
+                    (SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled') +
+                    (SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled')
+                ) as is_booked
+            ");
+            $dupStmt->execute([$doctor, $hosp, $date, $time, $doctor, $hosp, $date, $time]);
+            $isBooked = (int)$dupStmt->fetchColumn();
 
             if ($isBooked > 0) {
+                $pdo->rollBack();
                 echo json_encode(['status' => 'error', 'message' => 'This time slot is already booked by another patient. Please select a different appointment time.']);
                 exit;
             }
 
-            $stmt = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'upcoming')");
-            $stmt->execute([$patient_id, $hosp, $doctor, $date, $time, $type, $reason]);
+            $stmt = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status, consultation_fee) VALUES (?, ?, ?, ?, ?, ?, ?, 'upcoming', ?)");
+            $stmt->execute([$patient_id, $hosp, $doctor, $date, $time, $type, $reason, $data['consultation_fee'] ?? 0]);
 
             $appt_id = $pdo->lastInsertId();
+            $pdo->commit();
+
 
             // Send Confirmation Email
             try {
@@ -274,8 +307,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             echo json_encode(['status' => 'success', 'message' => 'Appointment scheduled successfully!', 'id' => $appt_id]);
         } catch (PDOException $e) {
+            if ($pdo->inTransaction()) $pdo->rollBack();
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
+
     }
 
     if ($action === 'save_hospital_appointment') {
@@ -293,28 +328,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         try {
-            // 1. Check Daily Limit
-            $limitStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ?");
-            $limitStmt->execute([$doctor, $hosp, $date]);
-            $dailyCount = $limitStmt->fetchColumn();
+            $pdo->beginTransaction();
 
-            if ($dailyCount >= 30) {
+            // 1. Check Unified Daily Limit (Max 30 per doctor per day)
+            $limitStmt = $pdo->prepare("
+                SELECT (
+                    (SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled') +
+                    (SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND status != 'cancelled')
+                ) as total_count
+            ");
+            $limitStmt->execute([$doctor, $hosp, $date, $doctor, $hosp, $date]);
+            $totalCount = (int)$limitStmt->fetchColumn();
+
+            if ($totalCount >= 30) {
+                $pdo->rollBack();
                 echo json_encode(['status' => 'error', 'message' => 'This doctor has reached the maximum of 30 appointments for this day. Please select another date.']);
                 exit;
             }
 
             // 2. Double booking
-            $dupStmt = $pdo->prepare("SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ?");
-            $dupStmt->execute([$doctor, $hosp, $date, $time]);
-            $isBooked = $dupStmt->fetchColumn();
+            $dupStmt = $pdo->prepare("
+                SELECT (
+                    (SELECT COUNT(*) FROM patient_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled') +
+                    (SELECT COUNT(*) FROM hospital_appointments WHERE doctor_name = ? AND hospital_name = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled')
+                ) as is_booked
+            ");
+            $dupStmt->execute([$doctor, $hosp, $date, $time, $doctor, $hosp, $date, $time]);
+            $isBooked = (int)$dupStmt->fetchColumn();
 
             if ($isBooked > 0) {
+                $pdo->rollBack();
                 echo json_encode(['status' => 'error', 'message' => 'This time slot is already booked. Please select a different time.']);
                 exit;
             }
 
             // 3. Get next appointment number for the day
-            $nextApptNum = $dailyCount + 1;
+            $nextApptNum = $totalCount + 1;
 
             $stmt = $pdo->prepare("INSERT INTO hospital_appointments (hospital_name, doctor_name, patient_name, email, contact_number, appointment_number, appointment_date, appointment_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$hosp, $doctor, $patient_name, $email, $contact, $nextApptNum, $date, $time]);
@@ -322,13 +371,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Also add to patient dashboard if patient_id is present
             if ($patient_id) {
-                try {
-                    $stmt2 = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status) VALUES (?, ?, ?, ?, ?, 'consultation', ?, 'upcoming')");
-                    $stmt2->execute([$patient_id, $hosp, $doctor, $date, $time, $data['reason'] ?? '']);
-                } catch (PDOException $e) {
-                    error_log("Dashboard sync failed: " . $e->getMessage());
-                }
+                $stmt2 = $pdo->prepare("INSERT INTO patient_appointments (patient_id, hospital_name, doctor_name, appointment_date, appointment_time, appointment_type, reason, status, consultation_fee) VALUES (?, ?, ?, ?, ?, 'consultation', ?, 'upcoming', ?)");
+                $stmt2->execute([$patient_id, $hosp, $doctor, $date, $time, $data['reason'] ?? '', $data['consultation_fee'] ?? 0]);
             }
+
+            $pdo->commit();
+
 
             // Send Email
             try {
@@ -352,8 +400,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             echo json_encode(['status' => 'success', 'message' => 'Appointment booked! Confirmation email sent.', 'id' => $appt_id]);
         } catch (PDOException $e) {
+            if ($pdo->inTransaction()) $pdo->rollBack();
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }
+
     }
     exit;
 }

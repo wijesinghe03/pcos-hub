@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -202,6 +202,7 @@
                 <span class="sidebar-section-label">Main</span>
                 <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
                 <a class="sidebar-item active" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="manage-doctors.html"><i>👩‍⚕️</i> Manage Doctors</a>
                 <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
                         class="sidebar-badge">8</span></a>
                 <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations<span
@@ -338,19 +339,7 @@
 
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- Search Patient Modal (for Account section) -->
-    <div id="searchPatientModal" class="modal"
-        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center">
-        <div class="modal-content"
-            style="background:white;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);width:90%;max-width:600px;max-height:80vh;overflow-y:auto">
-            <div class="modal-header"
-                style="padding:20px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center">
-                <h3 style="margin:0;font-size:1.3rem;color:#1f2937">🔎 Search Patient</h3>
-                <button onclick="closeSearchPatientModal()"
-                    style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280">&times;</button>
-            </div>
 
-            <div class="modal-body" style="padding:20px">
                 <div style="margin-bottom:20px">
                     <input type="text" id="modalPatientSearch" class="form-control"
                         placeholder="Search by Patient ID or NIC…"
@@ -394,17 +383,7 @@
             const resultsContainer = document.getElementById('searchResultsContainer');
             const statsContainer = document.getElementById('resultsStats');
 
-            if (!searchId && !searchName && !statusFilter) {
-                resultsContainer.innerHTML = `
-                  <div style="text-align:center;padding:40px 20px;color:#6b7280">
-                    <div style="font-size:3rem;margin-bottom:10px">🔍</div>
-                    <p style="font-size:1.1rem;margin:0">Enter search criteria to find patients</p>
-                    <p style="font-size:0.9rem;margin:5px 0 0 0">Search by ID, NIC, or name</p>
-                  </div>
-                `;
-                statsContainer.style.display = 'none';
-                return;
-            }
+
 
             resultsContainer.innerHTML = `
               <div style="text-align:center;padding:40px">
@@ -450,36 +429,41 @@
                   onmouseout="this.style.background='white';this.style.boxShadow=''"
                   onclick="openPatientDetail('${patient.raw_id}')"
                 >
-                  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
-                    <div>
-                      <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
-                      <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id} | NIC: ${patient.nic}</div>
+                    <div style="background:var(--purple-primary);color:white;padding:4px 10px;border-radius:6px;font-size:0.8rem;font-weight:700;margin-bottom:8px;display:inline-block">PATIENT ID: ${patient.id}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+                      <div>
+                        <div style="font-weight:700;color:#1f2937;font-size:1.1rem">${patient.name}</div>
+                        <div style="color:#6b7280;font-size:0.9rem">NIC/Passport: ${patient.nic}</div>
+                      </div>
+                      <span style="padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:600;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
+                              patient.status === 'pending' ? '#fef3c7;color:#92400e' :
+                                  '#e5e7eb;color:#374151'
+                          }">
+                        ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
+                      </span>
                     </div>
-                    <span style="padding:6px 14px;border-radius:20px;font-size:0.85rem;font-weight:500;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
-                            patient.status === 'pending' ? '#fef3c7;color:#92400e' :
-                                '#e5e7eb;color:#374151'
-                        }">
-                      ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-                    </span>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:0.9rem;margin:10px 0;padding:12px;background:#f9fafb;border-radius:8px">
+                      <div>
+                        <div style="color:#6b7280;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Diagnosis</div>
+                        <div style="font-weight:600;color:#1f2937">${patient.diagnosis}</div>
+                      </div>
+                      <div>
+                        <div style="color:#6b7280;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Last Visit</div>
+                        <div style="font-weight:600;color:#1f2937">${patient.lastVisit}</div>
+                      </div>
+                      <div>
+                        <div style="color:#6b7280;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Reports</div>
+                        <div style="font-weight:600;color:#1f2937">${patient.reports}</div>
+                      </div>
+                      <div>
+                        <div style="color:#6b7280;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Contact</div>
+                        <div style="font-weight:600;color:#1f2937">${patient.phone}</div>
+                      </div>
+                    </div>
+                    <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:10px">
+                      <button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca" onclick="event.stopPropagation();confirmRemoval('${patient.raw_id}', '${patient.name}')">🗑️ Remove Patient</button>
+                    </div>
                   </div>
-                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:0.9rem;margin:10px 0">
-                    <div>
-                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Diagnosis</div>
-                      <div style="font-weight:500;color:#1f2937">${patient.diagnosis}</div>
-                    </div>
-                    <div>
-                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Last Visit</div>
-                      <div style="font-weight:500;color:#1f2937">${patient.lastVisit}</div>
-                    </div>
-                    <div>
-                      <div style="color:#6b7280;font-size:0.85rem;margin-bottom:2px">Reports</div>
-                      <div style="font-weight:500;color:#1f2937">${patient.reports}</div>
-                    </div>
-                  </div>
-                  <div style="margin-top:10px;text-align:right">
-                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientDetail('${patient.raw_id}')">View Profile →</button>
-                  </div>
-                </div>
               `).join('');
                 } else {
                     Toast.error(response.message || 'Failed to fetch patients');
@@ -514,123 +498,34 @@
             // window.location.href = `hospital-patient-profile.html?id=${patientId}`;
         }
 
-        // Modal functions for Account search
-        function openSearchPatientModal() {
-            document.getElementById('searchPatientModal').style.display = 'flex';
-            document.getElementById('modalPatientSearch').focus();
-        }
-
-        function closeSearchPatientModal() {
-            document.getElementById('searchPatientModal').style.display = 'none';
-            document.getElementById('modalPatientSearch').value = '';
-            document.getElementById('patientResultsList').innerHTML = '';
-            document.getElementById('patientResultsList').style.display = 'none';
-            document.getElementById('noResultsMessage').style.display = 'block';
-        }
-
-        async function filterPatients() {
-            const searchValue = document.getElementById('modalPatientSearch').value.toLowerCase().trim();
-            const statusFilter = document.getElementById('patientStatusFilter').value;
-
-            const resultsList = document.getElementById('patientResultsList');
-            const noResultsMsg = document.getElementById('noResultsMessage');
-            const loadingState = document.getElementById('searchLoadingState');
-
-            if (!searchValue && !statusFilter) {
-                resultsList.style.display = 'none';
-                noResultsMsg.style.display = 'block';
-                return;
-            }
-
-            loadingState.style.display = 'block';
-            noResultsMsg.style.display = 'none';
-            resultsList.style.display = 'none';
-
-            try {
-                const res = await fetch(`../php/search_patients.php?id=${searchValue}&name=${searchValue}&status=${statusFilter}`);
-                const response = await res.json();
-                
-                loadingState.style.display = 'none';
-
-                if (response.status === 'success') {
-                    const filtered = response.data;
-
-                    if (filtered.length === 0) {
-                        noResultsMsg.style.display = 'block';
-                        resultsList.style.display = 'none';
-                        return;
+        async function confirmRemoval(patientId, patientName) {
+            if (confirm(`Are you sure you want to remove ${patientName} from this hospital's records? This will delete all associated appointments and reports for this patient at your hospital.`)) {
+                try {
+                    const formData = new FormData();
+                    formData.append('patient_id', patientId);
+                    
+                    const res = await fetch('../php/remove_hospital_patient.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const response = await res.json();
+                    
+                    if (response.status === 'success') {
+                        Toast.success(response.message);
+                        performSearch(); // Refresh list
+                    } else {
+                        Toast.error(response.message);
                     }
-
-                    noResultsMsg.style.display = 'none';
-                    resultsList.style.display = 'block';
-                    resultsList.innerHTML = filtered.map(patient => `
-              <div 
-                onclick="openPatientProfile('${patient.raw_id}')" 
-                style="
-                  padding:15px;
-                  border:1px solid #e5e7eb;
-                  border-radius:8px;
-                  margin-bottom:10px;
-                  cursor:pointer;
-                  transition:all 0.2s;
-                  background:#f9fafb;
-                "
-                onmouseover="this.style.background='#f3f4f6';this.style.boxShadow='0 4px 6px rgba(0,0,0,.1)'"
-                onmouseout="this.style.background='#f9fafb';this.style.boxShadow=''"
-              >
-                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
-                  <div>
-                    <div style="font-weight:600;color:#1f2937;font-size:1rem">${patient.name}</div>
-                    <div style="color:#6b7280;font-size:0.9rem">ID: ${patient.id}</div>
-                  </div>
-                  <span class="badge" style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${patient.status === 'active' ? '#d1fae5;color:#065f46' :
-                            patient.status === 'pending' ? '#fef3c7;color:#92400e' :
-                                '#e5e7eb;color:#374151'
-                        }">
-                    ${patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
-                  </span>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;font-size:0.9rem;color:#6b7280">
-                  <div>
-                    <div style="color:#4b5563;font-weight:500">NIC</div>
-                    <div>${patient.nic}</div>
-                  </div>
-                  <div>
-                    <div style="color:#4b5563;font-weight:500">Diagnosis</div>
-                    <div>${patient.diagnosis}</div>
-                  </div>
-                  <div>
-                    <div style="color:#4b5563;font-weight:500">Last Visit</div>
-                    <div>${patient.lastVisit}</div>
-                  </div>
-                </div>
-                <div style="margin-top:10px;text-align:right">
-                  <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openPatientProfile('${patient.raw_id}')">View Profile →</button>
-                </div>
-              </div>
-            `).join('');
+                } catch (err) {
+                    console.error(err);
+                    Toast.error('Failed to remove patient');
                 }
-            } catch (err) {
-                console.error(err);
-                loadingState.style.display = 'none';
             }
         }
 
-        function openPatientProfile(patientId) {
-            Toast.info(`Opening profile (ID: ${patientId})...`);
-            closeSearchPatientModal();
-        }
 
-        // Close modal when clicking overlay
+        // DOMContentLoaded logic
         document.addEventListener('DOMContentLoaded', function () {
-            const modal = document.getElementById('searchPatientModal');
-            if (modal) {
-                modal.addEventListener('click', function (e) {
-                    if (e.target === modal) {
-                        closeSearchPatientModal();
-                    }
-                });
-            }
 
             // Sync dates
             const dateDisplay = document.getElementById('dateDisplay');
@@ -638,6 +533,16 @@
                 const now = new Date();
                 dateDisplay.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
             }
+
+            // Check for URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryId = urlParams.get('id');
+            if (queryId) {
+                document.getElementById('searchPatientInput').value = queryId;
+            }
+
+            // Perform initial search to show all current hospital patients
+            performSearch();
         });
     </script>
 </body>

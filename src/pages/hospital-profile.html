@@ -667,6 +667,7 @@
                 <span class="sidebar-section-label">Main</span>
                 <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
                 <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
+                <a class="sidebar-item" href="manage-doctors.html"><i>👩‍⚕️</i> Manage Doctors</a>
                 <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span
                         class="sidebar-badge">8</span></a>
                 <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations <span
@@ -789,21 +790,17 @@
                             </div>
                             <div class="info-item">
                                 <label>Year Established</label>
-                                <p id="vYear">2019</p>
+                                <p id="vYear">—</p>
                             </div>
                             <div class="info-item">
                                 <label>Bed Capacity</label>
-                                <p id="vBeds">250 Beds</p>
+                                <p id="vBeds">—</p>
                             </div>
                         </div>
                         <div style="margin-top:18px">
                             <div class="info-item">
                                 <label>About / Description</label>
-                                <p id="vDesc" style="font-weight:400;color:#374151;line-height:1.6;max-width:700px">
-                                    City Hospital is a premier healthcare facility in Colombo, Sri Lanka, specialising
-                                    in women's health, PCOS management, and reproductive endocrinology. Our dedicated
-                                    team of specialists provides comprehensive diagnostic and treatment services.
-                                </p>
+                                <p id="vDesc" style="font-weight:400;color:#374151;line-height:1.6;max-width:700px">—</p>
                             </div>
                         </div>
                     </div>
@@ -826,12 +823,12 @@
                         </div>
                         <div class="edit-grid">
                             <div class="ef"><label>Registration No.</label><input type="text" id="eReg"
-                                    value="MOH-LK-2019-0042"></div>
-                            <div class="ef"><label>Year Established</label><input type="number" id="eYear" value="2019"
+                                    value=""></div>
+                            <div class="ef"><label>Year Established</label><input type="number" id="eYear" value=""
                                     min="1800" max="2026"></div>
                         </div>
                         <div class="edit-grid">
-                            <div class="ef"><label>Bed Capacity</label><input type="number" id="eBeds" value="250"
+                            <div class="ef"><label>Bed Capacity</label><input type="number" id="eBeds" value=""
                                     min="1"></div>
                             <div class="ef">
                                 <label>Status</label>
@@ -844,7 +841,7 @@
                         </div>
                         <div class="edit-grid full">
                             <div class="ef"><label>About / Description</label><textarea
-                                    id="eDesc">City Hospital is a premier healthcare facility in Colombo, Sri Lanka, specialising in women's health, PCOS management, and reproductive endocrinology. Our dedicated team of specialists provides comprehensive diagnostic and treatment services.</textarea>
+                                    id="eDesc" placeholder="Describe your hospital..."></textarea>
                             </div>
                         </div>
                         <div class="edit-actions">
@@ -1111,6 +1108,10 @@
                 document.getElementById('vName').textContent = h.hosp_name     || '—';
                 document.getElementById('vType').textContent = h.hospital_type || '—';
                 document.getElementById('vReg').textContent  = h.reg_number    || '—';
+                document.getElementById('vYear').textContent = h.established_year || '—';
+                document.getElementById('vBeds').textContent = h.bed_capacity ? h.bed_capacity + ' Beds' : '—';
+                document.getElementById('vDesc').textContent = h.about_desc || '—';
+                
                 var statusEl = document.getElementById('vStatus');
                 if (h.is_verified == 1 && h.approval_status === 'approved') {
                     statusEl.innerHTML = '<span class="tag">✅ Approved &amp; Verified</span>';
@@ -1121,12 +1122,14 @@
                 }
 
                 /* ─ Edit form prefill ─ */
-                var eHName = document.getElementById('eHName');
-                if (eHName) eHName.value = h.hosp_name || '';
+                if (document.getElementById('eHName')) document.getElementById('eHName').value = h.hosp_name || '';
+                if (document.getElementById('eReg')) document.getElementById('eReg').value = h.reg_number || '';
+                if (document.getElementById('eYear')) document.getElementById('eYear').value = h.established_year || '';
+                if (document.getElementById('eBeds')) document.getElementById('eBeds').value = h.bed_capacity || '';
+                if (document.getElementById('eDesc')) document.getElementById('eDesc').value = h.about_desc || '';
+                
                 var eHType = document.getElementById('eHType');
                 if (eHType) { for(var o of eHType.options) { if(o.value===h.hospital_type||o.text===h.hospital_type){o.selected=true;break;} } }
-                var eReg = document.getElementById('eReg');
-                if (eReg) eReg.value = h.reg_number || '';
 
                 /* ─ Contact Info section ─ */
                 document.getElementById('vPhone').textContent = h.phone   ? '📞 ' + h.phone   : '—';
@@ -1165,43 +1168,84 @@
         }
 
         /* ── Save Basic Info ── */
-        function saveBasic() {
+        async function saveBasic() {
             var name = document.getElementById('eHName').value.trim();
             var type = document.getElementById('eHType').value;
-            var reg = document.getElementById('eReg').value.trim();
+            var reg  = document.getElementById('eReg').value.trim();
             var year = document.getElementById('eYear').value;
             var beds = document.getElementById('eBeds').value;
             var desc = document.getElementById('eDesc').value.trim();
+
             if (!name) { toast('Hospital name is required.', 'warning'); return; }
-            document.getElementById('vName').textContent = name;
-            document.getElementById('vType').textContent = type;
-            document.getElementById('vReg').textContent = reg;
-            document.getElementById('vYear').textContent = year;
-            document.getElementById('vBeds').textContent = beds + ' Beds';
-            document.getElementById('vDesc').textContent = desc;
-            document.getElementById('heroName').textContent = name;
-            document.getElementById('heroType').textContent = type + ' · Colombo, Sri Lanka';
-            toggleEdit('basicEdit');
-            toast('✅ Hospital profile updated successfully!', 'success');
+
+            try {
+                const response = await fetch('../../src/php/update_hospital_profile.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'basic',
+                        name: name,
+                        type: type,
+                        reg: reg,
+                        year: year,
+                        beds: beds,
+                        desc: desc
+                    })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    document.getElementById('vName').textContent = name;
+                    document.getElementById('vType').textContent = type;
+                    document.getElementById('vReg').textContent  = reg || '—';
+                    document.getElementById('vYear').textContent = year || '—';
+                    document.getElementById('vBeds').textContent = beds ? beds + ' Beds' : '—';
+                    document.getElementById('vDesc').textContent = desc || '—';
+                    document.getElementById('heroName').textContent = name;
+                    toggleEdit('basicEdit');
+                    toast('✅ Hospital profile updated successfully!', 'success');
+                } else {
+                    toast('❌ ' + result.message, 'error');
+                }
+            } catch (err) {
+                toast('❌ Failed to update profile.', 'error');
+            }
         }
 
         /* ── Save Contact ── */
-        function saveContact() {
+        async function saveContact() {
             var phone = document.getElementById('ePhone').value.trim();
-            var emerg = document.getElementById('eEmerg').value.trim();
             var email = document.getElementById('eEmail').value.trim();
-            var web = document.getElementById('eWeb').value.trim();
-            var addr = document.getElementById('eAddr').value.trim();
-            var dist = document.getElementById('eDist').value.trim();
+            var addr  = document.getElementById('eAddr').value.trim();
+            var dist  = document.getElementById('eDist').value.trim();
+
             if (!phone || !email) { toast('Phone and email are required.', 'warning'); return; }
-            document.getElementById('vPhone').textContent = '📞 ' + phone;
-            document.getElementById('vEmerg').textContent = '🚨 ' + emerg;
-            document.getElementById('vEmail').textContent = '✉️ ' + email;
-            document.getElementById('vWeb').textContent = '🌐 ' + web;
-            document.getElementById('vAddr').textContent = '📍 ' + addr;
-            document.getElementById('vDist').textContent = dist;
-            toggleEdit('contactEdit');
-            toast('✅ Contact information updated!', 'success');
+
+            try {
+                const response = await fetch('../../src/php/update_hospital_profile.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'contact',
+                        phone: phone,
+                        email: email,
+                        address: addr,
+                        location: dist
+                    })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    document.getElementById('vPhone').textContent = '📞 ' + phone;
+                    document.getElementById('vEmail').textContent = '✉️ ' + email;
+                    document.getElementById('vAddr').textContent  = addr ? '📍 ' + addr : '—';
+                    document.getElementById('vDist').textContent  = dist || '—';
+                    toggleEdit('contactEdit');
+                    toast('✅ Contact information updated!', 'success');
+                } else {
+                    toast('❌ ' + result.message, 'error');
+                }
+            } catch (err) {
+                toast('❌ Failed to update contact info.', 'error');
+            }
         }
 
         /* ── Save Hours ── */

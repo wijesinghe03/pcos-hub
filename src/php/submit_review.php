@@ -5,7 +5,9 @@ require_once __DIR__ . '/utils/Logger.php';
 
 use App\Utils\Logger;
 
+session_start();
 header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
     exit;
@@ -18,13 +20,17 @@ if (!isset($data['hospital_id']) || !isset($data['rating'])) {
     exit;
 }
 
+$reviewerName = $_SESSION['patient_name'] ?? $_SESSION['username'] ?? 'Guest';
+
 try {
-    $stmt = $pdo->prepare("INSERT INTO hospital_reviews (hospital_id, rating, comment) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO hospital_reviews (hospital_id, rating, comment, reviewer_name) VALUES (?, ?, ?, ?)");
     $stmt->execute([
         $data['hospital_id'],
         $data['rating'],
-        $data['comment'] ?? null
+        $data['comment'] ?? null,
+        $reviewerName
     ]);
+
 // Log the review activity
     Logger::log('patient', 'info', "New hospital review submitted: Rating {$data['rating']}/5 for Hospital ID: {$data['hospital_id']}", 'Patient');
     echo json_encode(['status' => 'success', 'message' => 'Review submitted successfully!']);

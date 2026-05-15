@@ -541,13 +541,17 @@
 
         // Initialize page on load
         document.addEventListener('DOMContentLoaded', function () {
-            // Populate date display
+            // Populate localized date display
             const dateEl = document.getElementById('dateDisplay');
             if (dateEl) {
-                dateEl.textContent = new Date().toLocaleDateString('en-GB', {
+                const now = new Date();
+                const lang = localStorage.getItem('pcos_lang') || 'en';
+                const localeMap = { en: 'en-GB', si: 'si-LK', ta: 'ta-LK' };
+                dateEl.textContent = now.toLocaleDateString(localeMap[lang] || 'en-GB', {
                     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
                 });
             }
+
             displayConsultations(consultationsDatabase);
             displayActivityFeed(consultationsDatabase);
         });

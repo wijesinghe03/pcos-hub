@@ -23,7 +23,8 @@ try {
         SELECT id, hosp_name, username, email, phone, address, location,
                contact_fname, contact_lname, contact_person,
                hospital_type, specialties, reg_number,
-               approval_status, is_verified, avatar, status, created_at
+               approval_status, is_verified, avatar, status, 
+               established_year, bed_capacity, about_desc, created_at
         FROM registered_hospitals
         WHERE id = ?
         LIMIT 1

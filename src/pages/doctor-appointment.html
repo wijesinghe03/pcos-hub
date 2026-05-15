@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <script src="../../assets/js/theme-init.js"></script>
@@ -214,7 +214,7 @@
                     
                     <div class="availability-section">
                         <h4 data-i18n="weekly_schedule">Doctor's Weekly Schedule</h4>
-                        <div class="weekly-schedule">
+                        <div class="weekly-schedule" id="docScheduleList">
                             <div class="schedule-day"><span data-i18n="monday">Monday</span><span>09:00 AM - 05:00 PM</span></div>
                             <div class="schedule-day"><span data-i18n="tuesday">Tuesday</span><span>09:00 AM - 05:00 PM</span></div>
                             <div class="schedule-day"><span data-i18n="wednesday">Wednesday</span><span>09:00 AM - 01:00 PM</span></div>
@@ -294,33 +294,58 @@
         let selectedHospital = '';
         let selectedTime = '';
 
-        // Check session, but allow viewing without login
+        // Check session
         const user = Auth.getUser();
         const isLoggedIn = Auth.isLoggedIn();
 
+        // 1. Role Check: Admin and Hospitals cannot book appointments
+        if (user && (user.role === 'admin' || user.role === 'hospital' || user.role === 'superadmin')) {
+            window.onload = () => {
+                Toast.info('Booking is only available for patients. Redirecting to dashboard...');
+                setTimeout(() => {
+                    window.location.href = user.role === 'hospital' ? 'hospital-dashboard.html' : 'admin-dashboard.html';
+                }, 2000);
+            };
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
-            // Parse URL params first so we have data
             const params = new URLSearchParams(window.location.search);
             selectedHospital = params.get('hospital') || 'Selected Hospital';
-            
-            const docName = params.get('docName') || 'Doctor Name';
-            const docSpec = params.get('docSpec') || 'Specialist';
-            const docExp = params.get('docExp') || 'Experience';
-            const docImg = params.get('docImg') || '👩‍⚕️';
+            const hospId = params.get('hospId');
+            const docId = params.get('docId');
 
-            selectedDoctor = {
-                name: docName,
-                spec: docSpec,
-                exp: docExp,
-                img: docImg
-            };
+            selectedDoctor = { id: docId, name: 'Loading...', spec: '', exp: '', img: '👩‍⚕️' };
 
-            // Initialize UI elements with parsed data immediately
+            // Initialize UI elements
             const hospDisplay = document.getElementById('hospNameDisplay');
             const docNameDisplay = document.getElementById('docNameDisplay');
             const docSpecDisplay = document.getElementById('docSpecDisplay');
             const docExpDisplay = document.getElementById('docExpDisplay');
             const docImgDisplay = document.getElementById('docImgDisplay');
+
+            // Fetch actual doctor details from API
+            if (hospId && docId) {
+                try {
+                    const res = await fetch(`../../src/php/get_hospital_doctors.php?hospital_id=${hospId}`);
+                    const data = await res.json();
+                    if (data.status === 'success') {
+                        const doc = data.data.find(d => d.id == docId);
+                        if (doc) {
+                            selectedDoctor = {
+                                id: doc.id,
+                                name: doc.doctor_name,
+                                spec: doc.specialization,
+                                exp: doc.experience || 'Experienced',
+                                img: doc.avatar || '👩‍⚕️',
+                                schedule: doc.availability_json,
+                                fee: doc.consultation_fee
+                            };
+                            updateDisplay();
+                        }
+                    }
+                } catch (e) { console.error("Failed to fetch doctor details", e); }
+            }
+
 
             function updateDisplay() {
                 if (hospDisplay) {
@@ -341,13 +366,57 @@
                     docExpDisplay.removeAttribute('data-i18n');
                 }
                 if (docImgDisplay) {
-                    docImgDisplay.textContent = selectedDoctor.img;
+                    if (selectedDoctor.img && selectedDoctor.img.startsWith('data:image')) {
+                        docImgDisplay.innerHTML = `<img src="${selectedDoctor.img}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    } else {
+                        docImgDisplay.textContent = selectedDoctor.img || '👩‍⚕️';
+                    }
                     docImgDisplay.removeAttribute('data-i18n');
+                }
+                if (selectedDoctor.schedule) {
+                    const schedEl = document.getElementById('docScheduleList');
+                    if (schedEl) {
+                        try {
+                            // If it's stored as a JSON string, try to parse it
+                            const schedData = JSON.parse(selectedDoctor.schedule);
+                            if (typeof schedData === 'string') {
+                                schedEl.innerHTML = `<div style="padding:15px; background:white; border-radius:8px; border:1px solid var(--border); font-weight:600; color:var(--purple-primary); text-align:center;">${schedData}</div>`;
+                            } else {
+                                // Handle object/array if we ever use it
+                                schedEl.innerHTML = `<div style="padding:15px; background:white; border-radius:8px; border:1px solid var(--border); font-weight:600; color:var(--purple-primary); text-align:center;">Available: ${selectedDoctor.schedule}</div>`;
+                            }
+                        } catch(e) {
+                            // Fallback to plain text
+                            schedEl.innerHTML = `<div style="padding:15px; background:white; border-radius:8px; border:1px solid var(--border); font-weight:600; color:var(--purple-primary); text-align:center;">${selectedDoctor.schedule}</div>`;
+                        }
+                    }
                 }
             }
 
+
             // Initial update
             updateDisplay();
+
+            // Fetch real data if docId is present
+            if (docId) {
+                try {
+                    const res = await fetch(`../../src/php/get_doctor_details.php?id=${docId}`);
+                    const json = await res.json();
+                    if (json.status === 'success') {
+                        const d = json.data;
+                        selectedDoctor.name = d.doctor_name;
+                        selectedDoctor.spec = d.specialization;
+                        selectedDoctor.exp = d.experience || 'Experienced';
+                        selectedDoctor.img = d.avatar || '👩‍⚕️';
+                        selectedDoctor.fee = d.consultation_fee;
+                        selectedDoctor.schedule = d.availability_json;
+                        updateDisplay();
+                        
+                        // Re-generate slots after we have the doctor's specific schedule
+                        await generateTimeSlots();
+                    }
+                } catch (e) { console.error('Failed to fetch doctor details', e); }
+            }
 
             // Global Inits
             try {
@@ -547,16 +616,18 @@
 
             const payload = {
                 action: 'save_hospital_appointment',
-                patient_id: user.id,
-                patient_name: user.full_name || user.name || 'Patient',
+                patient_id: user ? user.id : null,
+                patient_name: user ? (user.full_name || user.name) : 'Guest Patient',
                 patient_email: email,
                 contact_number: contact,
                 hospital_name: selectedHospital,
                 doctor_name: selectedDoctor.name,
+                consultation_fee: selectedDoctor.fee || 0,
                 appointment_date: dateInput,
                 appointment_time: selectedTime,
                 reason: reason
             };
+
 
             try {
                 const res = await API.call('components/appointment_handler.php', payload);
