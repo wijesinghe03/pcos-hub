@@ -68,6 +68,130 @@ function renderNavbar(activePage = '') {
   <button class="scroll-to-top" id="scrollToTop" title="Scroll to top" aria-label="Scroll to top">↑</button>`;
 }
 
+/**
+ * Renders the standardized Hospital Dashboard Sidebar
+ * @param {string} activePage - The ID of the active sidebar item
+ * @returns {string} - HTML string for the sidebar
+ */
+function renderHospitalSidebar(activePage = 'dashboard') {
+  return `
+    <a href="index.html" class="sidebar-logo">
+      <div class="sidebar-logo-icon">♥</div>
+      <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
+    </a>
+    <a href="hospital-profile.html" class="sidebar-profile" title="View Profile">
+      <div class="sidebar-avatar" id="sidebarAvatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
+      <div>
+        <div class="sidebar-name" id="sidebarName">City Hospital</div>
+        <div class="sidebar-role">Hospital Staff</div>
+      </div>
+      <i>›</i>
+    </a>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Main</span>
+      <a class="sidebar-item ${activePage === 'dashboard' ? 'active' : ''}" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
+      <a class="sidebar-item ${activePage === 'search' ? 'active' : ''}" href="search-patients.html"><i>🔎</i> Search Patients</a>
+      <a class="sidebar-item ${activePage === 'doctors' ? 'active' : ''}" href="manage-doctors.html"><i>👩‍⚕️</i> Manage Doctors</a>
+      <a class="sidebar-item ${activePage === 'lab-results' ? 'active' : ''}" href="hospital-lab-results.html"><i>🔬</i> Lab Results <span class="sidebar-badge">8</span></a>
+      <a class="sidebar-item ${activePage === 'consultations' ? 'active' : ''}" href="hospital-consultations.html"><i>💬</i> Consultations <span class="sidebar-badge">3</span></a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Management</span>
+      <a class="sidebar-item ${activePage === 'all-patients' ? 'active' : ''}" href="search-patients.html"><i>👥</i> All Patients</a>
+      <a class="sidebar-item ${activePage === 'appointments' ? 'active' : ''}" href="hospital-appointments.html"><i>🗓️</i> Appointments</a>
+    </div>
+    
+    <div class="sidebar-section" style="padding-top:4px">
+      <span class="sidebar-section-label">Hospital Account</span>
+    </div>
+    <div class="sidebar-hospital-account">
+      <div class="sha-badge dot" id="shaStatusBadge">Verified</div>
+      <div class="sha-hospital-name" id="shaHospitalName">City Hospital</div>
+      <div class="sha-hospital-type" id="shaHospitalType">🏥 General Hospital</div>
+
+      <div class="sha-info-row">
+        <i>📍</i><span id="shaLocation">Colombo, Sri Lanka</span>
+      </div>
+      <div class="sha-info-row">
+        <i>📞</i><span id="shaPhone">+94 11 234 5678</span>
+      </div>
+      <div class="sha-info-row">
+        <i>✉️</i><span id="shaEmail">info@cityhospital.lk</span>
+      </div>
+      <div class="sha-info-row">
+        <i>🪪</i><span id="shaRegNo">Reg: MOH-LK-2019-0042</span>
+      </div>
+
+      <hr class="sha-divider">
+
+      <div class="sha-actions">
+        <a href="hospital-profile.html" class="sha-action-btn outline">🏥 Profile</a>
+        <a href="hospital-settings.html" class="sha-action-btn outline">⚙️ Settings</a>
+      </div>
+
+      <a href="hospital-signout.html" class="sha-logout">🚪 Sign Out</a>
+    </div>
+  `;
+}
+
+/**
+ * Populates the hospital sidebar with real data
+ * @param {Object} h - Hospital data object
+ */
+function populateHospitalSidebar(h) {
+  if (!h) return;
+  const name = h.hosp_name || h.name || 'Hospital';
+  const type = h.hospital_type || '';
+  const loc = h.location || h.address || '';
+  const phone = h.phone || '';
+  const email = h.email || '';
+  const reg = h.reg_number || '';
+  const verified = h.is_verified == 1;
+
+  const initials = name.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
+  const avatarEl = document.getElementById('sidebarAvatar');
+  if (avatarEl) avatarEl.textContent = initials;
+
+  const nameEl = document.getElementById('sidebarName');
+  if (nameEl) nameEl.textContent = name;
+
+  const shaBadge = document.getElementById('shaStatusBadge');
+  if (shaBadge) {
+    shaBadge.textContent = verified ? 'Verified' : 'Pending';
+    shaBadge.className = verified ? 'sha-badge dot' : 'sha-badge';
+    shaBadge.style.background = verified ? 'rgba(46, 204, 113, 0.15)' : 'rgba(243, 156, 18, 0.15)';
+    shaBadge.style.color = verified ? '#2ecc71' : '#d35400';
+    shaBadge.style.borderColor = verified ? 'rgba(46, 204, 113, 0.25)' : 'rgba(243, 156, 18, 0.25)';
+  }
+
+  const shaName = document.getElementById('shaHospitalName');
+  if (shaName) shaName.textContent = name;
+
+  const shaType = document.getElementById('shaHospitalType');
+  if (shaType) {
+    const labels = {
+      government: '🏥 Government Hospital',
+      private: '🏥 Private Hospital',
+      clinic: '🏥 Clinic',
+      diagnostic: '🔬 Diagnostic Center'
+    };
+    shaType.textContent = labels[type] || ('🏥 ' + (type.charAt(0).toUpperCase() + type.slice(1) || 'Healthcare Institution'));
+  }
+
+  const shaLoc = document.getElementById('shaLocation');
+  if (shaLoc && loc) shaLoc.textContent = loc;
+
+  const shaPhone = document.getElementById('shaPhone');
+  if (shaPhone && phone) shaPhone.textContent = phone;
+
+  const shaEmail = document.getElementById('shaEmail');
+  if (shaEmail && email) shaEmail.textContent = email;
+
+  const shaReg = document.getElementById('shaRegNo');
+  if (shaReg && reg) shaReg.textContent = 'Reg: ' + reg;
+}
+
+
 function renderChatbot() {
   return `
   <div class="chatbot-container">
@@ -257,6 +381,21 @@ document.addEventListener('DOMContentLoaded', () => {
       // Re-apply localization AFTER all components are in the DOM
       if (typeof L10n !== 'undefined') L10n.init();
     }, 0);
+  }
+
+  // Hospital Sidebar Injection
+  const sidePlaceholder = document.getElementById('sidebar-placeholder');
+  if (sidePlaceholder) {
+    const active = sidePlaceholder.dataset.active || 'dashboard';
+    sidePlaceholder.outerHTML = `<aside class="sidebar" id="sidebar">${renderHospitalSidebar(active)}</aside>`;
+    
+    // Early population from cache
+    try {
+      const stored = JSON.parse(localStorage.getItem('hospitalUser') || localStorage.getItem('currentUser') || 'null');
+      if (stored && (stored.role === 'hospital' || stored.hosp_name)) {
+        setTimeout(() => populateHospitalSidebar(stored), 0);
+      }
+    } catch (e) {}
   }
 });
 

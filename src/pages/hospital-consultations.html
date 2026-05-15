@@ -9,171 +9,7 @@
     <title>Consultations — PCOS Care Hub</title>
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <style>
-        /* Force layout */
-        #page-loader {
-            display: none !important;
-        }
 
-        .dashboard-layout {
-            display: grid !important;
-        }
-
-        .sidebar-hospital-account {
-            margin: 12px 12px 4px 12px;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.13), rgba(41, 128, 185, 0.07));
-            border: 1px solid rgba(52, 152, 219, 0.25);
-            border-radius: 12px;
-            padding: 14px 14px 10px 14px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sidebar-hospital-account::before {
-            content: '';
-            position: absolute;
-            top: -18px;
-            right: -18px;
-            width: 60px;
-            height: 60px;
-            background: rgba(52, 152, 219, 0.12);
-            border-radius: 50%;
-        }
-
-        .sha-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            padding: 2px 8px;
-            border-radius: 20px;
-            background: rgba(39, 174, 96, 0.15);
-            color: #1a7a40;
-            border: 1px solid rgba(39, 174, 96, 0.3);
-            margin-bottom: 8px;
-        }
-
-        .sha-badge.dot::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #27ae60;
-            animation: sha-pulse 2s infinite;
-        }
-
-        @keyframes sha-pulse {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: 0.4
-            }
-        }
-
-        .sha-hospital-name {
-            font-weight: 700;
-            font-size: 0.92rem;
-            color: var(--text-dark, #1f2937);
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sha-hospital-type {
-            font-size: 0.75rem;
-            color: #3498db;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .sha-info-row {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 0.78rem;
-            color: var(--text-light, #6b7280);
-            margin-bottom: 5px;
-        }
-
-        .sha-info-row i {
-            font-style: normal;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-            width: 16px;
-            text-align: center;
-        }
-
-        .sha-divider {
-            border: none;
-            border-top: 1px solid rgba(52, 152, 219, 0.18);
-            margin: 10px 0 8px;
-        }
-
-        .sha-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-        }
-
-        .sha-action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            padding: 6px 4px;
-            border-radius: 7px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.18s;
-            text-decoration: none;
-            border: none;
-        }
-
-        .sha-action-btn.outline {
-            background: white;
-            color: #3498db;
-            border: 1px solid rgba(52, 152, 219, 0.35);
-        }
-
-        .sha-action-btn.outline:hover {
-            background: rgba(52, 152, 219, 0.08);
-            border-color: #3498db;
-        }
-
-        .sha-logout {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            justify-content: center;
-            margin-top: 8px;
-            padding: 7px;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #e74c3c;
-            cursor: pointer;
-            background: rgba(231, 76, 60, 0.06);
-            border: 1px solid rgba(231, 76, 60, 0.15);
-            transition: all 0.18s;
-            text-decoration: none;
-            width: 100%;
-            text-align: center;
-        }
-
-        .sha-logout:hover {
-            background: rgba(231, 76, 60, 0.12);
-            border-color: rgba(231, 76, 60, 0.35);
-        }
-    </style>
 </head>
 
 <body>
@@ -185,54 +21,7 @@
 
     <div class="dashboard-layout">
         <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="sidebar-logo">
-                <div class="sidebar-logo-icon">♥</div>
-                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
-            </a>
-            <div class="sidebar-profile">
-                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#3498db,#2980b9)">CH</div>
-                <div>
-                    <div class="sidebar-name" id="sidebarName">City Hospital</div>
-                    <div class="sidebar-role">Hospital Staff</div>
-                </div>
-                <i>›</i>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
-                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
-                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results<span
-                        class="sidebar-badge">8</span></a>
-                <a class="sidebar-item active" href="hospital-consultations.html"><i>💬</i> Consultations<span
-                        class="sidebar-badge">3</span></a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Management</span>
-                <a class="sidebar-item" href="hospital-dashboard.html"><i>👥</i> All Patients</a>
-                <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="hospital-reports.html"><i>📊</i> Reports</a>
-            </div>
-            <!-- Hospital Account Card -->
-            <div class="sidebar-section" style="padding-top:4px">
-                <span class="sidebar-section-label">Hospital Account</span>
-            </div>
-            <div class="sidebar-hospital-account">
-                <div class="sha-badge dot">Verified</div>
-                <div class="sha-hospital-name">City Hospital</div>
-                <div class="sha-hospital-type">🏥 General Hospital</div>
-                <div class="sha-info-row"><i>📍</i><span>Colombo, Sri Lanka</span></div>
-                <div class="sha-info-row"><i>📞</i><span>+94 11 234 5678</span></div>
-                <div class="sha-info-row"><i>✉️</i><span>info@cityhospital.lk</span></div>
-                <div class="sha-info-row"><i>🪪</i><span>Reg: MOH-LK-2019-0042</span></div>
-                <hr class="sha-divider">
-                <div class="sha-actions">
-                    <a href="hospital-profile.html" class="sha-action-btn outline">🏥 Profile</a>
-                    <a href="hospital-settings.html" class="sha-action-btn outline">⚙️ Settings</a>
-                </div>
-                <a href="hospital-signout.html" class="sha-logout">🚪 Sign Out</a>
-            </div>
-        </aside>
+        <div id="sidebar-placeholder" data-active="consultations"></div>
 
         <!-- MAIN -->
         <main class="dash-main">
@@ -321,37 +110,50 @@
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient
-                            ID</label>
-                        <input type="text" id="addConsultationPatientId" class="form-control" placeholder="e.g., P-0021"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient Name</label>
+                        <input type="text" id="addConsultationPatientName" class="form-control" placeholder="Full Name"
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
                     </div>
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Consultation
-                            Type</label>
-                        <select id="addConsultationType" class="form-control"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient Email</label>
+                        <input type="email" id="addConsultationPatientEmail" class="form-control" placeholder="email@example.com"
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
-                            <option>Follow-up Consultation</option>
-                            <option>Review Consultation</option>
-                            <option>Initial Consultation</option>
-                            <option>Emergency Consultation</option>
-                        </select>
                     </div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Date</label>
-                        <input type="date" id="addConsultationDate" class="form-control"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Contact Number</label>
+                        <input type="text" id="addConsultationContact" class="form-control" placeholder="+94..."
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
                     </div>
                     <div>
-                        <label
-                            style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Time</label>
-                        <input type="time" id="addConsultationTime" class="form-control"
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Patient ID (Optional)</label>
+                        <input type="text" id="addConsultationPatientId" class="form-control" placeholder="P-0021"
                             style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Consultation Type</label>
+                        <select id="addConsultationType" class="form-control"
+                            style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                            <option value="followup">Follow-up Consultation</option>
+                            <option value="review">Review Consultation</option>
+                            <option value="initial">Initial Consultation</option>
+                            <option value="emergency">Emergency Consultation</option>
+                        </select>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <div>
+                            <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Date</label>
+                            <input type="date" id="addConsultationDate" class="form-control"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                        </div>
+                        <div>
+                            <label style="display:block;margin-bottom:8px;font-weight:500;color:#374151;font-size:0.95rem">Time</label>
+                            <input type="time" id="addConsultationTime" class="form-control"
+                                style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px">
+                        </div>
                     </div>
                 </div>
                 <div style="margin-bottom:16px">
@@ -430,6 +232,7 @@
     </div>
 
     <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script>
         // Consultations database
         const consultationsDatabase = [
@@ -539,8 +342,12 @@
             }
         ];
 
+        // Core state
+        let ALL_CONSULTATIONS = [];
+        let CURRENT_HOSPITAL_NAME = '';
+
         // Initialize page on load
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
             // Populate localized date display
             const dateEl = document.getElementById('dateDisplay');
             if (dateEl) {
@@ -552,9 +359,32 @@
                 });
             }
 
-            displayConsultations(consultationsDatabase);
-            displayActivityFeed(consultationsDatabase);
+            await fetchConsultations();
         });
+
+        async function fetchConsultations() {
+            try {
+                const response = await fetch('../../src/php/get_hospital_consultations.php');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    ALL_CONSULTATIONS = result.data;
+                    CURRENT_HOSPITAL_NAME = result.hospital_name;
+                    
+                    // Update sidebar/topbar if needed
+                    document.getElementById('sidebarName').textContent = CURRENT_HOSPITAL_NAME;
+                    document.querySelector('.sha-hospital-name').textContent = CURRENT_HOSPITAL_NAME;
+
+                    filterConsultations(); // Render with current filters
+                    displayActivityFeed(ALL_CONSULTATIONS);
+                } else {
+                    Toast.error('Failed to load consultations');
+                }
+            } catch (err) {
+                console.error(err);
+                Toast.error('Server error while fetching consultations');
+            }
+        }
 
         function displayConsultations(consultations) {
             const tableBody = document.getElementById('consultationsTableBody');
@@ -566,9 +396,9 @@
 
             tableBody.innerHTML = consultations.map(consultation => `
         <tr style="border-bottom:1px solid #e5e7eb;transition:all 0.2s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
-          <td style="padding:12px;cursor:pointer" onclick="viewPatientConsultations('${consultation.patientId}')">
-            <div style="font-weight:600;color:#1f2937">${consultation.patientName}</div>
-            <div style="font-size:0.85rem;color:#6b7280">${consultation.patientId}</div>
+          <td style="padding:12px">
+            <div style="font-weight:600;color:#1f2937">${consultation.patient_name}</div>
+            <div style="font-size:0.85rem;color:#6b7280">ID: ${consultation.patient_id} · ${consultation.patient_email}</div>
           </td>
           <td style="padding:12px">
             <div style="font-weight:500;color:#374151">${consultation.typeName}</div>
@@ -578,20 +408,24 @@
             <div style="font-size:0.85rem">${consultation.time}</div>
           </td>
           <td style="padding:12px">
-            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${consultation.status === 'confirmed' ? '#d1fae5;color:#065f46' :
-                    consultation.status === 'completed' ? '#c7d2fe;color:#312e81' :
-                        consultation.status === 'pending' ? '#fef3c7;color:#92400e' :
-                            '#fee2e2;color:#991b1b'
-                }">
+            <span style="padding:4px 12px;border-radius:20px;font-size:0.85rem;background:${
+                consultation.status === 'confirmed' ? '#d1fae5;color:#065f46' :
+                consultation.status === 'completed' ? '#c7d2fe;color:#312e81' :
+                consultation.status === 'pending' ? '#fef3c7;color:#92400e' :
+                '#fee2e2;color:#991b1b'
+            }">
               ${consultation.status.charAt(0).toUpperCase() + consultation.status.slice(1)}
             </span>
           </td>
           <td style="padding:12px;color:#6b7280;max-width:200px">
-            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${consultation.notes}</div>
+            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${consultation.notes}">${consultation.notes}</div>
           </td>
           <td style="padding:12px;text-align:center">
-            <button class="btn btn-primary btn-sm" onclick="viewConsultation('${consultation.id}')">View</button>
-            <button class="btn btn-outline btn-sm" style="margin-left:4px" onclick="editConsultation('${consultation.id}')">Edit</button>
+            <div style="display:flex;gap:4px;justify-content:center">
+                ${consultation.status !== 'completed' ? `<button class="btn btn-sm" style="background:#27ae60;color:white" onclick="updateStatus('${consultation.id}', 'complete')">✓ Done</button>` : ''}
+                <button class="btn btn-outline btn-sm" onclick="editConsultationRecord('${consultation.id}')">✏️</button>
+                <button class="btn btn-sm" style="background:#e74c3c;color:white" onclick="deleteConsultation('${consultation.id}')">🗑️</button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -638,10 +472,10 @@
             const statusFilter = document.getElementById('consultationFilterStatus').value;
             const typeFilter = document.getElementById('consultationFilterType').value;
 
-            const filtered = consultationsDatabase.filter(consultation => {
+            const filtered = ALL_CONSULTATIONS.filter(consultation => {
                 const matchesPatient = patientFilter === '' ||
-                    consultation.patientName.toLowerCase().includes(patientFilter) ||
-                    consultation.patientId.toLowerCase().includes(patientFilter);
+                    consultation.patient_name.toLowerCase().includes(patientFilter) ||
+                    consultation.patient_id.toLowerCase().includes(patientFilter);
                 const matchesStatus = statusFilter === '' || consultation.status === statusFilter;
                 const matchesType = typeFilter === '' || consultation.type === typeFilter;
                 return matchesPatient && matchesStatus && matchesType;
@@ -671,27 +505,104 @@
             }
         }
 
-        function saveConsultation() {
-            const patientId = document.getElementById('addConsultationPatientId').value;
+        async function saveConsultation() {
+            const name = document.getElementById('addConsultationPatientName').value;
+            const email = document.getElementById('addConsultationPatientEmail').value;
+            const contact = document.getElementById('addConsultationContact').value;
+            const patientIdStr = document.getElementById('addConsultationPatientId').value;
             const type = document.getElementById('addConsultationType').value;
             const date = document.getElementById('addConsultationDate').value;
             const time = document.getElementById('addConsultationTime').value;
             const notes = document.getElementById('addConsultationNotes').value;
 
-            if (!patientId || !type || !date || !time || !notes) {
-                Toast.warning('Please fill in all fields');
+            if (!name || !email || !contact || !date || !time) {
+                Toast.warning('Please fill in required fields (Name, Email, Contact, Date, Time)');
                 return;
             }
 
-            Toast.success('Consultation scheduled and patient notified!');
-            clearConsultationForm();
-            // Refresh the table
-            displayConsultations(consultationsDatabase);
+            // Extract numeric ID if P-00XX format used
+            const numericId = patientIdStr ? patientIdStr.replace(/\D/g, '') : null;
+
+            const payload = {
+                action: 'save_hospital_appointment',
+                patient_name: name,
+                patient_email: email,
+                contact_number: contact,
+                patient_id: numericId,
+                hospital_name: CURRENT_HOSPITAL_NAME,
+                doctor_name: 'Hospital Consultant', // Default
+                appointment_date: date,
+                appointment_time: time,
+                appointment_type: type,
+                reason: notes
+            };
+
+            try {
+                const response = await fetch('../../src/php/add_hospital_consultation.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    Toast.success('Consultation scheduled and patient notified!');
+                    clearConsultationForm();
+                    await fetchConsultations(); // Reload table
+                } else {
+                    Toast.error(result.message || 'Failed to save consultation');
+                }
+            } catch (err) {
+                console.error(err);
+                Toast.error('Network error while saving consultation');
+            }
+        }
+
+        async function updateStatus(id, action) {
+            try {
+                const response = await fetch('../../src/php/update_hospital_consultation.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, action })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    Toast.success(result.message);
+                    await fetchConsultations();
+                } else {
+                    Toast.error(result.message);
+                }
+            } catch (err) {
+                Toast.error('Failed to update status');
+            }
+        }
+
+        async function deleteConsultation(id) {
+            if (!confirm('Are you sure you want to remove this consultation record?')) return;
+            await updateStatus(id, 'delete');
+        }
+
+        function editConsultationRecord(id) {
+            const consultation = ALL_CONSULTATIONS.find(c => c.id == id);
+            if (!consultation) return;
+
+            document.getElementById('addConsultationPatientName').value = consultation.patient_name;
+            document.getElementById('addConsultationPatientEmail').value = consultation.patient_email;
+            document.getElementById('addConsultationPatientId').value = consultation.patient_id;
+            document.getElementById('addConsultationDate').value = consultation.raw_date;
+            document.getElementById('addConsultationTime').value = consultation.raw_time;
+            document.getElementById('addConsultationNotes').value = consultation.notes;
+            
+            Toast.info('Details loaded into the form for editing.');
+            openAddConsultationForm();
         }
 
         function clearConsultationForm() {
+            document.getElementById('addConsultationPatientName').value = '';
+            document.getElementById('addConsultationPatientEmail').value = '';
+            document.getElementById('addConsultationContact').value = '';
             document.getElementById('addConsultationPatientId').value = '';
-            document.getElementById('addConsultationType').value = 'Follow-up Consultation';
+            document.getElementById('addConsultationType').value = 'followup';
             document.getElementById('addConsultationDate').value = '';
             document.getElementById('addConsultationTime').value = '';
             document.getElementById('addConsultationNotes').value = '';

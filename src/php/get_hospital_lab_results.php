@@ -44,7 +44,7 @@ try {
             'nic'           => $row['nic'],
             'test_name'     => $row['test_name'],
             'test_type'     => $row['test_type'],
-            'status'        => $row['status'],
+            'status'        => ($row['file_path'] ? 'uploaded' : $row['status']),
             'report_date'   => date('d M Y', strtotime($row['report_date'])),
             'file_path'     => $row['file_path'],
             'results_data'  => json_decode($row['results_data'] ?? '{}', true)

@@ -12,20 +12,30 @@ header('Content-Type: application/json');
 
 // Determine hospital ID from session or fallback
 $hospitalId = $_SESSION['hospital_id'] ?? null;
-$hospitalName = 'City Hospital Colombo'; // Default for demo if not logged in
+$hospitalInfo = [
+    'hosp_name' => 'City Hospital Colombo',
+    'hospital_type' => 'private',
+    'address' => '123 Health Ave, Colombo 07',
+    'location' => 'Colombo, Sri Lanka',
+    'phone' => '+94 11 234 5678',
+    'email' => 'info@cityhospital.lk',
+    'reg_number' => 'MOH-LK-2019-0042',
+    'is_verified' => 1
+];
 
 if ($hospitalId) {
     try {
-        $stmt = $pdo->prepare("SELECT hosp_name FROM registered_hospitals WHERE id = ? LIMIT 1");
+        $stmt = $pdo->prepare("SELECT hosp_name, hospital_type, address, location, phone, email, reg_number, is_verified FROM registered_hospitals WHERE id = ? LIMIT 1");
         $stmt->execute([$hospitalId]);
         $row = $stmt->fetch();
         if ($row) {
-            $hospitalName = $row['hosp_name'];
+            $hospitalInfo = $row;
         }
     } catch (PDOException $e) {
         // Fallback
     }
 }
+$hospitalName = $hospitalInfo['hosp_name'];
 
 try {
     $data = [];
@@ -190,8 +200,9 @@ try {
     $data['patients'] = $patients;
 
     echo json_encode([
-        'status' => 'success',
-        'data'   => $data
+        'status'   => 'success',
+        'hospital' => $hospitalInfo,
+        'data'     => $data
     ]);
 } catch (Exception $e) {
     echo json_encode([

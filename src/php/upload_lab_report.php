@@ -74,7 +74,8 @@ try {
     // 3. Update database
     $pdo->beginTransaction();
 
-    $stmt1 = $pdo->prepare("UPDATE patient_labresults SET file_path = ?, status = 'sent' WHERE id = ?");
+    // Set status to 'uploaded' as requested by user
+    $stmt1 = $pdo->prepare("UPDATE patient_labresults SET file_path = ?, status = 'uploaded' WHERE id = ?");
     $stmt1->execute([$file_path, $lab_id]);
 
     $stmt2 = $pdo->prepare("
@@ -104,7 +105,6 @@ try {
         <p>Regards,<br>PCOS Care Hub Team</p>
     ";
     
-    // Attempt mail but don't fail on failure
     try {
         \App\Utils\Mailer::send($labRecord['email'], $subject, $emailBody);
     } catch (\Exception $mailErr) {

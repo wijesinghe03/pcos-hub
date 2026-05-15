@@ -39,10 +39,12 @@ try {
             SELECT patient_id FROM patient_reports WHERE hospital_name = ? OR hospital_name = 'Selected Hospital'
             UNION
             SELECT patient_id FROM patient_labresults WHERE hospital_name = ? OR hospital_name = 'Selected Hospital'
+            UNION
+            SELECT patient_id FROM consultations WHERE hospital_name = ?
         )
     ";
     
-    $params = [$hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName];
+    $params = [$hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName, $hospitalName];
 
     if (!empty($searchId)) {
         $cleanId = ltrim(strtoupper($searchId), 'P-');

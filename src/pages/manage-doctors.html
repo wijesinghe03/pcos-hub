@@ -65,8 +65,8 @@
 </head>
 <body>
   <div class="dashboard-layout">
-    <!-- SIDEBAR (Dynamic via JS) -->
-    <aside class="sidebar" id="sidebar"></aside>
+    <!-- SIDEBAR -->
+    <div id="sidebar-placeholder" data-active="doctors"></div>
 
     <main class="dash-main">
       <div class="dash-topbar">
@@ -147,11 +147,12 @@
   <div class="toast-container" id="toast-container"></div>
 
   <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/components.js"></script>
   <script>
     let currentAvatarBase64 = '';
 
     document.addEventListener('DOMContentLoaded', () => {
-      initSidebar();
+      loadDoctors();
       loadDoctors();
       document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -326,50 +327,7 @@
       }
     }
 
-    // Sidebar initialization based on shared patterns
-    async function initSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      try {
-        const res = await fetch('../../src/php/get_hospital_session.php');
-        const data = await res.json();
-        if (data.status === 'success') {
-          const h = data.hospital;
-          const initials = (h.hosp_name || 'H').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-          
-          sidebar.innerHTML = `
-            <a href="index.html" class="sidebar-logo">
-                <div class="sidebar-logo-icon">♥</div>
-                <div class="sidebar-logo-text"><span>PCOS</span> Care Hub</div>
-            </a>
-            <div class="sidebar-profile">
-                <div class="sidebar-avatar" style="background:linear-gradient(135deg,#7B3FBE,#5B2D8E)">${initials}</div>
-                <div>
-                    <div class="sidebar-name">${h.hosp_name}</div>
-                    <div class="sidebar-role">Hospital Staff</div>
-                </div>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Main</span>
-                <a class="sidebar-item" href="hospital-dashboard.html"><i>🏠</i> Dashboard</a>
-                <a class="sidebar-item" href="search-patients.html"><i>🔍</i> Search Patients</a>
-                <a class="sidebar-item active" href="manage-doctors.html"><i>👩‍⚕️</i> Manage Doctors</a>
-                <a class="sidebar-item" href="hospital-lab-results.html"><i>🔬</i> Lab Results</a>
-                <a class="sidebar-item" href="hospital-consultations.html"><i>💬</i> Consultations</a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Management</span>
-                <a class="sidebar-item" href="hospital-appointments.html"><i>📅</i> Appointments</a>
-                <a class="sidebar-item" href="hospital-reports.html"><i>📊</i> Reports</a>
-            </div>
-            <div class="sidebar-section" style="padding-top:4px">
-                <span class="sidebar-section-label">Hospital Account</span>
-                <a class="sidebar-item" href="hospital-profile.html"><i>🏥</i> Profile</a>
-                <a class="sidebar-item" href="hospital-signout.html"><i>🚪</i> Sign Out</a>
-            </div>
-          `;
-        }
-      } catch (e) { console.error(e); }
-    }
+
   </script>
 </body>
 </html>
