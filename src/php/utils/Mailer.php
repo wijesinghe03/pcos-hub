@@ -70,7 +70,7 @@ class Mailer
 
             $mail->send();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
             return false;
         }
